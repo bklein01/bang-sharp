@@ -1,0 +1,96 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Common", "Bang# Common\Bang# Common.csproj", "{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Server", "Bang# Server\Bang# Server.csproj", "{4F381591-EFF6-4350-ABBD-DBD65F725224}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Client", "Bang# Client\Bang# Client.csproj", "{60453F8A-5875-446C-80C2-CA007B43A2D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Test Client", "Bang# Test Client\Bang# Test Client.csproj", "{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# AI", "Bang# AI\Bang# AI.csproj", "{D4CA4E0D-A687-4866-B031-116C5B5DD731}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Console Utils", "Bang# Console Utils\Bang# Console Utils.csproj", "{152B44A4-9B36-4042-8E36-1E83DB09FEEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{152B44A4-9B36-4042-8E36-1E83DB09FEEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{152B44A4-9B36-4042-8E36-1E83DB09FEEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{152B44A4-9B36-4042-8E36-1E83DB09FEEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{152B44A4-9B36-4042-8E36-1E83DB09FEEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F381591-EFF6-4350-ABBD-DBD65F725224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F381591-EFF6-4350-ABBD-DBD65F725224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F381591-EFF6-4350-ABBD-DBD65F725224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F381591-EFF6-4350-ABBD-DBD65F725224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60453F8A-5875-446C-80C2-CA007B43A2D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60453F8A-5875-446C-80C2-CA007B43A2D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60453F8A-5875-446C-80C2-CA007B43A2D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60453F8A-5875-446C-80C2-CA007B43A2D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4CA4E0D-A687-4866-B031-116C5B5DD731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4CA4E0D-A687-4866-B031-116C5B5DD731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4CA4E0D-A687-4866-B031-116C5B5DD731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4CA4E0D-A687-4866-B031-116C5B5DD731}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Bang# Server\Bang# Server.csproj
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.TabWidth = 4
+		$1.RemoveTrailingWhitespace = True
+		$1.inheritsSet = Mono
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.AnonymousMethodBraceStyle = NextLine
+		$2.PropertyBraceStyle = NextLine
+		$2.PropertyGetBraceStyle = NextLine
+		$2.PropertySetBraceStyle = NextLine
+		$2.EventBraceStyle = NextLine
+		$2.EventAddBraceStyle = NextLine
+		$2.EventRemoveBraceStyle = NextLine
+		$2.StatementBraceStyle = NextLine
+		$2.PlaceElseOnNewLine = True
+		$2.PlaceElseIfOnNewLine = True
+		$2.PlaceCatchOnNewLine = True
+		$2.PlaceFinallyOnNewLine = True
+		$2.PlaceWhileOnNewLine = True
+		$2.BeforeMethodCallParentheses = False
+		$2.BeforeMethodDeclarationParentheses = False
+		$2.BeforeConstructorDeclarationParentheses = False
+		$2.BeforeDelegateDeclarationParentheses = False
+		$2.NewParentheses = False
+		$2.IfParentheses = False
+		$2.WhileParentheses = False
+		$2.ForParentheses = False
+		$2.ForeachParentheses = False
+		$2.CatchParentheses = False
+		$2.SwitchParentheses = False
+		$2.LockParentheses = False
+		$2.UsingParentheses = False
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 120
+		$3.TabWidth = 4
+		$3.inheritsSet = Mono
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+		$0.StandardHeader = $4
+		$4.Text = @${FileName}\n \nAuthor:  ${AuthorName} <${AuthorEmail}>\n\nCopyright (c) ${Year} ${CopyrightHolder}\n\nCreated with the help of the source code of KBang (http://code.google.com/p/kbang)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the "Software"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.
+		$4.inheritsSet = Apache2License
+	EndGlobalSection
+EndGlobal
