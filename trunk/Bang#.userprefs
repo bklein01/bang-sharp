@@ -1,0 +1,41 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Server/Session/Game/Game.cs" ctype="Workbench">
+    <Files>
+      <File FileName="Bang# Test Client/Main.cs" Line="800" Column="43" />
+      <File FileName="Bang# Server/Session/Game/Game.cs" Line="82" Column="40" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Bang# AI" expanded="True" />
+          <Node name="Bang# Client" expanded="True" />
+          <Node name="Bang# Common" expanded="True">
+            <Node name="Enums" expanded="True" />
+            <Node name="Structs" expanded="True" />
+          </Node>
+          <Node name="Bang# Console Utils" expanded="True" />
+          <Node name="Bang# Server" expanded="True">
+            <Node name="Session" expanded="True">
+              <Node name="Game" expanded="True">
+                <Node name="Characters" expanded="True">
+                  <Node name="Dodge City" expanded="True" />
+                </Node>
+                <Node name="Game.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Bang# Test Client" expanded="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Catchpoint exceptionName="System.ArgumentOutOfRangeException" />
+      <Catchpoint exceptionName="System.NullReferenceException" />
+      <Catchpoint exceptionName="System.StackOverflowException" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore" />
+</Properties>
