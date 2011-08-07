@@ -25,6 +25,8 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 namespace Bang.Server
 {
 	public sealed class ServerMain
@@ -92,6 +94,12 @@ namespace Bang.Server
 			Utils.Serve<Server>(port);
 			ConsoleUtils.SuccessLine();
 
+			if(cmdArgs.Contains("--no-input"))
+			{
+				// Do not use console input
+				Thread.Sleep(Timeout.Infinite);
+				return;
+			}
 			while (true) // command-line loop
 			{
 				Queue<string> args = ConsoleUtils.ReadCommand();

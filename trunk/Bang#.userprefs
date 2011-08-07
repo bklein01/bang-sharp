@@ -1,13 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Server/Session/Game/Game.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Test Client/Main.cs" ctype="Workbench">
     <Files>
-      <File FileName="Bang# Test Client/Main.cs" Line="800" Column="43" />
-      <File FileName="Bang# Server/Session/Game/Game.cs" Line="82" Column="40" />
+      <File FileName="Bang# Test Client/Main.cs" Line="212" Column="32" />
+      <File FileName="Bang# Server/Session/Game/Game.cs" Line="68" Column="4" />
+      <File FileName="Bang# Server/Main.cs" Line="88" Column="6" />
+      <File FileName="Bang# Common/Utils.cs" Line="161" Column="73" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="Bang# AI" expanded="True" />
           <Node name="Bang# Client" expanded="True" />
           <Node name="Bang# Common" expanded="True">
@@ -21,7 +23,6 @@
                 <Node name="Characters" expanded="True">
                   <Node name="Dodge City" expanded="True" />
                 </Node>
-                <Node name="Game.cs" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -35,6 +36,7 @@
       <Catchpoint exceptionName="System.ArgumentOutOfRangeException" />
       <Catchpoint exceptionName="System.NullReferenceException" />
       <Catchpoint exceptionName="System.StackOverflowException" />
+      <Breakpoint file="/home/ondrej/Dokumenty/Developing/Mono/Bang#/Bang# Server/Server.cs" line="112" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore" />
