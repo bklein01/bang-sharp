@@ -1,0 +1,7 @@
+2011-08-07  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs: 
+
+	* Main.cs: Full RemotingException and SerializationException
+	logging now enabled only in Debug build configuration.
+

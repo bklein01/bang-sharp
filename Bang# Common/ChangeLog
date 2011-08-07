@@ -1,0 +1,7 @@
+2011-08-07  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs: 
+
+	* Utils.cs: Provided more parameters for creating TcpChannel.
+	Fixes issue 1.
+

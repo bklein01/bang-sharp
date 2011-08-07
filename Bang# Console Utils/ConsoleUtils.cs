@@ -145,6 +145,16 @@ namespace Bang
 				Console.CursorTop = value / Console.BufferWidth;
 			}
 		}
+		private static void Backspace(int len)
+		{
+			for(int i = 0; i < len; i++)
+			{
+				// Also write space because of the stupid Windows console...
+				Console.Write('\b');
+				Console.Write(' ');
+				Console.Write('\b');
+			}
+		}
 		public static string ReadLine()
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -163,8 +173,7 @@ namespace Bang
 					len = line.Length;
 					ConsolePos += len - pos;
 					line = new StringBuilder();
-					for(int i = 0; i < len; i++)
-						Console.Write('\b');
+					Backspace(len);
 					pos = 0;
 					break;
 				case ConsoleKey.UpArrow:
@@ -177,9 +186,8 @@ namespace Bang
 					currentText = line.ToString();
 					len = line.Length;
 					ConsolePos += len - pos;
-					for(int i = 0; i < len; i++)
-						Console.Write('\b');
-					
+					Backspace(len);
+
 					string h = history[historyIndex];
 					Console.Write(h);
 					line = new StringBuilder(h);
@@ -191,9 +199,8 @@ namespace Bang
 					
 					len = line.Length;
 					ConsolePos += len - pos;
-					for(int i = 0; i < len; i++)
-						Console.Write('\b');
-					
+					Backspace(len);
+
 					string newText;
 					if(++historyIndex >= history.Count)
 					{
@@ -238,9 +245,8 @@ namespace Bang
 					
 					len = line.Length;
 					ConsolePos += len - pos;
-					for(int i = 0; i < len; i++)
-						Console.Write('\b');
-					
+					Backspace(len);
+
 					line = line.Remove(pos - 1, 1);
 					Console.Write(line.ToString());
 					pos--;
@@ -252,9 +258,8 @@ namespace Bang
 					
 					len = line.Length;
 					ConsolePos += len - pos;
-					for(int i = 0; i < len; i++)
-						Console.Write('\b');
-					
+					Backspace(len);
+
 					line = line.Remove(pos, 1);
 					Console.Write(line.ToString());
 					ConsolePos -= line.Length - pos;
@@ -280,9 +285,9 @@ namespace Bang
 					if(suggested.Length != 0)
 					{
 						ConsolePos += line.Length - pos;
-						string @add = suggested.Substring(text.Length);
-						Console.Write(@add);
-						line = line.Append(@add);
+						string addition = suggested.Substring(text.Length);
+						Console.Write(addition);
+						line = line.Append(addition);
 						pos = line.Length;
 					}
 
@@ -293,8 +298,7 @@ namespace Bang
 					line = line.Insert(pos, key.KeyChar);
 					len = line.Length;
 					ConsolePos += len - pos;
-					for(int i = 0; i < len; i++)
-						Console.Write('\b');
+					Backspace(len);
 					Console.Write(line.ToString());
 					pos++;
 					ConsolePos -= len - pos;

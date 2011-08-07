@@ -1,0 +1,11 @@
+2011-08-07  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs: 
+
+	* ConsoleUtils.cs: When writing backspace to the console we
+	now write a space as well, so that the deleted character gets
+	really deleted on a Windows console. Fixes issue 2.
+	An odd variable name '@add' renamed to 'addition' (It was
+	'add' originally but since it is a keyword, MonoDevelop seems
+	to have renamed it to '@add').
+

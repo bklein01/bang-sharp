@@ -204,13 +204,17 @@ namespace Bang.Client
 			catch(RemotingException e)
 			{
 				ConsoleUtils.ErrorLine("Remoting error!");
+#if DEBUG
 				ConsoleUtils.DebugLine(e.ToString());
+#endif
 				return;
 			}
 			catch(SerializationException e)
 			{
 				ConsoleUtils.ErrorLine("Serialization error!");
+#if DEBUG
 				ConsoleUtils.DebugLine(e.ToString());
+#endif
 				return;
 			}
 			/*

@@ -139,6 +139,15 @@ namespace Bang
 			return list[Random.Next(list.Count)];
 		}
 
+		private static TcpChannel CreateChannel(int port)
+		{
+			BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
+			BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
+			serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
+			Dictionary<string, string> props = new Dictionary<string, string>() { { "port", port.ToString() } };
+			return new TcpChannel(props, clientProvider, serverProvider);
+		}
+
 		/// <summary>
 		/// Connects to the Bang# server with the specified address and port.
 		/// </summary>
@@ -158,7 +167,7 @@ namespace Bang
 			{
 				try
 				{
-					ChannelServices.RegisterChannel(new TcpChannel(clientPort), false);
+					ChannelServices.RegisterChannel(CreateChannel(clientPort), false);
 					break;
 				}
 				catch(System.Net.Sockets.SocketException)
@@ -184,7 +193,7 @@ namespace Bang
 		/// </typeparam>
 		public static void Serve<T>(int port)
 		{
-			ChannelServices.RegisterChannel(new TcpChannel(port), false);
+			ChannelServices.RegisterChannel(CreateChannel(port), false);
 			RemotingConfiguration.RegisterWellKnownServiceType(typeof(T), "BangSharp.rem", WellKnownObjectMode.Singleton);
 		}
 	}

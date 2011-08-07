@@ -1,0 +1,8 @@
+2011-08-07  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs: 
+
+	* Main.cs: Added a command-line switch to the server that
+	disables input reading (useful when you want to run the server
+	in background and cut off the standard input).
+
