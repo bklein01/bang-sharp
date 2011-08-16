@@ -288,7 +288,8 @@ namespace Bang.Server
 			if(lifePoints > MaxLifePoints)
 				lifePoints = MaxLifePoints;
 
-			if(oldLifePoints - lifePoints != 0)
+			delta = lifePoints - oldLifePoints;
+			if(delta != 0)
 				game.Session.EventManager.OnLifePointsChanged(this, delta, causedBy);
 
 			if(hitPoints == 0)

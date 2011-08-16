@@ -1,8 +1,10 @@
-// Tequila.cs
+// AssemblyInfo.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
 // Copyright (c) 2011 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,21 +23,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server.Cards
-{
-	public sealed class Tequila : TargetPlayerGoldenCard
-	{
-		public Tequila (Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Tequila, suit, rank, RequestType.HealTarget, true)
-		{
-		}
-		
-		protected override void OnPlay (Player owner, Player targetPlayer)
-		{
-			if(targetPlayer.LifePoints == targetPlayer.MaxLifePoints)
-				throw new BadUsageException();
-			targetPlayer.ModifyLifePoints(1, owner);
-		}
-	}
-}
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+// Information about this assembly is defined by the following attributes. 
+// Change them to the values specific to your project.
+
+[assembly: AssemblyTitle("System.Runtime.Remoting.Channels.TwoWayTcp")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+
+// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
+// The form "{Major}.{Minor}.*" will automatically update the build and revision,
+// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+
+[assembly: AssemblyVersion("1.0.0.0")]
+
+// The following attributes are used to specify the signing key for the assembly, 
+// if desired. See the Mono documentation for more information about signing.
+
+//[assembly: AssemblyDelaySign(false)]
+//[assembly: AssemblyKeyFile("")]
 

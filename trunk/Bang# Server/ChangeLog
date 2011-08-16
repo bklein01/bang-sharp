@@ -1,3 +1,20 @@
+2011-08-16  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Session/Game/Cards/Dodge City/Whisky.cs: 
+
+	* Session/Game/Characters/Main/SidKetchum.cs: Don't allow
+	using Sid Ketchum's ability when fully healed.
+
+	* Session/Game/Player.cs: When modifying life points update
+	delta after clamping the new life point count.
+
+	* Session/Game/Cards/Main/Beer.cs: Don't allow playing beer
+	when fully healed.
+
+	* Session/Game/Cards/Dodge City/Tequila.cs: Don't allow
+	playing Tequila when target player is fully healed.
+
 2011-08-07  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs: 
