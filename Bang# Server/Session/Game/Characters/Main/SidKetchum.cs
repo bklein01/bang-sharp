@@ -66,8 +66,10 @@ namespace Bang.Server.Characters
 		{
 		}
 		
-		public override void UseAbility ()
+		public override void UseAbility()
 		{
+			if(Player.LifePoints == Player.MaxLifePoints)
+				throw new BadUsageException();
 			Game.GameCycle.PushTempHandler(new SidKetchumResponseHandler(this));
 		}
 	}

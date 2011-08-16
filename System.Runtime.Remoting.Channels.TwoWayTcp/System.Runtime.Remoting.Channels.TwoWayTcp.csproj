@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Bang.Client</RootNamespace>
-    <AssemblyName>BangSharpTestClient</AssemblyName>
+    <ProjectGuid>{FA4DD36C-5CF4-4CCD-8515-93ABF50D393C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>System.Runtime.Remoting.Channels.TwoWayTcp</RootNamespace>
+    <AssemblyName>System.Runtime.Remoting.Channels.TwoWayTcp</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -19,8 +19,7 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
-    <Commandlineparameters>127.0.0.1 2148</Commandlineparameters>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,29 +27,22 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Remoting" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Bang# Common\Bang# Common.csproj">
-      <Project>{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}</Project>
-      <Name>Bang# Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bang# AI\Bang# AI.csproj">
-      <Project>{D4CA4E0D-A687-4866-B031-116C5B5DD731}</Project>
-      <Name>Bang# AI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bang# Console Utils\Bang# Console Utils.csproj">
-      <Project>{152B44A4-9B36-4042-8E36-1E83DB09FEEB}</Project>
-      <Name>Bang# Console Utils</Name>
-    </ProjectReference>
+    <Compile Include="TcpConnection.cs" />
+    <Compile Include="TcpConnectionPool.cs" />
+    <Compile Include="TcpChannel.cs" />
+    <Compile Include="TcpServerChannel.cs" />
+    <Compile Include="TcpServerSink.cs" />
+    <Compile Include="TcpClientSink.cs" />
+    <Compile Include="TcpClientChannel.cs" />
+    <Compile Include="TcpClientSinkProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

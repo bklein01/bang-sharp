@@ -95,4 +95,10 @@
     <Folder Include="Structs\" />
     <Folder Include="Exceptions\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Runtime.Remoting.Channels.TwoWayTcp\System.Runtime.Remoting.Channels.TwoWayTcp.csproj">
+      <Project>{FA4DD36C-5CF4-4CCD-8515-93ABF50D393C}</Project>
+      <Name>System.Runtime.Remoting.Channels.TwoWayTcp</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

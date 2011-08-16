@@ -1,0 +1,17 @@
+2011-08-16  WOnder93  <omosnacek@gmail.com>
+
+	* TcpChannel.cs:
+	* AssemblyInfo.cs:
+	* TcpConnection.cs:
+	* TcpClientSink.cs:
+	* TcpServerSink.cs:
+	* TcpServerChannel.cs:
+	* TcpClientChannel.cs:
+	* TcpConnectionPool.cs:
+	* TcpClientSinkProvider.cs: 
+
+	* System.Runtime.Remoting.Channels.TwoWayTcp.csproj: These are
+	custom .NET remoting TCP channels I have written for this
+	project. They support two-way communication through a single
+	connection so they can work through firewalls.
+

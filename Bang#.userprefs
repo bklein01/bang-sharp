@@ -1,42 +1,33 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" ctype="Workspace" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Test Client/Main.cs" ctype="Workbench">
     <Files>
-      <File FileName="Bang# Test Client/Main.cs" Line="212" Column="32" />
-      <File FileName="Bang# Server/Session/Game/Game.cs" Line="68" Column="4" />
-      <File FileName="Bang# Server/Main.cs" Line="88" Column="6" />
-      <File FileName="Bang# Common/Utils.cs" Line="161" Column="73" />
+      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientSink.cs" Line="50" Column="23" />
+      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerSink.cs" Line="66" Column="1" />
+      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpConnection.cs" Line="157" Column="1" />
+      <File FileName="Assembly Browser" />
+      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerChannel.cs" Line="194" Column="26" />
+      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientChannel.cs" Line="112" Column="1" />
+      <File FileName="Bang# Test Client/Main.cs" Line="209" Column="7" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
-          <Node name="Bang# AI" expanded="True" />
-          <Node name="Bang# Client" expanded="True" />
-          <Node name="Bang# Common" expanded="True">
-            <Node name="Enums" expanded="True" />
-            <Node name="Structs" expanded="True" />
+        <State expanded="True">
+          <Node name="Bang# Server" expanded="True" />
+          <Node name="Bang# Test Client" expanded="True">
+            <Node name="Main.cs" selected="True" />
           </Node>
-          <Node name="Bang# Console Utils" expanded="True" />
-          <Node name="Bang# Server" expanded="True">
-            <Node name="Session" expanded="True">
-              <Node name="Game" expanded="True">
-                <Node name="Characters" expanded="True">
-                  <Node name="Dodge City" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-          <Node name="Bang# Test Client" expanded="True" />
+          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True" />
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Catchpoint exceptionName="System.ArgumentOutOfRangeException" />
-      <Catchpoint exceptionName="System.NullReferenceException" />
-      <Catchpoint exceptionName="System.StackOverflowException" />
-      <Breakpoint file="/home/ondrej/Dokumenty/Developing/Mono/Bang#/Bang# Server/Server.cs" line="112" />
+      <Catchpoint enabled="false" exceptionName="System.ArgumentOutOfRangeException" />
+      <Catchpoint enabled="false" exceptionName="System.NullReferenceException" />
+      <Catchpoint enabled="false" exceptionName="System.StackOverflowException" />
+      <Breakpoint enabled="false" file="/home/ondrej/Dokumenty/Developing/Mono/Bang#/System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerClientTransportSinkProvider.cs" line="54" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore" />

@@ -1,3 +1,13 @@
+2011-08-16  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj: 
+
+	* Utils.cs: Use two-way remoting TCP channels instead of
+	native channels in order to make Bang# clients functional
+	behind firewalls.
+	Fixes issue 3.
+
 2011-08-07  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs: 
