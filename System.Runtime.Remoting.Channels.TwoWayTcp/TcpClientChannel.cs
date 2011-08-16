@@ -67,7 +67,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			if(serverSinkProvider == null)
 				serverSinkProvider = new BinaryServerFormatterSinkProvider();
 			
-			channelData = new ChannelDataStore(null);
+			channelData = new ChannelDataStore(new string[] { "tcp://" + TcpConnection.ThisMachineID });
 			for(IServerChannelSinkProvider provider = serverSinkProvider; provider != null; provider = provider.Next)
 				provider.GetChannelData(channelData);
 			
@@ -108,12 +108,6 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		public void StartListening(object data)
 		{
 			TcpConnectionPool.Instance.OnRequestRecieved += serverSink.OnRequestRecieved;
-
-			string[] uris = new string[]
-			{
-				"tcp://" + TcpConnection.ThisID
-			};
-			channelData.ChannelUris = uris;
 		}
 		public void StopListening(object data)
 		{
@@ -125,7 +119,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		{
 			get { return supressChannelData ? null : channelData; }
 		}
-		string[] IChannelReceiver.GetUrlsForUri (string objectUri)
+		string[] IChannelReceiver.GetUrlsForUri(string objectUri)
 		{
 			if(!objectUri.StartsWith("/"))
 				objectUri = "/" + objectUri;

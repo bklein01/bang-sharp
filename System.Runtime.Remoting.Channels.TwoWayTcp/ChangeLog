@@ -1,5 +1,26 @@
 2011-08-16  WOnder93  <omosnacek@gmail.com>
 
+	* TcpClientChannel.cs: Moved ChannelDataStore's ChannelUris
+	initialization to its constructor. Fixes issue 4.
+
+	* AssemblyInfo.cs:
+	* TcpServerSink.cs:
+	* TcpConnectionPool.cs: 
+
+	* TcpConnection.cs: Renamed TcpConnection.ThisID to
+	TcpConnection.ThisMachineID (see also other files).
+	Renamed TcpConnection.ID to TcpConnection.MachineID (see also
+	other files).
+	Renamed TcpConnection.ConnectionID to TcpConnection.ID (see
+	also other files).
+
+	* TcpServerChannel.cs: Moved ChannelDataStore's ChannelUris
+	initialization to its constructor. Fixes issue 4.
+	Removed 'host:port' URI from channel URIs since it is not
+	needed in most scenarios.
+
+2011-08-16  WOnder93  <omosnacek@gmail.com>
+
 	* TcpChannel.cs:
 	* AssemblyInfo.cs:
 	* TcpConnection.cs:
