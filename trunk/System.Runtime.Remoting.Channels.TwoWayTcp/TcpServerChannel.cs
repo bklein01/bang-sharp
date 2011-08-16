@@ -93,7 +93,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				else
 					host = Dns.GetHostName();
 
-			channelData = new ChannelDataStore(null);
+			channelData = new ChannelDataStore(new string[] { "tcp://" + TcpConnection.ThisMachineID });
 			for(IServerChannelSinkProvider provider = serverSinkProvider; provider != null; provider = provider.Next)
 				provider.GetChannelData(channelData);
 
@@ -183,13 +183,6 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 			if(port == 0)
 				port = ((IPEndPoint)listener.LocalEndpoint).Port;
-
-			string[] uris = new string[]
-			{
-				"tcp://" + TcpConnection.ThisID,
-				"tcp://" + host + ":" + port
-			};
-			channelData.ChannelUris = uris;
 
 			serverThread = new Thread(WaitForConnections);
 			serverThread.IsBackground = true;

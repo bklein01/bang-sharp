@@ -1,23 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Test Client/Main.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ActiveDocument="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientChannel.cs" ctype="Workbench">
     <Files>
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientSink.cs" Line="50" Column="23" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerSink.cs" Line="66" Column="1" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpConnection.cs" Line="157" Column="1" />
-      <File FileName="Assembly Browser" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerChannel.cs" Line="194" Column="26" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientChannel.cs" Line="112" Column="1" />
-      <File FileName="Bang# Test Client/Main.cs" Line="209" Column="7" />
+      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientChannel.cs" Line="71" Column="40" />
+      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerChannel.cs" Line="100" Column="4" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Bang# Server" expanded="True" />
-          <Node name="Bang# Test Client" expanded="True">
-            <Node name="Main.cs" selected="True" />
+          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True">
+            <Node name="TcpClientChannel.cs" selected="True" />
           </Node>
-          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True" />
         </State>
       </Pad>
     </Pads>

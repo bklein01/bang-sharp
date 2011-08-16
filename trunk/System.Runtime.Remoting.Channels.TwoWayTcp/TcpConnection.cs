@@ -48,7 +48,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 	internal class TcpConnection
 	{
-		public static readonly Guid ThisID = Guid.NewGuid();
+		public static readonly Guid ThisMachineID = Guid.NewGuid();
 		private static readonly byte[] magic = new byte[] { (byte)'T', (byte)'T', (byte)'C', (byte)'P' };
 		private const byte Version = 1;
 		private const int DefaultBufferSize = 1000;
@@ -68,11 +68,11 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 		public OnMessageRecieved OnMessageRecieved;
 
-		public Guid ID
+		public Guid MachineID
 		{
 			get { return id; }
 		}
-		public int ConnectionID
+		public int ID
 		{
 			get { return connId; }
 		}
@@ -212,7 +212,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			writer.Write(Version);
 			writer.Write((byte)message.Type);
 
-			writer.Write(ThisID.ToByteArray());
+			writer.Write(ThisMachineID.ToByteArray());
 			writer.Write(message.ID.ToByteArray());
 
 			foreach(DictionaryEntry entry in message.Headers)

@@ -72,7 +72,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		public TcpConnection GetConnection(Guid id)
 		{
 			foreach(TcpConnection conn in connections)
-				if(conn.ID == id)
+				if(conn.MachineID == id)
 					return conn;
 			return null;
 		}
