@@ -30,7 +30,7 @@ namespace Bang.AI
 	/// <summary>
 	/// This class provides the AI player functionality.
 	/// </summary>
-	public sealed class AIPlayer : MarshalByRefObject, IPlayerEventListener
+	public sealed class AIPlayer : ImmortalMarshalByRefObject, IPlayerEventListener
 	{
 		private static readonly IEnumerator<string> names = new List<string>() { "John", "Mike", "George", "Kelly", "Susan", "Greg", "Andy", "Simon" }.GetEnumerator();
 		private static string NextName()
@@ -775,7 +775,7 @@ namespace Bang.AI
 					IEnumerable<IPublicPlayerView> enemies = playerHelper.Enemies;
 					// First, look through the tables of non-allies:
 					foreach(IPublicPlayerView p in nonAllies)
-						cards.AddRange(p.Table);
+						cards.AddRange(p.Table.Where(c => c.Type != CardType.Jail));
 					while(cards.Count != 0)
 					{
 						ICard best = cardHelper.BestCard(cards);

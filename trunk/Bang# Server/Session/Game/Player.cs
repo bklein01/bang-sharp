@@ -343,10 +343,6 @@ namespace Bang.Server
 		{
 			character.OnTurnStarted();
 		}
-		public void OnPlayContinue()
-		{
-			character.OnPlayContinue();
-		}
 		public void OnTurnEnded()
 		{
 			skipTurn = false;

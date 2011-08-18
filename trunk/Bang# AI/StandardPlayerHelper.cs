@@ -34,7 +34,6 @@ namespace Bang.AI
 		private class PlayerEntry
 		{
 			private StandardPlayerHelper parent;
-			private IPublicPlayerView player;
 			private int id;
 
 			private Dictionary<int, int> attacksIn;
@@ -50,7 +49,7 @@ namespace Bang.AI
 			}
 			public IPublicPlayerView Player
 			{
-				get { return player; }
+				get { return parent.Control.Game.GetPublicPlayerView(id); }
 			}
 			public int ID
 			{
@@ -65,7 +64,6 @@ namespace Bang.AI
 			public PlayerEntry(StandardPlayerHelper parent, IPublicPlayerView player)
 			{
 				this.parent = parent;
-				this.player = player;
 				this.id = player.ID;
 				int playerCount = parent.Game.Players.Count;
 				attacksIn = new Dictionary<int, int>(playerCount);
@@ -213,11 +211,9 @@ namespace Bang.AI
 			
 			entries = new Dictionary<int, PlayerEntry>(playerCount);
 			foreach(IPublicPlayerView p in Game.Players)
-				if(p.Role == Role.Sheriff)
-					entries.Add(p.ID, new PlayerEntry(this, p));
-				else
-					entries.Add(p.ID, new PlayerEntry(this, p));
-			entries[ThisPlayer.ID].EstimatedRole = ThisPlayer.Role;
+				entries.Add(p.ID, new PlayerEntry(this, p));
+			IPrivatePlayerView thisPlayer = ThisPlayer;
+			entries[thisPlayer.ID].EstimatedRole = thisPlayer.Role;
 		}
 
 		public void EstimateRoles()
@@ -311,6 +307,7 @@ namespace Bang.AI
 		{
 			get
 			{
+				int thisPlayerId = ThisPlayer.ID;
 				List<IPublicPlayerView> allies = new List<IPublicPlayerView>(Game.Players.Count);
 				switch(ThisPlayer.Role)
 				{
@@ -318,7 +315,7 @@ namespace Bang.AI
 					foreach(PlayerEntry entry in entries.Values)
 					{
 						IPublicPlayerView player = entry.Player;
-						if(entry.EstimatedRole == Role.Deputy && player.IsAlive)
+						if(entry.EstimatedRole == Role.Deputy && player.IsAlive && entry.ID != thisPlayerId)
 							allies.Add(player);
 					}
 					break;
@@ -326,7 +323,7 @@ namespace Bang.AI
 					foreach(PlayerEntry entry in entries.Values)
 					{
 						IPublicPlayerView player = entry.Player;
-						if((entry.EstimatedRole == Role.Sheriff || entry.EstimatedRole == Role.Deputy) && player.IsAlive)
+						if((entry.EstimatedRole == Role.Sheriff || entry.EstimatedRole == Role.Deputy) && player.IsAlive && entry.ID != thisPlayerId)
 							allies.Add(player);
 					}
 					break;
@@ -334,7 +331,7 @@ namespace Bang.AI
 					foreach(PlayerEntry entry in entries.Values)
 					{
 						IPublicPlayerView player = entry.Player;
-						if(entry.EstimatedRole == Role.Outlaw && player.IsAlive)
+						if(entry.EstimatedRole == Role.Outlaw && player.IsAlive && entry.ID != thisPlayerId)
 							allies.Add(player);
 					}
 					break;
@@ -345,7 +342,7 @@ namespace Bang.AI
 						foreach(PlayerEntry entry in entries.Values)
 						{
 							IPublicPlayerView player = entry.Player;
-							if(entry.EstimatedRole == Role.Renegade && player.IsAlive)
+							if(entry.EstimatedRole == Role.Renegade && player.IsAlive && entry.ID != thisPlayerId)
 								allies.Add(player);
 						}
 						if(Game.Players.Any(p => p.Role != Role.Sheriff && p.Role != Role.Renegade && p.IsAlive))
@@ -360,48 +357,68 @@ namespace Bang.AI
 		{
 			get
 			{
+				int thisPlayerId = ThisPlayer.ID;
 				List<IPublicPlayerView> enemies = new List<IPublicPlayerView>(Game.Players.Count);
 				switch(ThisPlayer.Role)
 				{
 				case Role.Sheriff:
 					foreach(PlayerEntry entry in entries.Values)
-						if(entry.EstimatedRole == Role.Outlaw && entry.Player.IsAlive)
-							enemies.Add(entry.Player);
+					{
+						IPublicPlayerView player = entry.Player;
+						if(entry.EstimatedRole == Role.Outlaw && player.IsAlive)
+							enemies.Add(player);
+					}
 					if(enemies.Count == 0)
 						foreach(PlayerEntry entry in entries.Values)
-							if(entry.EstimatedRole != Role.Sheriff && entry.Player.IsAlive)
-								enemies.Add(entry.Player);
+						{
+							IPublicPlayerView player = entry.Player;
+							if(entry.EstimatedRole != Role.Sheriff && player.IsAlive)
+								enemies.Add(player);
+						}
 					break;
 				case Role.Deputy:
 					foreach(PlayerEntry entry in entries.Values)
-						if(entry.EstimatedRole == Role.Outlaw && entry.Player.IsAlive)
-							enemies.Add(entry.Player);
+					{
+						IPublicPlayerView player = entry.Player;
+						if(entry.EstimatedRole == Role.Outlaw && player.IsAlive)
+							enemies.Add(player);
+					}
 					if(enemies.Count == 0)
 						foreach(PlayerEntry entry in entries.Values)
-							if(entry.EstimatedRole != Role.Sheriff && entry.Player.IsAlive)
-								enemies.Add(entry.Player);
+						{
+							IPublicPlayerView player = entry.Player;
+							if(entry.EstimatedRole != Role.Sheriff && entry.EstimatedRole != Role.Deputy && player.IsAlive)
+								enemies.Add(player);
+						}
 					break;
 				case Role.Outlaw:
 					foreach(PlayerEntry entry in entries.Values)
-						if(entry.EstimatedRole == Role.Sheriff || entry.EstimatedRole == Role.Deputy && entry.Player.IsAlive)
-							enemies.Add(entry.Player);
+					{
+						IPublicPlayerView player = entry.Player;
+						if(entry.EstimatedRole == Role.Sheriff || entry.EstimatedRole == Role.Deputy && player.IsAlive)
+							enemies.Add(player);
+					}
 					break;
 				case Role.Renegade:
 					IPublicPlayerView sheriff = Game.Players.First(p => p.IsSheriff);
 					if(sheriff.IsAlive)
 					{
 						foreach(PlayerEntry entry in entries.Values)
-							if(entry.EstimatedRole != Role.Sheriff && entry.EstimatedRole != Role.Renegade && entry.Player.IsAlive)
-								enemies.Add(entry.Player);
+						{
+							IPublicPlayerView player = entry.Player;
+							if(entry.EstimatedRole != Role.Sheriff && entry.EstimatedRole != Role.Renegade && player.IsAlive)
+								enemies.Add(player);
+						}
 						if(enemies.Count == 0)
 							enemies.Add(sheriff);
 					}
 					else
-					{
 						foreach(PlayerEntry entry in entries.Values)
-							if(entry.Player.IsAlive && entry.ID != ThisPlayer.ID)
-								enemies.Add(entry.Player);
-					}
+						{
+							IPublicPlayerView player = entry.Player;
+							if(entry.ID != thisPlayerId && player.IsAlive)
+								enemies.Add(player);
+						}
 					break;
 				}
 				return new ReadOnlyCollection<IPublicPlayerView>(enemies);

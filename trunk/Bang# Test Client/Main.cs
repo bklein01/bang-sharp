@@ -31,7 +31,7 @@ using System.Runtime.Serialization;
 
 namespace Bang.Client
 {
-	public sealed class TestClient : MarshalByRefObject, IPlayerEventListener
+	public sealed class TestClient : ImmortalMarshalByRefObject, IPlayerEventListener
 	{
 		private IPlayerControl gameControl;
 		private IPlayerSessionControl sessionControl;
@@ -593,6 +593,7 @@ namespace Bang.Client
 		void IEventListener.OnSessionEnded()
 		{
 			ConsoleUtils.SessionEvent("Session ended!");
+			gameControl = null;
 			sessionControl = null;
 			if(aiPlayer != null)
 			{
@@ -604,7 +605,6 @@ namespace Bang.Client
 		{
 			ConsoleUtils.GameEvent("Game ended! You {0}", gameControl.PrivatePlayerView.IsWinner ? "won!" : "lost.");
 
-			gameControl = null;
 			if(aiPlayer != null)
 				aiPlayer.OnGameEnded();
 		}

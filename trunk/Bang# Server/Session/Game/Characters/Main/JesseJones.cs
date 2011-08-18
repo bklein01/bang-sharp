@@ -38,12 +38,18 @@ namespace Bang.Server.Characters
 			protected override void OnRespondCard(Card targetCard)
 			{
 				Player targetPlayer = targetCard.Owner;
+				if(targetPlayer == null)
+					throw new BadTargetCardException();
+
 				if(targetPlayer == RequestedPlayer)
 					throw new BadTargetPlayerException();
 				
 				if(!targetPlayer.IsAlive)
 					throw new BadTargetPlayerException();
-				
+
+				if(!targetCard.IsInHand)
+					throw new BadTargetCardException();
+
 				Game.Session.EventManager.OnPlayerUsedAbility(RequestedPlayer);
 				Game.GameTable.PlayerStealCard(RequestedPlayer, targetCard);
 				Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 1);

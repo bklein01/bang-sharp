@@ -613,9 +613,11 @@ namespace Bang
 				break;
 			case "requested":
 				PrintLine("Requested player - #{0}:", game.RequestedPlayer.ID);
+				Print(game.RequestedPlayer);
 				break;
 			case "causedby":
 				PrintLine("Caused by player #{0}:", game.CausedBy.ID);
+				Print(game.CausedBy);
 				break;
 			default:
 				ErrorLine("Unknown command!");

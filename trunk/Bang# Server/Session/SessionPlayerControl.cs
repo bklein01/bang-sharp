@@ -1,7 +1,7 @@
 using System;
 namespace Bang.Server
 {
-	public sealed class SessionPlayerControl : MarshalByRefObject, IPlayerSessionControl
+	public sealed class SessionPlayerControl : ImmortalMarshalByRefObject, IPlayerSessionControl
 	{
 		private SessionPlayer player;
 		

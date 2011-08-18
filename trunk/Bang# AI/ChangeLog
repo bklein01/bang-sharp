@@ -1,0 +1,22 @@
+2011-08-18  WOnder93  <omosnacek@gmail.com>
+
+	* Bang# AI.csproj:
+	* AssemblyInfo.cs:
+	  
+
+	* StandardPlayerHelper.cs:
+	  Avoided field storage of MarshalByRefObjects because of
+	  their server lifetime limits.
+	Improved performance by caching property values in methods.
+	Excluded self when generating list of allies.
+
+	* TwoPlayersPlayerHelper.cs:
+	* ThreePlayersPlayerHelper.cs:
+	  Avoided field storage of MarshalByRefObjects because of
+	  their server lifetime limits.
+
+	* AIPlayer.cs:
+	  Changed base class to ImmortalMarshalByRefObject. Fixes
+	  issue 5.
+	AI players now free only allies from Jail.
+

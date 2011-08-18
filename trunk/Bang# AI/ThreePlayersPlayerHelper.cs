@@ -30,8 +30,8 @@ namespace Bang.AI
 {
 	internal sealed class ThreePlayersPlayerHelper : PlayerHelper
 	{
-		private IPublicPlayerView enemy;
-		private IPublicPlayerView ally;
+		private int enemyId;
+		private int allyId;
 
 		public ThreePlayersPlayerHelper(IPlayerControl control) : base(control)
 		{
@@ -54,17 +54,27 @@ namespace Bang.AI
 			default:
 				throw new InvalidOperationException();
 			}
-			enemy = control.Game.Players.First(p => p.Role == enemyRole);
-			ally = control.Game.Players.First(p => p.Role == allyRole);
+			enemyId = control.Game.Players.First(p => p.Role == enemyRole).ID;
+			allyId = control.Game.Players.First(p => p.Role == allyRole).ID;
 		}
 
 		public override IEnumerable<IPublicPlayerView> Allies
 		{
-			get { return ally.IsAlive ? new List<IPublicPlayerView> { ally } : new List<IPublicPlayerView>(); }
+			get
+			{
+				IPublicPlayerView ally = Control.Game.GetPublicPlayerView(allyId);
+				return ally.IsAlive ? new List<IPublicPlayerView> { ally } : new List<IPublicPlayerView>();
+			}
 		}
 		public override IEnumerable<IPublicPlayerView> Enemies
 		{
-			get { return enemy.IsAlive ? new List<IPublicPlayerView> { enemy } : new List<IPublicPlayerView>() { ally }; }
+			get
+			{
+				IGame game = Control.Game;
+				IPublicPlayerView ally = game.GetPublicPlayerView(allyId);
+				IPublicPlayerView enemy = game.GetPublicPlayerView(enemyId);
+				return enemy.IsAlive ? new List<IPublicPlayerView> { enemy } : new List<IPublicPlayerView>() { ally };
+			}
 		}
 	}
 }
