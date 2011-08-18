@@ -49,7 +49,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		public TcpClientSink(TcpConnection connection)
 		{
 			conn = connection;
-			conn.OnMessageRecieved += OnResponseRecieved;
+			conn.OnResponseRecieved += OnResponseRecieved;
 			stacks = new Dictionary<Guid, IClientChannelSinkStack>();
 			responseCache = new Dictionary<Guid, Message>();
 		}
@@ -72,6 +72,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 					while(!responseCache.ContainsKey(request.ID))
 						Monitor.Wait(responseCache);
 					Message response = responseCache[request.ID];
+					responseCache.Remove(request.ID);
 					responseHeaders = response.Headers;
 					responseStream = response.Stream;
 				}
@@ -102,8 +103,6 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 		private void OnResponseRecieved(Message message)
 		{
-			if(message.Type != MessageType.Response)
-				return;
 			try
 			{
 				IClientChannelSinkStack sinkStack = stacks[message.ID];

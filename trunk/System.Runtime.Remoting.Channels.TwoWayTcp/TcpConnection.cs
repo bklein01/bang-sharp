@@ -66,7 +66,8 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		private BinaryReader reader;
 		private BinaryWriter writer;
 
-		public OnMessageRecieved OnMessageRecieved;
+		public OnMessageRecieved OnRequestRecieved;
+		public OnMessageRecieved OnResponseRecieved;
 
 		public Guid MachineID
 		{
@@ -110,8 +111,19 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				while(true)
 				{
 					Message message = InternalRecieveMessage();
-					foreach(OnMessageRecieved del in OnMessageRecieved.GetInvocationList())
-						del.BeginInvoke(message, null, null);
+					switch(message.Type)
+					{
+					case MessageType.Request:
+						if(OnRequestRecieved != null)
+							foreach(OnMessageRecieved del in OnRequestRecieved.GetInvocationList())
+								del.BeginInvoke(message, null, null);
+						break;
+					case MessageType.Response:
+						if(OnResponseRecieved != null)
+							foreach(OnMessageRecieved del in OnResponseRecieved.GetInvocationList())
+								del.BeginInvoke(message, null, null);
+						break;
+					}
 				}
 			}
 			catch

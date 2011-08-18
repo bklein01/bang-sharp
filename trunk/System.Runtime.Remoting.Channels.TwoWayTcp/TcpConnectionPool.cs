@@ -86,9 +86,9 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 		private void AddConnection(TcpConnection conn)
 		{
-			conn.OnMessageRecieved += delegate(Message message)
+			conn.OnRequestRecieved += delegate(Message message)
 			{
-				if(message.Type == MessageType.Request)
+				if(OnRequestRecieved != null)
 					OnRequestRecieved(message);
 			};
 			connections.Add(conn);
