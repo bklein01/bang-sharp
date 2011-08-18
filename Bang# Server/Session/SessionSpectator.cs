@@ -73,10 +73,5 @@ namespace Bang.Server
 		{
 			listener = null;
 		}
-
-		public override string ToString()
-		{
-			return string.Format("Spectator #{0} '{1}'", ID, Name);
-		}
 	}
 }

@@ -48,6 +48,7 @@ namespace Bang.Server
 		private int creatorId;
 		private int gamesPlayed;
 		private IEnumerator<SessionPlayer> sheriffEnumerator;
+		private List<CharacterType> remainingCharacters;
 		
 		public bool Locked
 		{
@@ -169,6 +170,7 @@ namespace Bang.Server
 			spectatorList = new List<SessionSpectator>(data.MaxSpectators);
 			creatorId = 0;
 			gamesPlayed = 0;
+			remainingCharacters = Character.GenerateCharacters(this);
 		}
 		public Session(Server server, BinaryReader reader)
 		{
@@ -365,7 +367,15 @@ namespace Bang.Server
 				throw new InvalidIdException ();
 			}
 		}
-		
+
+		public CharacterType NextCharacter()
+		{
+			CharacterType character = remainingCharacters.GetRandom();
+			remainingCharacters.Remove(character);
+			if(remainingCharacters.Count == 0)
+				remainingCharacters = Character.GenerateCharacters(this);
+			return character;
+		}
 		public void OnGameEnded()
 		{
 			state = SessionState.GameFinished;

@@ -27,7 +27,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 namespace Bang.Server
 {
-	public sealed class Game : MarshalByRefObject, IGame, IDisposable
+	public sealed class Game : MarshalByRefObject, IGame
 	{
 		private sealed class SpectatorControl : ImmortalMarshalByRefObject, ISpectatorControl
 		{
@@ -127,8 +127,6 @@ namespace Bang.Server
 			playerList = new List<Player>(playerCount);
 			ConsoleUtils.DebugLine("Game: 	Generating roles...");
 			IEnumerator<Role> roleEnumerator = GenerateRoles(playerCount).GetEnumerator();
-			ConsoleUtils.DebugLine("Game: 	Generating characters...");
-			IEnumerator<CharacterType> characterEnumerator = GenerateCharacters(playerCount).GetEnumerator();
 			foreach(SessionPlayer p in session.Players)
 			{
 				Role role;
@@ -139,8 +137,7 @@ namespace Bang.Server
 					roleEnumerator.MoveNext();
 					role = roleEnumerator.Current;
 				}
-				characterEnumerator.MoveNext();
-				Player player = new Player(this, p, role, characterEnumerator.Current);
+				Player player = new Player(this, p, role, session.NextCharacter());
 				players.Add(p.ID, player);
 				playerList.Add(player);
 			}
@@ -187,23 +184,7 @@ namespace Bang.Server
 			roles.Shuffle();
 			return roles;
 		}
-		private IEnumerable<CharacterType> GenerateCharacters(int playerCount)
-		{
-			CharacterType[] result = new CharacterType[playerCount];
-			CharacterType[] characters = Character.AllCharacters;
-			for(int i = 0; i < playerCount; i++)
-			{
-				int index;
-				do
-				{
-					index = Utils.Random.Next(characters.Length);
-				}
-				while(result.Contains(characters[index]));
-				result[i] = characters[index];
-			}
-			return result;
-		}
-		
+
 		public void Start ()
 		{
 			ConsoleUtils.DebugLine("Game: Starting the game cycle...");
@@ -392,6 +373,7 @@ namespace Bang.Server
 				switch(victoriousRole)
 				{
 				case Role.Sheriff:
+				case Role.Deputy:
 					bool onlySheriffAlive = playerList.All(p => !p.IsAlive || p.IsSheriff);
 					foreach(Player p in playerList)
 						switch(p.Role)
@@ -399,15 +381,17 @@ namespace Bang.Server
 						case Role.Sheriff:
 							p.IsWinner = true;
 							p.Parent.RegisterVictory(Role.Sheriff);
-							p.Parent.UpdateScore(1500 * outlawCount);
+							if(playerList.Count >= 4)
+								p.Parent.UpdateScore(1500 * outlawCount);
 							break;
 						case Role.Deputy:
 							p.IsWinner = true;
 							p.Parent.RegisterVictory(Role.Deputy);
-							p.Parent.UpdateScore((p.IsAlive ? 1000 : 700) * outlawCount);
+							if(playerList.Count >= 4)
+								p.Parent.UpdateScore((p.IsAlive ? 1000 : 700) * outlawCount);
 							break;
 						case Role.Renegade:
-							if(onlySheriffAlive)
+							if(playerList.Count >= 4 && onlySheriffAlive)
 								p.Parent.UpdateScore(400 * playerCount);
 							break;
 						}
@@ -417,16 +401,17 @@ namespace Bang.Server
 						switch(p.Role)
 						{
 						case Role.Deputy:
-							if(p == causedBy)
+							if(playerList.Count >= 4 && p == causedBy)
 								p.Parent.UpdateScore(-5000);
 							break;
 						case Role.Outlaw:
 							p.IsWinner = true;
 							p.Parent.RegisterVictory(Role.Outlaw);
-							p.Parent.UpdateScore((p.IsAlive ? 1000 : 800) * outlawCount);
+							if(playerList.Count >= 4)
+								p.Parent.UpdateScore((p.IsAlive ? 1000 : 800) * outlawCount);
 							break;
 						case Role.Renegade:
-							if(p.IsAlive)
+							if(playerList.Count >= 4 && p.IsAlive)
 								p.Parent.UpdateScore(300 * playerCount);
 							break;
 						}
@@ -436,12 +421,14 @@ namespace Bang.Server
 						switch(p.Role)
 						{
 						case Role.Sheriff:
-							p.Parent.UpdateScore(100 * playerCount);
+							if(playerList.Count >= 4)
+								p.Parent.UpdateScore(100 * playerCount);
 							break;
 						case Role.Renegade:
 							p.IsWinner = true;
 							p.Parent.RegisterVictory(Role.Renegade);
-							p.Parent.UpdateScore(1500 * playerCount);
+							if(playerList.Count >= 4)
+								p.Parent.UpdateScore(1500 * playerCount);
 							break;
 						}
 					break;

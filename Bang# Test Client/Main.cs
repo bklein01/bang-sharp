@@ -769,7 +769,7 @@ namespace Bang.Client
 		}
 		void IEventListener.OnPlayerCancelledCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
-			ConsoleUtils.GameEvent("Player #{0} canceled card {1} #{2} of player #{3}.", player.ID, targetCard.Type, targetCard.ID, targetPlayer.ID);
+			ConsoleUtils.GameEvent("Player #{0} cancelled card {1} #{2} of player #{3}.", player.ID, targetCard.Type, targetCard.ID, targetPlayer.ID);
 			if(aiPlayer != null)
 				aiPlayer.OnPlayerCancelledCard(player, targetPlayer, targetCard);
 		}

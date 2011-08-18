@@ -5,6 +5,18 @@
 	* Bang# Common.csproj:
 	  
 
+	* Exceptions/MustBeCreatorException.cs:
+	  Added a new exception that is thrown when a non-creator
+	  attempts to perform an operation that is not permitted to
+	  him.
+
+2011-08-18  WOnder93  <omosnacek@gmail.com>
+
+	* Utils.cs:
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj:
+	  
+
 	* ImmortalMarshalByRefObject.cs:
 	  Added a class that represents a MarshalByRefObject with
 	  infinite lifetime and can be disconnected manually.

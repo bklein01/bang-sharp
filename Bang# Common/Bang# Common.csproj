@@ -90,6 +90,7 @@
     <Compile Include="Exceptions\CannotPlayBangException.cs" />
     <Compile Include="Exceptions\CannotPlayBeerException.cs" />
     <Compile Include="ImmortalMarshalByRefObject.cs" />
+    <Compile Include="Exceptions\MustBeCreatorException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

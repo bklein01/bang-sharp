@@ -61,7 +61,7 @@ namespace Bang.Server.Cards
 				if (result)
 				{
 					NextPlayer ();
-					PushHandler (new ThrowBangResponseHandler (current, owner, this));
+					PushHandler (new ThrowBangResponseHandler(current, owner, this));
 				}
 			}
 		}

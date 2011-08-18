@@ -1,6 +1,47 @@
 2011-08-18  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
+	* Session/Game/Cards/Main/Duel.cs:
+	  
+
+	* Session/SessionPlayerControl.cs:
+	  Throw Bang.MustBeCreatorException if non-creator in
+	  EndSession.
+	Throw Bang.MustBeCreatorException if non-creator in StartGame.
+
+	* Session/Session.cs:
+	  Session now maintains a list of not-yet-used characters and
+	  provides random new characters to the game.
+
+	* Session/Game/Characters/Character.cs:
+	  Fixed generating of characters: they are now generated
+	  properly according to the session settings.
+
+	* Session/Game/GameTable.cs:
+	  Assign random IDs to cards to make cheating using id
+	  tracking more difficult.
+
+	* Session/Game/Game.cs:
+	  Characters are now generated in the session.
+	Don't update score if there are less than 4 players.
+	Fixed winnerless situation when there are 3 players and Deputy
+	  should win.
+
+	* Session/Game/Characters/Dodge City/ApacheKid.cs:
+	  Ignore blue cards since the ability works only on played
+	  cards.
+	Ignore cards played by self since the ability works only on
+	  cards played by _other_ players.
+
+	* Session/Game/Player.cs:
+	* Session/SessionPlayer.cs:
+	* Session/Game/Cards/Card.cs:
+	* Session/SessionSpectator.cs:
+	  Removed ToString override.
+
+2011-08-18  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
 	* Session/Session.cs:
 	* Bang# Server.csproj:
 	  

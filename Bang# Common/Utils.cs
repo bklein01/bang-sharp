@@ -42,11 +42,11 @@ namespace Bang
 		/// <summary>
 		/// The major interface version.
 		/// </summary>
-		public const int InterfaceVersionMajor = 1;
+		public const int InterfaceVersionMajor = 2;
 		/// <summary>
 		/// The minor interface version.
 		/// </summary>
-		public const int InterfaceVersionMinor = 1;
+		public const int InterfaceVersionMinor = 0;
 
 		/// <summary>
 		/// Checks the interface version compatibility for the specified server.

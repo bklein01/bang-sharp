@@ -364,11 +364,6 @@ namespace Bang.Server
 		{
 			character.OnRespondedWithCard(card);
 		}
-
-		public override string ToString()
-		{
-			return string.Format("Player #{0}: IsAlive={1}", parent.ID, isAlive);
-		}
 	}
 }
 
