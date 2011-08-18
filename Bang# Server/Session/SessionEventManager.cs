@@ -485,14 +485,17 @@ namespace Bang.Server
 						s.UnregisterListener();
 					}
 		}
-		public void OnPlayerPlayedCard (Player player, Card card, Player targetPlayer, Card targetCard)
+		public void OnPlayerPlayedCard(Player player, Card card, Player targetPlayer, Card targetCard)
 		{
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
+						if(p == targetPlayer.Parent)
+							p.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
+						else
+							p.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -504,7 +507,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
+						s.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -563,14 +566,17 @@ namespace Bang.Server
 						s.UnregisterListener();
 					}
 		}
-		public void OnPlayerPlayedCard (Player player, Card card, CardType asCard, Player targetPlayer, Card targetCard)
+		public void OnPlayerPlayedCard(Player player, Card card, CardType asCard, Player targetPlayer, Card targetCard)
 		{
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
+						if(p == targetPlayer.Parent)
+							p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
+						else
+							p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -582,7 +588,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
+						s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
 					}
 					catch(RemotingException)
 					{

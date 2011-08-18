@@ -1,7 +1,7 @@
 using System;
 namespace Bang.Server
 {
-	public sealed class SessionSpectatorControl : MarshalByRefObject, ISpectatorSessionControl
+	public sealed class SessionSpectatorControl : ImmortalMarshalByRefObject, ISpectatorSessionControl
 	{
 		private SessionSpectator spectator;
 

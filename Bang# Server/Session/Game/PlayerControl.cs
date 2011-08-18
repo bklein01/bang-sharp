@@ -25,7 +25,7 @@ using System;
 using System.Threading;
 namespace Bang.Server
 {
-	public sealed class PlayerControl : MarshalByRefObject, IPlayerControl
+	public sealed class PlayerControl : ImmortalMarshalByRefObject, IPlayerControl
 	{
 		private Player player;
 		

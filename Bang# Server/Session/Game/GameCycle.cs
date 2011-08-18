@@ -75,7 +75,9 @@ namespace Bang.Server
 			if(RequestedPlayer.SkipTurn || !RequestedPlayer.IsAlive)
 				End();
 			else
-				RequestedPlayer.OnPlayContinue();
+				foreach(Player p in Game.Players)
+					if(p.IsAlive)
+						p.Character.OnPlayContinue();
 		}
 
 		protected override void OnRespondCard(Card card)
@@ -251,35 +253,35 @@ namespace Bang.Server
 
 		public void PlayerRespondDraw(Player player)
 		{
-			if(player != RequestedPlayer)
+			if(player != RequestedPlayer || game.Ended)
 				throw new BadUsageException();
 			
 			RespondDraw();
 		}
 		public void PlayerRespondCard(Player player, Card targetCard)
 		{
-			if(player != RequestedPlayer)
+			if(player != RequestedPlayer || game.Ended)
 				throw new BadUsageException();
 			
 			RespondCard(targetCard);
 		}
 		public void PlayerRespondPlayer(Player player, Player targetPlayer)
 		{
-			if(player != RequestedPlayer)
+			if(player != RequestedPlayer || game.Ended)
 				throw new BadUsageException();
 			
 			RespondPlayer(targetPlayer);
 		}
 		public void PlayerRespondNoAction(Player player)
 		{
-			if(player != RequestedPlayer)
+			if(player != RequestedPlayer || game.Ended)
 				throw new BadUsageException();
 			
 			RespondNoAction();
 		}
 		public void PlayerRespondUseAbility(Player player)
 		{
-			if(player != RequestedPlayer)
+			if(player != RequestedPlayer || game.Ended)
 				throw new BadUsageException();
 			
 			RespondUseAbility();

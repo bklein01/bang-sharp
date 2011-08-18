@@ -30,13 +30,12 @@ namespace Bang.AI
 {
 	internal sealed class TwoPlayersPlayerHelper : PlayerHelper
 	{
-		private IPublicPlayerView me;
-		private IPublicPlayerView enemy;
+		private int enemyId;
 
 		public TwoPlayersPlayerHelper(IPlayerControl control) : base(control)
 		{
-			me = control.PrivatePlayerView;
-			enemy = control.Game.Players.First(p => p.ID != me.ID);
+			int myID = control.PrivatePlayerView.ID;
+			enemyId = control.Game.Players.First(p => p.ID != myID).ID;
 		}
 
 		public override IEnumerable<IPublicPlayerView> Allies
@@ -45,7 +44,7 @@ namespace Bang.AI
 		}
 		public override IEnumerable<IPublicPlayerView> Enemies
 		{
-			get { return new List<IPublicPlayerView>() { enemy }; }
+			get { return new List<IPublicPlayerView>() { Control.Game.GetPublicPlayerView(enemyId) }; }
 		}
 	}
 }

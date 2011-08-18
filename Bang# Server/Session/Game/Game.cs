@@ -27,9 +27,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 namespace Bang.Server
 {
-	public sealed class Game : MarshalByRefObject, IGame
+	public sealed class Game : MarshalByRefObject, IGame, IDisposable
 	{
-		private sealed class SpectatorControl : MarshalByRefObject, ISpectatorControl
+		private sealed class SpectatorControl : ImmortalMarshalByRefObject, ISpectatorControl
 		{
 			private Game game;
 			
@@ -48,7 +48,8 @@ namespace Bang.Server
 		private List<Player> playerList;
 		private GameCycle cycle;
 		private GameTable table;
-		private ISpectatorControl spectatorControl;
+		private bool ended;
+		private SpectatorControl spectatorControl;
 
 		public Session Session
 		{
@@ -87,7 +88,7 @@ namespace Bang.Server
 		}
 		RequestType IGame.RequestType
 		{
-			get { return cycle.RequestType; }
+			get { return ended ? RequestType.None : cycle.RequestType; }
 		}
 		IPublicPlayerView IGame.CurrentPlayer
 		{
@@ -95,16 +96,21 @@ namespace Bang.Server
 		}
 		IPublicPlayerView IGame.RequestedPlayer
 		{
-			get { return cycle.RequestedPlayer; }
+			get { return ended ? null : cycle.RequestedPlayer; }
 		}
 		IPublicPlayerView IGame.CausedBy
 		{
-			get { return cycle.CausedBy; }
+			get { return ended ? null : cycle.CausedBy; }
 		}
 		
 		public int MaxBangs
 		{
 			get { return 1; }
+		}
+
+		public bool Ended
+		{
+			get { return ended; }
 		}
 		
 		public Game(Session session, int sheriffId)
@@ -113,6 +119,7 @@ namespace Bang.Server
 			ConsoleUtils.DebugLine("Game: Constructing table and cycle...");
 			table = new GameTable(this);
 			cycle = new GameCycle(this);
+			ended = false;
 			
 			ConsoleUtils.DebugLine("Game: Constructing players...");
 			int playerCount = session.Players.Count;
@@ -441,6 +448,7 @@ namespace Bang.Server
 				}
 				foreach(Player p in playerList)
 					p.Parent.UpdateTurnsPlayed(p.TurnsPlayed);
+				ended = true;
 				session.OnGameEnded();
 			}
 			else
@@ -465,9 +473,17 @@ namespace Bang.Server
 			if(p == cycle.RequestedPlayer)
 				session.EventManager.OnNewRequest(cycle.RequestType, p, cycle.CausedBy);
 		}
-		public void RegisterSpectator (SessionSpectator spectator)
+		public void RegisterSpectator(SessionSpectator spectator)
 		{
-			session.EventManager.SendGameController (spectator, spectatorControl);
+			session.EventManager.SendGameController(spectator, spectatorControl);
+		}
+
+		public void Dispose()
+		{
+			foreach(Player p in playerList)
+				p.Control.Disconnect();
+
+			spectatorControl.Disconnect();
 		}
 		
 		public Player GetPlayer(int id)

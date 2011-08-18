@@ -1,15 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientChannel.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ctype="Workbench">
     <Files>
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientChannel.cs" Line="71" Column="40" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerChannel.cs" Line="100" Column="4" />
+      <File FileName="Bang# Server/Session/Game/Player.cs" Line="346" Column="1" />
+      <File FileName="Bang# Server/Session/Game/Game.cs" Line="514" Column="1" />
+      <File FileName="Bang# Server/Session/Game/GameCycle.cs" Line="79" Column="19" />
+      <File FileName="Bang# Server/Session/Game/Characters/Dodge City/MollyStark.cs" Line="52" Column="24" />
+      <File FileName="Bang# Server/Session/Game/Characters/Main/SuzyLafayette.cs" Line="40" Column="24" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True">
-            <Node name="TcpClientChannel.cs" selected="True" />
+        <State expanded="True" selected="True">
+          <Node name="Bang# Server" expanded="True">
+            <Node name="Session" expanded="True" />
           </Node>
         </State>
       </Pad>

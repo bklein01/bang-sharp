@@ -357,7 +357,7 @@ namespace Bang.Server
 				throw new InvalidIdException ();
 			}
 		}
-		ISpectator ISession.GetSpectator (int id)
+		ISpectator ISession.GetSpectator(int id)
 		{
 			try {
 				return spectators[id];
@@ -370,7 +370,6 @@ namespace Bang.Server
 		{
 			state = SessionState.GameFinished;
 			gamesPlayed++;
-			game = null;
 			if(!sheriffEnumerator.MoveNext())
 			{
 				sheriffEnumerator.Reset();
@@ -395,9 +394,11 @@ namespace Bang.Server
 				}
 				if(data.ShufflePlayers)
 					playerList.Shuffle();
-				sheriffEnumerator = playerList.GetEnumerator ();
-				sheriffEnumerator.MoveNext ();
+				sheriffEnumerator = playerList.GetEnumerator();
+				sheriffEnumerator.MoveNext();
 			}
+			if(game != null)
+				game.Dispose();
 			game = new Game (this, sheriffEnumerator.Current.ID);
 			game.Start();
 			state = SessionState.Playing;
@@ -408,29 +409,39 @@ namespace Bang.Server
 		{
 			state = SessionState.Ended;
 			eventMgr.OnSessionEnded();
+			if(game != null)
+				game.Dispose();
 			foreach(SessionPlayer p in playerList)
+			{
 				p.UnregisterListener();
+				p.Control.Disconnect();
+			}
 			foreach(SessionSpectator s in spectatorList)
+			{
 				s.UnregisterListener();
+				s.Control.Disconnect();
+			}
 			server.RemoveSession(this);
 		}
 
 		
-		public void RemovePlayer (SessionPlayer player)
+		public void RemovePlayer(SessionPlayer player)
 		{
-			player.UnregisterListener ();
-			if (state != SessionState.WaitingForPlayers || player.IsCreator)
+			player.UnregisterListener();
+			if(state != SessionState.WaitingForPlayers || player.IsCreator)
 				return;
-			players.Remove (player.ID);
-			playerList.Remove (player);
+			player.Control.Disconnect();
+			players.Remove(player.ID);
+			playerList.Remove(player);
 			eventMgr.OnPlayerLeftSession(player);
 			server.SaveState();
 		}
-		public void RemoveSpectator (SessionSpectator spectator)
+		public void RemoveSpectator(SessionSpectator spectator)
 		{
-			spectator.UnregisterListener ();
-			spectators.Remove (spectator.ID);
-			spectatorList.Remove (spectator);
+			spectator.UnregisterListener();
+			spectator.Control.Disconnect();
+			spectators.Remove(spectator.ID);
+			spectatorList.Remove(spectator);
 			eventMgr.OnSpectatorLeftSession(spectator);
 			server.SaveState();
 		}

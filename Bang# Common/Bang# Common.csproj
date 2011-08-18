@@ -11,6 +11,8 @@
     <AssemblyName>BangSharpCommon</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <Description>Common library for Bang#</Description>
+    <ReleaseVersion>1.1</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -87,6 +89,7 @@
     <Compile Include="Exceptions\TooManySpectatorsException.cs" />
     <Compile Include="Exceptions\CannotPlayBangException.cs" />
     <Compile Include="Exceptions\CannotPlayBeerException.cs" />
+    <Compile Include="ImmortalMarshalByRefObject.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

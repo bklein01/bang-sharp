@@ -1,3 +1,42 @@
+2011-08-18  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Session/Session.cs:
+	* Bang# Server.csproj:
+	  
+
+	* Session/SessionEventManager.cs:
+	  In the OnPlayerPlayedCard events target card is now visible
+	  only for the owner.
+
+	* Session/Game/PlayerControl.cs:
+	* Session/SessionPlayerControl.cs:
+	* Session/SessionSpectatorControl.cs:
+	  Changed base class to ImmortalMarshalByRefObject. Fixes
+	  issue 5.
+
+	* Session/Game/Characters/Main/JesseJones.cs:
+	  Jesse Jones can take card only from hand of another player.
+	Added null pointer check.
+
+	* Session/Game/Cards/Main/Saloon.cs:
+	  Include also owner in the Saloon effect.
+
+	* Session/Game/GameCycle.cs:
+	  Added restriction to GameCycle-related properties and
+	  methods after the game has ended.
+	OnPlayContinue is now fired for every player's character, not
+	  only for current player.
+
+	* Session/Game/Game.cs:
+	  Changed Bang.Server.Game.SpectatorControl's base class to
+	  ImmortalMarshalByRefObject. Fixes issue 5.
+	Added restriction to GameCycle-related properties and methods
+	  after the game has ended.
+
+	* Session/Game/Player.cs:
+	  Removed the OnPlayContinue method.
+
 2011-08-16  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
