@@ -81,6 +81,8 @@ namespace Bang.Server
 		{
 			if(!player.HasListener)
 				throw new InvalidOperationException();
+			if(!player.IsCreator)
+				throw new MustBeCreatorException();
 
 			Session session = Session;
 			lock(session)
@@ -107,7 +109,7 @@ namespace Bang.Server
 			if(!player.HasListener)
 				throw new InvalidOperationException();
 			if(!player.IsCreator)
-				throw new InvalidOperationException();
+				throw new MustBeCreatorException();
 
 			Session session = Session;
 			lock(session)

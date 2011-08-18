@@ -22,6 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
 using Bang.Server.Characters;
 namespace Bang.Server
 {
@@ -226,7 +227,20 @@ namespace Bang.Server
 				//case CharacterType.: return new (player);
 			}
 		}
-		public static readonly CharacterType[] AllCharacters = new CharacterType[]
+		public static List<CharacterType> GenerateCharacters(Session session)
+		{
+			int count = MainCharacters.Length;
+			if(session.DodgeCity)
+				count += DodgeCityCharacters.Length;
+
+			List<CharacterType> characters = new List<CharacterType>(count);
+			characters.AddRange(MainCharacters);
+			if(session.DodgeCity)
+				characters.AddRange(DodgeCityCharacters);
+
+			return characters;
+		}
+		public static readonly CharacterType[] MainCharacters = new CharacterType[]
 		{
 			CharacterType.BartCassidy,
 			CharacterType.BlackJack,
@@ -243,8 +257,10 @@ namespace Bang.Server
 			CharacterType.SlabTheKiller,
 			CharacterType.SuzyLafayette,
 			CharacterType.VultureSam,
-			CharacterType.WillyTheKid,
-			
+			CharacterType.WillyTheKid
+		};
+		public static readonly CharacterType[] DodgeCityCharacters = new CharacterType[]
+		{
 			CharacterType.ApacheKid,
 			CharacterType.BelleStar,
 			CharacterType.BillNoface,

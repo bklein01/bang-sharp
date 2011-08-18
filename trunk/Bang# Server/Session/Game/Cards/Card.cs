@@ -181,11 +181,6 @@ namespace Bang.Server
 			throw new BadUsageException();
 		}
 
-		public override string ToString ()
-		{
-			return string.Format("Card #{0}: Type={1}, Suit={2}, Rank={3}", id, type, suit, rank);
-		}
-
 		private static CardColor GetColor(CardType type)
 		{
 			switch(type)

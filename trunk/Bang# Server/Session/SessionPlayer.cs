@@ -229,10 +229,5 @@ namespace Bang.Server
 				break;
 			}
 		}
-
-		public override string ToString()
-		{
-			return string.Format("Player #{0} '{1}', IsAI={2}, IsCreator={3}", ID, Name, IsAI, IsCreator);
-		}
 	}
 }
