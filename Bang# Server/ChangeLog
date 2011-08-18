@@ -1,5 +1,13 @@
 2011-08-18  WOnder93  <omosnacek@gmail.com>
 
+	* Session/Game/Player.cs:
+	  Fixed ModifyLifePoints method.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-08-18  WOnder93  <omosnacek@gmail.com>
+
 	* AssemblyInfo.cs:
 	* Session/Game/Cards/Main/Duel.cs:
 	  

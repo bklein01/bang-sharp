@@ -300,11 +300,12 @@ namespace Bang.Server
 
 			if(lifePoints <= 0)
 				Game.GameCycle.PushTempHandler(new BeerRescue(this, this.causedBy));
-			else if(hitPoints > 0)
+			else
 			{
 				int temp = hitPoints;
 				hitPoints = 0;
-				character.OnHit(temp, this.causedBy);
+				if(temp > 0)
+					character.OnHit(temp, this.causedBy);
 			}
 		}
 		public void ModifyLifePoints(int delta)
