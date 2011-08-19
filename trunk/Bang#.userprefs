@@ -1,19 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ctype="Workbench">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assembly Browser" ctype="Workbench">
     <Files>
-      <File FileName="Bang# Server/Session/Game/Player.cs" Line="346" Column="1" />
-      <File FileName="Bang# Server/Session/Game/Game.cs" Line="514" Column="1" />
-      <File FileName="Bang# Server/Session/Game/GameCycle.cs" Line="79" Column="19" />
-      <File FileName="Bang# Server/Session/Game/Characters/Dodge City/MollyStark.cs" Line="52" Column="24" />
-      <File FileName="Bang# Server/Session/Game/Characters/Main/SuzyLafayette.cs" Line="40" Column="24" />
+      <File FileName="Bang# Common/Utils.cs" Line="160" Column="27" />
+      <File FileName="Assembly Browser" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
-          <Node name="Bang# Server" expanded="True">
-            <Node name="Session" expanded="True" />
+        <State expanded="True">
+          <Node name="Bang# Common" expanded="True">
+            <Node name="Utils.cs" selected="True" />
           </Node>
+          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True" />
         </State>
       </Pad>
     </Pads>

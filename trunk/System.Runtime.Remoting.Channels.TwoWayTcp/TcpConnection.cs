@@ -103,7 +103,6 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			writer = new BinaryWriter(new BufferedStream(networkStream));
 		}
 
-		private Message lastMessage;
 		private void ProcessMessages()
 		{
 			try

@@ -1,3 +1,11 @@
+2011-08-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* TcpConnection.cs:
+	  Removed unused field.
+
 2011-08-18  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
