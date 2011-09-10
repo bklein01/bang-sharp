@@ -276,7 +276,7 @@ namespace Bang.Client
 
 				CreatePlayerData cpd;
 				string playerName;
-				string playerPassword;
+				Password playerPassword;
 				Password password;
 				switch(arg = args.Dequeue())
 				{
@@ -288,13 +288,13 @@ namespace Bang.Client
 					}
 
 					ConsoleUtils.Print("Session Password: ");
-					password = new Password(ConsoleUtils.ReadLine());
+					password = ConsoleUtils.ReadPassword();
 
 					ConsoleUtils.Print("Player Name: ");
 					playerName = ConsoleUtils.ReadLine();
 					ConsoleUtils.Print("Player Password: ");
-					playerPassword = ConsoleUtils.ReadLine();
-					cpd = new CreatePlayerData(playerName, null, playerPassword);
+					playerPassword = ConsoleUtils.ReadPassword();
+					cpd = new CreatePlayerData { Name = playerName, Password = playerPassword };
 
 					try
 					{
@@ -314,7 +314,7 @@ namespace Bang.Client
 					}
 
 					ConsoleUtils.Print("Session Password: ");
-					password = new Password(ConsoleUtils.ReadLine());
+					password = ConsoleUtils.ReadPassword();
 
 					AI.AIPlayer ai = new AI.AIPlayer();
 					cpd = ai.CreateData;
@@ -355,8 +355,8 @@ namespace Bang.Client
 					ConsoleUtils.Print("Player Name: ");
 					playerName = ConsoleUtils.ReadLine();
 					ConsoleUtils.Print("Player Password: ");
-					playerPassword = ConsoleUtils.ReadLine();
-					cpd = new CreatePlayerData(playerName, null, playerPassword);
+					playerPassword = ConsoleUtils.ReadPassword();
+					cpd = new CreatePlayerData { Name = playerName, Password = playerPassword };
 
 					try
 					{
@@ -389,11 +389,11 @@ namespace Bang.Client
 					password = new Password(ConsoleUtils.ReadLine());
 
 					ConsoleUtils.Print("Player Password: ");
-					playerPassword = ConsoleUtils.ReadLine();
+					playerPassword = ConsoleUtils.ReadPassword();
 					ai = new AI.AIPlayer();
 					cpd = ai.CreateData;
 					cpd.Name = "TestAI";
-					cpd.Password = new Password(playerPassword);
+					cpd.Password = playerPassword;
 
 					try
 					{
@@ -431,9 +431,8 @@ namespace Bang.Client
 					}
 				}
 
-				csd = new CreateSessionData("Test", "", playerCount, playerCount, 0, "", "", false, true, false,
-				false, false);
-				cpd = new CreatePlayerData("Human", null, "");
+				csd = new CreateSessionData { Name = "Test", Description = "", MinPlayers = playerCount, MaxPlayers = playerCount, MaxSpectators = 0, DodgeCity = true };
+				cpd = new CreatePlayerData { Name = "Human" };
 				try
 				{
 					server.CreateSession(csd, cpd, Instance);
@@ -464,8 +463,7 @@ namespace Bang.Client
 					}
 				}
 
-				csd = new CreateSessionData("Test", "", playerCount, playerCount, 0, "", "", false, true, false,
-				false, false);
+				csd = new CreateSessionData { Name = "Test", Description = "", MaxPlayers = playerCount, MinPlayers = playerCount, MaxSpectators = 0, DodgeCity = true };
 				AI.AIPlayer ai = new AI.AIPlayer();
 				cpd = ai.CreateData;
 				cpd.Name = "TestAI";
@@ -510,9 +508,9 @@ namespace Bang.Client
 				}
 
 				ConsoleUtils.Print("Session PlayerPassword: ");
-				string sessionPlayerPassword = ConsoleUtils.ReadLine();
+				Password sessionPlayerPassword = ConsoleUtils.ReadPassword();
 				ConsoleUtils.Print("Session SpectatorPassword: ");
-				string sessionSpectatorPassword = ConsoleUtils.ReadLine();
+				Password sessionSpectatorPassword = ConsoleUtils.ReadPassword();
 				ConsoleUtils.Print("Session ShufflePlayers: ");
 				bool sessionShufflePlayers = ConsoleUtils.ReadLine().ToLower() == "y";
 				ConsoleUtils.Print("Session DodgeCity: ");
@@ -523,17 +521,17 @@ namespace Bang.Client
 				bool sessionFistfulOfCards = ConsoleUtils.ReadLine().ToLower() == "y";
 				ConsoleUtils.Print("Session WildWestShow: ");
 				bool sessionWildWestShow = ConsoleUtils.ReadLine().ToLower() == "y";
-				csd = new CreateSessionData(sessionName, sessionDescription,
-					sessionMinPlayers, sessionMaxPlayers, sessionMaxSpectators,
-					sessionPlayerPassword, sessionSpectatorPassword,
-					sessionShufflePlayers, sessionDodgeCity, sessionHighNoon,
-				sessionFistfulOfCards, sessionWildWestShow);
+				csd = new CreateSessionData { Name = sessionName, Description = sessionDescription,
+					MinPlayers = sessionMinPlayers, MaxPlayers = sessionMaxPlayers, MaxSpectators = sessionMaxSpectators,
+					PlayerPassword = sessionPlayerPassword, SpectatorPassword = sessionSpectatorPassword,
+					ShufflePlayers = sessionShufflePlayers, DodgeCity = sessionDodgeCity, HighNoon = sessionHighNoon,
+				FistfulOfCards = sessionFistfulOfCards, WildWestShow = sessionWildWestShow };
 
 				ConsoleUtils.Print("Player Name: ");
 				playerName = ConsoleUtils.ReadLine();
 				ConsoleUtils.Print("Player Password: ");
-				playerPassword = ConsoleUtils.ReadLine();
-				cpd = new CreatePlayerData(playerName, null, playerPassword);
+				playerPassword = ConsoleUtils.ReadPassword();
+				cpd = new CreatePlayerData { Name = playerName, Password = playerPassword };
 
 				try
 				{

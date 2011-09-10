@@ -1,5 +1,16 @@
 2011-09-10  WOnder93  <omosnacek@gmail.com>
 
+	* Main.cs:
+	  Use Bang.ConsoleUtils.ReadPassword() instead of
+	  Bang.ConsoleUtils.ReadLine() when reading passwords from the
+	  console.
+	Use structure initializers instead of constructors.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
 	* AssemblyInfo.cs:
 	* Bang# Test Client.csproj:
 	  

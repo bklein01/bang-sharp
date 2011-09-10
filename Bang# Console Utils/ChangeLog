@@ -1,5 +1,16 @@
 2011-09-10  WOnder93  <omosnacek@gmail.com>
 
+	* ConsoleUtils.cs:
+	  Bang.ConsoleUtils.ReadLine() now uses
+	  System.Console.ReadLine() method directly. Command
+	  suggestion and history is now provided only by the
+	  Bang.ConsoleUtils.ReadCommand() method.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
 	* AssemblyInfo.cs:
 	  
 

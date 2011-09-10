@@ -103,6 +103,21 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			writer = new BinaryWriter(new BufferedStream(networkStream));
 		}
 
+		private void FireMessage(object state)
+		{
+			Message message = (Message)state;
+			switch(message.Type)
+			{
+			case MessageType.Request:
+				if(OnRequestRecieved != null)
+					OnRequestRecieved(message);
+				break;
+			case MessageType.Response:
+				if(OnResponseRecieved != null)
+					OnResponseRecieved(message);
+				break;
+			}
+		}
 		private void ProcessMessages()
 		{
 			try
@@ -110,19 +125,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				while(true)
 				{
 					Message message = InternalRecieveMessage();
-					switch(message.Type)
-					{
-					case MessageType.Request:
-						if(OnRequestRecieved != null)
-							foreach(OnMessageRecieved del in OnRequestRecieved.GetInvocationList())
-								del.BeginInvoke(message, null, null);
-						break;
-					case MessageType.Response:
-						if(OnResponseRecieved != null)
-							foreach(OnMessageRecieved del in OnResponseRecieved.GetInvocationList())
-								del.BeginInvoke(message, null, null);
-						break;
-					}
+					ThreadPool.QueueUserWorkItem(FireMessage, message);
 				}
 			}
 			catch
