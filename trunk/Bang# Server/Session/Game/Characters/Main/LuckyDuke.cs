@@ -25,7 +25,7 @@ namespace Bang.Server.Characters
 {
 	public sealed class LuckyDuke : Character
 	{
-		private class LuckyDukeResponseHandler : ResponseHandler
+		private sealed class LuckyDukeResponseHandler : ResponseHandler
 		{
 			private LuckyDuke parent;
 			private Card causedBy;

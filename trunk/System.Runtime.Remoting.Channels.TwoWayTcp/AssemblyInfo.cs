@@ -30,11 +30,11 @@ using System.Runtime.CompilerServices;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("System.Runtime.Remoting.Channels.TwoWayTcp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("System.Runtime.Remoting.Channels.TwoWayTcp")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("(c) Ondrej Mosnáček, 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

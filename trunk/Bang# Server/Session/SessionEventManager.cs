@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Runtime.Remoting;
 namespace Bang.Server
 {
-	public class SessionEventManager
+	public sealed class SessionEventManager
 	{
 		private Session session;
 		
@@ -19,7 +19,7 @@ namespace Bang.Server
 				return;
 			try
 			{
-				player.Listener.OnJoinedSession(player.Control);
+				player.Listener.OnJoinedSession(new PlayerSessionControlProxy(player.Control));
 			}
 			catch(RemotingException)
 			{
@@ -32,7 +32,7 @@ namespace Bang.Server
 				return;
 			try
 			{
-				spectator.Listener.OnJoinedSession (spectator.Control);
+				spectator.Listener.OnJoinedSession(new SpectatorSessionControlProxy(spectator.Control));
 			}
 			catch(RemotingException)
 			{
@@ -46,7 +46,7 @@ namespace Bang.Server
 				return;
 			try
 			{
-				player.Listener.OnJoinedGame(control);
+				player.Listener.OnJoinedGame(new PlayerControlProxy(control));
 			}
 			catch(RemotingException)
 			{
@@ -59,7 +59,7 @@ namespace Bang.Server
 				return;
 			try
 			{
-				spectator.Listener.OnJoinedGame(control);
+				spectator.Listener.OnJoinedGame(new SpectatorControlProxy(control));
 			}
 			catch(RemotingException)
 			{
@@ -127,7 +127,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerJoinedSession(player);
+						p.Listener.OnPlayerJoinedSession(new PlayerProxy(player));
 					}
 					catch(RemotingException)
 					{
@@ -139,7 +139,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerJoinedSession(player);
+						s.Listener.OnPlayerJoinedSession(new PlayerProxy(player));
 					}
 					catch(RemotingException)
 					{
@@ -153,7 +153,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnSpectatorJoinedSession(spectator);
+						p.Listener.OnSpectatorJoinedSession(new SpectatorProxy(spectator));
 					}
 					catch(RemotingException)
 					{
@@ -165,7 +165,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnSpectatorJoinedSession(spectator);
+						s.Listener.OnSpectatorJoinedSession(new SpectatorProxy(spectator));
 					}
 					catch(RemotingException)
 					{
@@ -179,7 +179,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerLeftSession(player);
+						p.Listener.OnPlayerLeftSession(new PlayerProxy(player));
 					}
 					catch(RemotingException)
 					{
@@ -191,7 +191,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerLeftSession(player);
+						s.Listener.OnPlayerLeftSession(new PlayerProxy(player));
 					}
 					catch(RemotingException)
 					{
@@ -205,7 +205,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnSpectatorLeftSession(spectator);
+						p.Listener.OnSpectatorLeftSession(new SpectatorProxy(spectator));
 					}
 					catch(RemotingException)
 					{
@@ -217,7 +217,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnSpectatorLeftSession(spectator);
+						s.Listener.OnSpectatorLeftSession(new SpectatorProxy(spectator));
 					}
 					catch(RemotingException)
 					{
@@ -231,7 +231,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerUpdated(player);
+						p.Listener.OnPlayerUpdated(new PlayerProxy(player));
 					}
 					catch(RemotingException)
 					{
@@ -243,7 +243,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerUpdated(player);
+						s.Listener.OnPlayerUpdated(new PlayerProxy(player));
 					}
 					catch(RemotingException)
 					{
@@ -258,7 +258,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnChatMessage(player, message);
+						p.Listener.OnChatMessage(new PlayerProxy(player), message);
 					}
 					catch(RemotingException)
 					{
@@ -270,7 +270,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnChatMessage(player, message);
+						s.Listener.OnChatMessage(new PlayerProxy(player), message);
 					}
 					catch(RemotingException)
 					{
@@ -284,7 +284,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnChatMessage(spectator, message);
+						p.Listener.OnChatMessage(new SpectatorProxy(spectator), message);
 					}
 					catch(RemotingException)
 					{
@@ -296,7 +296,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnChatMessage(spectator, message);
+						s.Listener.OnChatMessage(new SpectatorProxy(spectator), message);
 					}
 					catch(RemotingException)
 					{
@@ -304,20 +304,6 @@ namespace Bang.Server
 					}
 		}
 
-		private void OnResponseRequested()
-		{
-			SessionPlayer requested = session.Game.GameCycle.RequestedPlayer.Parent;
-			if(!requested.HasListener)
-				return;
-			try
-			{
-				requested.Listener.OnResponseRequested();
-			}
-			catch(RemotingException)
-			{
-				requested.UnregisterListener();
-			}
-		}
 		public void OnNewRequest(RequestType requestType, IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
 		{
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
@@ -325,7 +311,7 @@ namespace Bang.Server
 				if(p.HasListener)
 					try
 					{
-						p.Listener.OnNewRequest(requestType, requestedPlayer, causedBy);
+						p.Listener.OnNewRequest(requestType, new PublicPlayerViewProxy(requestedPlayer), causedBy == null ? null : new PublicPlayerViewProxy(causedBy));
 					}
 					catch(RemotingException)
 					{
@@ -337,18 +323,17 @@ namespace Bang.Server
 				if(s.HasListener)
 					try
 					{
-						s.Listener.OnNewRequest(requestType, requestedPlayer, causedBy);
+						s.Listener.OnNewRequest(requestType, new PublicPlayerViewProxy(requestedPlayer), causedBy == null ? null : new PublicPlayerViewProxy(causedBy));
 					}
 					catch(RemotingException)
 					{
 						s.UnregisterListener();
 					}
-			new Thread(OnResponseRequested).Start();
 		}
 		
 		public void OnPlayerDrewFromDeck(Player player, List<Card> drawnCards, bool revealCards)
 		{
-			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c));
+			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => new CardProxy(c)));
 			ReadOnlyCollection<ICard> emptyCards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c.Empty));
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
@@ -356,9 +341,9 @@ namespace Bang.Server
 					try
 					{
 						if(p == player.Parent || revealCards)
-							p.Listener.OnPlayerDrewFromDeck(player, cards);
+							p.Listener.OnPlayerDrewFromDeck(new PublicPlayerViewProxy(player), cards);
 						else
-							p.Listener.OnPlayerDrewFromDeck(player, emptyCards);
+							p.Listener.OnPlayerDrewFromDeck(new PublicPlayerViewProxy(player), emptyCards);
 					}
 					catch(RemotingException)
 					{
@@ -371,9 +356,9 @@ namespace Bang.Server
 					try
 					{
 						if(revealCards)
-							s.Listener.OnPlayerDrewFromDeck(player, cards);
+							s.Listener.OnPlayerDrewFromDeck(new PublicPlayerViewProxy(player), cards);
 						else
-							s.Listener.OnPlayerDrewFromDeck(player, emptyCards);
+							s.Listener.OnPlayerDrewFromDeck(new PublicPlayerViewProxy(player), emptyCards);
 					}
 					catch(RemotingException)
 					{
@@ -382,13 +367,13 @@ namespace Bang.Server
 		}
 		public void OnPlayerDrewFromGraveyard (Player player, List<Card> drawnCards)
 		{
-			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c));
+			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => new CardProxy(c)));
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerDrewFromGraveyard(player, cards);
+						p.Listener.OnPlayerDrewFromGraveyard(new PublicPlayerViewProxy(player), cards);
 					}
 					catch(RemotingException)
 					{
@@ -400,7 +385,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerDrewFromGraveyard(player, cards);
+						s.Listener.OnPlayerDrewFromGraveyard(new PublicPlayerViewProxy(player), cards);
 					}
 					catch(RemotingException)
 					{
@@ -414,7 +399,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerDiscardedCard(player, card);
+						p.Listener.OnPlayerDiscardedCard(new PublicPlayerViewProxy(player), card);
 					}
 					catch(RemotingException)
 					{
@@ -426,7 +411,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerDiscardedCard(player, card);
+						s.Listener.OnPlayerDiscardedCard(new PublicPlayerViewProxy(player), card);
 					}
 					catch(RemotingException)
 					{
@@ -440,7 +425,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerPlayedCard(player, card);
+						p.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card));
 					}
 					catch(RemotingException)
 					{
@@ -452,7 +437,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCard(player, card);
+						s.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card));
 					}
 					catch(RemotingException)
 					{
@@ -466,7 +451,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerPlayedCard(player, card, targetPlayer);
+						p.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), new PublicPlayerViewProxy(targetPlayer));
 					}
 					catch(RemotingException)
 					{
@@ -478,7 +463,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCard(player, card, targetPlayer);
+						s.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), new PublicPlayerViewProxy(targetPlayer));
 					}
 					catch(RemotingException)
 					{
@@ -493,9 +478,9 @@ namespace Bang.Server
 					try
 					{
 						if(p == targetPlayer.Parent)
-							p.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
+							p.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), new PublicPlayerViewProxy(targetPlayer), new CardProxy(targetCard));
 						else
-							p.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
+							p.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), new PublicPlayerViewProxy(targetPlayer), targetCard.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -507,7 +492,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
+						s.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), new PublicPlayerViewProxy(targetPlayer), targetCard.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -521,7 +506,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerPlayedCard(player, card, asCard);
+						p.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), asCard);
 					}
 					catch(RemotingException)
 					{
@@ -533,7 +518,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCard(player, card, asCard);
+						s.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), asCard);
 					}
 					catch(RemotingException)
 					{
@@ -547,7 +532,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
+						p.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), asCard, new PublicPlayerViewProxy(targetPlayer));
 					}
 					catch(RemotingException)
 					{
@@ -559,7 +544,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
+						s.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), asCard, new PublicPlayerViewProxy(targetPlayer));
 					}
 					catch(RemotingException)
 					{
@@ -574,9 +559,9 @@ namespace Bang.Server
 					try
 					{
 						if(p == targetPlayer.Parent)
-							p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
+							p.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), asCard, new PublicPlayerViewProxy(targetPlayer), new CardProxy(targetCard));
 						else
-							p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
+							p.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), asCard, new PublicPlayerViewProxy(targetPlayer), targetCard.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -588,7 +573,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
+						s.Listener.OnPlayerPlayedCard(new PublicPlayerViewProxy(player), new CardProxy(card), asCard, new PublicPlayerViewProxy(targetPlayer), targetCard.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -602,7 +587,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerPlayedCardOnTable(player, card);
+						p.Listener.OnPlayerPlayedCardOnTable(new PublicPlayerViewProxy(player), new CardProxy(card));
 					}
 					catch(RemotingException)
 					{
@@ -614,7 +599,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCardOnTable(player, card);
+						s.Listener.OnPlayerPlayedCardOnTable(new PublicPlayerViewProxy(player), new CardProxy(card));
 					}
 					catch(RemotingException)
 					{
@@ -628,7 +613,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPassedTableCard(player, card, targetPlayer);
+						p.Listener.OnPassedTableCard(new PublicPlayerViewProxy(player), new CardProxy(card), new PublicPlayerViewProxy(targetPlayer));
 					}
 					catch(RemotingException)
 					{
@@ -640,7 +625,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPassedTableCard(player, card, targetPlayer);
+						s.Listener.OnPassedTableCard(new PublicPlayerViewProxy(player), new CardProxy(card), new PublicPlayerViewProxy(targetPlayer));
 					}
 					catch(RemotingException)
 					{
@@ -654,7 +639,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerPassed(player);
+						p.Listener.OnPlayerPassed(new PublicPlayerViewProxy(player));
 					}
 					catch(RemotingException)
 					{
@@ -666,7 +651,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPassed(player);
+						s.Listener.OnPlayerPassed(new PublicPlayerViewProxy(player));
 					}
 					catch(RemotingException)
 					{
@@ -680,7 +665,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerRespondedWithCard(player, card);
+						p.Listener.OnPlayerRespondedWithCard(new PublicPlayerViewProxy(player), new CardProxy(card));
 					}
 					catch(RemotingException)
 					{
@@ -692,7 +677,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerRespondedWithCard(player, card);
+						s.Listener.OnPlayerRespondedWithCard(new PublicPlayerViewProxy(player), new CardProxy(card));
 					}
 					catch(RemotingException)
 					{
@@ -706,7 +691,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerRespondedWithCard(player, card, asCard);
+						p.Listener.OnPlayerRespondedWithCard(new PublicPlayerViewProxy(player), new CardProxy(card), asCard);
 					}
 					catch(RemotingException)
 					{
@@ -718,7 +703,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerRespondedWithCard(player, card, asCard);
+						s.Listener.OnPlayerRespondedWithCard(new PublicPlayerViewProxy(player), new CardProxy(card), asCard);
 					}
 					catch(RemotingException)
 					{
@@ -727,7 +712,7 @@ namespace Bang.Server
 		}
 		public void OnDrawnIntoSelection(List<Card> drawnCards, Player selectionOwner)
 		{
-			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c));
+			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => new CardProxy(c)));
 			ReadOnlyCollection<ICard> emptyCards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c.Empty));
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
@@ -769,9 +754,9 @@ namespace Bang.Server
 					try
 					{
 						if(p == player.Parent || revealCard)
-							p.Listener.OnPlayerPickedFromSelection(player, card);
+							p.Listener.OnPlayerPickedFromSelection(new PublicPlayerViewProxy(player), new CardProxy(card));
 						else
-							p.Listener.OnPlayerPickedFromSelection(player, card.Empty);
+							p.Listener.OnPlayerPickedFromSelection(new PublicPlayerViewProxy(player), card.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -784,9 +769,9 @@ namespace Bang.Server
 					try
 					{
 						if(revealCard)
-							s.Listener.OnPlayerPickedFromSelection(player, card);
+							s.Listener.OnPlayerPickedFromSelection(new PublicPlayerViewProxy(player), new CardProxy(card));
 						else
-							s.Listener.OnPlayerPickedFromSelection(player, card.Empty);
+							s.Listener.OnPlayerPickedFromSelection(new PublicPlayerViewProxy(player), card.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -801,9 +786,9 @@ namespace Bang.Server
 					try
 					{
 						if(selectionOwner == null)
-							p.Listener.OnUndrawnFromSelection(card);
+							p.Listener.OnUndrawnFromSelection(new CardProxy(card));
 						else if(p == selectionOwner.Parent)
-							p.Listener.OnUndrawnFromSelection(card);
+							p.Listener.OnUndrawnFromSelection(new CardProxy(card));
 						else
 							p.Listener.OnUndrawnFromSelection(card.Empty);
 					}
@@ -818,7 +803,7 @@ namespace Bang.Server
 					try
 					{
 						if(selectionOwner == null)
-							s.Listener.OnUndrawnFromSelection(card);
+							s.Listener.OnUndrawnFromSelection(new CardProxy(card));
 						else
 							s.Listener.OnUndrawnFromSelection(card.Empty);
 					}
@@ -835,9 +820,9 @@ namespace Bang.Server
 					try
 					{
 						if(p == player.Parent || p == targetPlayer.Parent)
-							p.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard);
+							p.Listener.OnPlayerStoleCard(new PublicPlayerViewProxy(player), new PublicPlayerViewProxy(targetPlayer), new CardProxy(targetCard));
 						else
-							p.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
+							p.Listener.OnPlayerStoleCard(new PublicPlayerViewProxy(player), new PublicPlayerViewProxy(targetPlayer), targetCard.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -849,7 +834,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
+						s.Listener.OnPlayerStoleCard(new PublicPlayerViewProxy(player), new PublicPlayerViewProxy(targetPlayer), targetCard.Empty);
 					}
 					catch(RemotingException)
 					{
@@ -863,7 +848,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
+						p.Listener.OnPlayerCancelledCard(new PublicPlayerViewProxy(player), new PublicPlayerViewProxy(targetPlayer), new CardProxy(targetCard));
 					}
 					catch(RemotingException)
 					{
@@ -875,7 +860,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
+						s.Listener.OnPlayerCancelledCard(new PublicPlayerViewProxy(player), new PublicPlayerViewProxy(targetPlayer), new CardProxy(targetCard));
 					}
 					catch(RemotingException)
 					{
@@ -889,7 +874,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnDeckChecked(card);
+						p.Listener.OnDeckChecked(new CardProxy(card));
 					}
 					catch(RemotingException)
 					{
@@ -901,7 +886,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnDeckChecked(card);
+						s.Listener.OnDeckChecked(new CardProxy(card));
 					}
 					catch(RemotingException)
 					{
@@ -915,7 +900,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnCardCancelled(card);
+						p.Listener.OnCardCancelled(new CardProxy(card));
 					}
 					catch(RemotingException)
 					{
@@ -927,7 +912,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnCardCancelled(card);
+						s.Listener.OnCardCancelled(new CardProxy(card));
 					}
 					catch(RemotingException)
 					{
@@ -943,7 +928,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerCheckedDeck(player, checkedCard, causedByType, result);
+						p.Listener.OnPlayerCheckedDeck(new PublicPlayerViewProxy(player), new CardProxy(checkedCard), causedByType, result);
 					}
 					catch(RemotingException)
 					{
@@ -955,7 +940,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerCheckedDeck(player, checkedCard, causedByType, result);
+						s.Listener.OnPlayerCheckedDeck(new PublicPlayerViewProxy(player), new CardProxy(checkedCard), causedByType, result);
 					}
 					catch(RemotingException)
 					{
@@ -969,7 +954,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnLifePointsChanged(player, delta, causedBy);
+						p.Listener.OnLifePointsChanged(new PublicPlayerViewProxy(player), delta, causedBy == null ? null : new PublicPlayerViewProxy(causedBy));
 					}
 					catch(RemotingException)
 					{
@@ -981,7 +966,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnLifePointsChanged(player, delta, causedBy);
+						s.Listener.OnLifePointsChanged(new PublicPlayerViewProxy(player), delta, causedBy == null ? null : new PublicPlayerViewProxy(causedBy));
 					}
 					catch(RemotingException)
 					{
@@ -995,7 +980,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerDied(player, causedBy);
+						p.Listener.OnPlayerDied(new PublicPlayerViewProxy(player), causedBy == null ? null : new PublicPlayerViewProxy(causedBy));
 					}
 					catch(RemotingException)
 					{
@@ -1007,7 +992,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerDied(player, causedBy);
+						s.Listener.OnPlayerDied(new PublicPlayerViewProxy(player), causedBy == null ? null : new PublicPlayerViewProxy(causedBy));
 					}
 					catch(RemotingException)
 					{
@@ -1021,7 +1006,7 @@ namespace Bang.Server
 				if (p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerUsedAbility(player);
+						p.Listener.OnPlayerUsedAbility(new PublicPlayerViewProxy(player));
 					}
 					catch(RemotingException)
 					{
@@ -1033,7 +1018,7 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerUsedAbility(player);
+						s.Listener.OnPlayerUsedAbility(new PublicPlayerViewProxy(player));
 					}
 					catch(RemotingException)
 					{

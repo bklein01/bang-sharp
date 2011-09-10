@@ -35,7 +35,7 @@ namespace Bang.Server
 			
 			IGame ISpectatorControl.Game
 			{
-				get { return game; }
+				get { return new GameProxy(game); }
 			}
 
 			public SpectatorControl (Game game)
@@ -71,7 +71,7 @@ namespace Bang.Server
 		}
 		ReadOnlyCollection<IPublicPlayerView> IGame.Players
 		{
-			get { return new ReadOnlyCollection<IPublicPlayerView> (playerList.ConvertAll<IPublicPlayerView>(p => p)); }
+			get { return new ReadOnlyCollection<IPublicPlayerView> (playerList.ConvertAll<IPublicPlayerView>(p => new PublicPlayerViewProxy(p))); }
 		}
 		public int AlivePlayersCount
 		{
@@ -92,15 +92,15 @@ namespace Bang.Server
 		}
 		IPublicPlayerView IGame.CurrentPlayer
 		{
-			get { return cycle.CurrentPlayer; }
+			get { return new PublicPlayerViewProxy(cycle.CurrentPlayer); }
 		}
 		IPublicPlayerView IGame.RequestedPlayer
 		{
-			get { return ended ? null : cycle.RequestedPlayer; }
+			get { return ended ? null : new PublicPlayerViewProxy(cycle.RequestedPlayer); }
 		}
 		IPublicPlayerView IGame.CausedBy
 		{
-			get { return ended ? null : cycle.CausedBy; }
+			get { return ended ? null : new PublicPlayerViewProxy(cycle.CausedBy); }
 		}
 		
 		public int MaxBangs
@@ -116,16 +116,13 @@ namespace Bang.Server
 		public Game(Session session, int sheriffId)
 		{
 			this.session = session;
-			ConsoleUtils.DebugLine("Game: Constructing table and cycle...");
 			table = new GameTable(this);
 			cycle = new GameCycle(this);
 			ended = false;
 			
-			ConsoleUtils.DebugLine("Game: Constructing players...");
 			int playerCount = session.Players.Count;
 			players = new Dictionary<int, Player>(playerCount);
 			playerList = new List<Player>(playerCount);
-			ConsoleUtils.DebugLine("Game: 	Generating roles...");
 			IEnumerator<Role> roleEnumerator = GenerateRoles(playerCount).GetEnumerator();
 			foreach(SessionPlayer p in session.Players)
 			{
@@ -141,7 +138,6 @@ namespace Bang.Server
 				players.Add(p.ID, player);
 				playerList.Add(player);
 			}
-			ConsoleUtils.DebugLine("Game: Sending game controllers...");
 			foreach(SessionPlayer p in session.Players)
 			{
 				Player player = players[p.ID];
@@ -187,7 +183,6 @@ namespace Bang.Server
 
 		public void Start ()
 		{
-			ConsoleUtils.DebugLine("Game: Starting the game cycle...");
 			GameCycle.StartCycle ();
 			session.EventManager.OnNewRequest(cycle.RequestType, cycle.RequestedPlayer, cycle.CausedBy);
 		}
@@ -488,7 +483,7 @@ namespace Bang.Server
 		{
 			try
 			{
-				return players[id];
+				return new PublicPlayerViewProxy(players[id]);
 			}
 			catch(KeyNotFoundException)
 			{

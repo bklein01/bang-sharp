@@ -27,7 +27,7 @@ namespace Bang.Server.Characters
 {
 	public sealed class DocHolyday : Character
 	{
-		private class DocHolydayResponseHandler : ResponseHandler
+		private sealed class DocHolydayResponseHandler : ResponseHandler
 		{
 			private DocHolyday parent;
 			private List<Card> selected;

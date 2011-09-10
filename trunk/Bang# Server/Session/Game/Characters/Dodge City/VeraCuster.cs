@@ -25,7 +25,7 @@ namespace Bang.Server.Characters
 {
 	public sealed class VeraCuster : Character
 	{
-		private class VeraCusterResponseHandler : ResponseHandler
+		private sealed class VeraCusterResponseHandler : ResponseHandler
 		{
 			private VeraCuster parent;
 

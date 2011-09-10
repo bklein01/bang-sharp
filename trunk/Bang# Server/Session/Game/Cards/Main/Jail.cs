@@ -26,7 +26,7 @@ namespace Bang.Server.Cards
 {
 	public sealed class Jail : TableCard, ICardResultHandler
 	{
-		private class JailResponseHandler : ResponseHandler
+		private sealed class JailResponseHandler : ResponseHandler
 		{
 			private Jail parent;
 

@@ -97,7 +97,7 @@ namespace Bang.Server
 		}
 		IPlayer ISession.Creator
 		{
-			get { return players[creatorId]; }
+			get { return new PlayerProxy(players[creatorId]); }
 		}
 		public bool DodgeCity
 		{
@@ -129,11 +129,11 @@ namespace Bang.Server
 		}
 		ReadOnlyCollection<IPlayer> ISession.Players
 		{
-			get { return new ReadOnlyCollection<IPlayer> (playerList.ConvertAll<IPlayer>(p => p)); }
+			get { return new ReadOnlyCollection<IPlayer> (playerList.ConvertAll<IPlayer>(p => new PlayerProxy(p))); }
 		}
 		ReadOnlyCollection<ISpectator> ISession.Spectators
 		{
-			get { return new ReadOnlyCollection<ISpectator> (spectatorList.ConvertAll<ISpectator>(s => s)); }
+			get { return new ReadOnlyCollection<ISpectator> (spectatorList.ConvertAll<ISpectator>(s => new SpectatorProxy(s))); }
 		}
 		public SessionEventManager EventManager
 		{
@@ -354,7 +354,7 @@ namespace Bang.Server
 		IPlayer ISession.GetPlayer (int id)
 		{
 			try {
-				return players[id];
+				return new PlayerProxy(players[id]);
 			} catch (KeyNotFoundException) {
 				throw new InvalidIdException ();
 			}
@@ -362,7 +362,7 @@ namespace Bang.Server
 		ISpectator ISession.GetSpectator(int id)
 		{
 			try {
-				return spectators[id];
+				return new SpectatorProxy(spectators[id]);
 			} catch (KeyNotFoundException) {
 				throw new InvalidIdException ();
 			}

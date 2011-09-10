@@ -43,11 +43,11 @@ namespace Bang
 			int[] temp = hashBase;
 			for(int k = 0; k < password.Length; k++)
 				for(int i = 0; i < hashBase.Length; i++)
-					temp[i] ^= password[k] << (8 * (k + i));
+					temp[i] ^= password[k] << (k + i);
 			return temp;
 		}
 
-		private int[] Hash
+		public int[] Hash
 		{
 			get { return new int[] { hash0, hash1 }; }
 			set
@@ -66,7 +66,7 @@ namespace Bang
 		}
 		
 		/// <summary>
-		/// Creates a new password hash using the specified password.
+		/// Creates a new password hash from the specified password.
 		/// </summary>
 		/// <param name="password">
 		/// The password.
@@ -75,6 +75,22 @@ namespace Bang
 		{
 			Hash = CreateHash(password);
 		}
+		/// <summary>
+		/// Copies the password hash from an existing array.
+		/// </summary>
+		/// <param name="hash">
+		/// The hash array.
+		/// </param>
+		/// <exception cref="System.ArgumentOutOfRangeException">
+		/// The length of the hash is incorrect.
+		/// </exception>
+		public Password(int[] hash)
+		{
+			if(hash.Length != hashBase.Length)
+				throw new ArgumentOutOfRangeException("Hash length is incorrect!");
+			Hash = hash;
+		}
+
 		/// <summary>
 		/// Checks if the specified password matches the one prepresented by this hash.
 		/// </summary>

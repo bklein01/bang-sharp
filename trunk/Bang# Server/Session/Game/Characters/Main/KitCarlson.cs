@@ -25,7 +25,7 @@ namespace Bang.Server.Characters
 {
 	public sealed class KitCarlson : Character
 	{
-		private class KitCarlsonResponseHandler : ResponseHandler
+		private sealed class KitCarlsonResponseHandler : ResponseHandler
 		{
 			private KitCarlson parent;
 			

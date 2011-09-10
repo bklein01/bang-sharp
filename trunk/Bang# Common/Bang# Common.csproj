@@ -91,6 +91,19 @@
     <Compile Include="Exceptions\CannotPlayBeerException.cs" />
     <Compile Include="ImmortalMarshalByRefObject.cs" />
     <Compile Include="Exceptions\MustBeCreatorException.cs" />
+    <Compile Include="Proxies\CardProxy.cs" />
+    <Compile Include="Proxies\GameProxy.cs" />
+    <Compile Include="Proxies\PlayerProxy.cs" />
+    <Compile Include="Proxies\PlayerControlProxy.cs" />
+    <Compile Include="Proxies\PlayerSessionControlProxy.cs" />
+    <Compile Include="Proxies\PrivatePlayerViewProxy.cs" />
+    <Compile Include="Proxies\PublicPlayerViewProxy.cs" />
+    <Compile Include="Proxies\ServerProxy.cs" />
+    <Compile Include="Proxies\SessionProxy.cs" />
+    <Compile Include="Proxies\SpectatorProxy.cs" />
+    <Compile Include="Proxies\SpectatorControlProxy.cs" />
+    <Compile Include="Proxies\SpectatorSessionControlProxy.cs" />
+    <Compile Include="Exceptions\BadServerPasswordException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -98,6 +111,7 @@
     <Folder Include="Interfaces\" />
     <Folder Include="Structs\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="Proxies\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Runtime.Remoting.Channels.TwoWayTcp\System.Runtime.Remoting.Channels.TwoWayTcp.csproj">

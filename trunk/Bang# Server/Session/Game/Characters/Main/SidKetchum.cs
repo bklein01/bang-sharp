@@ -26,7 +26,7 @@ namespace Bang.Server.Characters
 {
 	public sealed class SidKetchum : Character
 	{
-		private class SidKetchumResponseHandler : ResponseHandler
+		private sealed class SidKetchumResponseHandler : ResponseHandler
 		{
 			private SidKetchum parent;
 			private List<Card> selected;

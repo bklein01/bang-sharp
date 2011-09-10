@@ -25,7 +25,7 @@ namespace Bang.Server.Characters
 {
 	public sealed class ElGringo : Character
 	{
-		private class ElGringoResponseHandler : ResponseHandler
+		private sealed class ElGringoResponseHandler : ResponseHandler
 		{
 			private ElGringo parent;
 			private Player targetPlayer;

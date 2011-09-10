@@ -15,11 +15,11 @@ namespace Bang.Server
 		}
 		ISession ISpectatorSessionControl.Session
 		{
-			get { return spectator.Session; }
+			get { return new SessionProxy(spectator.Session); }
 		}
 		ISpectator ISpectatorSessionControl.Spectator
 		{
-			get { return spectator; }
+			get { return new SpectatorProxy(spectator); }
 		}
 
 		public SessionSpectatorControl(SessionSpectator spectator)

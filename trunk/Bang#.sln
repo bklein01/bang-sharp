@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Common", "Bang# Common\Bang# Common.csproj", "{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Server", "Bang# Server\Bang# Server.csproj", "{4F381591-EFF6-4350-ABBD-DBD65F725224}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Client", "Bang# Client\Bang# Client.csproj", "{60453F8A-5875-446C-80C2-CA007B43A2D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Test Client", "Bang# Test Client\Bang# Test Client.csproj", "{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}"
@@ -14,6 +12,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Console Utils", "Bang# Console Utils\Bang# Console Utils.csproj", "{152B44A4-9B36-4042-8E36-1E83DB09FEEB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Runtime.Remoting.Channels.TwoWayTcp", "System.Runtime.Remoting.Channels.TwoWayTcp\System.Runtime.Remoting.Channels.TwoWayTcp.csproj", "{FA4DD36C-5CF4-4CCD-8515-93ABF50D393C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Server", "Bang# Server\Bang# Server.csproj", "{CBE6DE57-E099-4947-836B-7A13F30EC015}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Server Daemon", "Bang# Server Daemon\Bang# Server Daemon.csproj", "{5A3EE74D-62D3-4E87-9615-AC592B6CB241}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Server Interface", "Bang# Server Interface\Bang# Server Interface.csproj", "{1D906372-10A0-43F9-ADC4-F88FCA46D59F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +29,18 @@ Global
 		{152B44A4-9B36-4042-8E36-1E83DB09FEEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{152B44A4-9B36-4042-8E36-1E83DB09FEEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{152B44A4-9B36-4042-8E36-1E83DB09FEEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D906372-10A0-43F9-ADC4-F88FCA46D59F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D906372-10A0-43F9-ADC4-F88FCA46D59F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D906372-10A0-43F9-ADC4-F88FCA46D59F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D906372-10A0-43F9-ADC4-F88FCA46D59F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE620C9-37BA-476C-BF31-C1FBD4E30AD4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F381591-EFF6-4350-ABBD-DBD65F725224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F381591-EFF6-4350-ABBD-DBD65F725224}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F381591-EFF6-4350-ABBD-DBD65F725224}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F381591-EFF6-4350-ABBD-DBD65F725224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A3EE74D-62D3-4E87-9615-AC592B6CB241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A3EE74D-62D3-4E87-9615-AC592B6CB241}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A3EE74D-62D3-4E87-9615-AC592B6CB241}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A3EE74D-62D3-4E87-9615-AC592B6CB241}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,6 +49,10 @@ Global
 		{60453F8A-5875-446C-80C2-CA007B43A2D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60453F8A-5875-446C-80C2-CA007B43A2D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60453F8A-5875-446C-80C2-CA007B43A2D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE6DE57-E099-4947-836B-7A13F30EC015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE6DE57-E099-4947-836B-7A13F30EC015}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE6DE57-E099-4947-836B-7A13F30EC015}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE6DE57-E099-4947-836B-7A13F30EC015}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D4CA4E0D-A687-4866-B031-116C5B5DD731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D4CA4E0D-A687-4866-B031-116C5B5DD731}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4CA4E0D-A687-4866-B031-116C5B5DD731}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,7 +63,7 @@ Global
 		{FA4DD36C-5CF4-4CCD-8515-93ABF50D393C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Bang# Server\Bang# Server.csproj
+		StartupItem = Bang# Server Daemon\Bang# Server Daemon.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.TabWidth = 4

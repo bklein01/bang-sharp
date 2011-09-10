@@ -217,13 +217,6 @@ namespace Bang.Client
 #endif
 				return;
 			}
-			/*
-			catch(WebException)
-			{
-				ConsoleUtils.ErrorLine("Connection error!");
-				return;
-			}
-			*/
 		}
 		private static void ServerCommand(string arg, Queue<string> args, IServer server)
 		{
@@ -577,12 +570,6 @@ namespace Bang.Client
 		bool IPlayerEventListener.IsAI
 		{
 			get { return false; }
-		}
-
-		void IPlayerEventListener.OnResponseRequested()
-		{
-			if(aiPlayer != null)
-				aiPlayer.OnResponseRequested();
 		}
 		#endregion
 

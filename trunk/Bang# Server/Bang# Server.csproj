@@ -5,12 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4F381591-EFF6-4350-ABBD-DBD65F725224}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{CBE6DE57-E099-4947-836B-7A13F30EC015}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <RootNamespace>Bang.Server</RootNamespace>
     <AssemblyName>BangSharpServer</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,7 +19,7 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,7 +27,7 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -36,11 +35,7 @@
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Main.cs">
-      <DependentUpon>Main.tt</DependentUpon>
-    </Compile>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Server.cs" />
     <Compile Include="Session\Session.cs" />
     <Compile Include="Session\SessionEventManager.cs" />
     <Compile Include="Session\SessionPlayer.cs" />
@@ -152,20 +147,7 @@
     <Compile Include="Session\Game\ICardResultHandler.cs" />
     <Compile Include="Session\Game\Cards\Dodge City\Whisky.cs" />
     <Compile Include="Session\Game\Cards\GeneralGoldenCard.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Bang# Common\Bang# Common.csproj">
-      <Project>{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}</Project>
-      <Name>Bang# Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bang# AI\Bang# AI.csproj">
-      <Project>{D4CA4E0D-A687-4866-B031-116C5B5DD731}</Project>
-      <Name>Bang# AI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bang# Console Utils\Bang# Console Utils.csproj">
-      <Project>{152B44A4-9B36-4042-8E36-1E83DB09FEEB}</Project>
-      <Name>Bang# Console Utils</Name>
-    </ProjectReference>
+    <Compile Include="Server.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -179,5 +161,15 @@
     <Folder Include="Session\Game\Cards\Dodge City\" />
     <Folder Include="Session\Game\Characters\Main\" />
     <Folder Include="Session\Game\Characters\Dodge City\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bang# Common\Bang# Common.csproj">
+      <Project>{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}</Project>
+      <Name>Bang# Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bang# AI\Bang# AI.csproj">
+      <Project>{D4CA4E0D-A687-4866-B031-116C5B5DD731}</Project>
+      <Name>Bang# AI</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

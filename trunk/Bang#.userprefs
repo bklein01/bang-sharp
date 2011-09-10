@@ -1,16 +1,19 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assembly Browser" ctype="Workbench">
-    <Files>
-      <File FileName="Bang# Common/Utils.cs" Line="160" Column="27" />
-      <File FileName="Assembly Browser" />
-    </Files>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ctype="Workbench">
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Bang# Common" expanded="True">
-            <Node name="Utils.cs" selected="True" />
+          <Node name="Bang# AI" expanded="True" />
+          <Node name="Bang# Client" expanded="True">
+            <Node name="Resources" expanded="True">
+              <Node name="Cards" selected="True" />
+            </Node>
           </Node>
+          <Node name="Bang# Server" expanded="True">
+            <Node name="Session" expanded="True" />
+          </Node>
+          <Node name="Bang# Test Client" expanded="True" />
           <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True" />
         </State>
       </Pad>
@@ -21,7 +24,7 @@
       <Catchpoint enabled="false" exceptionName="System.ArgumentOutOfRangeException" />
       <Catchpoint enabled="false" exceptionName="System.NullReferenceException" />
       <Catchpoint enabled="false" exceptionName="System.StackOverflowException" />
-      <Breakpoint enabled="false" file="/home/ondrej/Dokumenty/Developing/Mono/Bang#/System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerClientTransportSinkProvider.cs" line="54" />
+      <Breakpoint file="/home/ondrej/Dokumenty/Developing/Mono/Bang#/Bang# Client/CardWidget.cs" line="63" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore" />

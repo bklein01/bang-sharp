@@ -25,7 +25,7 @@ namespace Bang.Server.Characters
 {
 	public sealed class JesseJones : Character
 	{
-		private class JesseJonesResponseHandler : ResponseHandler
+		private sealed class JesseJonesResponseHandler : ResponseHandler
 		{
 			private JesseJones parent;
 

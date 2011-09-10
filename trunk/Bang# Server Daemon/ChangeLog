@@ -1,0 +1,7 @@
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* AssemblyInfo.cs:
+	* Bang# Server Daemon.csproj:
+	  Server is now divided to daemon and interface.
+
