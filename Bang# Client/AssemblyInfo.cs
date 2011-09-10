@@ -30,7 +30,7 @@ using System.Runtime.CompilerServices;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("BangSharpClient")]
-[assembly: AssemblyDescription("GTK# client for Bang#.")]
+[assembly: AssemblyDescription("Bang# Client")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]

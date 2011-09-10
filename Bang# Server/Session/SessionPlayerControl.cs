@@ -15,11 +15,11 @@ namespace Bang.Server
 		}
 		ISession IPlayerSessionControl.Session
 		{
-			get { return player.Session; }
+			get { return new SessionProxy(player.Session); }
 		}
 		IPlayer IPlayerSessionControl.Player
 		{
-			get { return player; }
+			get { return new PlayerProxy(player); }
 		}
 
 		public SessionPlayerControl (SessionPlayer player)

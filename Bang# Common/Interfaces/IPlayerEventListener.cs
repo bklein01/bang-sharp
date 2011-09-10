@@ -46,12 +46,6 @@ namespace Bang
 		/// The <see cref="IPlayerControl"/> instance for this player.
 		/// </param>
 		void OnJoinedGame (IPlayerControl control);
-
-		/// <summary>
-		/// Called for the AI to execute the response to the request.
-		/// This method is launched on a new thread so the <see cref="IPlayerControl"/> methods can be called directly from here.
-		/// </summary>
-		void OnResponseRequested();
 	}
 }
 

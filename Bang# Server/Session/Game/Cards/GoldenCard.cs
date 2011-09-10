@@ -25,7 +25,7 @@ namespace Bang.Server
 {
 	public abstract class GoldenCard : PlayableCard
 	{
-		private class GoldenCardResponseHandler : ResponseHandler
+		private sealed class GoldenCardResponseHandler : ResponseHandler
 		{
 			private GoldenCard parent;
 			private Card card;

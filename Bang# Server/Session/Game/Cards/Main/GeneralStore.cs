@@ -26,7 +26,7 @@ namespace Bang.Server.Cards
 {
 	public sealed class GeneralStore : AllPlayersCard
 	{
-		private class GeneralStoreResponseHandler : ResponseHandler
+		private sealed class GeneralStoreResponseHandler : ResponseHandler
 		{
 			private GeneralStore card;
 			

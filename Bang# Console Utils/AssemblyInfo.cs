@@ -30,7 +30,7 @@ using System.Runtime.CompilerServices;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("BangSharpConsoleUtils")]
-[assembly: AssemblyDescription("Console utilities library for Bang#.")]
+[assembly: AssemblyDescription("Bang# Console Utilities Library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("")]

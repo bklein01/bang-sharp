@@ -27,7 +27,7 @@ namespace Bang.Server
 {
 	public class Card : MarshalByRefObject, ICard
 	{
-		private class EmptyCard : MarshalByRefObject, ICard
+		private sealed class EmptyCard : MarshalByRefObject, ICard
 		{
 			private int id;
 			

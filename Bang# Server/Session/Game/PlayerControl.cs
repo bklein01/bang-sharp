@@ -48,11 +48,11 @@ namespace Bang.Server
 		}
 		IPrivatePlayerView IPlayerControl.PrivatePlayerView
 		{
-			get { return player; }
+			get { return new PrivatePlayerViewProxy(player); }
 		}
 		IGame IPlayerControl.Game
 		{
-			get { return player.Game; }
+			get { return new GameProxy(player.Game); }
 		}
 		
 		public PlayerControl (Player player)

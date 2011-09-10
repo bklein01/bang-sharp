@@ -202,9 +202,7 @@ namespace Bang.Server
 
 		protected override void OnStart()
 		{
-			ConsoleUtils.DebugLine("Game: 	Dealing...");
 			Game.GameTable.Deal();
-			ConsoleUtils.DebugLine("Game: 	Starting round...");
 			current = Game.Players.First(p => p.BeginsRound);
 			round = new Round(this);
 			PushHandler(round);
@@ -213,7 +211,6 @@ namespace Bang.Server
 		{
 			roundNumber++;
 			PushHandler(round);
-			// no need to construct again - Round class stores no round-related data
 		}
 	}
 	public sealed class GameCycle : ResponseHandler

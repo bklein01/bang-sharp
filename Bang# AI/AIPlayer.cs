@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 namespace Bang.AI
 {
 	/// <summary>
@@ -97,7 +98,7 @@ namespace Bang.AI
 			triedAbility = false;
 		}
 
-		void IPlayerEventListener.OnResponseRequested()
+		private void ProcessRequest(object state)
 		{
 			if(control == null)
 				return;
@@ -937,6 +938,9 @@ namespace Bang.AI
 		{
 			if(causedBy != null && requestType == RequestType.Shot)
 				playerHelper.RegisterAttack(requestedPlayer, causedBy);
+
+			if(requestedPlayer.ID == control.PrivatePlayerView.ID)
+				ThreadPool.QueueUserWorkItem(ProcessRequest);
 		}
 
 		void IEventListener.OnPlayerDrewFromDeck(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
@@ -1054,7 +1058,7 @@ namespace Bang.AI
 				return;
 
 			if(causedBy != null && delta > 0)
-					playerHelper.RegisterHelp(player, causedBy);
+				playerHelper.RegisterHelp(player, causedBy);
 		}
 		void IEventListener.OnPlayerDied(IPublicPlayerView player, IPublicPlayerView causedBy)
 		{

@@ -57,6 +57,11 @@ namespace Bang.Server
 
 				if(--power == 0)
 					End();
+				else
+				{
+					barrelsChecked.Clear();
+					abilityUsed = false;
+				}
 			}
 		}
 		protected override void OnRespondCard(Card card)

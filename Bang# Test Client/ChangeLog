@@ -1,3 +1,15 @@
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Test Client.csproj:
+	  
+
+	* Main.cs:
+	  AI players now manage threading for responses on their own
+	  (via ThreadPool). The
+	  Bang.IPlayerListener.OnResponseRequested event is now
+	  removed.
+
 2011-08-18  WOnder93  <omosnacek@gmail.com>
 
 	* Main.cs:

@@ -1,3 +1,71 @@
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Server.csproj:
+	  Bang# Server is now a library.
+
+	* Session/SessionEventManager.cs:
+	  Sealed class.
+	Proxied interfaces.
+	AI players now manage threading for responses on their own
+	  (via ThreadPool). The
+	  Bang.IPlayerListener.OnResponseRequested event is now
+	  removed.
+
+	* Session/Session.cs:
+	* Session/Game/GameTable.cs:
+	* Session/Game/PlayerControl.cs:
+	* Session/SessionPlayerControl.cs:
+	* Session/SessionSpectatorControl.cs:
+	  Proxied interfaces.
+
+	* Session/Game/Cards/Card.cs:
+	* Session/Game/Cards/Main/Jail.cs:
+	* Session/Game/Cards/GoldenCard.cs:
+	* Session/Game/Cards/TargetCardCard.cs:
+	* Session/Game/Cards/TargetPlayerCard.cs:
+	* Session/Game/Cards/Main/GeneralStore.cs:
+	* Session/Game/Characters/Main/ElGringo.cs:
+	* Session/Game/Cards/TargetCardTableCard.cs:
+	* Session/Game/Characters/Main/LuckyDuke.cs:
+	* Session/Game/Characters/Main/JesseJones.cs:
+	* Session/Game/Characters/Main/KitCarlson.cs:
+	* Session/Game/Characters/Main/SidKetchum.cs:
+	* Session/Game/Cards/TargetCardGoldenCard.cs:
+	* Session/Game/Cards/TargetPlayerTableCard.cs:
+	* Session/Game/Cards/TargetPlayerGoldenCard.cs:
+	* Session/Game/Cards/AllPlayersCardGoldenCard.cs:
+	* Session/Game/Characters/Dodge City/PatBrennan.cs:
+	* Session/Game/Characters/Dodge City/VeraCuster.cs:
+	* Session/Game/Characters/Dodge City/DocHolyday.cs:
+	* Session/Game/Characters/Dodge City/JoseDelgado.cs:
+	  Sealed class.
+
+	* Session/Game/Player.cs:
+	  Sealed class.
+	Proxied interfaces.
+
+	* Session/Game/Cards/Dodge City/Canteen.cs:
+	  Don't allow playing Canteen when fully healed.
+
+	* Session/Game/GameCycle.cs:
+	  Removed debug messages.
+	Removed a useless comment.
+
+	* Session/Game/Game.cs:
+	  Removed debug messages.
+	Proxied interfaces.
+
+	* Session/Game/ShotResponseHandler.cs:
+	  Checked barrels and the use of ability are now cleared after
+	  each part of a multi-power shot.
+
+	* Server.cs:
+	  Sealed class.
+	Proxied interfaces.
+	The public Sessions property is now separated. An explicit
+	  implementation is used for the interface implementation.
+
 2011-08-18  WOnder93  <omosnacek@gmail.com>
 
 	* Session/Game/Player.cs:

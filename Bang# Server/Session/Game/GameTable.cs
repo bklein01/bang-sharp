@@ -46,7 +46,7 @@ namespace Bang.Server
 		public ReadOnlyCollection<ICard> GetSelection(Player player)
 		{
 			if(player == selectionOwner || selectionOwner == null)
-				return new ReadOnlyCollection<ICard>(selection.ConvertAll<ICard>(c => c));
+				return new ReadOnlyCollection<ICard>(selection.ConvertAll<ICard>(c => new CardProxy(c)));
 			else
 				return new ReadOnlyCollection<ICard>(selection.ConvertAll<ICard>(c => c.Empty));
 		}

@@ -30,7 +30,7 @@ using System.IO;
 using System.Linq;
 namespace Bang.Server
 {
-	public sealed class Server : MarshalByRefObject, IServer
+	public sealed class Server : ImmortalMarshalByRefObject, IServer
 	{
 		private static Server instance = null;
 		private Dictionary<int, Session> sessions;
@@ -56,11 +56,15 @@ namespace Bang.Server
 		{
 			get { return Utils.InterfaceVersionMinor; }
 		}
-		public ReadOnlyCollection<ISession> Sessions
+		ReadOnlyCollection<ISession> IServer.Sessions
 		{
-			get { return new ReadOnlyCollection<ISession>(new List<Session>(sessions.Values).ConvertAll<ISession>(s => s)); }
+			get { return new ReadOnlyCollection<ISession>(new List<Session>(sessions.Values).ConvertAll<ISession>(s => new SessionProxy(s))); }
 		}
-		
+		public ReadOnlyCollection<Session> Sessions
+		{
+			get { return new ReadOnlyCollection<Session>(new List<Session>(sessions.Values)); }
+		}
+
 		public Server()
 		{
 			if(!LoadState())
@@ -168,7 +172,7 @@ namespace Bang.Server
 		{
 			try
 			{
-				return sessions[id];
+				return new SessionProxy(sessions[id]);
 			}
 			catch(KeyNotFoundException)
 			{

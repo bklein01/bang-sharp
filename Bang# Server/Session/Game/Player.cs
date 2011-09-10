@@ -77,7 +77,7 @@ namespace Bang.Server
 		}
 		ReadOnlyCollection<ICard> IPrivatePlayerView.Hand
 		{
-			get { return new ReadOnlyCollection<ICard> (hand.ConvertAll<ICard>(c => c)); }
+			get { return new ReadOnlyCollection<ICard> (hand.ConvertAll<ICard>(c => new CardProxy(c))); }
 		}
 		public ReadOnlyCollection<TableCard> Table
 		{
@@ -85,7 +85,7 @@ namespace Bang.Server
 		}
 		ReadOnlyCollection<ICard> IPublicPlayerView.Table
 		{
-			get { return new ReadOnlyCollection<ICard> (table.ConvertAll<ICard>(c => c)); }
+			get { return new ReadOnlyCollection<ICard> (table.ConvertAll<ICard>(c => new CardProxy(c))); }
 		}
 		ReadOnlyCollection<ICard> IPrivatePlayerView.Selection
 		{
@@ -242,7 +242,7 @@ namespace Bang.Server
 				throw new BadCardException();
 		}
 		
-		private class BeerRescue : ResponseHandler
+		private sealed class BeerRescue : ResponseHandler
 		{
 			public BeerRescue (Player player, Player causedBy)
 				: base(RequestType.BeerRescue, player, causedBy)
