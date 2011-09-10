@@ -159,6 +159,38 @@ namespace Bang
 		{
 			ConsoleColor backup = Console.ForegroundColor;
 			Console.ForegroundColor = inputColor;
+			string res = Console.ReadLine();
+			Console.ForegroundColor = backup;
+			return res;
+		}
+		public static Password ReadPassword()
+		{
+			StringBuilder line = new StringBuilder();
+			ConsoleKeyInfo key;
+			while((key = Console.ReadKey(true)).Key != ConsoleKey.Enter)
+			{
+				switch(key.Key)
+				{
+				case ConsoleKey.Escape:
+					line = new StringBuilder();
+					break;
+				case ConsoleKey.Backspace:
+					line = line.Remove(line.Length - 1, 1);
+					break;
+				default:
+					if(key.KeyChar == '\0')
+						break;
+					line = line.Append(key.KeyChar);
+					break;
+				}
+			}
+			Console.WriteLine();
+			return new Password(line.ToString());
+		}
+		private static string ReadCommandLine()
+		{
+			ConsoleColor backup = Console.ForegroundColor;
+			Console.ForegroundColor = inputColor;
 			StringBuilder line = new StringBuilder();
 			int pos = 0;
 			ConsoleKeyInfo key;
@@ -313,7 +345,7 @@ namespace Bang
 		}
 		public static Queue<string> ReadCommand()
 		{
-			Queue<string> args = new Queue<string>(ReadLine().ToLower().Split(' ').Where(s => s.Length > 0));
+			Queue<string> args = new Queue<string>(ReadCommandLine().ToLower().Split(' ').Where(s => s.Length > 0));
 			return args;
 		}
 

@@ -137,7 +137,7 @@ namespace Bang.Server
 				ConsoleUtils.PrintLine();
 
 				ConsoleUtils.Print("Server password: ");
-				Password password = new Password(ConsoleUtils.ReadLine());
+				Password password = ConsoleUtils.ReadPassword();
 				Server server;
 				try
 				{
@@ -302,9 +302,9 @@ namespace Bang.Server
 								break;
 							case "changepassword":
 								ConsoleUtils.Print("Current password: ");
-								password = new Password(ConsoleUtils.ReadLine());
+								password = ConsoleUtils.ReadPassword();
 								ConsoleUtils.Print("New password: ");
-								Password newPassword = new Password(ConsoleUtils.ReadLine());
+								Password newPassword = ConsoleUtils.ReadPassword();
 								try
 								{
 									serverProxy.ChangePassword(password, newPassword);
