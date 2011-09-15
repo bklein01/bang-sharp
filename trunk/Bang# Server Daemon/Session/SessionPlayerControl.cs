@@ -36,7 +36,7 @@ namespace Bang.Server
 			lock(session.Lock)
 			{
 				if(session.Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				session.Locked = true;
 
 				session.EventManager.SendChatMessage(player, message);

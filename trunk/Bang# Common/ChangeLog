@@ -1,5 +1,15 @@
 2011-09-15  WOnder93  <omosnacek@gmail.com>
 
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj:
+	  
+
+	* Utils.cs:
+	  Do not filter object.* methods in order to enable comparing
+	  via object.Equals().
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
 	* MethodRestrictionServerSink.cs:
 	* MethodRestrictionServerSinkProvider.cs:
 	  Added a server sink that filters requests.
