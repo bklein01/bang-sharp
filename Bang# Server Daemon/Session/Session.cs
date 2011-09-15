@@ -289,7 +289,7 @@ namespace Bang.Server
 			lock(Lock)
 			{
 				if(Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				Locked = true;
 				try
 				{
@@ -327,7 +327,7 @@ namespace Bang.Server
 			lock(Lock)
 			{
 				if(Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				Locked = true;
 				try
 				{
@@ -361,7 +361,7 @@ namespace Bang.Server
 			lock(Lock)
 			{
 				if(Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				Locked = true;
 				try
 				{
@@ -465,7 +465,7 @@ namespace Bang.Server
 			lock(Lock)
 			{
 				if(Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				Locked = true;
 
 				if(state == SessionState.WaitingForPlayers)
@@ -499,7 +499,7 @@ namespace Bang.Server
 			lock(Lock)
 			{
 				if(Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				Locked = true;
 
 				state = SessionState.Ended;
@@ -528,7 +528,7 @@ namespace Bang.Server
 			lock(Lock)
 			{
 				if(Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				Locked = true;
 
 				player.UnregisterListener();
@@ -548,7 +548,7 @@ namespace Bang.Server
 			lock(Lock)
 			{
 				if(Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				Locked = true;
 
 				spectator.UnregisterListener();

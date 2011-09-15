@@ -1,25 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Common/Utils.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# AI/AIPlayer.cs" ctype="Workbench">
     <Files>
-      <File FileName="Bang# Test Client/Main.cs" Line="466" Column="44" />
-      <File FileName="Bang# Console Utils/ConsoleHelper.cs" Line="339" Column="6" />
-      <File FileName="Bang# Common/Utils.cs" Line="149" Column="33" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpConnection.cs" Line="120" Column="4" />
-      <File FileName="Bang# Common/MethodRestrictionServerSink.cs" Line="63" Column="21" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerSink.cs" Line="72" Column="1" />
+      <File FileName="Bang# AI/AIPlayer.cs" Line="106" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Bang# Common" expanded="True" />
-          <Node name="Bang# Server" selected="True" />
-          <Node name="Bang# Server Daemon" expanded="True">
-            <Node name="Session" expanded="True" />
-          </Node>
-          <Node name="Bang# Server Interface" expanded="True" />
-          <Node name="Bang# Test Client" expanded="True" />
-          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True" />
+          <Node name="Bang# AI" expanded="True" />
+          <Node name="Bang# Test Client" selected="True" />
         </State>
       </Pad>
     </Pads>

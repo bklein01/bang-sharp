@@ -147,6 +147,8 @@ namespace Bang
 			restrictionProvider.Filter = m =>
 			{
 				Type decl = m.DeclaringType;
+				if(decl.Equals(typeof(object)))
+					return true;
 				foreach(Type t in allowedTypes)
 					if(t.IsAssignableFrom(decl))
 						foreach(MethodInfo mi in decl.GetInterfaceMap(t).TargetMethods)

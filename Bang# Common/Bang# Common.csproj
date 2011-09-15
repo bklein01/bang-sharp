@@ -39,9 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Utils.cs">
-      <DependentUpon>Utils.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Utils.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Enums\Role.cs" />
     <Compile Include="Enums\CardColor.cs" />
@@ -101,7 +99,6 @@
     <Folder Include="Interfaces\" />
     <Folder Include="Structs\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Proxies\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Runtime.Remoting.Channels.TwoWayTcp\System.Runtime.Remoting.Channels.TwoWayTcp.csproj">

@@ -69,7 +69,7 @@ namespace Bang.Server
 			lock(game.Session.Lock)
 			{
 				if(game.Session.Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				game.Session.Locked = true;
 
 				try
@@ -96,7 +96,7 @@ namespace Bang.Server
 			lock(game.Session.Lock)
 			{
 				if(game.Session.Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				game.Session.Locked = true;
 
 				try
@@ -123,7 +123,7 @@ namespace Bang.Server
 			lock(game.Session.Lock)
 			{
 				if(game.Session.Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				game.Session.Locked = true;
 
 				try
@@ -150,7 +150,7 @@ namespace Bang.Server
 			lock(game.Session.Lock)
 			{
 				if(game.Session.Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				game.Session.Locked = true;
 
 				try
@@ -177,7 +177,7 @@ namespace Bang.Server
 			lock(game.Session.Lock)
 			{
 				if(game.Session.Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				game.Session.Locked = true;
 
 				try

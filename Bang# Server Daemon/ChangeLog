@@ -1,5 +1,14 @@
 2011-09-15  WOnder93  <omosnacek@gmail.com>
 
+	* Server.cs:
+	* Session/Session.cs:
+	* Session/Game/PlayerControl.cs:
+	* Session/SessionPlayerControl.cs:
+	* Session/SessionSpectatorControl.cs:
+	  The lockout exception changed to MethodAccessException.
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
 	* Session:
 	* Session/Game:
 	* AssemblyInfo.cs:

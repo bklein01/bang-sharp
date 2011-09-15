@@ -173,7 +173,7 @@ namespace Bang.Server
 			lock(Lock)
 			{
 				if(Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 				Locked = true;
 
 				int id = sessions.GenerateID();
@@ -223,7 +223,7 @@ namespace Bang.Server
 			lock(Lock)
 			{
 				if(Locked)
-					throw new InvalidOperationException();
+					throw new MethodAccessException();
 
 				List<Session> sessionList = new List<Session>(sessions.Values);
 				foreach(Session s in sessionList)
