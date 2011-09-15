@@ -1,4 +1,4 @@
-// PlayerControlProxy.cs
+// IServerBase.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -24,46 +24,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace Bang
+namespace Bang.Server
 {
-	public class PlayerControlProxy : ImmortalMarshalByRefObject, IPlayerControl
+	public interface IServerBase : IServer
 	{
-		private IPlayerControl raw;
+		int ServerInterfaceVersionMajor { get; }
+		int ServerInterfaceVersionMinor { get; }
 
-		IGame IPlayerControl.Game
-		{
-			get { return raw.Game; }
-		}
-		IPrivatePlayerView IPlayerControl.PrivatePlayerView
-		{
-			get { return raw.PrivatePlayerView; }
-		}
-
-		public PlayerControlProxy(IPlayerControl raw)
-		{
-			this.raw = raw;
-		}
-
-		void IPlayerControl.RespondDraw()
-		{
-			raw.RespondDraw();
-		}
-		void IPlayerControl.RespondCard(int id)
-		{
-			raw.RespondCard(id);
-		}
-		void IPlayerControl.RespondPlayer(int id)
-		{
-			raw.RespondPlayer(id);
-		}
-		void IPlayerControl.RespondNoAction()
-		{
-			raw.RespondNoAction();
-		}
-		void IPlayerControl.RespondUseAbility()
-		{
-			raw.RespondUseAbility();
-		}
+		IServerAdmin GetServerAdmin(Password password);
+		void ChangePassword(Password password, Password newPassword);
 	}
 }
 

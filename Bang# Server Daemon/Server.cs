@@ -30,11 +30,41 @@ using System.IO;
 using System.Linq;
 namespace Bang.Server
 {
-	public sealed class Server : ImmortalMarshalByRefObject, IServer
+	public sealed class Server : MarshalByRefObject, IServerBase
 	{
+		private sealed class ServerAdmin : MarshalByRefObject, IServerAdmin
+		{
+			private Server parent;
+
+			public ServerAdmin(Server parent)
+			{
+				this.parent = parent;
+			}
+
+			void IServerAdmin.ResetSessions()
+			{
+				parent.ResetSessions();
+			}
+
+			ISessionAdmin IServerAdmin.GetSessionAdmin(int id)
+			{
+				return parent.GetSession(id).Admin;
+			}
+		}
 		private static Server instance = null;
+		private ServerAdmin admin;
 		private Dictionary<int, Session> sessions;
-		private bool locked;
+
+		public readonly object Lock = new object();
+		public bool Locked
+		{
+			get;
+			set;
+		}
+		public IServerAdmin Admin
+		{
+			get { return admin; }
+		}
 
 		public static Server Instance
 		{
@@ -56,9 +86,17 @@ namespace Bang.Server
 		{
 			get { return Utils.InterfaceVersionMinor; }
 		}
+		int IServerBase.ServerInterfaceVersionMajor
+		{
+			get { return ServerUtils.InterfaceVersionMajor; }
+		}
+		int IServerBase.ServerInterfaceVersionMinor
+		{
+			get { return ServerUtils.InterfaceVersionMinor; }
+		}
 		ReadOnlyCollection<ISession> IServer.Sessions
 		{
-			get { return new ReadOnlyCollection<ISession>(new List<Session>(sessions.Values).ConvertAll<ISession>(s => new SessionProxy(s))); }
+			get { return new ReadOnlyCollection<ISession>(new List<Session>(sessions.Values).ConvertAll<ISession>(s => s)); }
 		}
 		public ReadOnlyCollection<Session> Sessions
 		{
@@ -67,6 +105,7 @@ namespace Bang.Server
 
 		public Server()
 		{
+			admin = new ServerAdmin(this);
 			if(!LoadState())
 				sessions = new Dictionary<int, Session>();
 			instance = this;
@@ -111,49 +150,94 @@ namespace Bang.Server
 		}
 		public void SaveState()
 		{
-			try
+			lock(Lock)
 			{
-				if(!File.Exists(StatePath))
-					Directory.CreateDirectory(Utils.ConfigFolder);
-				Stream stream = File.Create(StatePath);
-				BinaryWriter writer = new BinaryWriter(stream);
-				writer.Write(Magic);
-				Write(writer);
-				writer.Close();
-			}
-			catch
-			{
+				try
+				{
+					if(!File.Exists(StatePath))
+						Directory.CreateDirectory(Utils.ConfigFolder);
+					Stream stream = File.Create(StatePath);
+					BinaryWriter writer = new BinaryWriter(stream);
+					writer.Write(Magic);
+					Write(writer);
+					writer.Close();
+				}
+				catch
+				{
+				}
 			}
 		}
 
 		public void CreateSession(CreateSessionData sessionData, CreatePlayerData playerData, IPlayerEventListener listener)
 		{
-			lock(this)
+			lock(Lock)
 			{
-				if(locked)
+				if(Locked)
 					throw new InvalidOperationException();
-				locked = true;
+				Locked = true;
+
 				int id = sessions.GenerateID();
 				Session session = new Session(this, id, sessionData);
 				sessions.Add(id, session);
 
 				session.Join(sessionData.PlayerPassword, playerData, listener);
 				SaveState();
-				locked = false;
+
+				Locked = false;
+			}
+		}
+
+		IServerAdmin IServerBase.GetServerAdmin(Password password)
+		{
+			Password serverPassword;
+			try
+			{
+				serverPassword = new Password(Config.Instance.GetIntegerList("Server.AdminPassword").ToArray());
+			}
+			catch(ArgumentOutOfRangeException)
+			{
+				serverPassword = new Password("");
+			}
+			if(!serverPassword.CheckPassword(password))
+				throw new BadServerPasswordException();
+			return admin;
+		}
+		void IServerBase.ChangePassword(Password password, Password newPassword)
+		{
+			Password serverPassword;
+			try
+			{
+				serverPassword = new Password(Config.Instance.GetIntegerList("Server.AdminPassword").ToArray());
+			}
+			catch(ArgumentOutOfRangeException)
+			{
+				serverPassword = new Password("");
+			}
+			if(!serverPassword.CheckPassword(password))
+				throw new BadServerPasswordException();
+			Config.Instance.SetIntegerList("Server.AdminPassword", newPassword.Hash.ToList());
+		}
+
+		public void ResetSessions()
+		{
+			lock(Lock)
+			{
+				if(Locked)
+					throw new InvalidOperationException();
+
+				List<Session> sessionList = new List<Session>(sessions.Values);
+				foreach(Session s in sessionList)
+					s.End();
+				SaveState();
+
+				Locked = false;
 			}
 		}
 		public void RemoveSession(Session session)
 		{
-			sessions.Remove(session.ID);
-			SaveState();
-		}
-		public void ResetSessions()
-		{
-			lock(this)
+			lock(Lock)
 			{
-				List<Session> sessionList = new List<Session>(sessions.Values);
-				foreach(Session s in sessionList)
-					s.End();
+				sessions.Remove(session.ID);
 				SaveState();
 			}
 		}
@@ -172,7 +256,7 @@ namespace Bang.Server
 		{
 			try
 			{
-				return new SessionProxy(sessions[id]);
+				return sessions[id];
 			}
 			catch(KeyNotFoundException)
 			{

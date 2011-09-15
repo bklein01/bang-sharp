@@ -32,6 +32,8 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.TwoWayTcp;
 using System.IO;
+using System.Reflection;
+using System.Net;
 namespace Bang
 {
 	/// <summary>
@@ -42,7 +44,7 @@ namespace Bang
 		/// <summary>
 		/// The major interface version.
 		/// </summary>
-		public const int InterfaceVersionMajor = 3;
+		public const int InterfaceVersionMajor = 2;
 		/// <summary>
 		/// The minor interface version.
 		/// </summary>
@@ -139,6 +141,69 @@ namespace Bang
 			return list[Random.Next(list.Count)];
 		}
 
+		private static IServerChannelSinkProvider GetServerProvider(IEnumerable<Type> allowedTypes)
+		{
+			MethodRestrictionServerSinkProvider restrictionProvider = new MethodRestrictionServerSinkProvider();
+			restrictionProvider.Filter = m =>
+			{
+				Type decl = m.DeclaringType;
+				foreach(Type t in allowedTypes)
+					if(t.IsAssignableFrom(decl))
+						foreach(MethodInfo mi in decl.GetInterfaceMap(t).TargetMethods)
+							if(mi.MethodHandle == m.MethodHandle)
+								return true;
+				return false;
+			};
+			BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
+			serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
+			serverProvider.Next = restrictionProvider;
+			return serverProvider;
+		}
+		private static IClientChannelSinkProvider GetClientProvider()
+		{
+			return new BinaryClientFormatterSinkProvider();
+		}
+
+		public static T Connect<T>(string uri, string address, int port, IEnumerable<Type> allowedTypes)
+		{
+			ChannelServices.RegisterChannel(new TcpClientChannel("client", GetClientProvider(), GetServerProvider(allowedTypes)), false);
+			return (T)RemotingServices.Connect(typeof(T), "tcp://" + address + ":" + port + "/" + uri);
+		}
+		public static void Serve<T>(string uri, int port, IEnumerable<Type> allowedTypes, IPAddress bindTo)
+			where T : MarshalByRefObject, new()
+		{
+			Dictionary<string, object> properties = new Dictionary<string, object>();
+			properties.Add("name", "server:" + port);
+			properties.Add("port", port);
+			properties.Add("bindTo", bindTo.ToString());
+			TcpServerChannel channel = new TcpServerChannel(properties, GetClientProvider(), GetServerProvider(allowedTypes));
+			ChannelServices.RegisterChannel(channel, false);
+			RemotingConfiguration.RegisterWellKnownServiceType(typeof(T), uri, WellKnownObjectMode.Singleton);
+		}
+
+		public static readonly Type[] ClientSharedTypes = new Type[]
+		{
+			typeof(IEventListener),
+			typeof(IPlayerEventListener),
+			typeof(ISpectatorEventListener),
+		};
+		public static readonly Type[] ServerSharedTypes = new Type[]
+		{
+			typeof(IServer),
+			typeof(ISession),
+			typeof(IPlayer),
+			typeof(ISpectator),
+			typeof(IPlayerSessionControl),
+			typeof(ISpectatorSessionControl),
+			typeof(IGame),
+			typeof(IPublicPlayerView),
+			typeof(IPrivatePlayerView),
+			typeof(IPlayerControl),
+			typeof(ISpectatorControl),
+			typeof(ICard),
+			typeof(IIdentificable),
+		};
+
 		/// <summary>
 		/// Connects to the Bang# server with the specified address and port.
 		/// </summary>
@@ -153,11 +218,7 @@ namespace Bang
 		/// </returns>
 		public static IServer Connect(string address, int port)
 		{
-			BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
-			BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-			serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
-			ChannelServices.RegisterChannel(new TcpClientChannel("client", clientProvider, serverProvider), false);
-			return (IServer)RemotingServices.Connect(typeof(IServer), "tcp://" + address + ":" + port + "/BangSharp.rem");
+			return Connect<IServer>("BangSharp.rem", address, port, ClientSharedTypes);
 		}
 		/// <summary>
 		/// Starts serving the Bang# service at the specified port.
@@ -169,12 +230,9 @@ namespace Bang
 		/// The service type (must implement the <see cref="IServer"/> interface).
 		/// </typeparam>
 		public static void Serve<T>(int port)
+			where T : MarshalByRefObject, IServer, new()
 		{
-			BinaryClientFormatterSinkProvider clientProvider = new BinaryClientFormatterSinkProvider();
-			BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-			serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
-			ChannelServices.RegisterChannel(new TcpServerChannel("server", port, clientProvider, serverProvider), false);
-			RemotingConfiguration.RegisterWellKnownServiceType(typeof(T), "BangSharp.rem", WellKnownObjectMode.Singleton);
+			Serve<T>("BangSharp.rem", port, ServerSharedTypes, IPAddress.Any);
 		}
 	}
 }

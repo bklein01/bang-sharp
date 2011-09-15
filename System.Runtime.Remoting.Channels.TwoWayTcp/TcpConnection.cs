@@ -133,12 +133,12 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			}
 			finally
 			{
-				reader.Close();
-				reader = null;
-				writer.Close();
 				lock(sendLock)
 				{
+					writer.Close();
 					writer = null;
+					reader.Close();
+					reader = null;
 				}
 				networkStream.Close();
 				networkStream = null;

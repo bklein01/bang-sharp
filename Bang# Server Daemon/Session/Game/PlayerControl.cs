@@ -48,11 +48,11 @@ namespace Bang.Server
 		}
 		IPrivatePlayerView IPlayerControl.PrivatePlayerView
 		{
-			get { return new PrivatePlayerViewProxy(player); }
+			get { return player; }
 		}
 		IGame IPlayerControl.Game
 		{
-			get { return new GameProxy(player.Game); }
+			get { return player.Game; }
 		}
 		
 		public PlayerControl (Player player)
@@ -66,7 +66,7 @@ namespace Bang.Server
 				throw new InvalidOperationException();
 
 			Game game = Game;
-			lock(game.Session)
+			lock(game.Session.Lock)
 			{
 				if(game.Session.Locked)
 					throw new InvalidOperationException();
@@ -93,7 +93,7 @@ namespace Bang.Server
 				throw new InvalidOperationException();
 
 			Game game = Game;
-			lock(game.Session)
+			lock(game.Session.Lock)
 			{
 				if(game.Session.Locked)
 					throw new InvalidOperationException();
@@ -120,7 +120,7 @@ namespace Bang.Server
 				throw new InvalidOperationException();
 
 			Game game = Game;
-			lock(game.Session)
+			lock(game.Session.Lock)
 			{
 				if(game.Session.Locked)
 					throw new InvalidOperationException();
@@ -147,7 +147,7 @@ namespace Bang.Server
 				throw new InvalidOperationException();
 
 			Game game = Game;
-			lock(game.Session)
+			lock(game.Session.Lock)
 			{
 				if(game.Session.Locked)
 					throw new InvalidOperationException();
@@ -174,7 +174,7 @@ namespace Bang.Server
 				throw new InvalidOperationException();
 
 			Game game = Game;
-			lock(game.Session)
+			lock(game.Session.Lock)
 			{
 				if(game.Session.Locked)
 					throw new InvalidOperationException();

@@ -34,7 +34,10 @@ namespace Bang.Server
 		public static void Main(string[] cmdArgs)
 		{
 			int port = Config.Instance.GetInteger("Server.Port", 2147);
-			Utils.Serve<ServerProxy<Server>>(port);
+			int adminPort = Config.Instance.GetInteger("Server.AdminPort", 2148);
+
+			Utils.Serve<Server>(port);
+			ServerUtils.ServeAdmin<Server>(adminPort, System.Net.IPAddress.Any);
 
 			Thread.Sleep(Timeout.Infinite);
 		}

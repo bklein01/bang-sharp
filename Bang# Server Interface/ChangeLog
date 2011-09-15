@@ -1,3 +1,13 @@
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Server Interface.csproj:
+	  
+
+	* Main.cs:
+	  Edited to comply with the changes in Bang# Console Utils and
+	  in server administration.
+
 2011-09-10  WOnder93  <omosnacek@gmail.com>
 
 	* Main.cs:

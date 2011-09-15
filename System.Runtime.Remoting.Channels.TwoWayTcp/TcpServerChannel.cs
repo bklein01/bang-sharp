@@ -33,6 +33,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
 	public class TcpServerChannel : IChannelReceiver, IChannelSender
 	{
+		private TcpConnectionPool pool;
 		private int port;
 		private string host = null;
 
@@ -60,10 +61,11 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 		private void Init(IClientChannelSinkProvider clientSinkProvider, IServerChannelSinkProvider serverSinkProvider)
 		{
+			pool = new TcpConnectionPool();
 			if(clientSinkProvider == null)
 			{
 				this.clientSinkProvider = new BinaryClientFormatterSinkProvider();
-				this.clientSinkProvider.Next = new TcpClientSinkProvider();
+				this.clientSinkProvider.Next = new TcpClientSinkProvider(pool);
 			}
 			else
 			{
@@ -71,7 +73,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				IClientChannelSinkProvider provider = clientSinkProvider;
 				while(provider.Next != null)
 					provider = provider.Next;
-				provider.Next = new TcpClientSinkProvider();
+				provider.Next = new TcpClientSinkProvider(pool);
 			}
 
 			if(serverSinkProvider == null)
@@ -177,7 +179,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			if(serverThread != null)
 				return;
 
-			TcpConnectionPool.Instance.OnRequestRecieved += serverSink.OnRequestRecieved;
+			pool.OnRequestRecieved += serverSink.OnRequestRecieved;
 			listener = new TcpListener(bindTo, port);
 			listener.Start();
 
@@ -193,8 +195,8 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			if(serverThread == null)
 				return;
 
-			TcpConnectionPool.Instance.OnRequestRecieved -= serverSink.OnRequestRecieved;
-			TcpConnectionPool.Instance.PurgeConnections();
+			pool.OnRequestRecieved -= serverSink.OnRequestRecieved;
+			pool.PurgeConnections();
 			serverThread.Interrupt();
 			listener.Stop();
 			serverThread.Join();
@@ -205,7 +207,6 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		{
 			try
 			{
-				TcpConnectionPool pool = TcpConnectionPool.Instance;
 				while(true)
 					pool.WaitForConnection(listener);
 			}

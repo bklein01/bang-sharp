@@ -1,4 +1,4 @@
-// PlayerProxy.cs
+// ICommand.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -24,73 +24,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace Bang
+using System.Collections.Generic;
+namespace Bang.ConsoleUtils
 {
-	public class PlayerProxy : MarshalByRefObject, IPlayer
+	public interface ICommand
 	{
-		private IPlayer raw;
-
-		int IIdentificable.ID
-		{
-			get { return raw.ID; }
-		}
-		string IPlayer.Name
-		{
-			get { return raw.Name; }
-		}
-		byte[] IPlayer.Image
-		{
-			get { return raw.Image; }
-		}
-		bool IPlayer.HasPassword
-		{
-			get { return raw.HasPassword; }
-		}
-		bool IPlayer.IsCreator
-		{
-			get { return raw.IsCreator; }
-		}
-		bool IPlayer.IsAI
-		{
-			get { return raw.IsAI; }
-		}
-		bool IPlayer.HasListener
-		{
-			get { return raw.HasListener; }
-		}
-		int IPlayer.Score
-		{
-			get { return raw.Score; }
-		}
-		int IPlayer.TurnsPlayed
-		{
-			get { return raw.TurnsPlayed; }
-		}
-		int IPlayer.Victories
-		{
-			get { return raw.Victories; }
-		}
-		int IPlayer.VictoriesAsSheriff
-		{
-			get { return raw.VictoriesAsDeputy; }
-		}
-		int IPlayer.VictoriesAsDeputy
-		{
-			get { return raw.VictoriesAsDeputy; }
-		}
-		int IPlayer.VictoriesAsOutlaw
-		{
-			get { return raw.VictoriesAsOutlaw; }
-		}
-		int IPlayer.VictoriesAsRenegade
-		{
-			get { return raw.VictoriesAsRenegade; }
-		}
-
-		public PlayerProxy(IPlayer raw)
-		{
-			this.raw = raw;
-		}
+		IEnumerable<string> Subcommands { get; }
+		ICommand GetSubcommand(string text);
 	}
 }
 

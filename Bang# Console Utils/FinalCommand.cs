@@ -1,4 +1,4 @@
-// PrivatePlayerViewProxy.cs
+// FinalCommand.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -24,69 +24,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.ObjectModel;
-namespace Bang
+using System.Collections.Generic;
+using System.Linq;
+namespace Bang.ConsoleUtils
 {
-	public class PrivatePlayerViewProxy : MarshalByRefObject, IPrivatePlayerView
+	public delegate void FinalCommandDelegate<In>(In param, Queue<string> cmd);
+	public class FinalCommand<In> : Command<In>
 	{
-		private IPrivatePlayerView raw;
+		private FinalCommandDelegate<In> del;
 
-		int IIdentificable.ID
+		public override IEnumerable<string> Subcommands
 		{
-			get { return raw.ID; }
-		}
-		bool IPublicPlayerView.IsSheriff
-		{
-			get { return raw.IsSheriff; }
-		}
-		bool IPublicPlayerView.IsAlive
-		{
-			get { return raw.IsAlive; }
-		}
-		bool IPublicPlayerView.IsWinner
-		{
-			get { return raw.IsWinner; }
-		}
-		int IPublicPlayerView.LifePoints
-		{
-			get { return raw.LifePoints; }
-		}
-		int IPublicPlayerView.MaxLifePoints
-		{
-			get { return raw.MaxLifePoints; }
-		}
-		ReadOnlyCollection<ICard> IPublicPlayerView.Table
-		{
-			get { return raw.Table; }
-		}
-		CharacterType IPublicPlayerView.CharacterType
-		{
-			get { return raw.CharacterType; }
-		}
-		ReadOnlyCollection<ICard> IPublicPlayerView.Hand
-		{
-			get { return ((IPublicPlayerView)raw).Hand; }
-		}
-		Role IPublicPlayerView.Role
-		{
-			get { return ((IPublicPlayerView)raw).Role; }
-		}
-		ReadOnlyCollection<ICard> IPrivatePlayerView.Hand
-		{
-			get { return raw.Hand; }
-		}
-		Role IPrivatePlayerView.Role
-		{
-			get { return raw.Role; }
-		}
-		ReadOnlyCollection<ICard> IPrivatePlayerView.Selection
-		{
-			get { return raw.Selection; }
+			get { return Enumerable.Empty<string>(); }
 		}
 
-		public PrivatePlayerViewProxy(IPrivatePlayerView raw)
+		public FinalCommand(FinalCommandDelegate<In> del)
 		{
-			this.raw = raw;
+			this.del = del;
+		}
+
+		public override ICommand GetSubcommand(string text)
+		{
+			return null;
+		}
+		public override void Execute(In param, Queue<string> cmd)
+		{
+			del(param, cmd);
+		}
+	}
+
+	public delegate void FinalCommandDelegate(Queue<string> cmd);
+	public class FinalCommand : FinalCommand<object>
+	{
+		public FinalCommand(FinalCommandDelegate del)
+			: base((param, cmd) => del(cmd))
+		{
 		}
 	}
 }

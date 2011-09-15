@@ -1,4 +1,4 @@
-// PublicPlayerViewProxy.cs
+// ISessionAdmin.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -24,58 +24,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.ObjectModel;
-namespace Bang
+namespace Bang.Server
 {
-	public class PublicPlayerViewProxy : MarshalByRefObject, IPublicPlayerView
+	public interface ISessionAdmin
 	{
-		private IPublicPlayerView raw;
-
-		int IIdentificable.ID
-		{
-			get { return raw.ID; }
-		}
-		bool IPublicPlayerView.IsSheriff
-		{
-			get { return raw.IsSheriff; }
-		}
-		bool IPublicPlayerView.IsAlive
-		{
-			get { return raw.IsAlive; }
-		}
-		bool IPublicPlayerView.IsWinner
-		{
-			get { return raw.IsWinner; }
-		}
-		int IPublicPlayerView.LifePoints
-		{
-			get { return raw.LifePoints; }
-		}
-		int IPublicPlayerView.MaxLifePoints
-		{
-			get { return raw.MaxLifePoints; }
-		}
-		ReadOnlyCollection<ICard> IPublicPlayerView.Hand
-		{
-			get { return raw.Hand; }
-		}
-		ReadOnlyCollection<ICard> IPublicPlayerView.Table
-		{
-			get { return raw.Table; }
-		}
-		CharacterType IPublicPlayerView.CharacterType
-		{
-			get { return raw.CharacterType; }
-		}
-		Role IPublicPlayerView.Role
-		{
-			get { return raw.Role; }
-		}
-
-		public PublicPlayerViewProxy(IPublicPlayerView raw)
-		{
-			this.raw = raw;
-		}
+		void End();
 	}
 }
 

@@ -15,11 +15,11 @@ namespace Bang.Server
 		}
 		ISession IPlayerSessionControl.Session
 		{
-			get { return new SessionProxy(player.Session); }
+			get { return player.Session; }
 		}
 		IPlayer IPlayerSessionControl.Player
 		{
-			get { return new PlayerProxy(player); }
+			get { return player; }
 		}
 
 		public SessionPlayerControl (SessionPlayer player)
@@ -33,21 +33,14 @@ namespace Bang.Server
 				throw new InvalidOperationException();
 
 			Session session = Session;
-			lock(session)
+			lock(session.Lock)
 			{
 				if(session.Locked)
 					throw new InvalidOperationException();
 				session.Locked = true;
 
-				try
-				{
-					session.EventManager.SendChatMessage(player, message);
-				}
-				catch
-				{
-					session.Locked = false;
-					throw;
-				}
+				session.EventManager.SendChatMessage(player, message);
+
 				session.Locked = false;
 			}
 		}
@@ -57,24 +50,7 @@ namespace Bang.Server
 			if(!player.HasListener)
 				throw new InvalidOperationException();
 
-			Session session = Session;
-			lock(session)
-			{
-				if(session.Locked)
-					throw new InvalidOperationException();
-				session.Locked = true;
-
-				try
-				{
-					session.RemovePlayer(player);
-				}
-				catch
-				{
-					session.Locked = false;
-					throw;
-				}
-				session.Locked = false;
-			}
+			Session.RemovePlayer(player);
 		}
 
 		void IPlayerSessionControl.StartGame()
@@ -84,24 +60,7 @@ namespace Bang.Server
 			if(!player.IsCreator)
 				throw new MustBeCreatorException();
 
-			Session session = Session;
-			lock(session)
-			{
-				if(session.Locked)
-					throw new InvalidOperationException();
-				session.Locked = true;
-
-				try
-				{
-					session.NextGame();
-				}
-				catch
-				{
-					session.Locked = false;
-					throw;
-				}
-				session.Locked = false;
-			}
+			Session.NextGame();
 		}
 
 		void IPlayerSessionControl.EndSession()
@@ -111,24 +70,7 @@ namespace Bang.Server
 			if(!player.IsCreator)
 				throw new MustBeCreatorException();
 
-			Session session = Session;
-			lock(session)
-			{
-				if(session.Locked)
-					throw new InvalidOperationException();
-				session.Locked = true;
-
-				try
-				{
-					session.End();
-				}
-				catch
-				{
-					session.Locked = false;
-					throw;
-				}
-				session.Locked = false;
-			}
+			Session.End();
 		}
 	}
 }

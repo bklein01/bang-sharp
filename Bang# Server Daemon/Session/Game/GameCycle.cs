@@ -37,13 +37,18 @@ namespace Bang.Server
 
 		protected override void OnStart()
 		{
+			if(!RequestedPlayer.IsAlive)
+			{
+				End();
+				return;
+			}
 			Game.GameCycle.CurrentPlayer.OnTurnStarted();
 			if(RequestedPlayer.SkipTurn)
 				End();
 		}
 		protected override void OnContinue()
 		{
-			if(RequestedPlayer.SkipTurn)
+			if(RequestedPlayer.SkipTurn || !RequestedPlayer.IsAlive)
 				End();
 		}
 
@@ -67,7 +72,7 @@ namespace Bang.Server
 
 		protected override void OnStart()
 		{
-			if(RequestedPlayer.SkipTurn)
+			if(RequestedPlayer.SkipTurn || !RequestedPlayer.IsAlive)
 				End();
 		}
 		protected override void OnContinue()

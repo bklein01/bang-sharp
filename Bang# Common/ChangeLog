@@ -1,3 +1,37 @@
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* MethodRestrictionServerSink.cs:
+	* MethodRestrictionServerSinkProvider.cs:
+	  Added a server sink that filters requests.
+
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj:
+	  
+
+	* Utils.cs:
+	  Improved serving/connecting methods.
+	Added filtering of requests using
+	  MethodResrictionServerSinkProvider.
+
+	* Config.cs:
+	  Added locking when setting values.
+
+	* Proxies:
+	* Proxies/GameProxy.cs:
+	* Proxies/CardProxy.cs:
+	* Proxies/PlayerProxy.cs:
+	* Proxies/ServerProxy.cs:
+	* Proxies/SessionProxy.cs:
+	* Proxies/SpectatorProxy.cs:
+	* Proxies/PlayerControlProxy.cs:
+	* Proxies/SpectatorControlProxy.cs:
+	* Proxies/PublicPlayerViewProxy.cs:
+	* Proxies/PrivatePlayerViewProxy.cs:
+	* Proxies/PlayerSessionControlProxy.cs:
+	* Proxies/SpectatorSessionControlProxy.cs:
+	  Proxies are not needed any more.
+	  MethodRestrictionServerSinkProvider is used instead.
+
 2011-09-10  WOnder93  <omosnacek@gmail.com>
 
 	* Proxies:

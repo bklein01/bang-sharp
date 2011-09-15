@@ -1,3 +1,24 @@
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* TcpClientChannel.cs:
+	  Use a separate TcpConnectionPool for the client channel.
+
+	* TcpConnectionPool.cs:
+	  TcpConnectionPool has no longer a global instance.
+
+	* TcpClientSinkProvider.cs:
+	  Use connection pool provided in the contstructor.
+
+	* TcpConnection.cs:
+	  Close writer before reader to avoid flushing buffer after
+	  the network stream is disposed.
+
+	* TcpServerChannel.cs:
+	  Use separate TcpConnectionPool for each instance.
+
 2011-09-10  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

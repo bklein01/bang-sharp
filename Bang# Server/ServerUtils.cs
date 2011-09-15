@@ -1,4 +1,4 @@
-// CardProxy.cs
+// ServerUtils.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -24,37 +24,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace Bang
+using System.Linq;
+using System.Net;
+namespace Bang.Server
 {
-	public sealed class CardProxy : MarshalByRefObject, ICard
+	public static class ServerUtils
 	{
-		private ICard raw;
+		public const int InterfaceVersionMajor = 1;
+		public const int InterfaceVersionMinor = 0;
 
-		int IIdentificable.ID
+		public static bool IsServerCompatible(IServerBase server)
 		{
-			get { return raw.ID; }
-		}
-
-		CardColor ICard.Color
-		{
-			get { return raw.Color; }
-		}
-		CardType ICard.Type
-		{
-			get { return raw.Type; }
-		}
-		CardRank ICard.Rank
-		{
-			get { return raw.Rank; }
-		}
-		CardSuit ICard.Suit
-		{
-			get { return raw.Suit; }
+			if(server.ServerInterfaceVersionMajor != InterfaceVersionMajor)
+				return false;
+			if(server.ServerInterfaceVersionMinor < InterfaceVersionMinor)
+				return false;
+			return true;
 		}
 
-		public CardProxy(ICard raw)
+		public static Type[] ClientSharedTypes = new Type[]
 		{
-			this.raw = raw;
+		};
+		public static Type[] ServerSharedTypes = new Type[]
+		{
+			typeof(IServerBase),
+			typeof(IServerAdmin),
+			typeof(ISessionAdmin),
+		};
+
+		public static IServerBase ConnectAdmin(string address, int port)
+		{
+			return Utils.Connect<IServerBase>("BangSharpAdmin.rem", address, port, Utils.ClientSharedTypes.Concat(ClientSharedTypes));
+		}
+		public static void ServeAdmin<T>(int port, IPAddress bindTo)
+			where T : MarshalByRefObject, new()
+		{
+			Utils.Serve<T>("BangSharpAdmin.rem", port, Utils.ServerSharedTypes.Concat(ServerSharedTypes), bindTo);
 		}
 	}
 }

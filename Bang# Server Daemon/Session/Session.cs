@@ -33,7 +33,21 @@ namespace Bang.Server
 {
 	public sealed class Session : MarshalByRefObject, ISession
 	{
-		private bool locked = false;
+		private sealed class SessionAdmin : MarshalByRefObject, ISessionAdmin
+		{
+			private Session parent;
+
+			public SessionAdmin(Session parent)
+			{
+				this.parent = parent;
+			}
+
+			void ISessionAdmin.End ()
+			{
+				parent.End();
+			}
+		}
+		private SessionAdmin admin;
 		private Server server;
 		private int id;
 		private CreateSessionData data;
@@ -49,11 +63,16 @@ namespace Bang.Server
 		private int gamesPlayed;
 		private IEnumerator<SessionPlayer> sheriffEnumerator;
 		private List<CharacterType> remainingCharacters;
-		
+
+		public readonly object Lock = new object();
 		public bool Locked
 		{
-			get { return locked; }
-			set { locked = value; }
+			get;
+			set;
+		}
+		public ISessionAdmin Admin
+		{
+			get { return admin; }
 		}
 		public int ID
 		{
@@ -97,7 +116,7 @@ namespace Bang.Server
 		}
 		IPlayer ISession.Creator
 		{
-			get { return new PlayerProxy(players[creatorId]); }
+			get { return players[creatorId]; }
 		}
 		public bool DodgeCity
 		{
@@ -129,11 +148,11 @@ namespace Bang.Server
 		}
 		ReadOnlyCollection<IPlayer> ISession.Players
 		{
-			get { return new ReadOnlyCollection<IPlayer> (playerList.ConvertAll<IPlayer>(p => new PlayerProxy(p))); }
+			get { return new ReadOnlyCollection<IPlayer> (playerList.ConvertAll<IPlayer>(p => p)); }
 		}
 		ReadOnlyCollection<ISpectator> ISession.Spectators
 		{
-			get { return new ReadOnlyCollection<ISpectator> (spectatorList.ConvertAll<ISpectator>(s => new SpectatorProxy(s))); }
+			get { return new ReadOnlyCollection<ISpectator> (spectatorList.ConvertAll<ISpectator>(s => s)); }
 		}
 		public SessionEventManager EventManager
 		{
@@ -146,6 +165,7 @@ namespace Bang.Server
 
 		public Session(Server server, int id, CreateSessionData sessionData)
 		{
+			admin = new SessionAdmin(this);
 			this.server = server;
 			this.id = id;
 			data = sessionData;
@@ -266,105 +286,153 @@ namespace Bang.Server
 		{
 			if(state == SessionState.Ended)
 				throw new BadSessionStateException();
-			lock(this)
+			lock(Lock)
 			{
-				if(state != SessionState.WaitingForPlayers)
-					throw new BadSessionStateException();
-				if(players.Count >= this.data.MaxPlayers)
-					throw new TooManyPlayersException();
-				if(!this.data.PlayerPassword.CheckPassword(password))
-					throw new BadSessionPasswordException();
+				if(Locked)
+					throw new InvalidOperationException();
+				Locked = true;
+				try
+				{
+					if(state != SessionState.WaitingForPlayers)
+						throw new BadSessionStateException();
+					if(players.Count >= this.data.MaxPlayers)
+						throw new TooManyPlayersException();
+					if(!this.data.PlayerPassword.CheckPassword(password))
+						throw new BadSessionPasswordException();
 			
-				int id = players.GenerateID();
-				if(creatorId == 0)
-					creatorId = id;
-				SessionPlayer player = new SessionPlayer(id, this, data);
-				players.Add(id, player);
-				playerList.Add(player);
-				player.RegisterListener(listener);
-				eventMgr.SendController(player);
-				eventMgr.OnPlayerJoinedSession(player);
-				server.SaveState();
+					int id = players.GenerateID();
+					if(creatorId == 0)
+						creatorId = id;
+					SessionPlayer player = new SessionPlayer(id, this, data);
+					players.Add(id, player);
+					playerList.Add(player);
+					player.RegisterListener(listener);
+					eventMgr.SendController(player);
+					eventMgr.OnPlayerJoinedSession(player);
+					server.SaveState();
+				}
+				catch
+				{
+					Locked = false;
+					throw;
+				}
+				Locked = false;
 			}
 		}
 
-		public void Replace (int id, Password password, CreatePlayerData data, IPlayerEventListener listener)
+		public void Replace(int id, Password password, CreatePlayerData data, IPlayerEventListener listener)
 		{
-			if (state == SessionState.Ended)
-				throw new BadSessionStateException ();
-			lock (this)
+			if(state == SessionState.Ended)
+				throw new BadSessionStateException();
+			lock(Lock)
 			{
-				if (!this.data.PlayerPassword.CheckPassword (password))
-					throw new BadSessionPasswordException ();
-
-				SessionPlayer player = GetPlayer (id);
-				if (player.HasListener && !player.IsAI)
-					throw new InvalidOperationException ();
-				player.Update (data);
-				player.RegisterListener (listener);
-				eventMgr.SendController (player);
-				if (state == SessionState.Playing)
-					game.RegisterPlayer(player);
-				eventMgr.OnPlayerUpdated (player);
-				server.SaveState();
+				if(Locked)
+					throw new InvalidOperationException();
+				Locked = true;
+				try
+				{
+					if(!this.data.PlayerPassword.CheckPassword(password))
+						throw new BadSessionPasswordException();
+	
+					SessionPlayer player = GetPlayer(id);
+					if(player.HasListener && !player.IsAI)
+						throw new InvalidOperationException();
+					player.Update(data);
+					player.RegisterListener(listener);
+					eventMgr.SendController(player);
+					if(state == SessionState.Playing)
+						game.RegisterPlayer(player);
+					eventMgr.OnPlayerUpdated(player);
+					server.SaveState();
+				}
+				catch
+				{
+					Locked = false;
+					throw;
+				}
+				Locked = false;
 			}
 		}
 
-		public void Spectate (Password password, CreateSpectatorData data, ISpectatorEventListener listener)
+		public void Spectate(Password password, CreateSpectatorData data, ISpectatorEventListener listener)
 		{
-			if (state == SessionState.Ended)
-				throw new BadSessionStateException ();
-			lock (this)
+			if(state == SessionState.Ended)
+				throw new BadSessionStateException();
+			lock(Lock)
 			{
-				if (!this.data.SpectatorPassword.CheckPassword (password))
-					throw new BadSessionPasswordException ();
-				if (spectators.Count >= this.data.MaxSpectators)
-					throw new TooManySpectatorsException ();
-			
-				int id = spectators.GenerateID ();
-				SessionSpectator spectator = new SessionSpectator (id, this, data);
-				spectators.Add (id, spectator);
-				spectatorList.Add (spectator);
-				spectator.RegisterListener (listener);
-				eventMgr.SendController (spectator);
-				if (state == SessionState.Playing)
-					game.RegisterSpectator(spectator);
-				eventMgr.OnSpectatorJoinedSession (spectator);
-				server.SaveState();
+				if(Locked)
+					throw new InvalidOperationException();
+				Locked = true;
+				try
+				{
+					if(!this.data.SpectatorPassword.CheckPassword(password))
+						throw new BadSessionPasswordException();
+					if(spectators.Count >= this.data.MaxSpectators)
+						throw new TooManySpectatorsException();
+				
+					int id = spectators.GenerateID();
+					SessionSpectator spectator = new SessionSpectator(id, this, data);
+					spectators.Add(id, spectator);
+					spectatorList.Add(spectator);
+					spectator.RegisterListener(listener);
+					eventMgr.SendController(spectator);
+					if(state == SessionState.Playing)
+						game.RegisterSpectator(spectator);
+					eventMgr.OnSpectatorJoinedSession(spectator);
+					server.SaveState();
+				}
+				catch
+				{
+					Locked = false;
+					throw;
+				}
+				Locked = false;
 			}
 		}
 		
-		public SessionPlayer GetPlayer (int id)
+		public SessionPlayer GetPlayer(int id)
 		{
-			try {
+			try
+			{
 				return players[id];
-			} catch (KeyNotFoundException) {
+			}
+			catch(KeyNotFoundException)
+			{
 				throw new InvalidIdException();
 			}
 		}
-		public SessionSpectator GetSpectator (int id)
+		public SessionSpectator GetSpectator(int id)
 		{
-			try {
+			try
+			{
 				return spectators[id];
-			} catch (KeyNotFoundException) {
-				throw new InvalidIdException ();
+			}
+			catch(KeyNotFoundException)
+			{
+				throw new InvalidIdException();
 			}
 		}
 
-		IPlayer ISession.GetPlayer (int id)
+		IPlayer ISession.GetPlayer(int id)
 		{
-			try {
-				return new PlayerProxy(players[id]);
-			} catch (KeyNotFoundException) {
-				throw new InvalidIdException ();
+			try
+			{
+				return players[id];
+			}
+			catch(KeyNotFoundException)
+			{
+				throw new InvalidIdException();
 			}
 		}
 		ISpectator ISession.GetSpectator(int id)
 		{
-			try {
-				return new SpectatorProxy(spectators[id]);
-			} catch (KeyNotFoundException) {
-				throw new InvalidIdException ();
+			try
+			{
+				return spectators[id];
+			}
+			catch(KeyNotFoundException)
+			{
+				throw new InvalidIdException();
 			}
 		}
 
@@ -393,67 +461,105 @@ namespace Bang.Server
 		{
 			if(state == SessionState.Playing)
 				throw new BadSessionStateException();
-			
-			if(state == SessionState.WaitingForPlayers)
+
+			lock(Lock)
 			{
-				int count = data.MinPlayers - players.Count;
-				for(int i = 0; i < count; i++)
+				if(Locked)
+					throw new InvalidOperationException();
+				Locked = true;
+
+				if(state == SessionState.WaitingForPlayers)
 				{
-					AI.AIPlayer ai = new AI.AIPlayer();
-					Join(data.PlayerPassword, ai.CreateData, ai);
+					int count = data.MinPlayers - players.Count;
+					for(int i = 0; i < count; i++)
+					{
+						AI.AIPlayer ai = new AI.AIPlayer();
+						Locked = false;
+						Join(data.PlayerPassword, ai.CreateData, ai);
+						Locked = true;
+					}
+					if(data.ShufflePlayers)
+						playerList.Shuffle();
+					sheriffEnumerator = playerList.GetEnumerator();
+					sheriffEnumerator.MoveNext();
 				}
-				if(data.ShufflePlayers)
-					playerList.Shuffle();
-				sheriffEnumerator = playerList.GetEnumerator();
-				sheriffEnumerator.MoveNext();
+				if(game != null)
+					game.Dispose();
+				game = new Game(this, sheriffEnumerator.Current.ID);
+				game.Start();
+				state = SessionState.Playing;
+				server.SaveState();
+
+				Locked = false;
 			}
-			if(game != null)
-				game.Dispose();
-			game = new Game (this, sheriffEnumerator.Current.ID);
-			game.Start();
-			state = SessionState.Playing;
-			server.SaveState();
 		}
 		
 		public void End()
 		{
-			state = SessionState.Ended;
-			eventMgr.OnSessionEnded();
-			if(game != null)
-				game.Dispose();
-			foreach(SessionPlayer p in playerList)
+			lock(Lock)
 			{
-				p.UnregisterListener();
-				p.Control.Disconnect();
+				if(Locked)
+					throw new InvalidOperationException();
+				Locked = true;
+
+				state = SessionState.Ended;
+				eventMgr.OnSessionEnded();
+				if(game != null)
+					game.Dispose();
+				foreach(SessionPlayer p in playerList)
+				{
+					p.UnregisterListener();
+					p.Control.Disconnect();
+				}
+				foreach(SessionSpectator s in spectatorList)
+				{
+					s.UnregisterListener();
+					s.Control.Disconnect();
+				}
+				server.RemoveSession(this);
+
+				Locked = false;
 			}
-			foreach(SessionSpectator s in spectatorList)
-			{
-				s.UnregisterListener();
-				s.Control.Disconnect();
-			}
-			server.RemoveSession(this);
 		}
 
 		
 		public void RemovePlayer(SessionPlayer player)
 		{
-			player.UnregisterListener();
-			if(state != SessionState.WaitingForPlayers || player.IsCreator)
-				return;
-			player.Control.Disconnect();
-			players.Remove(player.ID);
-			playerList.Remove(player);
-			eventMgr.OnPlayerLeftSession(player);
-			server.SaveState();
+			lock(Lock)
+			{
+				if(Locked)
+					throw new InvalidOperationException();
+				Locked = true;
+
+				player.UnregisterListener();
+				if(state != SessionState.WaitingForPlayers || player.IsCreator)
+					return;
+				player.Control.Disconnect();
+				players.Remove(player.ID);
+				playerList.Remove(player);
+				eventMgr.OnPlayerLeftSession(player);
+				server.SaveState();
+
+				Locked = false;
+			}
 		}
 		public void RemoveSpectator(SessionSpectator spectator)
 		{
-			spectator.UnregisterListener();
-			spectator.Control.Disconnect();
-			spectators.Remove(spectator.ID);
-			spectatorList.Remove(spectator);
-			eventMgr.OnSpectatorLeftSession(spectator);
-			server.SaveState();
+			lock(Lock)
+			{
+				if(Locked)
+					throw new InvalidOperationException();
+				Locked = true;
+
+				spectator.UnregisterListener();
+				spectator.Control.Disconnect();
+				spectators.Remove(spectator.ID);
+				spectatorList.Remove(spectator);
+				eventMgr.OnSpectatorLeftSession(spectator);
+				server.SaveState();
+
+				Locked = false;
+			}
 		}
 	}
 }
