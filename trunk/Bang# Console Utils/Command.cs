@@ -1,4 +1,4 @@
-// SpectatorProxy.cs
+// Command.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -24,29 +24,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace Bang
+using System.Collections.Generic;
+namespace Bang.ConsoleUtils
 {
-	public class SpectatorProxy : MarshalByRefObject, ISpectator
+	public abstract class Command<In> : ICommand
 	{
-		private ISpectator raw;
-
-		int IIdentificable.ID
-		{
-			get { return raw.ID; }
-		}
-		string ISpectator.Name
-		{
-			get { return raw.Name; }
-		}
-		byte[] ISpectator.Image
-		{
-			get { return raw.Image; }
-		}
-
-		public SpectatorProxy(ISpectator raw)
-		{
-			this.raw = raw;
-		}
+		public abstract IEnumerable<string> Subcommands { get; }
+		public abstract ICommand GetSubcommand(string text);
+		public abstract void Execute(In param, Queue<string> cmd);
 	}
 }
 

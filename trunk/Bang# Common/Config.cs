@@ -8,6 +8,7 @@ namespace Bang
 	/// </summary>
 	public class Config
 	{
+		private static readonly object Lock = new object();
 		private static readonly string FileName = Path.Combine(Utils.ConfigFolder, "BangSharp.ini");
 		private static Config instance;
 		private static readonly string Default = @"
@@ -17,6 +18,8 @@ namespace Bang
 
 			[Server.Port]
 			2147
+			[Server.AdminPort]
+			2148
 			[ServerList.Adresses]
 			localhost
 			wonder93.gotdns.com
@@ -129,16 +132,21 @@ namespace Bang
 		/// <returns>
 		/// The value of the entry with the specified key or <paramref name="def"/> if none is found.
 		/// </returns>
-		public int GetInteger (string key, int def)
+		public int GetInteger(string key, int def)
 		{
-			try {
+			try
+			{
 				List<string> list = values[key];
 				if(list.Count == 0)
 					return def;
-				return int.Parse (list[0]);
-			} catch (FormatException) {
+				return int.Parse(list[0]);
+			}
+			catch(FormatException)
+			{
 				return def;
-			} catch (KeyNotFoundException) {
+			}
+			catch(KeyNotFoundException)
+			{
 				return def;
 			}
 		}
@@ -154,18 +162,22 @@ namespace Bang
 		/// <returns>
 		/// The value of the entry with the specified key or <paramref name="def"/> if none is found.
 		/// </returns>
-		public bool GetBoolean (string key, bool def)
+		public bool GetBoolean(string key, bool def)
 		{
-			try {
+			try
+			{
 				List<string> list = values[key];
 				if(list.Count == 0)
 					return def;
-				if (list[0] == "true")
+				if(list[0] == "true")
 					return true;
-				else if (list[0] == "false")
+				else if(list[0] == "false")
 					return false;
-				else return def;
-			} catch (KeyNotFoundException) {
+				else
+					return def;
+			}
+			catch(KeyNotFoundException)
+			{
 				return def;
 			}
 		}
@@ -181,12 +193,15 @@ namespace Bang
 		/// <returns>
 		/// The value of the entry with the specified key or <paramref name="def"/> if none is found.
 		/// </returns>
-		public List<string> GetStringList (string key)
+		public List<string> GetStringList(string key)
 		{
-			try {
+			try
+			{
 				List<string> list = new List<string>(values[key]);
 				return list;
-			} catch (KeyNotFoundException) {
+			}
+			catch(KeyNotFoundException)
+			{
 				return new List<string>();
 			}
 		}
@@ -202,15 +217,20 @@ namespace Bang
 		/// <returns>
 		/// The value of the entry with the specified key or <paramref name="def"/> if none is found.
 		/// </returns>
-		public List<int> GetIntegerList (string key)
+		public List<int> GetIntegerList(string key)
 		{
-			try {
+			try
+			{
 				List<string> list = values[key];
-				return list.ConvertAll<int> (int.Parse);
-			} catch (FormatException) {
-				return new List<int> ();
-			} catch (KeyNotFoundException) {
-				return new List<int> ();
+				return list.ConvertAll<int>(int.Parse);
+			}
+			catch(FormatException)
+			{
+				return new List<int>();
+			}
+			catch(KeyNotFoundException)
+			{
+				return new List<int>();
 			}
 		}
 		/// <summary>
@@ -222,16 +242,22 @@ namespace Bang
 		/// <param name="val">
 		/// The value to set.
 		/// </param>
-		public void SetString (string key, string val)
+		public void SetString(string key, string val)
 		{
-			List<string> newList = new List<string> ();
-			newList.Add (val);
-			try {
-				values[key] = newList;
-			} catch (KeyNotFoundException) {
-				values.Add (key, newList);
+			List<string> newList = new List<string>();
+			newList.Add(val);
+			lock(Lock)
+			{
+				try
+				{
+					values[key] = newList;
+				}
+				catch(KeyNotFoundException)
+				{
+					values.Add(key, newList);
+				}
+				Save();
 			}
-			Save();
 		}
 		/// <summary>
 		/// Sets the <see cref="System.Int32"/> for the specified key.
@@ -242,16 +268,22 @@ namespace Bang
 		/// <param name="val">
 		/// The value to set.
 		/// </param>
-		public void SetInteger (string key, int val)
+		public void SetInteger(string key, int val)
 		{
-			List<string> newList = new List<string> ();
+			List<string> newList = new List<string>();
 			newList.Add(val.ToString());
-			try {
-				values[key] = newList;
-			} catch (KeyNotFoundException) {
-				values.Add (key, newList);
+			lock(Lock)
+			{
+				try
+				{
+					values[key] = newList;
+				}
+				catch(KeyNotFoundException)
+				{
+					values.Add(key, newList);
+				}
+				Save();
 			}
-			Save ();
 		}
 		/// <summary>
 		/// Sets the <see cref="System.Boolean"/> for the specified key.
@@ -262,16 +294,22 @@ namespace Bang
 		/// <param name="val">
 		/// The value to set.
 		/// </param>
-		public void SetBoolean (string key, bool val)
+		public void SetBoolean(string key, bool val)
 		{
-			List<string> newList = new List<string> ();
-			newList.Add (val ? "true" : "false");
-			try {
-				values[key] = newList;
-			} catch (KeyNotFoundException) {
-				values.Add (key, newList);
+			List<string> newList = new List<string>();
+			newList.Add(val ? "true" : "false");
+			lock(Lock)
+			{
+				try
+				{
+					values[key] = newList;
+				}
+				catch(KeyNotFoundException)
+				{
+					values.Add(key, newList);
+				}
+				Save();
 			}
-			Save ();
 		}
 		/// <summary>
 		/// Sets the list of <see cref="System.String"/> for the specified key.
@@ -282,15 +320,21 @@ namespace Bang
 		/// <param name="val">
 		/// The value to set.
 		/// </param>
-		public void SetStringList (string key, List<string> list)
+		public void SetStringList(string key, List<string> list)
 		{
-			List<string> newList = new List<string> (list);
-			try {
-				values[key] = newList;
-			} catch (KeyNotFoundException) {
-				values.Add (key, newList);
+			List<string> newList = new List<string>(list);
+			lock(Lock)
+			{
+				try
+				{
+					values[key] = newList;
+				}
+				catch(KeyNotFoundException)
+				{
+					values.Add(key, newList);
+				}
+				Save();
 			}
-			Save ();
 		}
 		/// <summary>
 		/// Sets the list of <see cref="System.Int32"/> for the specified key.
@@ -301,15 +345,21 @@ namespace Bang
 		/// <param name="val">
 		/// The value to set.
 		/// </param>
-		public void SetIntegerList (string key, List<int> list)
+		public void SetIntegerList(string key, List<int> list)
 		{
 			List<string> newList = list.ConvertAll<string>(i => i.ToString());
-			try {
-				values[key] = newList;
-			} catch (KeyNotFoundException) {
-				values.Add (key, newList);
+			lock(Lock)
+			{
+				try
+				{
+					values[key] = newList;
+				}
+				catch(KeyNotFoundException)
+				{
+					values.Add(key, newList);
+				}
+				Save();
 			}
-			Save ();
 		}
 	}
 }

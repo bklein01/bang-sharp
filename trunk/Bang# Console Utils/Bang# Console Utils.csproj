@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{152B44A4-9B36-4042-8E36-1E83DB09FEEB}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Bang</RootNamespace>
+    <RootNamespace>Bang.ConsoleUtils</RootNamespace>
     <AssemblyName>BangSharpConsoleUtils</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <ReleaseVersion>1.0</ReleaseVersion>
@@ -36,8 +36,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleUtils.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="FinalCommand.cs" />
+    <Compile Include="NestedCommand.cs" />
+    <Compile Include="ConsoleHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bang# Common\Bang# Common.csproj">

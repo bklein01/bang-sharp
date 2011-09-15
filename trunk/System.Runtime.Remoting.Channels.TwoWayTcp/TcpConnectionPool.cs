@@ -30,14 +30,12 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
 	internal class TcpConnectionPool
 	{
-		public static readonly TcpConnectionPool Instance = new TcpConnectionPool();
-
 		private Dictionary<string, TcpConnection> hostConnections;
 		private List<TcpConnection> connections;
 
 		public OnMessageRecieved OnRequestRecieved;
 
-		private TcpConnectionPool()
+		public TcpConnectionPool()
 		{
 			hostConnections = new Dictionary<string, TcpConnection>();
 			connections = new List<TcpConnection>();

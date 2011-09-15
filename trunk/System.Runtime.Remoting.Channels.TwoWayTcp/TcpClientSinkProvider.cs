@@ -27,8 +27,9 @@ using System;
 using System.Collections.Generic;
 namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
-	public class TcpClientSinkProvider : IClientChannelSinkProvider
+	internal class TcpClientSinkProvider : IClientChannelSinkProvider
 	{
+		private TcpConnectionPool pool;
 		private Dictionary<TcpConnection, TcpClientSink> sinkCache;
 
 		IClientChannelSinkProvider IClientChannelSinkProvider.Next
@@ -37,8 +38,9 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			set { }
 		}
 
-		public TcpClientSinkProvider()
+		public TcpClientSinkProvider(TcpConnectionPool pool)
 		{
+			this.pool = pool;
 			sinkCache = new Dictionary<TcpConnection, TcpClientSink>();
 		}
 
@@ -71,7 +73,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				{
 					return null;
 				}
-				TcpConnection conn = TcpConnectionPool.Instance.GetConnection(host, p);
+				TcpConnection conn = pool.GetConnection(host, p);
 				if(conn == null)
 					return null;
 				return GetSink(conn);
@@ -87,7 +89,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				{
 					return null;
 				}
-				TcpConnection conn = TcpConnectionPool.Instance.GetConnection(id);
+				TcpConnection conn = pool.GetConnection(id);
 				if(conn == null)
 					return null;
 				return GetSink(conn);

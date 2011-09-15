@@ -23,81 +23,28 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using Bang.ConsoleUtils;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 namespace Bang.Server
 {
-	class MainClass
+	static class MainClass
 	{
 		public static void Main(string[] cmdArgs)
 		{
-			ConsoleUtils.Commands = new string[]
-			{
-				"server",
-				"name",
-				"description",
-				"sessions",
-				"count",
-				"session",
-				"game",
-				"players",
-				"player",
-				"graveyardtop",
-				"reqtype",
-				"current",
-				"requested",
-				"causedby",
-				"hand",
-				"role",
-				"selection",
-				"exit",
-				"issheriff",
-				"isalive",
-				"iswinner",
-				"lifepoints",
-				"maxlifepoints",
-				"table",
-				"character",
-				"state",
-				"minplayers",
-				"maxplayers",
-				"maxspectators",
-				"hasplayerpassword",
-				"hasspectatorpassword",
-				"creator",
-				"dodgecity",
-				"highnoon",
-				"fistfulofcards",
-				"wildwestshow",
-				"gamesplayed",
-				"spectators",
-				"spectator",
-				"haspassword",
-				"iscreator",
-				"isai",
-				"haslistener",
-				"wins",
-				"winsassheriff",
-				"winsasdeputy",
-				"winsasoutlaw",
-				"winsasrenegade",
-				"end",
-				"reset",
-				"changepassword",
-			};
-			ConsoleUtils.PrintLine("Bang# Server Interface");
-			ConsoleUtils.PrintLine("----------------------");
+			ConsoleHelper.PrintLine("Bang# Server Interface");
+			ConsoleHelper.PrintLine("----------------------");
 
 			string address;
 			string portString;
 			if(cmdArgs.Length != 2)
 			{
-				ConsoleUtils.Print("Server Address: ");
-				address = ConsoleUtils.ReadLine();
-				ConsoleUtils.Print("Server Port: ");
-				portString = ConsoleUtils.ReadLine();
+				ConsoleHelper.Print("Server Address: ");
+				address = ConsoleHelper.ReadLine();
+				ConsoleHelper.Print("Server Administration Port: ");
+				portString = ConsoleHelper.ReadLine();
 			}
 			else
 			{
@@ -111,254 +58,118 @@ namespace Bang.Server
 			}
 			catch(FormatException)
 			{
-				ConsoleUtils.ErrorLine("Bad number format!");
+				ConsoleHelper.ErrorLine("Bad number format!");
 				return;
 			}
 
-			ConsoleUtils.PrintLine("Connecting to {0} on port {1}...", address, port);
-			ServerProxy<Server> serverProxy = (ServerProxy<Server>)Utils.Connect(address, port);
+			ConsoleHelper.PrintLine("Connecting to {0} on port {1}...", address, port);
+			IServerBase server = ServerUtils.ConnectAdmin(address, port);
 
-			ConsoleUtils.PrintLine();
+			ConsoleHelper.PrintLine();
 
 			try
 			{
-				/*
 				if(!Utils.IsServerCompatible(server))
 				{
-					ConsoleUtils.ErrorLine("Server version {0}.{1} not compatible with client version {2}.{3}!",
+					ConsoleHelper.ErrorLine("Server version {0}.{1} not compatible with client version {2}.{3}!",
 						server.InterfaceVersionMajor, server.InterfaceVersionMinor,
 						Utils.InterfaceVersionMajor, Utils.InterfaceVersionMinor);
 					return;
 				}
-				*/
-				ConsoleUtils.PrintLine("Server name: {0}", ((IServer)serverProxy).Name);
-				ConsoleUtils.PrintLine("Server description: {0}", ((IServer)serverProxy).Description);
-				ConsoleUtils.SuccessLine("Connection estabilished!");
-				ConsoleUtils.PrintLine();
+				if(!ServerUtils.IsServerCompatible(server))
+				{
+					ConsoleHelper.ErrorLine("Server administration version {0}.{1} not compatible with interface version {2}.{3}!",
+						server.ServerInterfaceVersionMajor, server.ServerInterfaceVersionMinor,
+						ServerUtils.InterfaceVersionMajor, ServerUtils.InterfaceVersionMinor);
+					return;
+				}
+				ConsoleHelper.PrintLine("Server name: {0}", server.Name);
+				ConsoleHelper.PrintLine("Server description: {0}", server.Description);
+				ConsoleHelper.SuccessLine("Connection estabilished!");
+				ConsoleHelper.PrintLine();
 
-				ConsoleUtils.Print("Server password: ");
-				Password password = ConsoleUtils.ReadPassword();
-				Server server;
+				ConsoleHelper.Print("Server password: ");
+				Password password = ConsoleHelper.ReadPassword();
+				IServerAdmin serverAdmin;
 				try
 				{
-					server = serverProxy.GetServerObject(password);
+					serverAdmin = server.GetServerAdmin(password);
 				}
 				catch(BadServerPasswordException)
 				{
-					ConsoleUtils.ErrorLine("Password rejected!");
+					ConsoleHelper.ErrorLine("Password rejected!");
 					return;
 				}
-				ConsoleUtils.SuccessLine("Password accepted!");
+				ConsoleHelper.SuccessLine("Password accepted!");
+				ConsoleHelper.PrintLine();
 
-				ConsoleUtils.PrintLine();
+				NestedCommand rootCmd = new NestedCommand();
+				NestedCommand<IServer> serverCmd = new NestedCommand<IServer>(cmd => server);
+				serverCmd.MakeServerCommand();
+				rootCmd["server"] = serverCmd;
+				NestedCommand<IServerAdmin> serverAdminCmd = new NestedCommand<IServerAdmin>(cmd => serverAdmin);
+				serverAdminCmd.MakeServerAdminCommand();
+				rootCmd["serveradmin"] = serverAdminCmd;
+				rootCmd["exit"] = new FinalCommand(cmd => Environment.Exit(0));
 				while (true) // command-line loop
 				{
-					Queue<string> args = ConsoleUtils.ReadCommand();
-					string arg;
 					try
 					{
-						switch (arg = args.Dequeue())
-						{
-						case "server":
-							switch (arg = args.Dequeue())
-							{
-							case "name":
-								ConsoleUtils.PrintLine(server.Name);
-								break;
-							case "description":
-								ConsoleUtils.PrintLine(server.Description);
-								break;
-							case "sessions":
-								if(args.Count == 0)
-								{
-									foreach(Session s in server.Sessions)
-									{
-										ConsoleUtils.PrintLine("Session {0}:", s.ID);
-										ConsoleUtils.Print(s);
-									}
-									break;
-								}
-								switch (args.Dequeue())
-								{
-								case "count":
-									ConsoleUtils.PrintLine(server.Sessions.Count);
-									break;
-								case "reset":
-									server.ResetSessions();
-									ConsoleUtils.SuccessLine();
-									break;
-								default:
-									ConsoleUtils.ErrorLine("Unknown command!");
-									break;
-								}
-								break;
-							case "session":
-								Session session;
-								try
-								{
-									int id = int.Parse(args.Dequeue());
-									session = server.GetSession(id);
-								}
-								catch(FormatException)
-								{
-									ConsoleUtils.ErrorLine("Expected an ID!");
-									break;
-								}
-								catch(InvalidIdException)
-								{
-									ConsoleUtils.ErrorLine("Invalid ID!");
-									break;
-								}
-								switch(arg = args.Dequeue())
-								{
-								case "game":
-									Game game = session.Game;
-									if(game == null)
-									{
-										ConsoleUtils.ErrorLine("Game not started!");
-										break;
-									}
-									switch(arg = args.Dequeue())
-									{
-									case "players":
-										if(args.Count == 0)
-										{
-											foreach(Player p in game.Players)
-											{
-												ConsoleUtils.PrintLine("Player #{0}:", p.ID);
-												Print(p);
-											}
-											break;
-										}
-										switch(arg = args.Dequeue())
-										{
-										case "count":
-											ConsoleUtils.PrintLine(game.Players.Count);
-											break;
-										default:
-											ConsoleUtils.ErrorLine("Unknown command!");
-											break;
-										}
-										break;
-									case "player":
-										Player player;
-										try
-										{
-											int id = int.Parse(args.Dequeue());
-											player = game.GetPlayer(id);
-										}
-										catch(FormatException)
-										{
-											ConsoleUtils.ErrorLine("Expected an ID!");
-											break;
-										}
-										catch(InvalidIdException)
-										{
-											ConsoleUtils.ErrorLine("Invalid ID!");
-											break;
-										}
-										switch(arg = args.Dequeue())
-										{
-										case "hand":
-											if(args.Count == 0)
-											{
-												foreach(Card c in player.Hand)
-												{
-													ConsoleUtils.PrintLine("Card #{0}:", c.ID);
-													ConsoleUtils.Print(c);
-												}
-												break;
-											}
-											switch(arg = args.Dequeue())
-											{
-											case "count":
-												ConsoleUtils.PrintLine(player.Hand.Count);
-												break;
-											default:
-												ConsoleUtils.ErrorLine("Unknown command!");
-												break;
-											}
-											break;
-										case "role":
-											ConsoleUtils.PrintLine(player.Role);
-											break;
-										default:
-											ConsoleUtils.PlayerCommand(arg, args, player);
-											break;
-										}
-										break;
-									default:
-										ConsoleUtils.GameCommand(arg, args, game);
-										break;
-									}
-									break;
-								case "end":
-									session.End();
-									break;
-								default:
-									ConsoleUtils.SessionCommand(arg, args, session);
-									break;
-								}
-								break;
-							case "changepassword":
-								ConsoleUtils.Print("Current password: ");
-								password = ConsoleUtils.ReadPassword();
-								ConsoleUtils.Print("New password: ");
-								Password newPassword = ConsoleUtils.ReadPassword();
-								try
-								{
-									serverProxy.ChangePassword(password, newPassword);
-									ConsoleUtils.SuccessLine("Password changed!");
-								}
-								catch(BadServerPasswordException)
-								{
-									ConsoleUtils.ErrorLine("Password rejected!");
-								}
-								break;
-							default:
-								ConsoleUtils.ErrorLine("Unknown command!");
-								break;
-							}
-							break;
-						case "exit":
-							return;
-						default:
-							ConsoleUtils.ErrorLine("Unknown command!");
-							break;
-						}
+						rootCmd.ReadAndExecute();
 					}
 					catch(InvalidOperationException)
 					{
-						ConsoleUtils.ErrorLine("Too few arguments!");
+						ConsoleHelper.ErrorLine("Too few arguments!");
 					}
 				}
 			}
 			catch(RemotingException e)
 			{
-				ConsoleUtils.ErrorLine("Remoting error!");
+				ConsoleHelper.ErrorLine("Remoting error!");
 #if DEBUG
-				ConsoleUtils.DebugLine(e.ToString());
+				ConsoleHelper.DebugLine(e.ToString());
 #endif
 				return;
 			}
 			catch(SerializationException e)
 			{
-				ConsoleUtils.ErrorLine("Serialization error!");
+				ConsoleHelper.ErrorLine("Serialization error!");
 #if DEBUG
-				ConsoleUtils.DebugLine(e.ToString());
+				ConsoleHelper.DebugLine(e.ToString());
 #endif
 				return;
 			}
 		}
-		private static void Print(Player player)
+
+		public static void MakeSessionAdminCommand<In>(this NestedCommand<In, ISessionAdmin> command)
 		{
-			if(player == null)
-				return;
-			ConsoleUtils.PrintLine("\tIsAlive: {0}", player.IsAlive);
-			ConsoleUtils.PrintLine("\tIsWinner: {0}", player.IsWinner);
-			ConsoleUtils.PrintLine("\tLifePoints: {0}/{1}", player.LifePoints, player.MaxLifePoints);
-			ConsoleUtils.PrintLine("\tRole: {0}", player.Role);
-			ConsoleUtils.PrintLine("\tCharacter: {0}", player.CharacterType);
+			command["end"] = new FinalCommand<ISessionAdmin>((sessionAdmin, cmd) => {
+				sessionAdmin.End();
+				ConsoleHelper.SuccessLine("Session ended!");
+			});
+		}
+		public static void MakeServerAdminCommand<In>(this NestedCommand<In, IServerAdmin> command)
+		{
+			command["resetsessions"] = new FinalCommand<IServerAdmin>((serverAdmin, cmd) =>
+			{
+				serverAdmin.ResetSessions();
+				ConsoleHelper.SuccessLine("All sessions ended!");
+			});
+			NestedCommand<IServerAdmin, ISessionAdmin> sessionCommand = new NestedCommand<IServerAdmin, ISessionAdmin>((serverAdmin, cmd) =>
+			{
+				try
+				{
+					int id = int.Parse(cmd.Dequeue());
+					return serverAdmin.GetSessionAdmin(id);
+				}
+				catch(FormatException)
+				{
+					ConsoleHelper.ErrorLine("Bad number format!");
+				}
+				return null;
+			});
+			sessionCommand.MakeSessionAdminCommand();
+			command["session"] = sessionCommand;
 		}
 	}
 }

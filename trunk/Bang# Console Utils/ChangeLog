@@ -1,3 +1,17 @@
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* Command.cs:
+	* ICommand.cs:
+	* FinalCommand.cs:
+	* AssemblyInfo.cs:
+	* NestedCommand.cs:
+	* ConsoleHelper.cs:
+	* Bang# Console Utils.csproj:
+	  Complete restructuralisation.
+
+	* ConsoleUtils.cs:
+	  
+
 2011-09-10  WOnder93  <omosnacek@gmail.com>
 
 	* ConsoleUtils.cs:

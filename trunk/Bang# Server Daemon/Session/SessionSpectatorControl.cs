@@ -15,11 +15,11 @@ namespace Bang.Server
 		}
 		ISession ISpectatorSessionControl.Session
 		{
-			get { return new SessionProxy(spectator.Session); }
+			get { return spectator.Session; }
 		}
 		ISpectator ISpectatorSessionControl.Spectator
 		{
-			get { return new SpectatorProxy(spectator); }
+			get { return spectator; }
 		}
 
 		public SessionSpectatorControl(SessionSpectator spectator)
@@ -39,15 +39,8 @@ namespace Bang.Server
 					throw new InvalidOperationException();
 				session.Locked = true;
 
-				try
-				{
-					session.EventManager.SendChatMessage(spectator, message);
-				}
-				catch
-				{
-					session.Locked = false;
-					throw;
-				}
+				session.EventManager.SendChatMessage(spectator, message);
+
 				session.Locked = false;
 			}
 		}
@@ -56,24 +49,7 @@ namespace Bang.Server
 		{
 			if(!spectator.HasListener)
 				throw new InvalidOperationException();
-			Session session = Session;
-			lock(session)
-			{
-				if(session.Locked)
-					throw new InvalidOperationException();
-				session.Locked = true;
-
-				try
-				{
-					session.RemoveSpectator(spectator);
-				}
-				catch
-				{
-					session.Locked = false;
-					throw;
-				}
-				session.Locked = false;
-			}
+			Session.RemoveSpectator(spectator);
 		}
 	}
 }

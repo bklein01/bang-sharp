@@ -1,4 +1,4 @@
-// PlayerSessionControlProxy.cs
+// IServerAdmin.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -24,42 +24,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-namespace Bang
+namespace Bang.Server
 {
-	public class PlayerSessionControlProxy : MarshalByRefObject, IPlayerSessionControl
+	public interface IServerAdmin
 	{
-		private IPlayerSessionControl raw;
-
-		IPlayer IPlayerSessionControl.Player
-		{
-			get { return raw.Player; }
-		}
-		ISession IPlayerSessionControl.Session
-		{
-			get { return raw.Session; }
-		}
-
-		public PlayerSessionControlProxy(IPlayerSessionControl raw)
-		{
-			this.raw = raw;
-		}
-
-		void IPlayerSessionControl.SendChatMessage(string message)
-		{
-			raw.SendChatMessage(message);
-		}
-		void IPlayerSessionControl.Disconnect()
-		{
-			raw.Disconnect();
-		}
-		void IPlayerSessionControl.StartGame()
-		{
-			raw.StartGame();
-		}
-		void IPlayerSessionControl.EndSession()
-		{
-			raw.EndSession();
-		}
+		void ResetSessions();
+		
+		ISessionAdmin GetSessionAdmin(int id);
 	}
 }
 

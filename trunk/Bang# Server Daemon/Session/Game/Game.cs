@@ -35,7 +35,7 @@ namespace Bang.Server
 			
 			IGame ISpectatorControl.Game
 			{
-				get { return new GameProxy(game); }
+				get { return game; }
 			}
 
 			public SpectatorControl (Game game)
@@ -71,7 +71,7 @@ namespace Bang.Server
 		}
 		ReadOnlyCollection<IPublicPlayerView> IGame.Players
 		{
-			get { return new ReadOnlyCollection<IPublicPlayerView> (playerList.ConvertAll<IPublicPlayerView>(p => new PublicPlayerViewProxy(p))); }
+			get { return new ReadOnlyCollection<IPublicPlayerView> (playerList.ConvertAll<IPublicPlayerView>(p => p)); }
 		}
 		public int AlivePlayersCount
 		{
@@ -92,15 +92,15 @@ namespace Bang.Server
 		}
 		IPublicPlayerView IGame.CurrentPlayer
 		{
-			get { return new PublicPlayerViewProxy(cycle.CurrentPlayer); }
+			get { return cycle.CurrentPlayer; }
 		}
 		IPublicPlayerView IGame.RequestedPlayer
 		{
-			get { return ended ? null : new PublicPlayerViewProxy(cycle.RequestedPlayer); }
+			get { return ended ? null : cycle.RequestedPlayer; }
 		}
 		IPublicPlayerView IGame.CausedBy
 		{
-			get { return ended ? null : new PublicPlayerViewProxy(cycle.CausedBy); }
+			get { return ended ? null : cycle.CausedBy; }
 		}
 		
 		public int MaxBangs
@@ -483,7 +483,7 @@ namespace Bang.Server
 		{
 			try
 			{
-				return new PublicPlayerViewProxy(players[id]);
+				return players[id];
 			}
 			catch(KeyNotFoundException)
 			{

@@ -1,4 +1,4 @@
-// SpectatorControlProxy.cs
+// MethodRestrictionServerSinkProvider.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -24,20 +24,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Reflection;
+using System.Runtime.Remoting.Channels;
 namespace Bang
 {
-	public class SpectatorControlProxy : ImmortalMarshalByRefObject, ISpectatorControl
+	internal class MethodRestrictionServerSinkProvider : IServerChannelSinkProvider
 	{
-		private ISpectatorControl raw;
+		private IServerChannelSinkProvider next;
 
-		IGame ISpectatorControl.Game
+		public Predicate<MethodBase> Filter
 		{
-			get { return raw.Game; }
+			get;
+			set;
+		}
+		public IServerChannelSinkProvider Next
+		{
+			get { return next; }
+			set { next = value; }
 		}
 
-		public SpectatorControlProxy(ISpectatorControl raw)
+		public MethodRestrictionServerSinkProvider()
 		{
-			this.raw = raw;
+			Filter = t => true;
+		}
+
+		public IServerChannelSink CreateSink(IChannelReceiver channel)
+		{
+			IServerChannelSink nextSink = null;
+			if(next != null)
+				nextSink = next.CreateSink(channel);
+			return new MethodRestrictionServerSink(this, nextSink);
+		}
+		public void GetChannelData(IChannelDataStore channelData)
+		{
 		}
 	}
 }

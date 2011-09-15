@@ -1,3 +1,12 @@
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Test Client.csproj:
+	  
+
+	* Main.cs:
+	  Edited to comply with the changes in Bang# Console Utils.
+
 2011-09-10  WOnder93  <omosnacek@gmail.com>
 
 	* Main.cs:

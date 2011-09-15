@@ -30,6 +30,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
 	public class TcpClientChannel : IChannelSender, IChannelReceiver
 	{
+		private static readonly TcpConnectionPool pool = new TcpConnectionPool();
 		private string name = "TcpClientChannel";
 		private int priority = 1;
 
@@ -52,7 +53,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			if(clientSinkProvider == null)
 			{
 				this.clientSinkProvider = new BinaryClientFormatterSinkProvider();
-				this.clientSinkProvider.Next = new TcpClientSinkProvider();
+				this.clientSinkProvider.Next = new TcpClientSinkProvider(pool);
 			}
 
 			else
@@ -61,7 +62,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				IClientChannelSinkProvider provider = clientSinkProvider;
 				while(provider.Next != null)
 					provider = provider.Next;
-				provider.Next = new TcpClientSinkProvider();
+				provider.Next = new TcpClientSinkProvider(pool);
 			}
 			
 			if(serverSinkProvider == null)
@@ -107,12 +108,12 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 		public void StartListening(object data)
 		{
-			TcpConnectionPool.Instance.OnRequestRecieved += serverSink.OnRequestRecieved;
+			pool.OnRequestRecieved += serverSink.OnRequestRecieved;
 		}
 		public void StopListening(object data)
 		{
-			TcpConnectionPool.Instance.OnRequestRecieved -= serverSink.OnRequestRecieved;
-			TcpConnectionPool.Instance.PurgeConnections();
+			pool.OnRequestRecieved -= serverSink.OnRequestRecieved;
+			pool.PurgeConnections();
 		}
 
 		object IChannelReceiver.ChannelData

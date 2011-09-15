@@ -77,7 +77,7 @@ namespace Bang.Server
 		}
 		ReadOnlyCollection<ICard> IPrivatePlayerView.Hand
 		{
-			get { return new ReadOnlyCollection<ICard> (hand.ConvertAll<ICard>(c => new CardProxy(c))); }
+			get { return new ReadOnlyCollection<ICard> (hand.ConvertAll<ICard>(c => c)); }
 		}
 		public ReadOnlyCollection<TableCard> Table
 		{
@@ -85,7 +85,7 @@ namespace Bang.Server
 		}
 		ReadOnlyCollection<ICard> IPublicPlayerView.Table
 		{
-			get { return new ReadOnlyCollection<ICard> (table.ConvertAll<ICard>(c => new CardProxy(c))); }
+			get { return new ReadOnlyCollection<ICard> (table.ConvertAll<ICard>(c => c)); }
 		}
 		ReadOnlyCollection<ICard> IPrivatePlayerView.Selection
 		{
