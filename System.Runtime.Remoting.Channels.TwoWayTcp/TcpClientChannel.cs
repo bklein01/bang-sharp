@@ -30,7 +30,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
 	public class TcpClientChannel : IChannelSender, IChannelReceiver
 	{
-		private static readonly TcpConnectionPool pool = new TcpConnectionPool();
+		private TcpConnectionPool pool = new TcpConnectionPool();
 		private string name = "TcpClientChannel";
 		private int priority = 1;
 
