@@ -1,4 +1,4 @@
-// AssemblyInfo.cs
+// BadCharacterTypeException.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,30 +23,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System.Reflection;
-using System.Runtime.CompilerServices;
-
-// Information about this assembly is defined by the following attributes. 
-// Change them to the values specific to your project.
-
-[assembly: AssemblyTitle("BangSharpAI")]
-[assembly: AssemblyDescription("Bang# AI Library")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("(c) Ondrej Mosnáček, 2011")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
-
-[assembly: AssemblyVersion("0.1.3.0")]
-
-// The following attributes are used to specify the signing key for the assembly, 
-// if desired. See the Mono documentation for more information about signing.
-
-//[assembly: AssemblyDelaySign(false)]
-//[assembly: AssemblyKeyFile("")]
+using System;
+using System.Runtime.Serialization;
+namespace Bang
+{
+	/// <summary>
+	/// Thrown when player attempts to respond with bad character.
+	/// </summary>
+	[Serializable]
+	public class BadCharacterTypeException : GameException
+	{
+		public BadCharacterTypeException()
+		{
+		}
+		protected BadCharacterTypeException(SerializationInfo info, StreamingContext context)
+		{
+		}
+	}
+}
 

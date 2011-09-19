@@ -999,11 +999,11 @@ namespace Bang.Server
 						s.UnregisterListener();
 					}
 		}
-		public void OnPlayerUsedAbility (Player player)
+		public void OnPlayerUsedAbility(Player player)
 		{
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerUsedAbility(player);
@@ -1014,11 +1014,63 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerUsedAbility(player);
+					}
+					catch(RemotingException)
+					{
+						s.UnregisterListener();
+					}
+		}
+		public void OnPlayerGainedAdditionalCharacters(Player player)
+		{
+			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
+					try
+					{
+						p.Listener.OnPlayerGainedAdditionalCharacters(player);
+					}
+					catch(RemotingException)
+					{
+						p.UnregisterListener();
+					}
+
+			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
+					try
+					{
+						s.Listener.OnPlayerGainedAdditionalCharacters(player);
+					}
+					catch(RemotingException)
+					{
+						s.UnregisterListener();
+					}
+		}
+		public void OnPlayerLostAdditionalCharacters(Player player)
+		{
+			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
+					try
+					{
+						p.Listener.OnPlayerLostAdditionalCharacters(player);
+					}
+					catch(RemotingException)
+					{
+						p.UnregisterListener();
+					}
+			
+			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
+					try
+					{
+						s.Listener.OnPlayerLostAdditionalCharacters(player);
 					}
 					catch(RemotingException)
 					{

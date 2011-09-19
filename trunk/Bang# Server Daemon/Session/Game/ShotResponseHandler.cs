@@ -24,7 +24,7 @@
 using System.Collections.Generic;
 namespace Bang.Server
 {
-	public sealed class ShotResponseHandler : ResponseHandler, ICardResultHandler
+	public sealed class ShotResponseHandler : ResponseHandler
 	{
 		private int power;
 		private List<Card> barrelsChecked;
@@ -42,7 +42,7 @@ namespace Bang.Server
 		{
 		}
 
-		void ICardResultHandler.OnResult(Card card, bool result)
+		private void OnResult(Card card, bool result)
 		{
 			if(card != null)
 				if(card.Type == CardType.Barrel)
@@ -72,14 +72,14 @@ namespace Bang.Server
 			if(barrelsChecked.Contains(card))
 				throw new BadCardException();
 
-			RequestedPlayer.CheckMissed(card, this);
+			RequestedPlayer.CheckMissed(card, OnResult);
 		}
 		protected override void OnRespondUseAbility()
 		{
 			if(abilityUsed)
 				throw new BadUsageException();
 			
-			RequestedPlayer.Character.CheckMissed(this);
+			RequestedPlayer.Character.CheckMissed(OnResult);
 			abilityUsed = true;
 		}
 		protected override void OnRespondNoAction()

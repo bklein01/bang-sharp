@@ -143,12 +143,13 @@
     <Compile Include="Session\Game\Cards\AllPlayersTableCard.cs" />
     <Compile Include="Session\Game\Cards\GeneralCard.cs" />
     <Compile Include="Session\Game\Cards\GeneralTableCard.cs" />
-    <Compile Include="Session\Game\ICardResultHandler.cs" />
     <Compile Include="Session\Game\Cards\Dodge City\Whisky.cs" />
     <Compile Include="Session\Game\Cards\GeneralGoldenCard.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Session\Game\Delegates.cs" />
+    <Compile Include="Session\Game\Characters\ProxyCharacter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bang# Server\Bang# Server.csproj">

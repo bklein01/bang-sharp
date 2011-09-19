@@ -531,6 +531,11 @@ namespace Bang.ConsoleUtils
 			tableCommand.MakeCardCollectionCommand();
 			command["table"] = tableCommand;
 			command["character"] = new FinalCommand<IPublicPlayerView>((player, cmd) => { PrintLine(player.CharacterType); });
+			command["additionalcharacters"] = new FinalCommand<IPublicPlayerView>((player, cmd) =>
+			{
+				foreach(CharacterType type in player.AdditionalCharacters)
+					PrintLine(type);
+			});
 			command["role"] = new FinalCommand<IPublicPlayerView>((player, cmd) => { PrintLine(player.IsAlive); });
 		}
 		public static void MakePrivatePlayerViewCommand<In>(this NestedCommand<In, IPrivatePlayerView> command)
@@ -607,11 +612,13 @@ namespace Bang.ConsoleUtils
 			command["haslistener"] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.HasListener); });
 			command["score"] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.Score); });
 			command["turnsplayed"] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.TurnsPlayed); });
-			command["wins"] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.Victories); });
-			command["winsassheriff"] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.VictoriesAsSheriff); });
-			command["winsasdeputy"] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.VictoriesAsDeputy); });
-			command["winsasoutlaw"] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.VictoriesAsOutlaw); });
-			command["winsasrenegade"] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.VictoriesAsRenegade); });
+			NestedCommand<IPlayer, IPlayer> victoriesCommand = new NestedCommand<IPlayer, IPlayer>((player, cmd) => player);
+			victoriesCommand[""] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.Victories); });
+			foreach(Role role in Utils.GetRoles())
+				victoriesCommand["Role" + role.ToString()] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.GetVictories(role)); });
+			foreach(CharacterType character in Utils.GetCharacterTypes())
+				victoriesCommand["Character" + character.ToString()] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.GetVictories(character)); });
+			command["victories"] = victoriesCommand;
 		}
 		public static void MakeSessionSpectatorCommand<In>(this NestedCommand<In, ISpectator> command)
 		{

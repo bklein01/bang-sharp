@@ -657,6 +657,18 @@ namespace Bang.Client
 			if(aiPlayer != null)
 				aiPlayer.OnPlayerUsedAbility(player);
 		}
+		void IEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player)
+		{
+			ConsoleHelper.GameEvent("Player #{0} gained additional abilities.", player.ID);
+			if(aiPlayer != null)
+				aiPlayer.OnPlayerGainedAdditionalCharacters(player);
+		}
+		void IEventListener.OnPlayerLostAdditionalCharacters(IPublicPlayerView player)
+		{
+			ConsoleHelper.GameEvent("Player #{0} lost his additional abilities.", player.ID);
+			if(aiPlayer != null)
+				aiPlayer.OnPlayerLostAdditionalCharacters(player);
+		}
 		void IEventListener.OnDeckRegenerated ()
 		{
 			ConsoleHelper.GameEvent("The deck was regenerated.");

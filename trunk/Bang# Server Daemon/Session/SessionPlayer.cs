@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections.Generic;
 namespace Bang.Server
 {
 	public sealed class SessionPlayer : MarshalByRefObject, IPlayer
@@ -16,11 +17,9 @@ namespace Bang.Server
 		private int score;
 		private int turnsPlayed;
 		private int victories;
-		private int victoriesAsSheriff;
-		private int victoriesAsDeputy;
-		private int victoriesAsOutlaw;
-		private int victoriesAsRenegade;
-		
+		private Dictionary<Role, int> roleVictories;
+		private Dictionary<CharacterType, int> characterVictories;
+
 		public int ID
 		{
 			get { return id; }
@@ -77,22 +76,6 @@ namespace Bang.Server
 		{
 			get { return victories; }
 		}
-		public int VictoriesAsSheriff
-		{
-			get { return victoriesAsSheriff; }
-		}
-		public int VictoriesAsDeputy
-		{
-			get { return victoriesAsDeputy; }
-		}
-		public int VictoriesAsOutlaw
-		{
-			get { return victoriesAsOutlaw; }
-		}
-		public int VictoriesAsRenegade
-		{
-			get { return victoriesAsRenegade; }
-		}
 
 		public Session Session
 		{
@@ -117,10 +100,14 @@ namespace Bang.Server
 			score = 0;
 			turnsPlayed = 0;
 			victories = 0;
-			victoriesAsSheriff = 0;
-			victoriesAsDeputy = 0;
-			victoriesAsOutlaw = 0;
-			victoriesAsRenegade = 0;
+			List<Role> roles = Utils.GetRoles();
+			roleVictories = new Dictionary<Role, int>(roles.Count);
+			foreach(Role role in roles)
+				roleVictories[role] = 0;
+			List<CharacterType> characters = Utils.GetCharacterTypes(session);
+			characterVictories = new Dictionary<CharacterType, int>(characters.Count);
+			foreach(CharacterType character in characters)
+				characterVictories[character] = 0;
 		}
 		public SessionPlayer(Session session, BinaryReader reader)
 		{
@@ -152,18 +139,28 @@ namespace Bang.Server
 			victories = reader.ReadInt32();
 			if(victories < 0)
 				throw new FormatException();
-			victoriesAsSheriff = reader.ReadInt32();
-			if(victoriesAsSheriff < 0)
-				throw new FormatException();
-			victoriesAsDeputy = reader.ReadInt32();
-			if(victoriesAsDeputy < 0)
-				throw new FormatException();
-			victoriesAsOutlaw = reader.ReadInt32();
-			if(victoriesAsOutlaw < 0)
-				throw new FormatException();
-			victoriesAsRenegade = reader.ReadInt32();
-			if(victoriesAsRenegade < 0)
-				throw new FormatException();
+
+			int roleVicCount = reader.ReadInt32();
+			roleVictories = new Dictionary<Role, int>(roleVicCount);
+			for(int i = 0; i < roleVicCount; i++)
+			{
+				Role role = (Role)reader.ReadInt32();
+				int vic = reader.ReadInt32();
+				if(vic < 0)
+					throw new FormatException();
+				roleVictories.Add(role, vic);
+			}
+
+			int characterVicCount = reader.ReadInt32();
+			characterVictories = new Dictionary<CharacterType, int>(characterVicCount);
+			for(int i = 0; i < characterVicCount; i++)
+			{
+				CharacterType character = (CharacterType)reader.ReadInt32();
+				int vic = reader.ReadInt32();
+				if(vic < 0)
+					throw new FormatException();
+				characterVictories.Add(character, vic);
+			}
 		}
 
 		public void Write(BinaryWriter writer)
@@ -181,10 +178,39 @@ namespace Bang.Server
 			writer.Write(score);
 			writer.Write(turnsPlayed);
 			writer.Write(victories);
-			writer.Write(victoriesAsSheriff);
-			writer.Write(victoriesAsDeputy);
-			writer.Write(victoriesAsOutlaw);
-			writer.Write(victoriesAsRenegade);
+			writer.Write(roleVictories.Count);
+			foreach(KeyValuePair<Role, int> item in roleVictories)
+			{
+				writer.Write((int)item.Key);
+				writer.Write(item.Value);
+			}
+			writer.Write(characterVictories.Count);
+			foreach(KeyValuePair<CharacterType, int> item in characterVictories)
+			{
+				writer.Write((int)item.Key);
+				writer.Write(item.Value);
+			}
+		}
+
+		public int GetVictories(Role role)
+		{
+			if(role == Role.Unknown)
+				return victories;
+
+			if(!roleVictories.ContainsKey(role))
+				return 0;
+
+			return roleVictories[role];
+		}
+		public int GetVictories(CharacterType character)
+		{
+			if(character == CharacterType.Unknown)
+				return victories;
+			
+			if(!characterVictories.ContainsKey(character))
+				return 0;
+
+			return characterVictories[character];
 		}
 
 		public void Update (CreatePlayerData data)
@@ -210,24 +236,11 @@ namespace Bang.Server
 		{
 			this.turnsPlayed += turnsPlayed;
 		}
-		public void RegisterVictory(Role role)
+		public void RegisterVictory(Role role, CharacterType character)
 		{
 			victories++;
-			switch(role)
-			{
-			case Role.Sheriff:
-				victoriesAsSheriff++;
-				break;
-			case Role.Deputy:
-				victoriesAsDeputy++;
-				break;
-			case Role.Outlaw:
-				victoriesAsOutlaw++;
-				break;
-			case Role.Renegade:
-				victoriesAsRenegade++;
-				break;
-			}
+			roleVictories[role]++;
+			characterVictories[character]++;
 		}
 	}
 }

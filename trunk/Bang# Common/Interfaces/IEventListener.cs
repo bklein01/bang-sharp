@@ -395,7 +395,21 @@ namespace Bang
 		/// </param>
 		void OnPlayerUsedAbility(IPublicPlayerView player);
 		/// <summary>
-		/// Fired when the deck has regenerated (the graveyard peek remains unchanged, the rest of the graveyard is reversed and put to the deck).
+		/// Fired when a player has gained additional characters.
+		/// </summary>
+		/// <param name="player">
+		/// The <see cref="IPublicPlayerView"/> of the player that has gained the characters.
+		/// </param>
+		void OnPlayerGainedAdditionalCharacters(IPublicPlayerView player);
+		/// <summary>
+		/// Fired when a player has lost his additional characters.
+		/// </summary>
+		/// <param name="player">
+		/// The <see cref="IPublicPlayerView"/> of the player that has lost the characters.
+		/// </param>
+		void OnPlayerLostAdditionalCharacters(IPublicPlayerView player);
+		/// <summary>
+		/// Fired when the deck has been regenerated (the graveyard peek remains unchanged, the rest of the graveyard is reversed and put to the deck).
 		/// </summary>
 		void OnDeckRegenerated();
 	}

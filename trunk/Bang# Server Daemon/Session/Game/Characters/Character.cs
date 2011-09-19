@@ -115,14 +115,14 @@ namespace Bang.Server
 		public virtual void UseAbility ()
 		{
 		}
-		public virtual void CheckDeck (Card causedBy, CheckDeckMethod checkMethod, ICardResultHandler handler)
+		public virtual void CheckDeck(Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
 		{
-			Card checkedCard = player.Game.GameTable.CheckDeck ();
-			bool result = checkMethod (checkedCard);
-			Game.Session.EventManager.OnPlayerCheckedDeck (player, checkedCard, causedBy, result);
-			handler.OnResult(causedBy, result);
+			Card checkedCard = player.Game.GameTable.CheckDeck();
+			bool result = checkMethod(checkedCard);
+			Game.Session.EventManager.OnPlayerCheckedDeck(player, checkedCard, causedBy, result);
+			resultMethod(causedBy, result);
 		}
-		public virtual void CheckMissed (ICardResultHandler handler)
+		public virtual void CheckMissed (CardResultMethod resultMethod)
 		{
 			throw new BadUsageException();
 		}
@@ -227,56 +227,5 @@ namespace Bang.Server
 				//case CharacterType.: return new (player);
 			}
 		}
-		public static List<CharacterType> GenerateCharacters(Session session)
-		{
-			int count = MainCharacters.Length;
-			if(session.DodgeCity)
-				count += DodgeCityCharacters.Length;
-
-			List<CharacterType> characters = new List<CharacterType>(count);
-			characters.AddRange(MainCharacters);
-			if(session.DodgeCity)
-				characters.AddRange(DodgeCityCharacters);
-
-			return characters;
-		}
-		public static readonly CharacterType[] MainCharacters = new CharacterType[]
-		{
-			CharacterType.BartCassidy,
-			CharacterType.BlackJack,
-			CharacterType.CalamityJanet,
-			CharacterType.ElGringo,
-			CharacterType.JesseJones,
-			CharacterType.Jourdonnais,
-			CharacterType.KitCarlson,
-			CharacterType.LuckyDuke,
-			CharacterType.PaulRegret,
-			CharacterType.PedroRamirez,
-			CharacterType.RoseDoolan,
-			CharacterType.SidKetchum,
-			CharacterType.SlabTheKiller,
-			CharacterType.SuzyLafayette,
-			CharacterType.VultureSam,
-			CharacterType.WillyTheKid
-		};
-		public static readonly CharacterType[] DodgeCityCharacters = new CharacterType[]
-		{
-			CharacterType.ApacheKid,
-			CharacterType.BelleStar,
-			CharacterType.BillNoface,
-			CharacterType.ChuckWengam,
-			CharacterType.DocHolyday,
-			CharacterType.ElenaFuente,
-			CharacterType.GregDigger,
-			CharacterType.HerbHunter,
-			CharacterType.JoseDelgado,
-			CharacterType.MollyStark,
-			CharacterType.PatBrennan,
-			CharacterType.PixiePete,
-			CharacterType.SeanMallory,
-			CharacterType.TequilaJoe,
-			CharacterType.VeraCuster,
-			//CharacterType.,
-		};
 	}
 }

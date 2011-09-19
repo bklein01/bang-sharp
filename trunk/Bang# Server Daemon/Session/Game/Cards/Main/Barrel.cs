@@ -30,13 +30,13 @@ namespace Bang.Server.Cards
 		{
 		}
 		
-		public override void CheckMissed (ICardResultHandler handler)
+		public override void CheckMissed(CardResultMethod resultMethod)
 		{
-			if (Owner == null)
-				throw new BadCardException ();
-			AssertOnTable ();
+			if(Owner == null)
+				throw new BadCardException();
+			AssertOnTable();
 			
-			Owner.CheckDeck(this, c => c.Suit == CardSuit.Hearts, handler);
+			Owner.CheckDeck(this, c => c.Suit == CardSuit.Hearts, resultMethod);
 		}
 	}
 }

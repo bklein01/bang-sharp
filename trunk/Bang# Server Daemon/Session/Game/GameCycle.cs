@@ -274,6 +274,13 @@ namespace Bang.Server
 			
 			RespondPlayer(targetPlayer);
 		}
+		public void PlayerRespondCharacter(Player player, CharacterType character)
+		{
+			if(player != RequestedPlayer || game.Ended)
+				throw new BadUsageException();
+
+			RespondCharacter(character);
+		}
 		public void PlayerRespondNoAction(Player player)
 		{
 			if(player != RequestedPlayer || game.Ended)

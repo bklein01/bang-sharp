@@ -190,7 +190,7 @@ namespace Bang.Server
 			spectatorList = new List<SessionSpectator>(data.MaxSpectators);
 			creatorId = 0;
 			gamesPlayed = 0;
-			remainingCharacters = Character.GenerateCharacters(this);
+			remainingCharacters = Utils.GetCharacterTypes(this);
 		}
 		public Session(Server server, BinaryReader reader)
 		{
@@ -251,6 +251,13 @@ namespace Bang.Server
 				}
 				while(sheriffEnumerator.Current.ID != currentSheriffId);
 			}
+
+			int remCharCount = reader.ReadInt32();
+			if(playerCount < 0)
+				throw new FormatException();
+			remainingCharacters = new List<CharacterType>(remCharCount);
+			for(int i = 0; i < remCharCount; i++)
+				remainingCharacters.Add((CharacterType)reader.ReadInt32());
 		}
 
 		public void Write(BinaryWriter writer)
@@ -280,6 +287,10 @@ namespace Bang.Server
 				writer.Write(sheriffEnumerator.Current.ID);
 			else
 				writer.Write(0);
+
+			writer.Write(remainingCharacters.Count);
+			foreach(CharacterType character in remainingCharacters)
+				writer.Write((int)character);
 		}
 
 		public void Join(Password password, CreatePlayerData data, IPlayerEventListener listener)
@@ -441,7 +452,7 @@ namespace Bang.Server
 			CharacterType character = remainingCharacters.GetRandom();
 			remainingCharacters.Remove(character);
 			if(remainingCharacters.Count == 0)
-				remainingCharacters = Character.GenerateCharacters(this);
+				remainingCharacters = Utils.GetCharacterTypes(this);
 			return character;
 		}
 		public void OnGameEnded()

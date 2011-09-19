@@ -92,6 +92,7 @@
     <Compile Include="Exceptions\BadServerPasswordException.cs" />
     <Compile Include="MethodRestrictionServerSink.cs" />
     <Compile Include="MethodRestrictionServerSinkProvider.cs" />
+    <Compile Include="Exceptions\BadCharacterTypeException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

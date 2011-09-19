@@ -375,13 +375,13 @@ namespace Bang.Server
 						{
 						case Role.Sheriff:
 							p.IsWinner = true;
-							p.Parent.RegisterVictory(Role.Sheriff);
+							p.Parent.RegisterVictory(Role.Sheriff, p.CharacterType);
 							if(playerList.Count >= 4)
 								p.Parent.UpdateScore(1500 * outlawCount);
 							break;
 						case Role.Deputy:
 							p.IsWinner = true;
-							p.Parent.RegisterVictory(Role.Deputy);
+							p.Parent.RegisterVictory(Role.Deputy, p.CharacterType);
 							if(playerList.Count >= 4)
 								p.Parent.UpdateScore((p.IsAlive ? 1000 : 700) * outlawCount);
 							break;
@@ -401,7 +401,7 @@ namespace Bang.Server
 							break;
 						case Role.Outlaw:
 							p.IsWinner = true;
-							p.Parent.RegisterVictory(Role.Outlaw);
+							p.Parent.RegisterVictory(Role.Outlaw, p.CharacterType);
 							if(playerList.Count >= 4)
 								p.Parent.UpdateScore((p.IsAlive ? 1000 : 800) * outlawCount);
 							break;
@@ -421,7 +421,7 @@ namespace Bang.Server
 							break;
 						case Role.Renegade:
 							p.IsWinner = true;
-							p.Parent.RegisterVictory(Role.Renegade);
+							p.Parent.RegisterVictory(Role.Renegade, p.CharacterType);
 							if(playerList.Count >= 4)
 								p.Parent.UpdateScore(1500 * playerCount);
 							break;

@@ -31,8 +31,7 @@ namespace Bang.AI
 	internal sealed class CardHelper
 	{
 		private IPlayerControl control;
-		private CharacterType character;
-		
+
 		private IGame Game
 		{
 			get { return control.Game; }
@@ -41,25 +40,23 @@ namespace Bang.AI
 		{
 			get { return control.PrivatePlayerView; }
 		}
-		public CharacterType Character
-		{
-			get { return character; }
-			set { character = value; }
-		}
 
 		public CardHelper(IPlayerControl control)
 		{
 			this.control = control;
-			character = control.PrivatePlayerView.CharacterType;
 		}
 
+		public bool HasAbility(CharacterType character)
+		{
+			return Player.CharacterType == character || Player.AdditionalCharacters.Contains(character);
+		}
 		public int DiscardableCards
 		{
 			get { return Player.Hand.Count(c => EvaluateCard(c.Type) < 15); }
 		}
 		public bool UnlimitedBangs
 		{
-			get { return Player.Hand.Any(c => c.Type == CardType.Volcanic) || character == CharacterType.WillyTheKid; }
+			get { return Player.Hand.Any(c => c.Type == CardType.Volcanic) || HasAbility(CharacterType.WillyTheKid); }
 		}
 		public bool NeedLifeHelp
 		{
@@ -74,7 +71,7 @@ namespace Bang.AI
 				int discardableCards = -1;
 				foreach(ICard card in player.Hand)
 					lifeHelp += GetLifeHelp(card.Type, ref beerPower, ref discardableCards);
-				if(character == CharacterType.SidKetchum && discardableCards >= 2)
+				if(HasAbility(CharacterType.SidKetchum) && discardableCards >= 2)
 					lifeHelp += discardableCards / 2;
 				return lifeHelp < lifeDeficit;
 			}
@@ -177,7 +174,7 @@ namespace Bang.AI
 			{
 			case CardType.Beer:
 				if(beerPower < 0)
-					beerPower = character == CharacterType.TequilaJoe ? 2 : 1;
+					beerPower = HasAbility(CharacterType.TequilaJoe) ? 2 : 1;
 				return Game.Players.Count == 2 ? 0 : beerPower;
 			case CardType.Saloon:
 				return 1;
@@ -417,6 +414,28 @@ namespace Bang.AI
 			catch(InvalidOperationException)
 			{
 				return null;
+			}
+		}
+		public CharacterType BestCharacter(IEnumerable<CharacterType> characters)
+		{
+			int lastValue = -1;
+			try
+			{
+				CharacterType best = characters.First();
+				foreach(CharacterType character in characters)
+				{
+					int value = EvaluateCharacter(character);
+					if(value > lastValue)
+					{
+						best = character;
+						lastValue = value;
+					}
+				}
+				return best;
+			}
+			catch(InvalidOperationException)
+			{
+				return CharacterType.Unknown;
 			}
 		}
 	}

@@ -72,14 +72,14 @@ namespace Bang.Server
 			throw new BadUsageException();
 		}
 
-		public override void CheckMissed(ICardResultHandler handler)
+		public override void CheckMissed(CardResultMethod resultMethod)
 		{
 			if(IsOnTable && !playBlocked)
-				OnCheckMissed(handler);
+				OnCheckMissed(resultMethod);
 			else
 				throw new BadCardException();
 		}
-		protected virtual void OnCheckMissed(ICardResultHandler handler)
+		protected virtual void OnCheckMissed(CardResultMethod resultMethod)
 		{
 			throw new BadCardException();
 		}

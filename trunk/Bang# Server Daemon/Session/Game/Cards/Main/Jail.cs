@@ -24,7 +24,7 @@
 using System.Linq;
 namespace Bang.Server.Cards
 {
-	public sealed class Jail : TableCard, ICardResultHandler
+	public sealed class Jail : TableCard
 	{
 		private sealed class JailResponseHandler : ResponseHandler
 		{
@@ -68,12 +68,12 @@ namespace Bang.Server.Cards
 			Game.GameCycle.PushTempHandler(new JailResponseHandler(this));
 		}
 		
-		protected override void OnPredrawCheck ()
+		protected override void OnPredrawCheck()
 		{
-			Owner.CheckDeck (this, c => c.Suit == CardSuit.Hearts, this);
+			Owner.CheckDeck (this, c => c.Suit == CardSuit.Hearts, OnResult);
 		}
 		
-		void ICardResultHandler.OnResult(Card causedBy, bool result)
+		private void OnResult(Card causedBy, bool result)
 		{
 			Player owner = Owner;
 			Game.GameTable.CancelCard(this);
