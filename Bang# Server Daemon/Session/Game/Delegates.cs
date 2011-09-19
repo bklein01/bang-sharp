@@ -1,4 +1,4 @@
-// ICardResultHandler.cs
+// Delegates.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -26,9 +26,6 @@
 namespace Bang.Server
 {
 	public delegate bool CheckDeckMethod(Card card);
-	public interface ICardResultHandler
-	{
-		void OnResult(Card causedBy, bool result);
-	}
+	public delegate void CardResultMethod(Card causedBy, bool result);
 }
 

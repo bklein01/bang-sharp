@@ -34,6 +34,7 @@ namespace Bang.Server
 		private PlayerControl control;
 		private Role role;
 		private Character character;
+		private List<CharacterType> additionalCharacters;
 		private int lifePoints;
 		private List<Card> hand;
 		private List<TableCard> table;
@@ -121,6 +122,10 @@ namespace Bang.Server
 		{
 			get { return character.Type; }
 		}
+		public ReadOnlyCollection<CharacterType> AdditionalCharacters
+		{
+			get { return new ReadOnlyCollection<CharacterType>(additionalCharacters); }
+		}
 		public Character Character
 		{
 			get { return character; }
@@ -180,6 +185,7 @@ namespace Bang.Server
 			control = new PlayerControl(this);
 			this.role = role;
 			this.character = Character.GetCharacter(this, character);
+			additionalCharacters = new List<CharacterType>();
 			lifePoints = MaxLifePoints;
 			hand = new List<Card>();
 			table = new List<TableCard>();
@@ -193,9 +199,9 @@ namespace Bang.Server
 		{
 			character.PlayCard (card);
 		}
-		public void CheckDeck (Card causedBy, CheckDeckMethod checkMethod, ICardResultHandler handler)
+		public void CheckDeck (Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
 		{
-			character.CheckDeck (causedBy, checkMethod, handler);
+			character.CheckDeck (causedBy, checkMethod, resultMethod);
 		}
 		public int GetDistanceIn(Player origin)
 		{
@@ -219,12 +225,12 @@ namespace Bang.Server
 		{
 			return character.HasCardEffect (card);
 		}
-		public void CheckMissed (Card card, ICardResultHandler handler)
+		public void CheckMissed (Card card, CardResultMethod resultMethod)
 		{
 			if (character.IsMissed (card))
-				handler.OnResult (card, true);
+				resultMethod(card, true);
 			else
-				card.CheckMissed(handler);
+				card.CheckMissed(resultMethod);
 		}
 		public bool IsBang (Card card)
 		{
@@ -335,6 +341,20 @@ namespace Bang.Server
 		{
 			return table.Remove(card);
 		}
+
+		public void ClearAdditionalCharacters()
+		{
+			additionalCharacters.Clear();
+			game.Session.EventManager.OnPlayerLostAdditionalCharacters(this);
+		}
+		public void SetAditionalCharacters(IEnumerable<CharacterType> characters)
+		{
+			if(additionalCharacters.Count != 0)
+				ClearAdditionalCharacters();
+			additionalCharacters.AddRange(characters);
+			game.Session.EventManager.OnPlayerGainedAdditionalCharacters(this);
+		}
+
 		public void CheckEmptyHand()
 		{
 			if(Hand.Count == 0)

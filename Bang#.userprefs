@@ -1,25 +1,30 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# AI/AIPlayer.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Server Daemon/Server.cs" ctype="Workbench">
     <Files>
-      <File FileName="Bang# AI/AIPlayer.cs" Line="106" Column="1" />
+      <File FileName="Bang# Server Daemon/AssemblyInfo.cs" Line="45" Column="32" />
+      <File FileName="Bang# Common/Utils.cs" Line="51" Column="45" />
+      <File FileName="Bang# Common/AssemblyInfo.cs" Line="45" Column="32" />
+      <File FileName="Bang# AI/AIPlayer.cs" Line="906" Column="12" />
+      <File FileName="Bang# Console Utils/ConsoleHelper.cs" Line="619" Column="61" />
+      <File FileName="Bang# Server Daemon/Server.cs" Line="162" Column="26" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Bang# AI" expanded="True" />
-          <Node name="Bang# Test Client" selected="True" />
+          <Node name="Bang# Client" expanded="True" />
+          <Node name="Bang# Common" expanded="True">
+            <Node name="Enums" expanded="True" />
+          </Node>
+          <Node name="Bang# Console Utils" expanded="True" />
+          <Node name="Bang# Test Client" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Catchpoint enabled="false" exceptionName="System.ArgumentOutOfRangeException" />
-      <Catchpoint enabled="false" exceptionName="System.NullReferenceException" />
-      <Catchpoint enabled="false" exceptionName="System.StackOverflowException" />
-      <Breakpoint file="/home/ondrej/Dokumenty/Developing/Mono/Bang#/Bang# Client/CardWidget.cs" line="63" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore">
     <Watch file="Bang# Common/TypeRestrictionServerSink.cs" line="67" offsetX="1270" offsetY="714" expression="sinkStack" liveUpdate="False" />

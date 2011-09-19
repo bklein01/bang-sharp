@@ -50,7 +50,8 @@ namespace Bang.AI
 		private IPlayerSessionControl sessionControl;
 		private IPlayerControl control;
 		private List<int> triedCards;
-		private bool triedAbility;
+		private CharacterType characterToUse;
+		private List<CharacterType> triedAbility;
 
 		/// <summary>
 		/// Gets this AI player's <see cref="CreatePlayerData"/>. Can be ignored.
@@ -95,7 +96,7 @@ namespace Bang.AI
 				break;
 			}
 			triedCards = new List<int>();
-			triedAbility = false;
+			triedAbility = new List<CharacterType>();
 		}
 
 		private void ProcessRequest(object state)
@@ -109,62 +110,56 @@ namespace Bang.AI
 			switch(game.RequestType)
 			{
 			case RequestType.Draw:
-				switch(cardHelper.Character)
+				if(cardHelper.HasAbility(CharacterType.BlackJack) ||
+					cardHelper.HasAbility(CharacterType.KitCarlson) ||
+					cardHelper.HasAbility(CharacterType.PixiePete))
 				{
-				case CharacterType.BillNoface:
-					if(player.MaxLifePoints - player.LifePoints > 2)
+
 						control.RespondUseAbility();
-					else
-						control.RespondDraw();
-					return;
-				case CharacterType.JesseJones:
-					if(game.Players.Any(p => p.ID != player.ID && p.Hand.Count > 0))
-						control.RespondUseAbility();
-					else
-						control.RespondDraw();
-					return;
-				case CharacterType.PatBrennan:
-					if(game.Players.Except(playerHelper.Allies).Any(p => p.Table.Any(c => cardHelper.IsCardWorthSkippingDraw(c.Type))))
-						control.RespondUseAbility();
-					else
-						control.RespondDraw();
-					return;
-				case CharacterType.PedroRamirez:
-					if(game.GraveyardTop != null && cardHelper.IsCardWorthSkippingDraw(game.GraveyardTop.Type))
-						control.RespondUseAbility();
-					else
-						control.RespondDraw();
-					return;
-				case CharacterType.BlackJack:
-				case CharacterType.KitCarlson:
-				case CharacterType.PixiePete:
-					control.RespondUseAbility();
-					return;
-				default:
-					control.RespondDraw();
 					return;
 				}
+				if(cardHelper.HasAbility(CharacterType.BillNoface))
+					if(player.MaxLifePoints - player.LifePoints > 2)
+					{
+						control.RespondUseAbility();
+						return;
+					}
+				if(cardHelper.HasAbility(CharacterType.JesseJones))
+					if(game.Players.Any(p => p.ID != player.ID && p.Hand.Count > 0))
+					{
+						control.RespondUseAbility();
+						return;
+					}
+				if(cardHelper.HasAbility(CharacterType.PatBrennan))
+					if(game.Players.Except(playerHelper.Allies).Any(p => p.Table.Any(c => cardHelper.IsCardWorthSkippingDraw(c.Type))))
+					{
+						control.RespondUseAbility();
+						return;
+					}
+				if(cardHelper.HasAbility(CharacterType.PedroRamirez))
+					if(game.GraveyardTop != null && cardHelper.IsCardWorthSkippingDraw(game.GraveyardTop.Type))
+					{
+						control.RespondUseAbility();
+						return;
+					}
+				control.RespondDraw();
+				return;
 			case RequestType.Play:
 				// First, play cards that let us gain cards:
 				try
 				{
-					switch(cardHelper.Character)
-					{
-					case CharacterType.ChuckWengam:
+					if(cardHelper.HasAbility(CharacterType.ChuckWengam))
 						if(player.LifePoints > 2)
 						{
 							control.RespondUseAbility();
 							return;
 						}
-						break;
-					case CharacterType.JoseDelgado:
+					if(cardHelper.HasAbility(CharacterType.JoseDelgado))
 						if(player.Hand.Any(c => c.Color == CardColor.Blue && !cardHelper.IsTableCardWorth(c.Type)))
 						{
 							control.RespondUseAbility();
 							return;
 						}
-						break;
-					}
 				}
 				catch(GameException)
 				{
@@ -251,7 +246,7 @@ namespace Bang.AI
 								}
 								break;
 							case CardType.Volcanic:
-								if(cardHelper.Character != CharacterType.WillyTheKid)
+								if(!cardHelper.HasAbility(CharacterType.WillyTheKid))
 									if(!player.Table.Any(c => c.Type == CardType.Volcanic || c.Type == CardType.Carabine || c.Type == CardType.Winchester))
 									{
 										control.RespondCard(card.ID);
@@ -261,7 +256,7 @@ namespace Bang.AI
 							case CardType.Schofield:
 								if(player.Table.Any(c => c.Type == CardType.Volcanic))
 								{
-									if(cardHelper.Character == CharacterType.WillyTheKid)
+									if(cardHelper.HasAbility(CharacterType.WillyTheKid))
 									{
 										control.RespondCard(card.ID);
 										return;
@@ -276,7 +271,7 @@ namespace Bang.AI
 							case CardType.Remington:
 								if(player.Table.Any(c => c.Type == CardType.Volcanic))
 								{
-									if(cardHelper.Character == CharacterType.WillyTheKid)
+									if(cardHelper.HasAbility(CharacterType.WillyTheKid))
 									{
 										control.RespondCard(card.ID);
 										return;
@@ -291,7 +286,7 @@ namespace Bang.AI
 							case CardType.Carabine:
 								if(player.Table.Any(c => c.Type == CardType.Volcanic))
 								{
-									if(cardHelper.Character == CharacterType.WillyTheKid)
+									if(cardHelper.HasAbility(CharacterType.WillyTheKid))
 									{
 										control.RespondCard(card.ID);
 										return;
@@ -306,7 +301,7 @@ namespace Bang.AI
 							case CardType.Winchester:
 								if(player.Table.Any(c => c.Type == CardType.Volcanic))
 								{
-									if(cardHelper.Character == CharacterType.WillyTheKid)
+									if(cardHelper.HasAbility(CharacterType.WillyTheKid))
 									{
 										control.RespondCard(card.ID);
 										return;
@@ -353,12 +348,13 @@ namespace Bang.AI
 						catch(GameException)
 						{
 						}
-					// If we have the Sid Ketchum cardHelper.Character, try to use his ability:
-					if(cardHelper.Character == CharacterType.SidKetchum && !triedAbility)
+					// If we have the Sid Ketchum character, try to use his ability:
+					if(cardHelper.HasAbility(CharacterType.SidKetchum) && !triedAbility.Contains(CharacterType.SidKetchum))
 						try
 						{
+							characterToUse = CharacterType.SidKetchum;
 							control.RespondUseAbility();
-							triedAbility = true;
+							triedAbility.Add(CharacterType.SidKetchum);
 							return;
 						}
 						catch(GameException)
@@ -521,7 +517,7 @@ namespace Bang.AI
 								triedCards.Add(card.ID);
 								return;
 							case CardType.Missed:
-								if(cardHelper.Character == CharacterType.CalamityJanet && player.Hand.Count(c => c.Type == CardType.Missed) >= 2)
+								if(cardHelper.HasAbility(CharacterType.CalamityJanet) && player.Hand.Count(c => c.Type == CardType.Missed) >= 2)
 								{
 									control.RespondCard(card.ID);
 									triedCards.Add(card.ID);
@@ -551,11 +547,12 @@ namespace Bang.AI
 					catch(GameException)
 					{
 					}
-				if(cardHelper.Character == CharacterType.DocHolyday && !triedAbility)
+				if(cardHelper.HasAbility(CharacterType.DocHolyday) && !triedAbility.Contains(CharacterType.DocHolyday))
 					try
 					{
+						characterToUse = CharacterType.DocHolyday;
 						control.RespondUseAbility();
-						triedAbility = true;
+						triedAbility.Add(CharacterType.DocHolyday);
 						return;
 					}
 					catch(GameException)
@@ -565,7 +562,7 @@ namespace Bang.AI
 				// End the play stage:
 				control.RespondNoAction();
 				triedCards.Clear();
-				triedAbility = false;
+				triedAbility.Clear();
 				return;
 			case RequestType.DiscardCard:
 			case RequestType.SidKetchum:
@@ -897,10 +894,18 @@ namespace Bang.AI
 			case RequestType.VeraCuster:
 				IPublicPlayerView best = cardHelper.BestCharacter(game.Players.Where(p => p.IsAlive));
 				control.RespondPlayer(best.ID);
-				cardHelper.Character = best.CharacterType;
 				return;
 			case RequestType.LuckyDuke:
 				control.RespondCard(cardHelper.BestCheckDeckCard(player.Selection).ID);
+				return;
+			case RequestType.ChooseCharacterForDraw:
+			case RequestType.ChooseCharacterForPlayCard:
+			case RequestType.ChooseCharacterForCheckDeck:
+			case RequestType.ChooseCharacterForAvoidShot:
+				control.RespondCharacter(cardHelper.BestCharacter(player.AdditionalCharacters));
+				return;
+			case RequestType.ChooseCharacterForUseAbility:
+				control.RespondCharacter(characterToUse);
 				return;
 			}
 			throw new InvalidOperationException();
@@ -951,7 +956,7 @@ namespace Bang.AI
 			if(player.ID == control.PrivatePlayerView.ID)
 			{
 				triedCards.Clear();
-				triedAbility = false;
+				triedAbility.Clear();
 			}
 		}
 		void IEventListener.OnPlayerDrewFromGraveyard (IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
@@ -962,7 +967,7 @@ namespace Bang.AI
 			if(player.ID == control.PrivatePlayerView.ID)
 			{
 				triedCards.Clear();
-				triedAbility = false;
+				triedAbility.Clear();
 			}
 		}
 		void IEventListener.OnPlayerDiscardedCard(IPublicPlayerView player, ICard card)
@@ -1023,7 +1028,7 @@ namespace Bang.AI
 			if(player.ID == control.PrivatePlayerView.ID)
 			{
 				triedCards.Clear();
-				triedAbility = false;
+				triedAbility.Clear();
 			}
 
 			if(player.ID != targetPlayer.ID)
@@ -1067,7 +1072,13 @@ namespace Bang.AI
 
 			playerHelper.OnRoleRevealed(player);
 		}
-		void IEventListener.OnPlayerUsedAbility (IPublicPlayerView player)
+		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player)
+		{
+		}
+		void IEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player)
+		{
+		}
+		void IEventListener.OnPlayerLostAdditionalCharacters(IPublicPlayerView player)
 		{
 		}
 		void IEventListener.OnDeckRegenerated()

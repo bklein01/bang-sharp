@@ -44,7 +44,7 @@ namespace Bang
 		/// <summary>
 		/// The major interface version.
 		/// </summary>
-		public const int InterfaceVersionMajor = 2;
+		public const int InterfaceVersionMajor = 4;
 		/// <summary>
 		/// The minor interface version.
 		/// </summary>
@@ -84,6 +84,197 @@ namespace Bang
 		/// A shared instance of random number generator.
 		/// </summary>
 		public static readonly Random Random = new Random(Seed);
+
+		private static readonly CardType[] MainCards = new CardType[]
+		{
+			CardType.Bang,
+			CardType.Missed,
+			CardType.Beer,
+			CardType.Saloon,
+			CardType.WellsFargo,
+			CardType.Diligenza,
+			CardType.GeneralStore,
+			CardType.Panic,
+			CardType.CatBalou,
+			CardType.Indians,
+			CardType.Duel,
+			CardType.Gatling,
+			CardType.Mustang,
+			CardType.Appaloosa,
+			CardType.Barrel,
+			CardType.Dynamite,
+			CardType.Jail,
+			CardType.Volcanic,
+			CardType.Schofield,
+			CardType.Remington,
+			CardType.Carabine,
+			CardType.Winchester,
+		};
+		private static CardType[] DodgeCityCards = new CardType[]
+		{
+			CardType.Dodge,
+			CardType.Punch,
+			CardType.Springfield,
+			CardType.Brawl,
+			CardType.RagTime,
+			CardType.Tequila,
+			CardType.Whisky,
+			CardType.Hideout,
+			CardType.Silver,
+			CardType.Sombrero,
+			CardType.IronPlate,
+			CardType.TenGallonHat,
+			CardType.Bible,
+			CardType.Canteen,
+			CardType.Knife,
+			CardType.Derringer,
+			CardType.Howitzer,
+			CardType.Pepperbox,
+			CardType.BuffaloRifle,
+			CardType.CanCan,
+			CardType.Conestoga,
+			CardType.PonyExpress,
+		};
+		public static List<CardType> GetCardTypes()
+		{
+			return GetCardTypes(null, false);
+		}
+		public static List<CardType> GetCardTypes(bool includeDefault)
+		{
+			return GetCardTypes(null, includeDefault);
+		}
+		public static List<CardType> GetCardTypes(ISession session)
+		{
+			return GetCardTypes(session, false);
+		}
+		public static List<CardType> GetCardTypes(ISession session, bool includeDefault)
+		{
+			int count = MainCards.Length;
+			if(includeDefault)
+				count++;
+
+			if(session != null)
+			{
+				if(session.DodgeCity)
+					count += DodgeCityCards.Length;
+				//...
+			}
+
+			List<CardType> list = new List<CardType>(count);
+			list.AddRange(MainCards);
+			if(includeDefault)
+				list.Add(CardType.Unknown);
+
+			if(session != null)
+			{
+				if(session.DodgeCity)
+					list.AddRange(DodgeCityCards);
+				//...
+			}
+			return list;
+		}
+
+		private static readonly Role[] Roles = new Role[]
+		{
+			Role.Sheriff,
+			Role.Deputy,
+			Role.Outlaw,
+			Role.Renegade,
+		};
+		public static List<Role> GetRoles()
+		{
+			return GetRoles(false);
+		}
+		public static List<Role> GetRoles(bool includeDefault)
+		{
+			int count = Roles.Length;
+			if(includeDefault)
+				count++;
+
+			List<Role> list = new List<Role>(count);
+			list.AddRange(Roles);
+
+			if(includeDefault)
+				list.Add(Role.Unknown);
+			return list;
+		}
+
+		private static readonly CharacterType[] MainCharacters = new CharacterType[]
+		{
+			CharacterType.BartCassidy,
+			CharacterType.BlackJack,
+			CharacterType.CalamityJanet,
+			CharacterType.ElGringo,
+			CharacterType.JesseJones,
+			CharacterType.Jourdonnais,
+			CharacterType.KitCarlson,
+			CharacterType.LuckyDuke,
+			CharacterType.PaulRegret,
+			CharacterType.PedroRamirez,
+			CharacterType.RoseDoolan,
+			CharacterType.SidKetchum,
+			CharacterType.SlabTheKiller,
+			CharacterType.SuzyLafayette,
+			CharacterType.VultureSam,
+			CharacterType.WillyTheKid,
+		};
+		private static readonly CharacterType[] DodgeCityCharacters = new CharacterType[]
+		{
+			CharacterType.ApacheKid,
+			CharacterType.BelleStar,
+			CharacterType.BillNoface,
+			CharacterType.ChuckWengam,
+			CharacterType.DocHolyday,
+			CharacterType.ElenaFuente,
+			CharacterType.GregDigger,
+			CharacterType.HerbHunter,
+			CharacterType.JoseDelgado,
+			CharacterType.MollyStark,
+			CharacterType.PatBrennan,
+			CharacterType.PixiePete,
+			CharacterType.SeanMallory,
+			CharacterType.TequilaJoe,
+			CharacterType.VeraCuster,
+			//CharacterType.,
+		};
+		public static List<CharacterType> GetCharacterTypes()
+		{
+			return GetCharacterTypes(null, false);
+		}
+		public static List<CharacterType> GetCharacterTypes(bool includeDefault)
+		{
+			return GetCharacterTypes(null, includeDefault);
+		}
+		public static List<CharacterType> GetCharacterTypes(ISession session)
+		{
+			return GetCharacterTypes(session, false);
+		}
+		public static List<CharacterType> GetCharacterTypes(ISession session, bool includeDefault)
+		{
+			int count = MainCharacters.Length;
+			if(includeDefault)
+				++count;
+
+			if(session != null)
+			{
+				if(session.DodgeCity)
+					count += DodgeCityCharacters.Length;
+				//...
+			}
+
+			List<CharacterType> list = new List<CharacterType>(count);
+			list.AddRange(MainCharacters);
+			if(includeDefault)
+				list.Add(CharacterType.Unknown);
+
+			if(session != null)
+			{
+				if(session.DodgeCity)
+					list.AddRange(DodgeCityCharacters);
+				//...
+			}
+			return list;
+		}
 
 		/// <summary>
 		/// Shuffles the list.

@@ -68,25 +68,29 @@ namespace Bang
 		int TurnsPlayed { get; }
 
 		/// <summary>
-		/// Gets the number of wins of this player.
+		/// Gets the number of the this player's victories.
 		/// </summary>
 		int Victories { get; }
 		/// <summary>
-		/// Gets the number of wins of this player as sheriff.
+		/// Gets the number of the this player's victories with the specified role.
 		/// </summary>
-		int VictoriesAsSheriff { get; }
+		/// <param name="role">
+		/// The <see cref="Bang.Role"/> to get the result for.
+		/// </param>
+		/// <returns>
+		/// The number of the this player's victories with the specified role.
+		/// </returns>
+		int GetVictories(Role role);
 		/// <summary>
-		/// Gets the number of wins of this player as deputy.
+		/// Gets the number of the this player's victories with the specified character.
 		/// </summary>
-		int VictoriesAsDeputy { get; }
-		/// <summary>
-		/// Gets the number of wins of this player as outlaw.
-		/// </summary>
-		int VictoriesAsOutlaw { get; }
-		/// <summary>
-		/// Gets the number of wins of this player as renegade.
-		/// </summary>
-		int VictoriesAsRenegade { get; }
+		/// <param name="role">
+		/// The <see cref="Bang.CharacterType"/> to get the result for.
+		/// </param>
+		/// <returns>
+		/// The number of the this player's victories with the specified character.
+		/// </returns>
+		int GetVictories(CharacterType character);
 	}
 }
 

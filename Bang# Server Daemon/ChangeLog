@@ -1,3 +1,59 @@
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Server Daemon.csproj:
+	  
+
+	* Session/Game/Game.cs:
+	* Session/Game/Player.cs:
+	* Session/SessionPlayer.cs:
+	* Session/Game/GameCycle.cs:
+	* Session/Game/PlayerControl.cs:
+	* Session/SessionEventManager.cs:
+	* Session/Game/ResponseHandler.cs:
+	* Session/Game/Characters/ProxyCharacter.cs:
+	* Session/Game/Characters/Dodge City/VeraCuster.cs:
+	  Added new base for "proxy characters" (like Vera Custer,
+	  Greygory Deck).
+	Added new response method.
+	Added new RequestType values.
+	Added new PublicPlayerView property - AdditionalCharacters
+	  (the abilities gained by proxy characters).
+	New way of getting player victory stats.
+
+	* Session/Session.cs:
+	  Added unified methods for getting the list of Role,
+	  CharacterType or CardType enumeration values.
+	New server state format.
+
+	* Session/Game/Characters/Character.cs:
+	  Added unified methods for getting the list of Role,
+	  CharacterType or CardType enumeration values.
+	The Bang.Server.CardResultHandler interface replaced by a
+	  delegate.
+
+	* Session/Game/Delegates.cs:
+	* Session/Game/Cards/Card.cs:
+	* Session/Game/Cards/Main/Jail.cs:
+	* Session/Game/Cards/TableCard.cs:
+	* Session/Game/Cards/Main/Missed.cs:
+	* Session/Game/Cards/Main/Barrel.cs:
+	* Session/Game/ICardResultHandler.cs:
+	* Session/Game/ShotResponseHandler.cs:
+	* Session/Game/Cards/Main/Dynamite.cs:
+	* Session/Game/Cards/Dodge City/Dodge.cs:
+	* Session/Game/Cards/Dodge City/Bible.cs:
+	* Session/Game/Characters/Main/LuckyDuke.cs:
+	* Session/Game/Cards/Dodge City/Sombrero.cs:
+	* Session/Game/Cards/Dodge City/IronPlate.cs:
+	* Session/Game/Characters/Main/Jourdonnais.cs:
+	* Session/Game/Cards/Dodge City/TenGallonHat.cs:
+	  The Bang.Server.CardResultHandler interface replaced by a
+	  delegate.
+
+	* Server.cs:
+	  New server state format.
+
 2011-09-15  WOnder93  <omosnacek@gmail.com>
 
 	* Server.cs:

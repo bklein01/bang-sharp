@@ -168,7 +168,7 @@ namespace Bang.Server
 				throw new BadCardException();
 		}
 
-		public virtual void CheckMissed (ICardResultHandler handler)
+		public virtual void CheckMissed (CardResultMethod resultMethod)
 		{
 			throw new BadCardException();
 		}

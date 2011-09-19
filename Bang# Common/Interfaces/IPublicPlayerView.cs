@@ -62,6 +62,10 @@ namespace Bang
 		/// </summary>
 		CharacterType CharacterType { get; }
 		/// <summary>
+		/// Gets the collection of characters whose abilities the player gained thanks to his main character.
+		/// </summary>
+		ReadOnlyCollection<CharacterType> AdditionalCharacters { get; }
+		/// <summary>
 		/// Gets the role of the player.
 		/// </summary>
 		Role Role { get; }

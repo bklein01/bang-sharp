@@ -41,29 +41,36 @@ namespace Bang
 		/// <summary>
 		/// Responds to the game with the intention to draw cards.
 		/// </summary>
-		void RespondDraw ();
+		void RespondDraw();
 		/// <summary>
 		/// Responds to the game with the specified card.
 		/// </summary>
 		/// <param name="id">
 		/// The ID of the card.
 		/// </param>
-		void RespondCard (int id);
+		void RespondCard(int id);
 		/// <summary>
 		/// Responds to the game with the specified player.
 		/// </summary>
 		/// <param name="id">
 		/// The ID of the player.
 		/// </param>
-		void RespondPlayer (int id);
+		void RespondPlayer(int id);
+		/// <summary>
+		/// Responds to the game with the specified character.
+		/// </summary>
+		/// <param name="type">
+		/// A <see cref="CharacterType"/>
+		/// </param>
+		void RespondCharacter(CharacterType type);
 		/// <summary>
 		/// Responds to the game with the intention to perform no more action.
 		/// </summary>
-		void RespondNoAction ();
+		void RespondNoAction();
 		/// <summary>
 		/// Responds to the game with the intention to use the player's character's ability.
 		/// </summary>
-		void RespondUseAbility ();
+		void RespondUseAbility();
 	}
 }
 

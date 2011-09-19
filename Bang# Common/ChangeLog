@@ -1,3 +1,27 @@
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj:
+	  
+
+	* Enums/RequestType.cs:
+	* Interfaces/IPlayer.cs:
+	* Interfaces/IPlayerControl.cs:
+	* Interfaces/IEventListener.cs:
+	* Interfaces/IPublicPlayerView.cs:
+	* Exceptions/BadCharacterTypeException.cs:
+	  Added new base for "proxy characters" (like Vera Custer,
+	  Greygory Deck).
+	Added new response method.
+	Added new RequestType values.
+	Added new PublicPlayerView property - AdditionalCharacters
+	  (the abilities gained by proxy characters).
+	New way of getting player victory stats.
+
+	* Utils.cs:
+	  Added unified methods for getting the list of Role,
+	  CharacterType or CardType enumeration values.
+
 2011-09-15  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

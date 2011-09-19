@@ -24,7 +24,7 @@
 using System.Linq;
 namespace Bang.Server.Cards
 {
-	public sealed class Dynamite : TableCard, ICardResultHandler
+	public sealed class Dynamite : TableCard
 	{
 		public Dynamite (Game game, int id, CardSuit suit, CardRank rank)
 			: base(game, id, CardType.Dynamite, suit, rank)
@@ -33,10 +33,10 @@ namespace Bang.Server.Cards
 		
 		protected override void OnPredrawCheck ()
 		{
-			Owner.CheckDeck (this, c => c.Suit != CardSuit.Spades || c.Rank < CardRank.Two && c.Rank > CardRank.Nine, this);
+			Owner.CheckDeck(this, c => c.Suit != CardSuit.Spades || c.Rank < CardRank.Two && c.Rank > CardRank.Nine, OnResult);
 		}
 		
-		void ICardResultHandler.OnResult(Card causedBy, bool result)
+		private void OnResult(Card causedBy, bool result)
 		{
 			if(result)
 			{

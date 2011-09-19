@@ -42,6 +42,9 @@ namespace Bang.ConsoleUtils
 		{
 			get
 			{
+				if(text == null)
+					throw new ArgumentNullException("text");
+				text = text.ToLower();
 				try
 				{
 					return subcommands[text];
@@ -53,6 +56,9 @@ namespace Bang.ConsoleUtils
 			}
 			set
 			{
+				if(text == null)
+					throw new ArgumentNullException("text");
+				text = text.ToLower();
 				if(value == null)
 					subcommands.Remove(text);
 				subcommands[text] = value;

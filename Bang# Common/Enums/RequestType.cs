@@ -133,6 +133,41 @@ namespace Bang
 		/// 	RespondCard - player chooses the specified card
 		/// </summary>
 		TakeDeadPlayersCard,
+		/// <summary>
+		/// Player is requested to choose which of his addiditonal characters is to be used for drawing cards.
+		/// Acceptable responses:
+		/// 	RespondCharacter - player chooses the specified character
+		/// 	RespondNoAction - the default behavior is used
+		/// </summary>
+		ChooseCharacterForDraw,
+		/// <summary>
+		/// Player is requested to choose which of his addiditonal characters is to be used for playing a card.
+		/// Acceptable responses:
+		/// 	RespondCharacter - player chooses the specified character
+		/// 	RespondNoAction - the default behavior is used
+		/// </summary>
+		ChooseCharacterForPlayCard,
+		/// <summary>
+		/// Player is requested to choose which of his addiditonal characters is to be used for voluntary abilty use.
+		/// Acceptable responses:
+		/// 	RespondCharacter - player chooses the specified character
+		/// 	RespondNoAction - the default behavior is used
+		/// </summary>
+		ChooseCharacterForUseAbility,
+		/// <summary>
+		/// Player is requested to choose which of his addiditonal characters is to be used for 'deck checking'.
+		/// Acceptable responses:
+		/// 	RespondCharacter - player chooses the specified character
+		/// 	RespondNoAction - the default behavior is used
+		/// </summary>
+		ChooseCharacterForCheckDeck,
+		/// <summary>
+		/// Player is requested to choose which of his addiditonal characters is to be used for avoiding the shot.
+		/// Acceptable responses:
+		/// 	RespondCharacter - player chooses the specified character
+		/// 	RespondNoAction - the default behavior is used
+		/// </summary>
+		ChooseCharacterForAvoidShot,
 		#endregion
 		#region Card Requests
 		/// <summary>

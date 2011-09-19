@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 namespace Bang.Server.Characters
 {
-	public sealed class VeraCuster : Character
+	public sealed class VeraCuster : ProxyCharacter
 	{
 		private sealed class VeraCusterResponseHandler : ResponseHandler
 		{
@@ -47,7 +47,7 @@ namespace Bang.Server.Characters
 					// you never know...
 					throw new BadPlayerException();
 				
-				parent.character = Character.GetCharacter(RequestedPlayer, player.CharacterType);
+				parent.SetCharacters(new CharacterType[] { player.CharacterType });
 				End();
 			}
 			protected override void OnRespondNoAction()
@@ -55,43 +55,10 @@ namespace Bang.Server.Characters
 				End();
 			}
 		}
-		private Character character;
 
 		public override int MaxLifePoints
 		{
 			get { return 3; }
-		}
-		public override int InitialCardCount
-		{
-			get { return character == null ? base.InitialCardCount : character.InitialCardCount; }
-		}
-		public override int MaxCardCount
-		{
-			get { return character == null ? base.MaxCardCount : character.MaxCardCount; }
-		}
-		public override int DistanceIn
-		{
-			get { return character == null ? base.DistanceIn : character.DistanceIn; }
-		}
-		public override int DistanceOut
-		{
-			get { return character == null ? base.DistanceOut : character.DistanceOut; }
-		}
-		public override int BangPower
-		{
-			get { return character == null ? base.BangPower : character.BangPower; }
-		}
-		public override int BeerPower
-		{
-			get { return character == null ? base.BeerPower : character.BeerPower; }
-		}
-		public override bool UnlimitedBangs
-		{
-			get { return character == null ? base.UnlimitedBangs : character.UnlimitedBangs; }
-		}
-		public override bool TakesDeadPlayersCards
-		{
-			get { return character == null ? base.TakesDeadPlayersCards : character.TakesDeadPlayersCards; }
 		}
 
 		public VeraCuster(Player player)
@@ -99,118 +66,12 @@ namespace Bang.Server.Characters
 		{
 		}
 
-		public override bool HasCardEffect(Card card)
-		{
-			return character == null ? base.HasCardEffect(card) : character.HasCardEffect(card);
-		}
-		public override bool IsMissed(Card card)
-		{
-			return character == null ? base.IsMissed(card) : character.IsMissed(card);
-		}
-		public override bool IsBang(Card card)
-		{
-			return character == null ? base.IsBang(card) : character.IsBang(card);
-		}
-		public override bool CanPlayCard(CardType card)
-		{
-			return character == null ? base.CanPlayCard(card) : character.CanPlayCard(card);
-		}
-
-		public override void Draw()
-		{
-			if(character == null)
-				base.Draw();
-			else
-				character.Draw();
-		}
-		public override void PlayCard(Card card)
-		{
-			if(character == null)
-				base.PlayCard(card);
-			else
-				character.PlayCard(card);
-		}
-		public override void UseAbility()
-		{
-			if(character == null)
-				base.UseAbility();
-			else
-				character.UseAbility();
-		}
-		public override void CheckDeck(Card causedBy, CheckDeckMethod checkMethod, ICardResultHandler handler)
-		{
-			if(character == null)
-				base.CheckDeck(causedBy, checkMethod, handler);
-			else
-				character.CheckDeck(causedBy, checkMethod, handler);
-		}
-		public override void CheckMissed(ICardResultHandler handler)
-		{
-			if(character == null)
-				base.CheckMissed(handler);
-			else
-				character.CheckMissed(handler);
-		}
-
-		public override void OnHit(int hitPoints, Player causedBy)
-		{
-			if(character == null)
-				base.OnHit(hitPoints, causedBy);
-			else
-				character.OnHit(hitPoints, causedBy);
-		}
-		public override void OnEmptyHand()
-		{
-			if(character == null)
-				base.OnEmptyHand();
-			else
-				character.OnEmptyHand();
-		}
-		public override void OnPlayerDied(Player player)
-		{
-			if(character == null)
-				base.OnPlayerDied(player);
-			else
-				character.OnPlayerDied(player);
-		}
 		public override void OnTurnStarted()
 		{
 			if(!Player.SkipTurn)
 				Game.GameCycle.PushTempHandler(new VeraCusterResponseHandler(this));
 			else
-				character = null;
-		}
-		public override void OnPlayContinue ()
-		{
-			if(character == null)
-				base.OnPlayContinue();
-			else
-				character.OnPlayContinue();
-		}
-		public override void OnTurnEnded()
-		{
-			if(character == null)
-				base.OnTurnEnded();
-			else
-				character.OnTurnEnded();
-		}
-		public override void OnPlayedCard(Card card)
-		{
-			if(character == null)
-				base.OnPlayedCard(card);
-			else
-				character.OnPlayedCard(card);
-		}
-		public override void OnRespondedWithCard(Card card)
-		{
-			if(character == null)
-				base.OnRespondedWithCard(card);
-			else
-				character.OnRespondedWithCard(card);
-		}
-		public override bool SavePlayer()
-		{
-			return character == null ? base.SavePlayer() : character.SavePlayer();
+				ClearCharacters();
 		}
 	}
 }

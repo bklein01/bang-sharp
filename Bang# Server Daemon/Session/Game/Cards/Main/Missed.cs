@@ -30,9 +30,9 @@ namespace Bang.Server.Cards
 		{
 		}
 		
-		public override void CheckMissed (ICardResultHandler handler)
+		public override void CheckMissed (CardResultMethod resultMethod)
 		{
-			handler.OnResult(this, true);
+			resultMethod(this, true);
 		}
 	}
 }

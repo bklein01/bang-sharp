@@ -30,14 +30,14 @@ namespace Bang.Server.Characters
 			private LuckyDuke parent;
 			private Card causedBy;
 			private CheckDeckMethod checkMethod;
-			private ICardResultHandler handler;
+			private CardResultMethod resultMethod;
 			
-			public LuckyDukeResponseHandler (LuckyDuke parent, Card causedBy, CheckDeckMethod checkMethod, ICardResultHandler handler)
+			public LuckyDukeResponseHandler (LuckyDuke parent, Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
 				: base(RequestType.LuckyDuke, parent.Player)
 			{
 				this.causedBy = causedBy;
 				this.checkMethod = checkMethod;
-				this.handler = handler;
+				this.resultMethod = resultMethod;
 			}
 			
 			protected override void OnStart ()
@@ -45,16 +45,16 @@ namespace Bang.Server.Characters
 				Game.GameTable.DrawIntoSelection (2, null);
 			}
 			
-			protected override void OnRespondCard (Card card)
+			protected override void OnRespondCard(Card card)
 			{
-				if (!Game.GameTable.Selection.Contains (card))
-					throw new BadCardException ();
+				if(!Game.GameTable.Selection.Contains(card))
+					throw new BadCardException();
 				
-				bool result = checkMethod (card);
-				Game.Session.EventManager.OnPlayerCheckedDeck (RequestedPlayer, card, causedBy, result);
-				Game.GameTable.CancelSelection ();
+				bool result = checkMethod(card);
+				Game.Session.EventManager.OnPlayerCheckedDeck(RequestedPlayer, card, causedBy, result);
+				Game.GameTable.CancelSelection();
 				End();
-				handler.OnResult (causedBy, result);
+				resultMethod(causedBy, result);
 			}
 		}
 		
@@ -63,10 +63,10 @@ namespace Bang.Server.Characters
 		{
 		}
 		
-		public override void CheckDeck (Card causedBy, CheckDeckMethod checkMethod, ICardResultHandler handler)
+		public override void CheckDeck (Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
 		{
 			Game.Session.EventManager.OnPlayerUsedAbility (Player);
-			Game.GameCycle.PushTempHandler(new LuckyDukeResponseHandler(this, causedBy, checkMethod, handler));
+			Game.GameCycle.PushTempHandler(new LuckyDukeResponseHandler(this, causedBy, checkMethod, resultMethod));
 		}
 	}
 }

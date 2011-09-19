@@ -34,10 +34,10 @@ namespace Bang.Server.Characters
 			//barrel.Owner = Player;
 		}
 
-		public override void CheckMissed (ICardResultHandler handler)
+		public override void CheckMissed (CardResultMethod resultMethod)
 		{
 			Game.Session.EventManager.OnPlayerUsedAbility(Player);
-			Player.CheckDeck (barrel, c => c.Suit == CardSuit.Hearts, handler);
+			Player.CheckDeck (barrel, c => c.Suit == CardSuit.Hearts, resultMethod);
 		}
 	}
 }

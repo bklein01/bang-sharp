@@ -141,6 +141,33 @@ namespace Bang.Server
 			}
 		}
 
+		void IPlayerControl.RespondCharacter(CharacterType character)
+		{
+			if(!player.Parent.HasListener)
+				throw new InvalidOperationException();
+			
+			Game game = Game;
+			lock(game.Session.Lock)
+			{
+				if(game.Session.Locked)
+					throw new MethodAccessException();
+				game.Session.Locked = true;
+				
+				try
+				{
+					game.GameCycle.PlayerRespondCharacter(player, character);
+					if(game.Session.State == SessionState.Playing)
+						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CurrentPlayer);
+				}
+				catch
+				{
+					game.Session.Locked = false;
+					throw;
+				}
+				game.Session.Locked = false;
+			}
+		}
+
 		void IPlayerControl.RespondNoAction()
 		{
 			if(!player.Parent.HasListener)

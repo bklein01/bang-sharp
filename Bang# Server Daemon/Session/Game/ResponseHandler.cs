@@ -2,10 +2,10 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright(c) 2011 Ondrej Mosnáček
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
+// of this software and associated documentation files(the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
@@ -48,7 +48,7 @@ namespace Bang.Server
 		{
 			get
 			{
-				if (current.Count != 0)
+				if(current.Count != 0)
 					return current.Peek().RequestType;
 				else
 					return type;
@@ -58,8 +58,8 @@ namespace Bang.Server
 		{
 			get
 			{
-				if (current.Count != 0)
-					return current.Peek ().RequestedPlayer;
+				if(current.Count != 0)
+					return current.Peek().RequestedPlayer;
 				else
 					return requested;
 			}
@@ -68,8 +68,8 @@ namespace Bang.Server
 		{
 			get
 			{
-				if (current.Count != 0)
-					return current.Peek ().CausedBy;
+				if(current.Count != 0)
+					return current.Peek().CausedBy;
 				else
 					return causedBy;
 			}
@@ -80,12 +80,12 @@ namespace Bang.Server
 			get { return active; }
 		}
 
-		protected ResponseHandler (RequestType type, Player requested, Player causedBy)
+		protected ResponseHandler(RequestType type, Player requested, Player causedBy)
 		{
 			this.type = type;
 			this.requested = requested;
 			this.causedBy = causedBy;
-			current = new Stack<ResponseHandler> ();
+			current = new Stack<ResponseHandler>();
 			active = false;
 		}
 		protected ResponseHandler(RequestType type, Player requested)
@@ -96,7 +96,7 @@ namespace Bang.Server
 			: this(type, null, null)
 		{
 		}
-		protected ResponseHandler (Player requested, Player causedBy)
+		protected ResponseHandler(Player requested, Player causedBy)
 			: this(RequestType.None, requested, causedBy)
 		{
 		}
@@ -109,34 +109,34 @@ namespace Bang.Server
 		{
 		}
 
-		protected void PushHandler (ResponseHandler handler)
+		protected void PushHandler(ResponseHandler handler)
 		{
-			if (!active)
-				throw new InvalidOperationException ();
+			if(!active)
+				throw new InvalidOperationException();
 			handler.parent = this;
 			
-			current.Push (handler);
-			handler.Start ();
+			current.Push(handler);
+			handler.Start();
 		}
-		protected void End ()
+		protected void End()
 		{
 			active = false;
-			if (parent == null)
+			if(parent == null)
 				return;
 			
 			ResponseHandler temp = parent;
 			parent = null;
-			temp.Next ();
+			temp.Next();
 		}
 
-		protected void Start ()
+		protected void Start()
 		{
-			if (active)
-				throw new InvalidOperationException ();
+			if(active)
+				throw new InvalidOperationException();
 			active = true;
-			OnStart ();
+			OnStart();
 		}
-		protected virtual void OnStart ()
+		protected virtual void OnStart()
 		{
 		}
 		private void Next()
@@ -155,27 +155,27 @@ namespace Bang.Server
 					return;
 				}
 			}
-			current.Peek ().Continue ();
+			current.Peek().Continue();
 		}
-		protected virtual void OnNext ()
+		protected virtual void OnNext()
 		{
-			End ();
+			End();
 		}
-		private void Continue ()
+		private void Continue()
 		{
-			if (current.Count == 0)
-				OnContinue ();
+			if(current.Count == 0)
+				OnContinue();
 			else
-				current.Peek ().Continue ();
+				current.Peek().Continue();
 		}
-		protected virtual void OnContinue ()
+		protected virtual void OnContinue()
 		{
 		}
 
 		protected void RespondDraw()
 		{
-			if (!active)
-				throw new InvalidOperationException ();
+			if(!active)
+				throw new InvalidOperationException();
 			if(current.Count != 0)
 				current.Peek().RespondDraw();
 			else
@@ -183,58 +183,69 @@ namespace Bang.Server
 		}
 		protected void RespondCard(Card card)
 		{
-			if (!active)
-				throw new InvalidOperationException ();
-			if (current.Count != 0)
-				current.Peek ().RespondCard(card);
+			if(!active)
+				throw new InvalidOperationException();
+			if(current.Count != 0)
+				current.Peek().RespondCard(card);
 			else
 				OnRespondCard(card);
 		}
 		protected void RespondPlayer(Player player)
 		{
-			if (current.Count != 0)
-				current.Peek ().RespondPlayer(player);
+			if(current.Count != 0)
+				current.Peek().RespondPlayer(player);
 			else
 				OnRespondPlayer(player);
 		}
+		protected void RespondCharacter(CharacterType character)
+		{
+			if(current.Count != 0)
+				current.Peek().RespondCharacter(character);
+			else
+				OnRespondCharacter(character);
+		}
 		protected void RespondNoAction()
 		{
-			if (!active)
-				throw new InvalidOperationException ();
-			if (current.Count != 0)
-				current.Peek ().RespondNoAction();
+			if(!active)
+				throw new InvalidOperationException();
+			if(current.Count != 0)
+				current.Peek().RespondNoAction();
 			else
 				OnRespondNoAction();
 		}
 		protected void RespondUseAbility()
 		{
-			if (!active)
-				throw new InvalidOperationException ();
-			if (current.Count != 0)
-				current.Peek ().RespondUseAbility();
+			if(!active)
+				throw new InvalidOperationException();
+			if(current.Count != 0)
+				current.Peek().RespondUseAbility();
 			else
 				OnRespondUseAbility();
 		}
 
-		protected virtual void OnRespondDraw ()
+		protected virtual void OnRespondDraw()
 		{
 			throw new BadUsageException();
 		}
 		protected virtual void OnRespondCard(Card card)
 		{
-			throw new BadUsageException ();
+			throw new BadUsageException();
 		}
 		protected virtual void OnRespondPlayer(Player player)
 		{
-			throw new BadUsageException ();
+			throw new BadUsageException();
+		}
+		protected virtual void OnRespondCharacter(CharacterType character)
+		{
+			throw new BadUsageException();
 		}
 		protected virtual void OnRespondNoAction()
 		{
-			throw new BadUsageException ();
+			throw new BadUsageException();
 		}
 		protected virtual void OnRespondUseAbility()
 		{
-			throw new BadUsageException ();
+			throw new BadUsageException();
 		}
 	}
 }

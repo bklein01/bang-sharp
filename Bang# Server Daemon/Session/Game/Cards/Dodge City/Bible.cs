@@ -30,10 +30,10 @@ namespace Bang.Server.Cards
 		{
 		}
 
-		protected override void OnCheckMissed(ICardResultHandler handler)
+		protected override void OnCheckMissed(CardResultMethod resultMethod)
 		{
 			Player owner = Owner;
-			handler.OnResult(this, true);
+			resultMethod(this, true);
 			Game.GameTable.PlayerDrawFromDeck(owner, 1);
 		}
 	}

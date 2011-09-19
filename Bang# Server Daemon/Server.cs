@@ -120,15 +120,19 @@ namespace Bang.Server
 		}
 
 		private static readonly string StatePath = Path.Combine(Utils.ConfigFolder, "ServerState.bin");
-		private static readonly char[] Magic = "Bang".ToCharArray();
+		private static readonly char[] StateMagic = "BangSharp".ToCharArray();
+		private static readonly uint StateVersion = 2;
 		private bool LoadState()
 		{
 			try
 			{
 				Stream stream = File.OpenRead(StatePath);
 				BinaryReader reader = new BinaryReader(stream);
-				char[] magic = reader.ReadChars(4);
-				if(!magic.SequenceEqual(Magic))
+				char[] magic = reader.ReadChars(StateMagic.Length);
+				if(!magic.SequenceEqual(StateMagic))
+					return false;
+				uint version = reader.ReadUInt32();
+				if(version != StateVersion)
 					return false;
 
 				int sessionCount = reader.ReadInt32();
@@ -158,7 +162,8 @@ namespace Bang.Server
 						Directory.CreateDirectory(Utils.ConfigFolder);
 					Stream stream = File.Create(StatePath);
 					BinaryWriter writer = new BinaryWriter(stream);
-					writer.Write(Magic);
+					writer.Write(StateMagic);
+					writer.Write(StateVersion);
 					Write(writer);
 					writer.Close();
 				}
