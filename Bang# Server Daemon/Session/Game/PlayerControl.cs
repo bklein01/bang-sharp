@@ -48,7 +48,7 @@ namespace Bang.Server
 		}
 		IPrivatePlayerView IPlayerControl.PrivatePlayerView
 		{
-			get { return player; }
+			get { return player.PrivatePlayerView; }
 		}
 		IGame IPlayerControl.Game
 		{
