@@ -27,8 +27,76 @@ using System.Collections.ObjectModel;
 using System.Linq;
 namespace Bang.Server
 {
-	public sealed class Player : MarshalByRefObject, IPrivatePlayerView
+	public sealed class Player : MarshalByRefObject, IPublicPlayerView
 	{
+		private sealed class PrivatePlayerViewProxy : MarshalByRefObject, IPrivatePlayerView
+		{
+			private Player raw;
+
+			int IIdentificable.ID
+			{
+				get { return raw.ID; }
+			}
+
+			bool IPublicPlayerView.IsSheriff
+			{
+				get { return raw.IsSheriff; }
+			}
+			bool IPublicPlayerView.IsAlive
+			{
+				get { return raw.IsAlive; }
+			}
+			bool IPublicPlayerView.IsWinner
+			{
+				get { return raw.IsWinner; }
+			}
+			int IPublicPlayerView.LifePoints
+			{
+				get { return raw.LifePoints; }
+			}
+			int IPublicPlayerView.MaxLifePoints
+			{
+				get { return raw.MaxLifePoints; }
+			}
+			ReadOnlyCollection<ICard> IPublicPlayerView.Hand
+			{
+				get { return ((IPublicPlayerView)raw).Hand; }
+			}
+			ReadOnlyCollection<ICard> IPublicPlayerView.Table
+			{
+				get { return ((IPublicPlayerView)raw).Table; }
+			}
+			CharacterType IPublicPlayerView.CharacterType
+			{
+				get { return raw.CharacterType; }
+			}
+			ReadOnlyCollection<CharacterType> IPublicPlayerView.AdditionalCharacters
+			{
+				get { return raw.AdditionalCharacters; }
+			}
+			Role IPublicPlayerView.Role
+			{
+				get { return ((IPublicPlayerView)raw).Role; }
+			}
+
+			ReadOnlyCollection<ICard> IPrivatePlayerView.Hand
+			{
+				get { return new ReadOnlyCollection<ICard>(raw.hand.ConvertAll<ICard>(c => c)); }
+			}
+			Role IPrivatePlayerView.Role
+			{
+				get { return raw.Role; }
+			}
+			ReadOnlyCollection<ICard> IPrivatePlayerView.Selection
+			{
+				get { return raw.game.GameTable.GetSelection(raw); }
+			}
+
+			public PrivatePlayerViewProxy(Player raw)
+			{
+				this.raw = raw;
+			}
+		}
 		private Game game;
 		private SessionPlayer parent;
 		private PlayerControl control;
@@ -43,6 +111,7 @@ namespace Bang.Server
 		private int bangsPlayed;
 		private bool skipTurn;
 		private int turnsPlayed;
+		private PrivatePlayerViewProxy privateView;
 		
 		public Game Game
 		{
@@ -76,10 +145,6 @@ namespace Bang.Server
 		{
 			get { return new ReadOnlyCollection<ICard> (hand.ConvertAll<ICard>(c => c.Empty)); }
 		}
-		ReadOnlyCollection<ICard> IPrivatePlayerView.Hand
-		{
-			get { return new ReadOnlyCollection<ICard> (hand.ConvertAll<ICard>(c => c)); }
-		}
 		public ReadOnlyCollection<TableCard> Table
 		{
 			get { return new ReadOnlyCollection<TableCard> (table); }
@@ -87,10 +152,6 @@ namespace Bang.Server
 		ReadOnlyCollection<ICard> IPublicPlayerView.Table
 		{
 			get { return new ReadOnlyCollection<ICard> (table.ConvertAll<ICard>(c => c)); }
-		}
-		ReadOnlyCollection<ICard> IPrivatePlayerView.Selection
-		{
-			get { return game.GameTable.GetSelection(this); }
 		}
 		public Role Role
 		{
@@ -105,10 +166,6 @@ namespace Bang.Server
 				else
 					return role == Role.Sheriff ? Role.Sheriff : isAlive ? Role.Unknown : role;
 			}
-		}
-		Role IPrivatePlayerView.Role
-		{
-			get { return role; }
 		}
 		public bool IsSheriff
 		{
@@ -177,6 +234,10 @@ namespace Bang.Server
 			get { return skipTurn; }
 			set { skipTurn = skipTurn || value; }
 		}
+		public IPrivatePlayerView PrivatePlayerView
+		{
+			get { return privateView; }
+		}
 		
 		public Player(Game game, SessionPlayer parent, Role role, CharacterType character)
 		{
@@ -193,6 +254,7 @@ namespace Bang.Server
 			isWinner = false;
 			bangsPlayed = 0;
 			turnsPlayed = 0;
+			privateView = new PrivatePlayerViewProxy(this);
 		}
 		
 		public void PlayCard (Card card)
