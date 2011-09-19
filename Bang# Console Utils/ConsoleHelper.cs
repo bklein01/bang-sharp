@@ -137,7 +137,7 @@ namespace Bang.ConsoleUtils
 					break;
 				case ConsoleKey.Backspace:
 					if(line.Length == 0)
-						return;
+						break;
 					line = line.Remove(line.Length - 1, 1);
 					break;
 				default:

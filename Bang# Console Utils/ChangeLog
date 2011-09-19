@@ -4,6 +4,14 @@
 	  
 
 	* ConsoleHelper.cs:
+	  Fixed a typo in the previous revision.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ConsoleHelper.cs:
 	  Fixed System.ArgumentOutOfRangeException when backspacing an
 	  empty line in the
 	  Bang.ConsoleUtils.ConsoleHelper.ReadPassword() method.
