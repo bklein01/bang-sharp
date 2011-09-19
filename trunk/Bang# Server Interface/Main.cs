@@ -110,6 +110,29 @@ namespace Bang.Server
 				NestedCommand<IServerAdmin> serverAdminCmd = new NestedCommand<IServerAdmin>(cmd => serverAdmin);
 				serverAdminCmd.MakeServerAdminCommand();
 				rootCmd["serveradmin"] = serverAdminCmd;
+				rootCmd["changepassword"] = new FinalCommand(cmd =>
+				{
+					ConsoleHelper.Print("Current password: ");
+					Password currentPassword = ConsoleHelper.ReadPassword();
+					ConsoleHelper.Print("New password: ");
+					Password newPassword = ConsoleHelper.ReadPassword();
+					ConsoleHelper.Print("Confirm new password: ");
+					if(!newPassword.CheckPassword(ConsoleHelper.ReadPassword()))
+					{
+						ConsoleHelper.ErrorLine("The new passwords don't match!");
+						return;
+					}
+					try
+					{
+						server.ChangePassword(currentPassword, newPassword);
+					}
+					catch(BadServerPasswordException)
+					{
+						ConsoleHelper.ErrorLine("Bad server password!");
+						return;
+					}
+					ConsoleHelper.SuccessLine("Server password changed successfully!");
+				});
 				rootCmd["exit"] = new FinalCommand(cmd => Environment.Exit(0));
 				while (true) // command-line loop
 				{
