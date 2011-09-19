@@ -127,23 +127,25 @@ namespace Bang.Server
 			try
 			{
 				Stream stream = File.OpenRead(StatePath);
-				BinaryReader reader = new BinaryReader(stream);
-				char[] magic = reader.ReadChars(StateMagic.Length);
-				if(!magic.SequenceEqual(StateMagic))
-					return false;
-				uint version = reader.ReadUInt32();
-				if(version != StateVersion)
-					return false;
-
-				int sessionCount = reader.ReadInt32();
-				if(sessionCount < 0)
-					return false;
-
-				sessions = new Dictionary<int, Session>(sessionCount);
-				for(int i = 0; i < sessionCount; i++)
+				using(BinaryReader reader = new BinaryReader(stream))
 				{
-					Session session = new Session(this, reader);
-					sessions.Add(session.ID, session);
+					char[] magic = reader.ReadChars(StateMagic.Length);
+					if(!magic.SequenceEqual(StateMagic))
+						return false;
+					uint version = reader.ReadUInt32();
+					if(version != StateVersion)
+						return false;
+
+					int sessionCount = reader.ReadInt32();
+					if(sessionCount < 0)
+						return false;
+
+					sessions = new Dictionary<int, Session>(sessionCount);
+					for(int i = 0; i < sessionCount; i++)
+					{
+						Session session = new Session(this, reader);
+						sessions.Add(session.ID, session);
+					}
 				}
 				return true;
 			}
@@ -158,14 +160,15 @@ namespace Bang.Server
 			{
 				try
 				{
-					if(!File.Exists(StatePath))
+					if(!new FileInfo(StatePath).Exists)
 						Directory.CreateDirectory(Utils.ConfigFolder);
 					Stream stream = File.Create(StatePath);
-					BinaryWriter writer = new BinaryWriter(stream);
-					writer.Write(StateMagic);
-					writer.Write(StateVersion);
-					Write(writer);
-					writer.Close();
+					using(BinaryWriter writer = new BinaryWriter(stream))
+					{
+						writer.Write(StateMagic);
+						writer.Write(StateVersion);
+						Write(writer);
+					}
 				}
 				catch
 				{
