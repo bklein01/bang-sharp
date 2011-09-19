@@ -136,6 +136,8 @@ namespace Bang.ConsoleUtils
 					line = new StringBuilder();
 					break;
 				case ConsoleKey.Backspace:
+					if(line.Length == 0)
+						return;
 					line = line.Remove(line.Length - 1, 1);
 					break;
 				default:
