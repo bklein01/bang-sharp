@@ -371,14 +371,31 @@ namespace Bang.Client
 					}
 				});
 				rootCmd["server"] = serverCmd;
-				NestedCommand<IPlayerSessionControl> sessionControlCommand = new NestedCommand<IPlayerSessionControl>(cmd => Instance.sessionControl);
+				NestedCommand<IPlayerSessionControl> sessionControlCommand = new NestedCommand<IPlayerSessionControl>(cmd =>
+				{
+					IPlayerSessionControl sessionControl = Instance.sessionControl;
+					if(sessionControl == null)
+					{
+						ConsoleHelper.ErrorLine("Not connected to any session!");
+						return null;
+					}
+					return sessionControl;
+				});
 				sessionControlCommand.MakePlayerSessionControlCommand(() =>
 				{
 					Instance.sessionControl = null;
 					Instance.gameControl = null;
 				});
 				rootCmd["sessioncontrol"] = sessionControlCommand;
-				NestedCommand<IPlayerControl> gameControlCommand = new NestedCommand<IPlayerControl>(cmd => Instance.gameControl);
+				NestedCommand<IPlayerControl> gameControlCommand = new NestedCommand<IPlayerControl>(cmd => {
+					IPlayerControl gameControl = Instance.gameControl;
+					if(gameControl == null)
+					{
+						ConsoleHelper.ErrorLine("Not playing any game!");
+						return null;
+					}
+					return gameControl;
+				});
 				gameControlCommand.MakePlayerGameControlCommand();
 				rootCmd["gamecontrol"] = gameControlCommand;
 				rootCmd["exit"] = new FinalCommand(cmd => Environment.Exit(0));
