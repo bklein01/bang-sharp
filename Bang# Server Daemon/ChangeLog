@@ -3,6 +3,14 @@
 	* AssemblyInfo.cs:
 	  
 
+	* Session/SessionEventManager.cs:
+	  Handle all exceptions in the event manager.
+
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
 	* Session/SessionPlayer.cs:
 	* Session/SessionSpectator.cs:
 	* Session/SessionEventManager.cs:
