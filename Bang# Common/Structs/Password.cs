@@ -39,8 +39,8 @@ namespace Bang
 		{
 			if(string.IsNullOrEmpty(password))
 				return new int[] { 0, 0 };
-			
-			int[] temp = hashBase;
+
+			int[] temp = hashBase.ToArray();
 			for(int k = 0; k < password.Length; k++)
 				for(int i = 0; i < hashBase.Length; i++)
 					temp[i] ^= password[k] << (k + i);
