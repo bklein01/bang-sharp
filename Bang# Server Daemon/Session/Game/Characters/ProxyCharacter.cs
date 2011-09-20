@@ -109,6 +109,8 @@ namespace Bang.Server
 		}
 		protected void SetCharacters(CharacterType[] types)
 		{
+			if(characters.Count != 0)
+				ClearCharacters();
 			foreach(CharacterType type in types)
 				characters.Add(Character.GetCharacter(Player, type));
 			Player.SetAditionalCharacters(types);

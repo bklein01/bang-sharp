@@ -3,6 +3,16 @@
 	* AssemblyInfo.cs:
 	  
 
+	* Session/Game/Characters/ProxyCharacter.cs:
+	  Fixed Bang.Server.ProxyCharacter's additional character
+	  buildup when the additional characters are not cleared
+	  before setting new ones.
+
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
 	* Session/SessionEventManager.cs:
 	  Handle all exceptions in the event manager.
 
