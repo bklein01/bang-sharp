@@ -31,9 +31,9 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 namespace Bang.Server
 {
-	public sealed class Session : MarshalByRefObject, ISession
+	public sealed class Session : ImmortalMarshalByRefObject, ISession
 	{
-		private sealed class SessionAdmin : MarshalByRefObject, ISessionAdmin
+		private sealed class SessionAdmin : ImmortalMarshalByRefObject, ISessionAdmin
 		{
 			private Session parent;
 
@@ -293,6 +293,17 @@ namespace Bang.Server
 				writer.Write((int)character);
 		}
 
+		public override void Disconnect()
+		{
+			base.Disconnect();
+			admin.Disconnect();
+
+			foreach(SessionPlayer p in playerList)
+				p.Disconnect();
+			foreach(SessionSpectator s in spectatorList)
+				s.Disconnect();
+		}
+
 		public void Join(Password password, CreatePlayerData data, IPlayerEventListener listener)
 		{
 			if(state == SessionState.Ended)
@@ -495,7 +506,7 @@ namespace Bang.Server
 					sheriffEnumerator.MoveNext();
 				}
 				if(game != null)
-					game.Dispose();
+					game.Disconnect();
 				game = new Game(this, sheriffEnumerator.Current.ID);
 				game.Start();
 				state = SessionState.Playing;
@@ -516,17 +527,7 @@ namespace Bang.Server
 				state = SessionState.Ended;
 				eventMgr.OnSessionEnded();
 				if(game != null)
-					game.Dispose();
-				foreach(SessionPlayer p in playerList)
-				{
-					p.UnregisterListener();
-					p.Control.Disconnect();
-				}
-				foreach(SessionSpectator s in spectatorList)
-				{
-					s.UnregisterListener();
-					s.Control.Disconnect();
-				}
+					game.Disconnect();
 				server.RemoveSession(this);
 
 				Locked = false;
@@ -544,7 +545,10 @@ namespace Bang.Server
 
 				player.UnregisterListener();
 				if(state != SessionState.WaitingForPlayers || player.IsCreator)
+				{
+					Locked = false;
 					return;
+				}
 				player.Control.Disconnect();
 				players.Remove(player.ID);
 				playerList.Remove(player);

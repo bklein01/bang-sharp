@@ -1,3 +1,12 @@
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ImmortalMarshalByRefObject.cs:
+	  Changed the Bang.ImmortalMarshalByRefObject.Disconnect()
+	  method to virtual.
+
 2011-09-19  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

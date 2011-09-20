@@ -25,9 +25,9 @@ using System;
 using Bang.Server.Cards;
 namespace Bang.Server
 {
-	public class Card : MarshalByRefObject, ICard
+	public class Card : ImmortalMarshalByRefObject, ICard
 	{
-		private sealed class EmptyCard : MarshalByRefObject, ICard
+		private sealed class EmptyCard : ImmortalMarshalByRefObject, ICard
 		{
 			private int id;
 			
@@ -150,7 +150,13 @@ namespace Bang.Server
 			this.suit = suit;
 			this.rank = rank;
 			color = GetColor(type);
-			empty = new EmptyCard (this);
+			empty = new EmptyCard(this);
+		}
+
+		public override void Disconnect()
+		{
+			base.Disconnect();
+			empty.Disconnect();
 		}
 		
 		public void AssertInHand ()

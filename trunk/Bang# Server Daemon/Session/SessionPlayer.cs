@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 namespace Bang.Server
 {
-	public sealed class SessionPlayer : MarshalByRefObject, IPlayer
+	public sealed class SessionPlayer : ImmortalMarshalByRefObject, IPlayer
 	{
 		private int id;
 		private Session session;
@@ -57,7 +57,7 @@ namespace Bang.Server
 				}
 				catch(RemotingException)
 				{
-					UnregisterListener();
+					session.RemovePlayer(this);
 					return false;
 				}
 			}
@@ -192,6 +192,12 @@ namespace Bang.Server
 			}
 		}
 
+		public override void Disconnect()
+		{
+			base.Disconnect();
+			control.Disconnect();
+		}
+
 		public int GetVictories(Role role)
 		{
 			if(role == Role.Unknown)
@@ -226,6 +232,18 @@ namespace Bang.Server
 		public void UnregisterListener()
 		{
 			listener = null;
+			ResetControl();
+		}
+		public void ResetControl()
+		{
+			control.Disconnect();
+			control = new SessionPlayerControl(this);
+			Game game = session.Game;
+			if(game != null)
+			{
+				Player p = game.GetPlayer(id);
+				p.ResetControl();
+			}
 		}
 
 		public void UpdateScore(int score)

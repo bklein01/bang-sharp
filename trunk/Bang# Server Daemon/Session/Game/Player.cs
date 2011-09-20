@@ -27,9 +27,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 namespace Bang.Server
 {
-	public sealed class Player : MarshalByRefObject, IPublicPlayerView
+	public sealed class Player : ImmortalMarshalByRefObject, IPublicPlayerView
 	{
-		private sealed class PrivatePlayerViewProxy : MarshalByRefObject, IPrivatePlayerView
+		private sealed class PrivatePlayerViewProxy : ImmortalMarshalByRefObject, IPrivatePlayerView
 		{
 			private Player raw;
 
@@ -255,6 +255,19 @@ namespace Bang.Server
 			bangsPlayed = 0;
 			turnsPlayed = 0;
 			privateView = new PrivatePlayerViewProxy(this);
+		}
+
+		public override void Disconnect()
+		{
+			base.Disconnect();
+			privateView.Disconnect();
+			control.Disconnect();
+		}
+
+		public void ResetControl()
+		{
+			control.Disconnect();
+			control = new PlayerControl(this);
 		}
 		
 		public void PlayCard (Card card)

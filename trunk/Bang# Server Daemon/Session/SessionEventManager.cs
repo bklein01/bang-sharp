@@ -23,7 +23,7 @@ namespace Bang.Server
 			}
 			catch(RemotingException)
 			{
-				player.UnregisterListener();
+				session.RemovePlayer(player);
 			}
 		}
 		public void SendController(SessionSpectator spectator)
@@ -36,7 +36,7 @@ namespace Bang.Server
 			}
 			catch(RemotingException)
 			{
-				spectator.UnregisterListener();
+				session.RemoveSpectator(spectator);
 			}
 		}
 		
@@ -50,7 +50,7 @@ namespace Bang.Server
 			}
 			catch(RemotingException)
 			{
-				player.UnregisterListener();
+				session.RemovePlayer(player);
 			}
 		}
 		public void SendGameController(SessionSpectator spectator, ISpectatorControl control)
@@ -63,7 +63,7 @@ namespace Bang.Server
 			}
 			catch(RemotingException)
 			{
-				spectator.UnregisterListener();
+				session.RemoveSpectator(spectator);
 			}
 		}
 		
@@ -78,7 +78,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -90,7 +90,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnGameEnded ()
@@ -104,7 +104,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -116,7 +116,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		
@@ -131,7 +131,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -143,7 +143,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnSpectatorJoinedSession (SessionSpectator spectator)
@@ -157,7 +157,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -169,7 +169,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerLeftSession (SessionPlayer player)
@@ -183,7 +183,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -195,7 +195,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnSpectatorLeftSession (SessionSpectator spectator)
@@ -209,7 +209,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -221,7 +221,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerUpdated (SessionPlayer player)
@@ -235,7 +235,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -247,7 +247,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 
@@ -262,7 +262,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -274,7 +274,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void SendChatMessage (SessionSpectator spectator, string message)
@@ -288,7 +288,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -300,7 +300,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 
@@ -315,7 +315,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -327,7 +327,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		
@@ -347,7 +347,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -362,7 +362,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerDrewFromGraveyard (Player player, List<Card> drawnCards)
@@ -377,7 +377,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -389,7 +389,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerDiscardedCard (Player player, Card card)
@@ -403,7 +403,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -415,7 +415,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerPlayedCard (Player player, Card card)
@@ -429,7 +429,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -441,7 +441,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerPlayedCard (Player player, Card card, Player targetPlayer)
@@ -455,7 +455,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -467,7 +467,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerPlayedCard(Player player, Card card, Player targetPlayer, Card targetCard)
@@ -484,7 +484,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -496,7 +496,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerPlayedCard (Player player, Card card, CardType asCard)
@@ -510,7 +510,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -522,7 +522,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerPlayedCard (Player player, Card card, CardType asCard, Player targetPlayer)
@@ -536,7 +536,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -548,7 +548,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerPlayedCard(Player player, Card card, CardType asCard, Player targetPlayer, Card targetCard)
@@ -565,7 +565,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -577,7 +577,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerPlayedCardOnTable (Player player, Card card)
@@ -591,7 +591,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -603,7 +603,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPassedTableCard (Player player, Card card, Player targetPlayer)
@@ -617,7 +617,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -629,7 +629,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerPassed (Player player)
@@ -643,7 +643,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -655,7 +655,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerRespondedWithCard (Player player, Card card)
@@ -669,7 +669,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -681,7 +681,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerRespondedWithCard (Player player, Card card, CardType asCard)
@@ -695,7 +695,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -707,7 +707,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnDrawnIntoSelection(List<Card> drawnCards, Player selectionOwner)
@@ -728,7 +728,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -743,7 +743,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerPickedFromSelection(Player player, Card card, bool revealCard)
@@ -760,7 +760,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -775,7 +775,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnUndrawnFromSelection(Card card, Player selectionOwner)
@@ -794,7 +794,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -809,7 +809,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerStoleCard(Player player, Player targetPlayer, Card targetCard)
@@ -826,7 +826,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -838,7 +838,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerCancelledCard (Player player, Player targetPlayer, Card targetCard)
@@ -852,7 +852,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -864,7 +864,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnDeckChecked (Card card)
@@ -878,7 +878,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -890,7 +890,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnCardCancelled (Card card)
@@ -904,7 +904,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -916,7 +916,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 
@@ -932,7 +932,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -944,7 +944,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnLifePointsChanged (Player player, int delta, Player causedBy)
@@ -958,7 +958,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -970,7 +970,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerDied (Player player, Player causedBy)
@@ -984,7 +984,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -996,7 +996,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerUsedAbility(Player player)
@@ -1010,7 +1010,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -1022,7 +1022,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerGainedAdditionalCharacters(Player player)
@@ -1036,7 +1036,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -1048,7 +1048,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerLostAdditionalCharacters(Player player)
@@ -1062,7 +1062,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 			
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -1074,7 +1074,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 		public void OnDeckRegenerated()
@@ -1088,7 +1088,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						p.UnregisterListener();
+						session.RemovePlayer(p);
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
@@ -1100,7 +1100,7 @@ namespace Bang.Server
 					}
 					catch(RemotingException)
 					{
-						s.UnregisterListener();
+						session.RemoveSpectator(s);
 					}
 		}
 	}
