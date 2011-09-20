@@ -27,7 +27,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 namespace Bang.Server
 {
-	public sealed class Game : MarshalByRefObject, IGame
+	public sealed class Game : ImmortalMarshalByRefObject, IGame
 	{
 		private sealed class SpectatorControl : ImmortalMarshalByRefObject, ISpectatorControl
 		{
@@ -179,6 +179,16 @@ namespace Bang.Server
 			}
 			roles.Shuffle();
 			return roles;
+		}
+
+		public override void Disconnect()
+		{
+			base.Disconnect();
+			spectatorControl.Disconnect();
+			foreach(Player p in playerList)
+				p.Disconnect();
+			foreach(Card c in table.AllCards)
+				c.Disconnect();
 		}
 
 		public void Start ()
@@ -460,14 +470,6 @@ namespace Bang.Server
 			session.EventManager.SendGameController(spectator, spectatorControl);
 		}
 
-		public void Dispose()
-		{
-			foreach(Player p in playerList)
-				p.Control.Disconnect();
-
-			spectatorControl.Disconnect();
-		}
-		
 		public Player GetPlayer(int id)
 		{
 			try

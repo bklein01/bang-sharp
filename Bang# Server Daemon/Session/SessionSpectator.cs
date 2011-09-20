@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 namespace Bang.Server
 {
-	public sealed class SessionSpectator : MarshalByRefObject, ISpectator
+	public sealed class SessionSpectator : ImmortalMarshalByRefObject, ISpectator
 	{
 		private int id;
 		private Session session;
@@ -51,7 +51,7 @@ namespace Bang.Server
 				}
 				catch(RemotingException)
 				{
-					UnregisterListener();
+					session.RemoveSpectator(this);
 					return false;
 				}
 			}
@@ -63,6 +63,12 @@ namespace Bang.Server
 			this.session = session;
 			this.data = data;
 			control = new SessionSpectatorControl(this);
+		}
+
+		public override void Disconnect()
+		{
+			base.Disconnect();
+			control.Disconnect();
 		}
 
 		public void RegisterListener (ISpectatorEventListener listener)

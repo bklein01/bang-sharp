@@ -45,7 +45,7 @@ namespace System
 		/// <summary>
 		/// Disconnects the object from the Remoting Services.
 		/// </summary>
-		public void Disconnect()
+		public virtual void Disconnect()
 		{
 			RemotingServices.Disconnect(this);
 		}

@@ -55,6 +55,11 @@ namespace Bang.Server
 		{
 			get { return game; }
 		}
+
+		public IEnumerable<Card> AllCards
+		{
+			get { return cards.Values; }
+		}
 		
 		public GameTable (Game game)
 		{

@@ -32,7 +32,7 @@ namespace Bang.Server
 {
 	public sealed class Server : MarshalByRefObject, IServerBase
 	{
-		private sealed class ServerAdmin : MarshalByRefObject, IServerAdmin
+		private sealed class ServerAdmin : ImmortalMarshalByRefObject, IServerAdmin
 		{
 			private Server parent;
 
@@ -246,6 +246,7 @@ namespace Bang.Server
 			lock(Lock)
 			{
 				sessions.Remove(session.ID);
+				session.Disconnect();
 				SaveState();
 			}
 		}
