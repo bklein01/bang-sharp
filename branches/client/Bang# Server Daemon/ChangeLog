@@ -1,0 +1,258 @@
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/SessionEventManager.cs:
+	  Handle all exceptions in the event manager.
+
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/SessionPlayer.cs:
+	* Session/SessionSpectator.cs:
+	* Session/SessionEventManager.cs:
+	  All network shared types now derive from
+	  Bang.ImmortalMarshalByRefObject and their disconnection from
+	  RemotingServices is managed manually.
+	Use Bang.Server.Session.[RemovePlayer|RemoveSpectator] instead
+	  of UnregisterListener on some places.
+
+	* Server.cs:
+	* Session/Session.cs:
+	* Session/Game/Game.cs:
+	* Session/Game/Player.cs:
+	* Session/Game/GameTable.cs:
+	* Session/Game/Cards/Card.cs:
+	  All network shared types now derive from
+	  Bang.ImmortalMarshalByRefObject and their disconnection from
+	  RemotingServices is managed manually.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/Game/Player.cs:
+	* Session/Game/PlayerControl.cs:
+	  Bang.IPrivatePlayerView implementation now goes through a
+	  proxy for security reasons.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Server.cs:
+	  Tiny IO improvements.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Server Daemon.csproj:
+	  
+
+	* Session/Game/Game.cs:
+	* Session/Game/Player.cs:
+	* Session/SessionPlayer.cs:
+	* Session/Game/GameCycle.cs:
+	* Session/Game/PlayerControl.cs:
+	* Session/SessionEventManager.cs:
+	* Session/Game/ResponseHandler.cs:
+	* Session/Game/Characters/ProxyCharacter.cs:
+	* Session/Game/Characters/Dodge City/VeraCuster.cs:
+	  Added new base for "proxy characters" (like Vera Custer,
+	  Greygory Deck).
+	Added new response method.
+	Added new RequestType values.
+	Added new PublicPlayerView property - AdditionalCharacters
+	  (the abilities gained by proxy characters).
+	New way of getting player victory stats.
+
+	* Session/Session.cs:
+	  Added unified methods for getting the list of Role,
+	  CharacterType or CardType enumeration values.
+	New server state format.
+
+	* Session/Game/Characters/Character.cs:
+	  Added unified methods for getting the list of Role,
+	  CharacterType or CardType enumeration values.
+	The Bang.Server.CardResultHandler interface replaced by a
+	  delegate.
+
+	* Session/Game/Delegates.cs:
+	* Session/Game/Cards/Card.cs:
+	* Session/Game/Cards/Main/Jail.cs:
+	* Session/Game/Cards/TableCard.cs:
+	* Session/Game/Cards/Main/Missed.cs:
+	* Session/Game/Cards/Main/Barrel.cs:
+	* Session/Game/ICardResultHandler.cs:
+	* Session/Game/ShotResponseHandler.cs:
+	* Session/Game/Cards/Main/Dynamite.cs:
+	* Session/Game/Cards/Dodge City/Dodge.cs:
+	* Session/Game/Cards/Dodge City/Bible.cs:
+	* Session/Game/Characters/Main/LuckyDuke.cs:
+	* Session/Game/Cards/Dodge City/Sombrero.cs:
+	* Session/Game/Cards/Dodge City/IronPlate.cs:
+	* Session/Game/Characters/Main/Jourdonnais.cs:
+	* Session/Game/Cards/Dodge City/TenGallonHat.cs:
+	  The Bang.Server.CardResultHandler interface replaced by a
+	  delegate.
+
+	* Server.cs:
+	  New server state format.
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* Server.cs:
+	* Session/Session.cs:
+	* Session/Game/PlayerControl.cs:
+	* Session/SessionPlayerControl.cs:
+	* Session/SessionSpectatorControl.cs:
+	  The lockout exception changed to MethodAccessException.
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* Session:
+	* Session/Game:
+	* AssemblyInfo.cs:
+	* Session/Game/Cards:
+	* Session/Game/Cards/Main:
+	* Session/Game/Characters:
+	* Bang# Server Daemon.csproj:
+	* Session/Game/Characters/Main:
+	* Session/Game/Cards/Dodge City:
+	* Session/Game/Characters/Dodge City:
+	  
+
+	* Session/Game/Game.cs:
+	* Session/Game/Player.cs:
+	* Session/SessionPlayer.cs:
+	* Session/Game/GameCycle.cs:
+	* Session/Game/GameTable.cs:
+	* Session/Game/Cards/Card.cs:
+	* Session/SessionSpectator.cs:
+	* Session/Game/PlayerControl.cs:
+	* Session/Game/IResultHandler.cs:
+	* Session/SessionEventManager.cs:
+	* Session/Game/Cards/Main/Beer.cs:
+	* Session/Game/ResponseHandler.cs:
+	* Session/Game/Cards/Main/Jail.cs:
+	* Session/Game/Cards/TableCard.cs:
+	* Session/SessionPlayerControl.cs:
+	* Session/Game/Cards/Main/Bang.cs:
+	* Session/Game/Cards/Main/Duel.cs:
+	* Session/Game/Cards/GoldenCard.cs:
+	* Session/Game/Cards/Main/Panic.cs:
+	* Session/Game/Cards/Main/Missed.cs:
+	* Session/Game/Cards/Main/Barrel.cs:
+	* Session/Game/Cards/GeneralCard.cs:
+	* Session/Game/Cards/Main/Saloon.cs:
+	* Session/Game/Cards/Main/Gatling.cs:
+	* Session/Game/Cards/Main/Indians.cs:
+	* Session/Game/ICardResultHandler.cs:
+	* Session/SessionSpectatorControl.cs:
+	* Session/Game/Cards/Main/Mustang.cs:
+	* Session/Game/Cards/PlayableCard.cs:
+	* Session/Game/Cards/Main/Dynamite.cs:
+	* Session/Game/ShotResponseHandler.cs:
+	* Session/Game/Cards/Main/Carabine.cs:
+	* Session/Game/Cards/Main/CatBalou.cs:
+	* Session/Game/Cards/Main/Volcanic.cs:
+	* Session/Game/Cards/Main/Remington.cs:
+	* Session/Game/QueueResponseHandler.cs:
+	* Session/Game/Cards/Main/Appaloosa.cs:
+	* Session/Game/Cards/AllPlayersCard.cs:
+	* Session/Game/Cards/Main/Diligenza.cs:
+	* Session/Game/Cards/TargetCardCard.cs:
+	* Session/Game/Characters/Character.cs:
+	* Session/Game/Cards/Main/Schofield.cs:
+	* Session/Game/Cards/Main/WellsFargo.cs:
+	* Session/Game/Cards/Main/Winchester.cs:
+	* Session/Game/Cards/Dodge City/Bible.cs:
+	* Session/Game/Cards/TargetPlayerCard.cs:
+	* Session/Game/Cards/Dodge City/Knife.cs:
+	* Session/Game/Cards/Dodge City/Brawl.cs:
+	* Session/Game/Cards/Dodge City/Dodge.cs:
+	* Session/Game/Cards/Dodge City/Punch.cs:
+	* Session/Game/Cards/GeneralTableCard.cs:
+	* Session/Game/Cards/PlayableTableCard.cs:
+	* Session/Game/Cards/Dodge City/CanCan.cs:
+	* Session/Game/Cards/Dodge City/Silver.cs:
+	* Session/Game/Cards/GeneralGoldenCard.cs:
+	* Session/Game/Cards/Dodge City/Whisky.cs:
+	* Session/Game/Cards/Main/GeneralStore.cs:
+	* Session/Game/Characters/Main/ElGringo.cs:
+	* Session/Game/Cards/Dodge City/Canteen.cs:
+	* Session/Game/Cards/Dodge City/RagTime.cs:
+	* Session/Game/ThrowBangResponseHandler.cs:
+	* Session/Game/Cards/Dodge City/Tequila.cs:
+	* Session/Game/Cards/Dodge City/Hideout.cs:
+	* Session/Game/Cards/TargetCardTableCard.cs:
+	* Session/Game/Characters/Main/LuckyDuke.cs:
+	* Session/Game/Cards/Dodge City/Sombrero.cs:
+	* Session/Game/Cards/Dodge City/Howitzer.cs:
+	* Session/Game/Cards/AllPlayersTableCard.cs:
+	* Session/Game/Characters/Main/BlackJack.cs:
+	* Session/Game/Characters/Main/VultureSam.cs:
+	* Session/Game/Cards/Dodge City/Derringer.cs:
+	* Session/Game/Cards/Dodge City/Conestoga.cs:
+	* Session/Game/Characters/Main/KitCarlson.cs:
+	* Session/Game/Characters/Main/PaulRegret.cs:
+	* Session/Game/Cards/Dodge City/Pepperbox.cs:
+	* Session/Game/Cards/Dodge City/IronPlate.cs:
+	* Session/Game/Characters/Main/JesseJones.cs:
+	* Session/Game/Characters/Main/SidKetchum.cs:
+	* Session/Game/Cards/AllPlayersGoldenCard.cs:
+	* Session/Game/Cards/TargetCardGoldenCard.cs:
+	* Session/Game/Characters/Main/RoseDoolan.cs:
+	* Session/Game/Characters/Main/BartCassidy.cs:
+	* Session/Game/Characters/Main/Jourdonnais.cs:
+	* Session/Game/Characters/Main/WillyTheKid.cs:
+	* Session/Game/Cards/TargetPlayerTableCard.cs:
+	* Session/Game/Cards/Dodge City/Springfield.cs:
+	* Session/Game/Characters/Main/PedroRamirez.cs:
+	* Session/Game/Cards/Dodge City/PonyExpress.cs:
+	* Session/Game/Cards/TargetPlayerGoldenCard.cs:
+	* Session/Game/Cards/Dodge City/BuffaloRifle.cs:
+	* Session/Game/Cards/Dodge City/TenGallonHat.cs:
+	* Session/Game/Characters/Main/SuzyLafayette.cs:
+	* Session/Game/Characters/Main/CalamityJanet.cs:
+	* Session/Game/Characters/Main/SlabTheKiller.cs:
+	* Session/Game/Cards/AllPlayersCardGoldenCard.cs:
+	* Session/Game/Characters/Dodge City/PixiePete.cs:
+	* Session/Game/Characters/Dodge City/BelleStar.cs:
+	* Session/Game/Characters/Dodge City/ApacheKid.cs:
+	* Session/Game/Characters/Dodge City/TequilaJoe.cs:
+	* Session/Game/Characters/Dodge City/PatBrennan.cs:
+	* Session/Game/Characters/Dodge City/HerbHunter.cs:
+	* Session/Game/Characters/Dodge City/BillNoface.cs:
+	* Session/Game/Characters/Dodge City/MollyStark.cs:
+	* Session/Game/Characters/Dodge City/DocHolyday.cs:
+	* Session/Game/Characters/Dodge City/GregDigger.cs:
+	* Session/Game/Characters/Dodge City/VeraCuster.cs:
+	* Session/Game/Characters/Dodge City/ElenaFuente.cs:
+	* Session/Game/Characters/Dodge City/JoseDelgado.cs:
+	* Session/Game/Characters/Dodge City/SeanMallory.cs:
+	* Session/Game/Characters/Dodge City/ChuckWengam.cs:
+	  Internal server functionality moved to daemon.
+
+	* Server.cs:
+	* Session/Session.cs:
+	  Internal server functionality moved to daemon.
+	Improved locking.
+	Added support for server administration.
+
+	* Main.cs:
+	  Server administration services are now served on a separate
+	  port so that they can be restricted to local access only.
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* AssemblyInfo.cs:
+	* Bang# Server Daemon.csproj:
+	  Server is now divided to daemon and interface.
+

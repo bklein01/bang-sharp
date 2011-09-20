@@ -1,0 +1,88 @@
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Main.cs:
+	  Added error messages when session or game control is not
+	  available.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Test Client.csproj:
+	  
+
+	* Main.cs:
+	  Added new base for "proxy characters" (like Vera Custer,
+	  Greygory Deck).
+	Added new response method.
+	Added new RequestType values.
+	Added new PublicPlayerView property - AdditionalCharacters
+	  (the abilities gained by proxy characters).
+	New way of getting player victory stats.
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Test Client.csproj:
+	  
+
+	* Main.cs:
+	  Edited to comply with the changes in Bang# Console Utils.
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	  Use Bang.ConsoleUtils.ReadPassword() instead of
+	  Bang.ConsoleUtils.ReadLine() when reading passwords from the
+	  console.
+	Use structure initializers instead of constructors.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Test Client.csproj:
+	  
+
+	* Main.cs:
+	  AI players now manage threading for responses on their own
+	  (via ThreadPool). The
+	  Bang.IPlayerListener.OnResponseRequested event is now
+	  removed.
+
+2011-08-18  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* AssemblyInfo.cs:
+	  
+
+2011-08-18  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Test Client.csproj:
+	  
+
+	* Main.cs:
+	  Changed base class to ImmortalMarshalByRefObject. Fixes
+	  issue 5.
+	Now purging gameControl only when session ends.
+
+2011-08-16  WOnder93  <omosnacek@gmail.com>
+
+	* Bang# Test Client.csproj: 
+
+2011-08-16  WOnder93  <omosnacek@gmail.com>
+
+	* Bang# Test Client.csproj: 
+
+2011-08-07  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs: 
+
+	* Main.cs: Full RemotingException and SerializationException
+	logging now enabled only in Debug build configuration.
+

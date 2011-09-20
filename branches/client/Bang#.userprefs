@@ -1,0 +1,33 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Common/ImmortalMarshalByRefObject.cs" ctype="Workbench">
+    <Files>
+      <File FileName="Bang# Server Daemon/Session/Game/Player.cs" Line="257" Column="31" />
+      <File FileName="Bang# Server Daemon/AssemblyInfo.cs" Line="45" Column="36" />
+      <File FileName="Bang# Common/ImmortalMarshalByRefObject.cs" Line="48" Column="18" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Bang# Common" expanded="True">
+            <Node name="ImmortalMarshalByRefObject.cs" selected="True" />
+          </Node>
+          <Node name="Bang# Server Daemon" expanded="True">
+            <Node name="Session" expanded="True">
+              <Node name="Game" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Catchpoint exceptionName="System.NullReferenceException" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore">
+    <Watch file="Bang# Common/TypeRestrictionServerSink.cs" line="67" offsetX="1270" offsetY="714" expression="sinkStack" liveUpdate="False" />
+    <Watch file="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerSink.cs" line="72" offsetX="1326" offsetY="799" expression="Stream" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
+</Properties>
