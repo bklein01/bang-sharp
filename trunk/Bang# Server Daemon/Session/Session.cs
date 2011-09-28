@@ -194,6 +194,7 @@ namespace Bang.Server
 		}
 		public Session(Server server, BinaryReader reader)
 		{
+			admin = new SessionAdmin(this);
 			this.server = server;
 			id = reader.ReadInt32();
 			try

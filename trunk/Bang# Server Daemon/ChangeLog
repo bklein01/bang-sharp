@@ -1,6 +1,15 @@
 2011-09-28  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
+	  
+
+	* Session/Session.cs:
+	  Create the SessionAdmin object also when constructing the
+	  Session from stream.
+
+2011-09-28  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
 	* Bang# Server Daemon.csproj:
 	  
 
