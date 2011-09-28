@@ -1,5 +1,13 @@
 2011-09-28  WOnder93  <omosnacek@gmail.com>
 
+	* Session/Game/GameCycle.cs:
+	  Added some missing OnPlayContinue calls.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-09-28  WOnder93  <omosnacek@gmail.com>
+
 	* AssemblyInfo.cs:
 	  
 
