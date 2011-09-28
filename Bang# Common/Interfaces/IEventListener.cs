@@ -100,17 +100,6 @@ namespace Bang
 		void OnChatMessage (ISpectator spectator, string message);
 
 		/// <summary>
-		/// Fired when a new request is pending.
-		/// </summary>
-		/// <param name="requestedPlayer">
-		/// The <see cref="IPublicPlayerView"/> of the player that is now being requested.
-		/// </param>
-		/// <param name="requestType">
-		/// The new <see cref="RequestType"/>.
-		/// </param>
-		void OnNewRequest (RequestType requestType, IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy);
-
-		/// <summary>
 		/// Fired when a player has drawn one or more cards from the deck.
 		/// </summary>
 		/// <param name="player">
@@ -388,12 +377,28 @@ namespace Bang
 		/// </param>
 		void OnPlayerDied(IPublicPlayerView player, IPublicPlayerView causedBy);
 		/// <summary>
-		/// Fired when a player is going to use his charcter's ability.
+		/// Fired when a player used his character's ability.
 		/// </summary>
 		/// <param name="player">
 		/// The <see cref="IPublicPlayerView"/> of the player.
 		/// </param>
-		void OnPlayerUsedAbility(IPublicPlayerView player);
+		/// <param name="character">
+		/// The <see cref="CharacterType"/> of the ability used.
+		/// </param>
+		void OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character);
+		/// <summary>
+		/// Fired when a player used his character's ability on another player.
+		/// </summary>
+		/// <param name="player">
+		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// </param>
+		/// <param name="character">
+		/// The <see cref="CharacterType"/> of the ability used.
+		/// </param>
+		/// <param name="targetPlayer">
+		/// The <see cref="IPublicPlayerView"/> of the target player.
+		/// </param>
+		void OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character, IPublicPlayerView targetPlayer);
 		/// <summary>
 		/// Fired when a player has gained additional characters.
 		/// </summary>

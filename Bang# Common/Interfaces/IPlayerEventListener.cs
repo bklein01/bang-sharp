@@ -46,6 +46,17 @@ namespace Bang
 		/// The <see cref="IPlayerControl"/> instance for this player.
 		/// </param>
 		void OnJoinedGame (IPlayerControl control);
+
+		/// <summary>
+		/// Fired when the player is requested for an action.
+		/// </summary>
+		/// <param name="requestType">
+		/// The new <see cref="RequestType"/>.
+		/// </param>
+		/// <param name="causedBy">
+		/// The <see cref="IPublicPlayerView"/> of the player that caused the request.
+		/// </param>
+		void OnNewRequest(RequestType requestType, IPublicPlayerView causedBy);
 	}
 }
 

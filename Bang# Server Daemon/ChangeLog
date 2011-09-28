@@ -1,3 +1,41 @@
+2011-09-28  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Server Daemon.csproj:
+	  
+
+	* Session/SessionEventManager.cs:
+	  The OnNewRequest event moved to IPlayerEventListener and is
+	  now fired only for the requested player.
+	Added a new OnPlayerUsedAbility event with target player.
+	The OnPlayerUsedAbility events now also inform about the
+	  character whose ability was used.
+
+	* Session/Game/Characters/Character.cs:
+	* Session/Game/Characters/Main/ElGringo.cs:
+	* Session/Game/Characters/Main/LuckyDuke.cs:
+	* Session/Game/Characters/Main/BlackJack.cs:
+	* Session/Game/Characters/Main/KitCarlson.cs:
+	* Session/Game/Characters/Main/JesseJones.cs:
+	* Session/Game/Characters/Main/VultureSam.cs:
+	* Session/Game/Characters/Main/SidKetchum.cs:
+	* Session/Game/Characters/Main/Jourdonnais.cs:
+	* Session/Game/Characters/Main/BartCassidy.cs:
+	* Session/Game/Characters/Main/PedroRamirez.cs:
+	* Session/Game/Characters/Main/SuzyLafayette.cs:
+	* Session/Game/Characters/Main/CalamityJanet.cs:
+	* Session/Game/Characters/Dodge City/PixiePete.cs:
+	* Session/Game/Characters/Dodge City/DocHolyday.cs:
+	* Session/Game/Characters/Dodge City/MollyStark.cs:
+	* Session/Game/Characters/Dodge City/HerbHunter.cs:
+	* Session/Game/Characters/Dodge City/GregDigger.cs:
+	* Session/Game/Characters/Dodge City/PatBrennan.cs:
+	* Session/Game/Characters/Dodge City/BillNoface.cs:
+	* Session/Game/Characters/Dodge City/JoseDelgado.cs:
+	* Session/Game/Characters/Dodge City/ChuckWengam.cs:
+	  Added protected methods for convenient sending of the
+	  OnPlayerUsedAbility events.
+
 2011-09-20  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

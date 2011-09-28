@@ -34,7 +34,7 @@ namespace Bang.Server.Characters
 		{
 			if (Player.LifePoints <= 1)
 				throw new BadUsageException();
-			Game.Session.EventManager.OnPlayerUsedAbility (Player);
+			OnUsedAbility();
 			Player.ModifyLifePoints (-1);
 			Game.GameTable.PlayerDrawFromDeck (Player, 2);
 		}

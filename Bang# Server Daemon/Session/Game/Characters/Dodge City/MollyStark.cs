@@ -53,7 +53,7 @@ namespace Bang.Server.Characters
 		{
 			if(cardsToDraw > 0)
 			{
-				Game.Session.EventManager.OnPlayerUsedAbility(Player);
+				OnUsedAbility();
 				Game.GameTable.PlayerDrawFromDeck(Player, cardsToDraw);
 				cardsToDraw = 0;
 			}

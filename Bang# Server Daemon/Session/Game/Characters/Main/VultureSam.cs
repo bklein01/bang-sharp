@@ -30,7 +30,7 @@ namespace Bang.Server.Characters
 		{
 			get
 			{
-				Game.Session.EventManager.OnPlayerUsedAbility(Player);
+				OnUsedAbility();
 				return true;
 			}
 		}

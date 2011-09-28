@@ -1,3 +1,17 @@
+2011-09-28  WOnder93  <omosnacek@gmail.com>
+
+	* Utils.cs:
+	* AssemblyInfo.cs:
+	  
+
+	* Interfaces/IEventListener.cs:
+	* Interfaces/IPlayerEventListener.cs:
+	  The OnNewRequest event moved to IPlayerEventListener and is
+	  now fired only for the requested player.
+	Added a new OnPlayerUsedAbility event with target player.
+	The OnPlayerUsedAbility events now also inform about the
+	  character whose ability was used.
+
 2011-09-20  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

@@ -46,7 +46,7 @@ namespace Bang.Server.Characters
 					throw new BadCardException ();
 				
 				parent.abilityUses++;
-				Game.Session.EventManager.OnPlayerUsedAbility (RequestedPlayer);
+				parent.OnUsedAbility();
 				Game.GameTable.CancelCard (card);
 				Game.GameTable.PlayerDrawFromDeck (RequestedPlayer, 2);
 				End();

@@ -32,7 +32,7 @@ namespace Bang.Server.Characters
 
 		public override void OnHit (int hitPoints, Player causedBy)
 		{
-			Game.Session.EventManager.OnPlayerUsedAbility (Player);
+			OnUsedAbility();
 			Game.GameTable.PlayerDrawFromDeck(Player, hitPoints);
 		}
 	}

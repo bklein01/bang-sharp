@@ -32,7 +32,7 @@ namespace Bang.Server.Characters
 		
 		public override void Draw ()
 		{
-			Game.Session.EventManager.OnPlayerUsedAbility (Player);
+			OnUsedAbility();
 			Game.GameTable.PlayerDrawFromDeck (Player, 1);
 			CardSuit suit = Game.GameTable.PlayerDrawFromDeck (Player, 1, true)[0].Suit;
 			if (suit == CardSuit.Hearts || suit == CardSuit.Diamonds)

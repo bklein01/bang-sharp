@@ -65,7 +65,7 @@ namespace Bang.Server.Characters
 		
 		public override void CheckDeck (Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
 		{
-			Game.Session.EventManager.OnPlayerUsedAbility (Player);
+			OnUsedAbility();
 			Game.GameCycle.PushTempHandler(new LuckyDukeResponseHandler(this, causedBy, checkMethod, resultMethod));
 		}
 	}

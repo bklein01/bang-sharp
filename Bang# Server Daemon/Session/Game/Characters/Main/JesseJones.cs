@@ -50,7 +50,7 @@ namespace Bang.Server.Characters
 				if(!targetCard.IsInHand)
 					throw new BadTargetCardException();
 
-				Game.Session.EventManager.OnPlayerUsedAbility(RequestedPlayer);
+				parent.OnUsedAbility(targetPlayer);
 				Game.GameTable.PlayerStealCard(RequestedPlayer, targetCard);
 				Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 1);
 				End ();

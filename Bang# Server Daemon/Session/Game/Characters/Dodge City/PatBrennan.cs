@@ -36,13 +36,13 @@ namespace Bang.Server.Characters
 				this.parent = parent;
 			}
 			
-			protected override void OnRespondCard (Card card)
+			protected override void OnRespondCard(Card card)
 			{
-				card.AssertOnTable ();
+				card.AssertOnTable();
 				
-				Game.Session.EventManager.OnPlayerUsedAbility (RequestedPlayer);
-				Game.GameTable.PlayerStealCard (RequestedPlayer, card);
-				End ();
+				parent.OnUsedAbility();
+				Game.GameTable.PlayerStealCard(RequestedPlayer, card);
+				End();
 			}
 		}
 		public PatBrennan (Player player)
@@ -50,10 +50,10 @@ namespace Bang.Server.Characters
 		{
 		}
 		
-		public override void Draw ()
+		public override void Draw()
 		{
-			if (Game.Players.All (p => !p.IsAlive || p.Table.Count == 0))
-				throw new BadGameStateException ();
+			if(Game.Players.All(p => !p.IsAlive || p.Table.Count == 0))
+				throw new BadGameStateException();
 			
 			Game.GameCycle.PushTempHandler(new PatBrennanResponseHandler(this));
 		}

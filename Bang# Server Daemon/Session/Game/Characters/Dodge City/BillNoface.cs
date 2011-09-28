@@ -32,7 +32,7 @@ namespace Bang.Server.Characters
 		
 		public override void Draw ()
 		{
-			Game.Session.EventManager.OnPlayerUsedAbility(Player);
+			OnUsedAbility();
 			Game.GameTable.PlayerDrawFromDeck(Player, Player.MaxLifePoints - Player.LifePoints + 1);
 		}
 	}

@@ -939,13 +939,9 @@ namespace Bang.AI
 		void IEventListener.OnChatMessage(IPlayer player, string message) { }
 		void IEventListener.OnChatMessage(ISpectator spectator, string message) { }
 
-		void IEventListener.OnNewRequest(RequestType requestType, IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
+		void IPlayerEventListener.OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
 		{
-			if(causedBy != null && requestType == RequestType.Shot)
-				playerHelper.RegisterAttack(requestedPlayer, causedBy);
-
-			if(requestedPlayer.ID == control.PrivatePlayerView.ID)
-				ThreadPool.QueueUserWorkItem(ProcessRequest);
+			ThreadPool.QueueUserWorkItem(ProcessRequest);
 		}
 
 		void IEventListener.OnPlayerDrewFromDeck(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
@@ -978,18 +974,68 @@ namespace Bang.AI
 		}
 		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
 		{
+			switch(card.Type)
+			{
+			case CardType.Bang:
+			case CardType.BuffaloRifle:
+			case CardType.Derringer:
+			case CardType.Knife:
+			case CardType.Pepperbox:
+			case CardType.Punch:
+			case CardType.Springfield:
+				playerHelper.RegisterAttack(targetPlayer, player);
+				break;
+			}
 		}
-		void IEventListener.OnPlayerPlayedCard (IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer, ICard targetCard)
+		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
+			switch(card.Type)
+			{
+			case CardType.CanCan:
+			case CardType.CatBalou:
+			case CardType.Conestoga:
+			case CardType.Panic:
+			case CardType.RagTime:
+				if(targetCard.Type != CardType.Jail)
+					playerHelper.RegisterAttack(targetPlayer, player);
+				else
+					playerHelper.RegisterHelp(targetPlayer, player);
+				break;
+			}
 		}
 		void IEventListener.OnPlayerPlayedCard (IPublicPlayerView player, ICard card, CardType asCard)
 		{
 		}
 		void IEventListener.OnPlayerPlayedCard (IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer)
 		{
+			switch(asCard)
+			{
+			case CardType.Bang:
+			case CardType.BuffaloRifle:
+			case CardType.Derringer:
+			case CardType.Knife:
+			case CardType.Pepperbox:
+			case CardType.Punch:
+			case CardType.Springfield:
+				playerHelper.RegisterAttack(targetPlayer, player);
+				break;
+			}
 		}
 		void IEventListener.OnPlayerPlayedCard (IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
+			switch(asCard)
+			{
+			case CardType.CanCan:
+			case CardType.CatBalou:
+			case CardType.Conestoga:
+			case CardType.Panic:
+			case CardType.RagTime:
+				if(targetCard.Type != CardType.Jail)
+					playerHelper.RegisterAttack(targetPlayer, player);
+				else
+					playerHelper.RegisterHelp(targetPlayer, player);
+				break;
+			}
 		}
 		void IEventListener.OnPlayerPlayedCardOnTable (IPublicPlayerView player, ICard card)
 		{
@@ -1072,8 +1118,13 @@ namespace Bang.AI
 
 			playerHelper.OnRoleRevealed(player);
 		}
-		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player)
+		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character)
 		{
+		}
+		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character, IPublicPlayerView targetPlayer)
+		{
+			if(character == CharacterType.DocHolyday || character == CharacterType.JesseJones)
+				playerHelper.RegisterAttack(player, targetPlayer);
 		}
 		void IEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player)
 		{

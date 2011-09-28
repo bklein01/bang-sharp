@@ -36,7 +36,7 @@ namespace Bang.Server.Characters
 
 		public override void CheckMissed (CardResultMethod resultMethod)
 		{
-			Game.Session.EventManager.OnPlayerUsedAbility(Player);
+			OnUsedAbility();
 			Player.CheckDeck (barrel, c => c.Suit == CardSuit.Hearts, resultMethod);
 		}
 	}
