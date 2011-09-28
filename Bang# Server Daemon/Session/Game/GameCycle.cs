@@ -91,10 +91,18 @@ namespace Bang.Server
 				throw new BadCardException();
 			
 			RequestedPlayer.PlayCard(card);
+			if(Game.GameCycle.RequestType == RequestType.Play)
+				foreach(Player p in Game.Players)
+					if(p.IsAlive)
+						p.Character.OnPlayContinue();
 		}
 		protected override void OnRespondUseAbility()
 		{
 			RequestedPlayer.Character.UseAbility();
+			if(Game.GameCycle.RequestType == RequestType.Play)
+				foreach(Player p in Game.Players)
+					if(p.IsAlive)
+						p.Character.OnPlayContinue();
 		}
 		protected override void OnRespondNoAction()
 		{
