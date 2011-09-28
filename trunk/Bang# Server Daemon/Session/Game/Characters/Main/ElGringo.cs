@@ -43,7 +43,7 @@ namespace Bang.Server.Characters
 					throw new BadTargetCardException ();
 				targetCard.AssertInHand ();
 				
-				Game.Session.EventManager.OnPlayerUsedAbility (RequestedPlayer);
+				parent.OnUsedAbility();
 				Game.GameTable.PlayerStealCard(RequestedPlayer, targetCard);
 				End ();
 			}

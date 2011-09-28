@@ -44,7 +44,7 @@ namespace Bang
 		/// <summary>
 		/// The major interface version.
 		/// </summary>
-		public const int InterfaceVersionMajor = 4;
+		public const int InterfaceVersionMajor = 5;
 		/// <summary>
 		/// The minor interface version.
 		/// </summary>

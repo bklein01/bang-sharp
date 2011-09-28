@@ -42,7 +42,7 @@ namespace Bang.Client
 		public static void Main(string[] cmdArgs)
 		{
 			ConsoleHelper.PrintLine("Bang# Command-Line Client");
-			ConsoleHelper.PrintLine("------------");
+			ConsoleHelper.PrintLine("-------------------------");
 			string address;
 			string portString;
 			if(cmdArgs.Length != 2)
@@ -444,6 +444,12 @@ namespace Bang.Client
 			if(aiPlayer != null)
 				aiPlayer.OnJoinedGame(control);
 		}
+		void IPlayerEventListener.OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
+		{
+			ConsoleHelper.GameEvent("New request: {0}{1}.", requestType, causedBy == null ? "" : ", caused by player #" + causedBy.ID);
+			if(aiPlayer != null)
+				aiPlayer.OnNewRequest(requestType, causedBy);
+		}
 
 		bool IPlayerEventListener.IsAI
 		{
@@ -518,12 +524,6 @@ namespace Bang.Client
 				aiPlayer.OnChatMessage(spectator, message);
 		}
 
-		void IEventListener.OnNewRequest(RequestType requestType, IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
-		{
-			ConsoleHelper.GameEvent("New request: {0} (player #{1}).", requestType, requestedPlayer == null ? 0 : requestedPlayer.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnNewRequest(requestType, requestedPlayer, causedBy);
-		}
 		void IEventListener.OnPlayerDrewFromDeck(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
 		{
 			ConsoleHelper.GameEvent("Player #{0} has drawn {1} cards from the deck.", player.ID, drawnCards.Count);
@@ -668,11 +668,17 @@ namespace Bang.Client
 			if(aiPlayer != null)
 				aiPlayer.OnPlayerDied(player, causedBy);
 		}
-		void IEventListener.OnPlayerUsedAbility (IPublicPlayerView player)
+		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character)
 		{
-			ConsoleHelper.GameEvent("Player #{0} used ability.", player.ID);
+			ConsoleHelper.GameEvent("Player #{0} used ability of character {1}.", player.ID, character);
 			if(aiPlayer != null)
-				aiPlayer.OnPlayerUsedAbility(player);
+				aiPlayer.OnPlayerUsedAbility(player, character);
+		}
+		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character, IPublicPlayerView targetPlayer)
+		{
+			ConsoleHelper.GameEvent("Player #{0} used ability of character {1} on player #{2}.", player.ID, character, targetPlayer.ID);
+			if(aiPlayer != null)
+				aiPlayer.OnPlayerUsedAbility(player, character, targetPlayer);
 		}
 		void IEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player)
 		{

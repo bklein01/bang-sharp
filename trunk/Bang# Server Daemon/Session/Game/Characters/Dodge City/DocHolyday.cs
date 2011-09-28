@@ -75,16 +75,16 @@ namespace Bang.Server.Characters
 				End ();
 			}
 			
-			private void CheckAttack ()
+			private void CheckAttack()
 			{
-				if (selected.Count != 2 || targetPlayer == null)
+				if(selected.Count != 2 || targetPlayer == null)
 					return;
-				if (!selected.Any (c => targetPlayer.HasCardEffect (c)))
+				if(!selected.Any(c => targetPlayer.HasCardEffect(c)))
 					return;
 				
-				Game.Session.EventManager.OnPlayerUsedAbility (RequestedPlayer);
-				foreach (Card c in selected)
-					Game.GameTable.CancelCard (c);
+				parent.OnUsedAbility(targetPlayer);
+				foreach(Card c in selected)
+					Game.GameTable.CancelCard(c);
 				Game.GameCycle.PushTempHandler (new ShotResponseHandler (targetPlayer, RequestedPlayer));
 				End();
 			}

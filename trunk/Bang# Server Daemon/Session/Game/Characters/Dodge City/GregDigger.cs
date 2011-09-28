@@ -32,7 +32,7 @@ namespace Bang.Server.Characters
 		
 		public override void OnPlayerDied (Player player)
 		{
-			Game.Session.EventManager.OnPlayerUsedAbility (Player);
+			OnUsedAbility();
 			Player.ModifyLifePoints(2);
 		}
 	}

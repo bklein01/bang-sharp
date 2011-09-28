@@ -37,7 +37,7 @@ namespace Bang.Server.Characters
 		{
 			if(card.Type == CardType.Bang)
 			{
-				Game.Session.EventManager.OnPlayerUsedAbility(Player);
+				OnUsedAbility();
 				return true;
 			}
 			return base.IsMissed(card);
@@ -46,7 +46,7 @@ namespace Bang.Server.Characters
 		{
 			if(card.Type == CardType.Missed)
 			{
-				Game.Session.EventManager.OnPlayerUsedAbility(Player);
+				OnUsedAbility();
 				return true;
 			}
 			return base.IsBang(card);

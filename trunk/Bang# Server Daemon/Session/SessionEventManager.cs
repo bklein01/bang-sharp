@@ -308,26 +308,14 @@ namespace Bang.Server
 		{
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
+				if(p.HasListener && p.ID == requestedPlayer.ID)
 					try
 					{
-						p.Listener.OnNewRequest(requestType, requestedPlayer, causedBy);
+						p.Listener.OnNewRequest(requestType, causedBy);
 					}
 					catch
 					{
 						session.RemovePlayer(p);
-					}
-
-			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnNewRequest(requestType, requestedPlayer, causedBy);
-					}
-					catch
-					{
-						session.RemoveSpectator(s);
 					}
 		}
 		
@@ -477,7 +465,7 @@ namespace Bang.Server
 				if(p.HasListener)
 					try
 					{
-						if(p == targetPlayer.Parent)
+						if(p == targetPlayer.Parent || targetCard.IsOnTable)
 							p.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
 						else
 							p.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
@@ -492,7 +480,10 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
+						if(targetCard.IsOnTable)
+							s.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
+						else
+							s.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
 					}
 					catch
 					{
@@ -558,7 +549,7 @@ namespace Bang.Server
 				if(p.HasListener)
 					try
 					{
-						if(p == targetPlayer.Parent)
+						if(p == targetPlayer.Parent || targetCard.IsOnTable)
 							p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
 						else
 							p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
@@ -573,7 +564,10 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
+						if(targetCard.IsOnTable)
+							s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
+						else
+							s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
 					}
 					catch
 					{
@@ -819,7 +813,7 @@ namespace Bang.Server
 				if(p.HasListener)
 					try
 					{
-						if(p == player.Parent || p == targetPlayer.Parent)
+						if(p == player.Parent || p == targetPlayer.Parent || targetCard.IsOnTable)
 							p.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard);
 						else
 							p.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
@@ -834,7 +828,10 @@ namespace Bang.Server
 				if (s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
+						if(targetCard.IsOnTable)
+							s.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard);
+						else
+							s.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
 					}
 					catch
 					{
@@ -999,14 +996,14 @@ namespace Bang.Server
 						session.RemoveSpectator(s);
 					}
 		}
-		public void OnPlayerUsedAbility(Player player)
+		public void OnPlayerUsedAbility(Player player, CharacterType character)
 		{
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
 					try
 					{
-						p.Listener.OnPlayerUsedAbility(player);
+						p.Listener.OnPlayerUsedAbility(player, character);
 					}
 					catch
 					{
@@ -1018,7 +1015,33 @@ namespace Bang.Server
 				if(s.HasListener)
 					try
 					{
-						s.Listener.OnPlayerUsedAbility(player);
+						s.Listener.OnPlayerUsedAbility(player, character);
+					}
+					catch
+					{
+						session.RemoveSpectator(s);
+					}
+		}
+		public void OnPlayerUsedAbility(Player player, CharacterType character, Player targetPlayer)
+		{
+			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
+					try
+					{
+						p.Listener.OnPlayerUsedAbility(player, character, targetPlayer);
+					}
+					catch
+					{
+						session.RemovePlayer(p);
+					}
+			
+			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
+					try
+					{
+						s.Listener.OnPlayerUsedAbility(player, character, targetPlayer);
 					}
 					catch
 					{

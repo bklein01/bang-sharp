@@ -49,7 +49,7 @@ namespace Bang.Server.Characters
 				selected.Add(card);
 				if(selected.Count == 2)
 				{
-					Game.Session.EventManager.OnPlayerUsedAbility(RequestedPlayer);
+					parent.OnUsedAbility();
 					foreach(Card c in selected)
 						Game.GameTable.CancelCard(c);
 					RequestedPlayer.ModifyLifePoints(1);

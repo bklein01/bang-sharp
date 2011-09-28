@@ -41,7 +41,7 @@ namespace Bang.Server.Characters
 		{
 			if(drawCard && Player.Hand.Count == 0)
 			{
-				Game.Session.EventManager.OnPlayerUsedAbility(Player);
+				OnUsedAbility();
 				Game.GameTable.PlayerDrawFromDeck(Player, 1);
 				drawCard = false;
 			}

@@ -81,10 +81,19 @@ namespace Bang.Server
 			get { return false; }
 		}
 		
-		protected Character (Player player, CharacterType type)
+		protected Character(Player player, CharacterType type)
 		{
 			this.player = player;
 			this.type = type;
+		}
+
+		protected void OnUsedAbility()
+		{
+			player.Game.Session.EventManager.OnPlayerUsedAbility(player, type);
+		}
+		protected void OnUsedAbility(Player targetPlayer)
+		{
+			player.Game.Session.EventManager.OnPlayerUsedAbility(player, type, targetPlayer);
 		}
 
 		public virtual bool HasCardEffect (Card card)
