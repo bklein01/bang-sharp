@@ -1,5 +1,13 @@
 2011-09-29  WOnder93  <omosnacek@gmail.com>
 
+	* ConsoleHelper.cs:
+	  Forgot to add a command for the new property.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
 	* AssemblyInfo.cs:
 	  
 
