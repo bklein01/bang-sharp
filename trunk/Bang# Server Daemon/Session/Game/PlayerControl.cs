@@ -76,7 +76,7 @@ namespace Bang.Server
 				{
 					game.GameCycle.PlayerRespondDraw(player);
 					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CurrentPlayer);
+						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 				}
 				catch
 				{
@@ -103,7 +103,7 @@ namespace Bang.Server
 				{
 					game.GameCycle.PlayerRespondCard(player, game.GameTable.GetCard(id));
 					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CurrentPlayer);
+						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 				}
 				catch
 				{
@@ -130,7 +130,7 @@ namespace Bang.Server
 				{
 					game.GameCycle.PlayerRespondPlayer(player, game.GetPlayer(id));
 					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CurrentPlayer);
+						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 				}
 				catch
 				{
@@ -157,7 +157,7 @@ namespace Bang.Server
 				{
 					game.GameCycle.PlayerRespondCharacter(player, character);
 					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CurrentPlayer);
+						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 				}
 				catch
 				{
@@ -184,7 +184,7 @@ namespace Bang.Server
 				{
 					game.GameCycle.PlayerRespondNoAction(player);
 					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CurrentPlayer);
+						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 				}
 				catch
 				{
@@ -211,7 +211,7 @@ namespace Bang.Server
 				{
 					game.GameCycle.PlayerRespondUseAbility(player);
 					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CurrentPlayer);
+						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 				}
 				catch
 				{
