@@ -555,6 +555,7 @@ namespace Bang.ConsoleUtils
 			command["table"] = tableCommand;
 			command["character"] = new FinalCommand<IPrivatePlayerView>((player, cmd) => { PrintLine(player.CharacterType); });
 			command["role"] = new FinalCommand<IPrivatePlayerView>((player, cmd) => { PrintLine(player.IsAlive); });
+			command["requesttype"] = new FinalCommand<IPrivatePlayerView>((player, cmd) => { PrintLine(player.RequestType); });
 			NestedCommand<IPrivatePlayerView, ReadOnlyCollection<ICard>> selectionCommand = new NestedCommand<IPrivatePlayerView, ReadOnlyCollection<ICard>>((player, cmd) => player.Selection);
 			selectionCommand.MakeCardCollectionCommand();
 			command["selection"] = selectionCommand;
