@@ -40,6 +40,11 @@ namespace Bang
 		new Role Role { get; }
 
 		/// <summary>
+		/// Gets the type of current request on the player.
+		/// </summary>
+		RequestType RequestType { get; }
+
+		/// <summary>
 		/// Gets the collection of the cards that are in a temporary selection.
 		/// </summary>
 		ReadOnlyCollection<ICard> Selection { get; }

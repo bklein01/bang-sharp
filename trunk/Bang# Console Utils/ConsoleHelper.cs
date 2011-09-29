@@ -587,7 +587,6 @@ namespace Bang.ConsoleUtils
 			selectionCommand.MakeCardCollectionCommand();
 			command["selection"] = selectionCommand;
 			command["graveyardtop"] = new FinalCommand<IGame>((game, cmd) => { Print(game.GraveyardTop); });
-			command["reqtype"] = new FinalCommand<IGame>((game, cmd) => { Print(game.RequestType); });
 			command["current"] = new FinalCommand<IGame>((game, cmd) =>
 			{
 				PrintLine("Current player - #{0}:", game.CurrentPlayer.ID);

@@ -87,6 +87,16 @@ namespace Bang.Server
 			{
 				get { return raw.Role; }
 			}
+			RequestType IPrivatePlayerView.RequestType
+			{
+				get
+				{
+					GameCycle cycle = raw.game.GameCycle;
+					if(cycle.RequestedPlayer != raw || raw.game.Ended)
+						return RequestType.None;
+					return cycle.RequestType;
+				}
+			}
 			ReadOnlyCollection<ICard> IPrivatePlayerView.Selection
 			{
 				get { return raw.game.GameTable.GetSelection(raw); }

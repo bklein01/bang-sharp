@@ -107,17 +107,17 @@ namespace Bang.AI
 			IGame game = control.Game;
 			IPrivatePlayerView player = control.PrivatePlayerView;
 
-			switch(game.RequestType)
+			switch(player.RequestType)
 			{
 			case RequestType.Draw:
 				if(cardHelper.HasAbility(CharacterType.BlackJack) ||
 					cardHelper.HasAbility(CharacterType.KitCarlson) ||
 					cardHelper.HasAbility(CharacterType.PixiePete))
-				{
+					{
 
 						control.RespondUseAbility();
-					return;
-				}
+						return;
+					}
 				if(cardHelper.HasAbility(CharacterType.BillNoface))
 					if(player.MaxLifePoints - player.LifePoints > 2)
 					{
