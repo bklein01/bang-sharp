@@ -310,12 +310,9 @@ namespace Bang.Server
 		{
 			return character.HasCardEffect (card);
 		}
-		public void CheckMissed (Card card, CardResultMethod resultMethod)
+		public void CheckMissed(Card card, CardResultMethod resultMethod)
 		{
-			if (character.IsMissed (card))
-				resultMethod(card, true);
-			else
-				card.CheckMissed(resultMethod);
+			card.CheckMissed((causedBy, result) => resultMethod(causedBy, result || character.IsMissed(card)));
 		}
 		public bool IsBang (Card card)
 		{
