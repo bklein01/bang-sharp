@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 namespace Bang.Server
@@ -459,13 +460,25 @@ namespace Bang.Server
 			}
 		}
 
-		public CharacterType NextCharacter()
+		public IEnumerable<CharacterType> GetCharacters(int count)
 		{
-			CharacterType character = remainingCharacters.GetRandom();
-			remainingCharacters.Remove(character);
-			if(remainingCharacters.Count == 0)
-				remainingCharacters = Utils.GetCharacterTypes(this);
-			return character;
+			CharacterType[] characters = new CharacterType[count];
+			CharacterType character;
+			bool checkConflict = false;
+			for(int i = 0; i < count; i++)
+			{
+				do
+					character = remainingCharacters.GetRandom();
+				while(checkConflict && characters.Contains(character));
+				remainingCharacters.Remove(character);
+				if(remainingCharacters.Count == 0)
+				{
+					remainingCharacters = Utils.GetCharacterTypes(this);
+					checkConflict = true;
+				}
+				characters[i] = character;
+			}
+			return characters;
 		}
 		public void OnGameEnded()
 		{
