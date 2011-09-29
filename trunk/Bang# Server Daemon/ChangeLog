@@ -3,6 +3,15 @@
 	* AssemblyInfo.cs:
 	  
 
+	* Server.cs:
+	  Unlock server if an exception is thrown in
+	  Bang.Server.Server.CreateSession().
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
 	* Session/Game/Game.cs:
 	* Session/Game/Player.cs:
 	  Adapt to the changes in the interface.

@@ -184,13 +184,20 @@ namespace Bang.Server
 					throw new MethodAccessException();
 				Locked = true;
 
-				int id = sessions.GenerateID();
-				Session session = new Session(this, id, sessionData);
-				sessions.Add(id, session);
+				try
+				{
+					int id = sessions.GenerateID();
+					Session session = new Session(this, id, sessionData);
+					sessions.Add(id, session);
 
-				session.Join(sessionData.PlayerPassword, playerData, listener);
-				SaveState();
-
+					session.Join(sessionData.PlayerPassword, playerData, listener);
+					SaveState();
+				}
+				catch
+				{
+					Locked = false;
+					throw;
+				}
 				Locked = false;
 			}
 		}
