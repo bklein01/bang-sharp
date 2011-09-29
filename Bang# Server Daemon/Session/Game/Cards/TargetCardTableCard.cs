@@ -56,8 +56,10 @@ namespace Bang.Server
 				if(card != parent)
 					Game.GameTable.PlayerPlayCard(card, parent.Type, targetCard);
 				else
-					Game.GameTable.PlayerPlayCard (card, targetCard);
-				parent.OnPlayFromTable (RequestedPlayer, targetCard);
+					Game.GameTable.PlayerPlayCard(card, targetCard);
+
+				if(targetPlayer.HasCardEffect(card))
+					parent.OnPlayFromTable(RequestedPlayer, targetCard);
 				End ();
 			}
 			protected override void OnRespondNoAction ()

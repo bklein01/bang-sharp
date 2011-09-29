@@ -3,6 +3,20 @@
 	* AssemblyInfo.cs:
 	  
 
+	* Session/Game/Cards/TargetCardCard.cs:
+	* Session/Game/Cards/TargetPlayerCard.cs:
+	* Session/Game/Cards/TargetCardTableCard.cs:
+	* Session/Game/Cards/TargetCardGoldenCard.cs:
+	* Session/Game/Cards/TargetPlayerTableCard.cs:
+	* Session/Game/Cards/TargetPlayerGoldenCard.cs:
+	  Added check for HasCardEffect() so that for example you
+	  can't play a Diamond Bang on Apache Kid.
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
 	* Session/Session.cs:
 	* Session/Game/Game.cs:
 	  Changed the algorithm for generating characters for game in

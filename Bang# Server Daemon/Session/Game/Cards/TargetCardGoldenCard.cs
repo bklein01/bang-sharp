@@ -60,7 +60,9 @@ namespace Bang.Server
 				else
 					Game.GameTable.PlayerPlayCard(card, targetCard);
 				Game.GameTable.PlayerDiscardCard(extraCard);
-				parent.OnPlay (RequestedPlayer, targetCard);
+				
+				if(targetPlayer.HasCardEffect(card))
+					parent.OnPlay(RequestedPlayer, targetCard);
 				End ();
 			}
 			protected override void OnRespondNoAction ()

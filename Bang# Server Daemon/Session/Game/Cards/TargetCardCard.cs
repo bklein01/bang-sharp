@@ -41,23 +41,25 @@ namespace Bang.Server
 			{
 			}
 
-			protected override void OnRespondCard (Card targetCard)
+			protected override void OnRespondCard(Card targetCard)
 			{
 				Player targetPlayer = targetCard.Owner;
-				if (targetPlayer == RequestedPlayer && !parent.includeSelf)
-					throw new BadTargetPlayerException ();
+				if(targetPlayer == RequestedPlayer && !parent.includeSelf)
+					throw new BadTargetPlayerException();
 				
-				if (!targetPlayer.IsAlive)
-					throw new BadTargetPlayerException ();
+				if(!targetPlayer.IsAlive)
+					throw new BadTargetPlayerException();
 				
-				if (parent.Range != 0 && parent.Range < Game.GetDistance (RequestedPlayer, targetPlayer))
-					throw new BadTargetPlayerException ();
+				if(parent.Range != 0 && parent.Range < Game.GetDistance(RequestedPlayer, targetPlayer))
+					throw new BadTargetPlayerException();
 				
 				if(card != parent)
 					Game.GameTable.PlayerPlayCard(card, parent.Type, targetCard);
 				else
 					Game.GameTable.PlayerPlayCard(card, targetCard);
-				parent.OnPlay (RequestedPlayer, targetCard);
+
+				if(targetPlayer.HasCardEffect(card))
+					parent.OnPlay(RequestedPlayer, targetCard);
 				End ();
 			}
 			protected override void OnRespondNoAction ()
