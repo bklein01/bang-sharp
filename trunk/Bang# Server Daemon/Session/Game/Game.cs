@@ -120,6 +120,7 @@ namespace Bang.Server
 			players = new Dictionary<int, Player>(playerCount);
 			playerList = new List<Player>(playerCount);
 			IEnumerator<Role> roleEnumerator = GenerateRoles(playerCount).GetEnumerator();
+			IEnumerator<CharacterType> characterEnumerator = session.GetCharacters(playerCount).GetEnumerator();
 			foreach(SessionPlayer p in session.Players)
 			{
 				Role role;
@@ -130,7 +131,8 @@ namespace Bang.Server
 					roleEnumerator.MoveNext();
 					role = roleEnumerator.Current;
 				}
-				Player player = new Player(this, p, role, session.NextCharacter());
+				characterEnumerator.MoveNext();
+				Player player = new Player(this, p, role, characterEnumerator.Current);
 				players.Add(p.ID, player);
 				playerList.Add(player);
 			}
