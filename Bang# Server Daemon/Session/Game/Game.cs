@@ -86,10 +86,6 @@ namespace Bang.Server
 		{
 			get { return table.GraveyardTop; }
 		}
-		RequestType IGame.RequestType
-		{
-			get { return ended ? RequestType.None : cycle.RequestType; }
-		}
 		IPublicPlayerView IGame.CurrentPlayer
 		{
 			get { return cycle.CurrentPlayer; }

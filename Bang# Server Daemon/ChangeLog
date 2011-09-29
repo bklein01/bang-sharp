@@ -1,3 +1,12 @@
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/Game/Game.cs:
+	* Session/Game/Player.cs:
+	  Adapt to the changes in the interface.
+
 2011-09-28  WOnder93  <omosnacek@gmail.com>
 
 	* Session/Game/GameCycle.cs:

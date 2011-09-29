@@ -45,10 +45,6 @@ namespace Bang
 		ReadOnlyCollection<ICard> Selection { get; }
 
 		/// <summary>
-		/// Gets the type of current request.
-		/// </summary>
-		RequestType RequestType { get; }
-		/// <summary>
 		/// Gets the <see cref="IPublicPlayerView"/> of the player currently on turn.
 		/// </summary>
 		IPublicPlayerView CurrentPlayer { get; }
