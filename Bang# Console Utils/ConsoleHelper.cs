@@ -771,7 +771,6 @@ namespace Bang.ConsoleUtils
 				try
 				{
 					control.RespondDraw();
-					SuccessLine();
 				}
 				catch(GameException e)
 				{
@@ -784,7 +783,6 @@ namespace Bang.ConsoleUtils
 				{
 					int id = int.Parse(cmd.Dequeue());
 					control.RespondCard(id);
-					SuccessLine();
 				}
 				catch(FormatException)
 				{
@@ -801,7 +799,6 @@ namespace Bang.ConsoleUtils
 				{
 					int id = int.Parse(cmd.Dequeue());
 					control.RespondPlayer(id);
-					SuccessLine();
 				}
 				catch(FormatException)
 				{
@@ -817,7 +814,6 @@ namespace Bang.ConsoleUtils
 				try
 				{
 					control.RespondNoAction();
-					SuccessLine();
 				}
 				catch(GameException e)
 				{
@@ -829,7 +825,6 @@ namespace Bang.ConsoleUtils
 				try
 				{
 					control.RespondUseAbility();
-					SuccessLine();
 				}
 				catch(GameException e)
 				{
@@ -858,7 +853,6 @@ namespace Bang.ConsoleUtils
 				Console.Write("Message: ");
 				string message = ReadLine();
 				sessionControl.SendChatMessage(message);
-				SuccessLine("Message sent!");
 			});
 			command["disconnect"] = new FinalCommand<IPlayerSessionControl>((sessionControl, cmd) =>
 			{
@@ -871,7 +865,6 @@ namespace Bang.ConsoleUtils
 				try
 				{
 					sessionControl.StartGame();
-					SuccessLine("Game started!");
 				}
 				catch(GameException e)
 				{
@@ -904,7 +897,6 @@ namespace Bang.ConsoleUtils
 				Console.Write("Message: ");
 				string message = ReadLine();
 				sessionControl.SendChatMessage(message);
-				SuccessLine("Message sent!");
 			});
 			command["disconnect"] = new FinalCommand<ISpectatorSessionControl>((sessionControl, cmd) =>
 			{
