@@ -1,23 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" ctype="Workspace" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" ctype="Workspace" />
   <MonoDevelop.Ide.Workbench ctype="Workbench">
-    <Files>
-      <File FileName="Bang# Server Daemon/Session/Game/GameCycle.cs" Line="96" Column="18" />
-      <File FileName="Bang# Server Daemon/AssemblyInfo.cs" Line="45" Column="36" />
-    </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
+        <State expanded="True" selected="True">
           <Node name="Bang# AI" expanded="True" />
-          <Node name="Bang# Common" expanded="True">
-            <Node name="Interfaces" expanded="True" />
-            <Node name="Structs" expanded="True" />
-          </Node>
+          <Node name="Bang# Console Utils" expanded="True" />
           <Node name="Bang# Server Daemon" expanded="True">
             <Node name="Session" expanded="True">
-              <Node name="Game" expanded="True" />
+              <Node name="Game" expanded="True">
+                <Node name="Cards" expanded="True" />
+              </Node>
             </Node>
-            <Node name="AssemblyInfo.cs" selected="True" />
           </Node>
           <Node name="Bang# Test Client" expanded="True" />
         </State>
