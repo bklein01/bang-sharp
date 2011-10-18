@@ -1,0 +1,102 @@
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* ConsoleHelper.cs:
+	  Forgot to add a command for the new property.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ConsoleHelper.cs:
+	  Adapt to the changes in the interface.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ConsoleHelper.cs:
+	  Fixed a typo in the previous revision.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ConsoleHelper.cs:
+	  Fixed System.ArgumentOutOfRangeException when backspacing an
+	  empty line in the
+	  Bang.ConsoleUtils.ConsoleHelper.ReadPassword() method.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* NestedCommand.cs:
+	  Automatically convert command text to lowercase.
+	Added null check.
+
+	* ConsoleHelper.cs:
+	  Added new base for "proxy characters" (like Vera Custer,
+	  Greygory Deck).
+	Added new response method.
+	Added new RequestType values.
+	Added new PublicPlayerView property - AdditionalCharacters
+	  (the abilities gained by proxy characters).
+	New way of getting player victory stats.
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* Command.cs:
+	* ICommand.cs:
+	* FinalCommand.cs:
+	* AssemblyInfo.cs:
+	* NestedCommand.cs:
+	* ConsoleHelper.cs:
+	* Bang# Console Utils.csproj:
+	  Complete restructuralisation.
+
+	* ConsoleUtils.cs:
+	  
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* ConsoleUtils.cs:
+	  Bang.ConsoleUtils.ReadLine() now uses
+	  System.Console.ReadLine() method directly. Command
+	  suggestion and history is now provided only by the
+	  Bang.ConsoleUtils.ReadCommand() method.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+2011-08-18  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Console Utils.csproj:
+	  
+
+	* ConsoleUtils.cs:
+	  Added forgotten Bang.ConsoleUtils.Print calls.
+
+2011-08-07  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs: 
+
+	* ConsoleUtils.cs: When writing backspace to the console we
+	now write a space as well, so that the deleted character gets
+	really deleted on a Windows console. Fixes issue 2.
+	An odd variable name '@add' renamed to 'addition' (It was
+	'add' originally but since it is a keyword, MonoDevelop seems
+	to have renamed it to '@add').
+
