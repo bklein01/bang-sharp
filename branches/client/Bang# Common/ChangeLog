@@ -1,0 +1,202 @@
+2011-10-28  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Password.cs:
+	* Bang# Common.csproj:
+	* CreatePlayerData.cs:
+	* CreateSessionData.cs:
+	* CreateSpectatorData.cs:
+	  Migrated to Mono/.NET 4.0
+	Updated to comply with the new C# standard.
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* Utils.cs:
+	* AssemblyInfo.cs:
+	  
+
+	* Interfaces/IGame.cs:
+	  Remove the Bang.IGame.RequestType property.
+
+	* Interfaces/IPrivatePlayerView.cs:
+	  Add new Bang.IPrivatePlayerView.RequestType property
+
+2011-09-28  WOnder93  <omosnacek@gmail.com>
+
+	* Utils.cs:
+	* AssemblyInfo.cs:
+	  
+
+	* Interfaces/IEventListener.cs:
+	* Interfaces/IPlayerEventListener.cs:
+	  The OnNewRequest event moved to IPlayerEventListener and is
+	  now fired only for the requested player.
+	Added a new OnPlayerUsedAbility event with target player.
+	The OnPlayerUsedAbility events now also inform about the
+	  character whose ability was used.
+
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Structs/Password.cs:
+	  Fixed a very important bug in the password hash generation
+	  algorithm.
+
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ImmortalMarshalByRefObject.cs:
+	  Changed the Bang.ImmortalMarshalByRefObject.Disconnect()
+	  method to virtual.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj:
+	  
+
+	* Enums/RequestType.cs:
+	* Interfaces/IPlayer.cs:
+	* Interfaces/IPlayerControl.cs:
+	* Interfaces/IEventListener.cs:
+	* Interfaces/IPublicPlayerView.cs:
+	* Exceptions/BadCharacterTypeException.cs:
+	  Added new base for "proxy characters" (like Vera Custer,
+	  Greygory Deck).
+	Added new response method.
+	Added new RequestType values.
+	Added new PublicPlayerView property - AdditionalCharacters
+	  (the abilities gained by proxy characters).
+	New way of getting player victory stats.
+
+	* Utils.cs:
+	  Added unified methods for getting the list of Role,
+	  CharacterType or CardType enumeration values.
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj:
+	  
+
+	* Utils.cs:
+	  Do not filter object.* methods in order to enable comparing
+	  via object.Equals().
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* MethodRestrictionServerSink.cs:
+	* MethodRestrictionServerSinkProvider.cs:
+	  Added a server sink that filters requests.
+
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj:
+	  
+
+	* Utils.cs:
+	  Improved serving/connecting methods.
+	Added filtering of requests using
+	  MethodResrictionServerSinkProvider.
+
+	* Config.cs:
+	  Added locking when setting values.
+
+	* Proxies:
+	* Proxies/GameProxy.cs:
+	* Proxies/CardProxy.cs:
+	* Proxies/PlayerProxy.cs:
+	* Proxies/ServerProxy.cs:
+	* Proxies/SessionProxy.cs:
+	* Proxies/SpectatorProxy.cs:
+	* Proxies/PlayerControlProxy.cs:
+	* Proxies/SpectatorControlProxy.cs:
+	* Proxies/PublicPlayerViewProxy.cs:
+	* Proxies/PrivatePlayerViewProxy.cs:
+	* Proxies/PlayerSessionControlProxy.cs:
+	* Proxies/SpectatorSessionControlProxy.cs:
+	  Proxies are not needed any more.
+	  MethodRestrictionServerSinkProvider is used instead.
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* Proxies:
+	* Utils.cs:
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj:
+	  
+
+	* Exceptions/BadServerPasswordException.cs:
+	  Added a bad password exception for newly introduced server
+	  management.
+
+	* Interfaces/IPlayerEventListener.cs:
+	  AI players now manage threading for responses on their own
+	  (via ThreadPool). The
+	  Bang.IPlayerListener.OnResponseRequested event is now
+	  removed.
+
+	* Structs/Password.cs:
+	  Improved hashing algorithm.
+	The Hash property is now public.
+	Added a constructor that copies the password hash from an
+	  array.
+
+	* Proxies/GameProxy.cs:
+	* Proxies/CardProxy.cs:
+	* Proxies/PlayerProxy.cs:
+	* Proxies/ServerProxy.cs:
+	* Proxies/SessionProxy.cs:
+	* Proxies/SpectatorProxy.cs:
+	* Proxies/PlayerControlProxy.cs:
+	* Proxies/SpectatorControlProxy.cs:
+	* Proxies/PublicPlayerViewProxy.cs:
+	* Proxies/PrivatePlayerViewProxy.cs:
+	* Proxies/PlayerSessionControlProxy.cs:
+	* Proxies/SpectatorSessionControlProxy.cs:
+	  Added proxies for certain MarshalByRefObjects because of
+	  security.
+
+2011-08-18  WOnder93  <omosnacek@gmail.com>
+
+	* Utils.cs:
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj:
+	  
+
+	* Exceptions/MustBeCreatorException.cs:
+	  Added a new exception that is thrown when a non-creator
+	  attempts to perform an operation that is not permitted to
+	  him.
+
+2011-08-18  WOnder93  <omosnacek@gmail.com>
+
+	* Utils.cs:
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj:
+	  
+
+	* ImmortalMarshalByRefObject.cs:
+	  Added a class that represents a MarshalByRefObject with
+	  infinite lifetime and can be disconnected manually.
+
+2011-08-16  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Common.csproj: 
+
+	* Utils.cs: Use two-way remoting TCP channels instead of
+	native channels in order to make Bang# clients functional
+	behind firewalls.
+	Fixes issue 3.
+
+2011-08-07  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs: 
+
+	* Utils.cs: Provided more parameters for creating TcpChannel.
+	Fixes issue 1.
+
