@@ -72,7 +72,7 @@ namespace Bang
 		/// <param name="password">
 		/// The password of the player.
 		/// </param>
-		public CreatePlayerData (string name, byte[] image, string password)
+		public CreatePlayerData (string name, byte[] image, string password) : this()
 		{
 			Name = name;
 			Image = image;

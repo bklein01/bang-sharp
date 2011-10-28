@@ -71,7 +71,7 @@ namespace Bang
 		/// <param name="password">
 		/// The password.
 		/// </param>
-		public Password(string password)
+		public Password(string password) : this()
 		{
 			Hash = CreateHash(password);
 		}
@@ -84,7 +84,7 @@ namespace Bang
 		/// <exception cref="System.ArgumentOutOfRangeException">
 		/// The length of the hash is incorrect.
 		/// </exception>
-		public Password(int[] hash)
+		public Password(int[] hash) : this()
 		{
 			if(hash.Length != hashBase.Length)
 				throw new ArgumentOutOfRangeException("Hash length is incorrect!");

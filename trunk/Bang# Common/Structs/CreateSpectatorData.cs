@@ -64,7 +64,7 @@ namespace Bang
 		/// <param name="password">
 		/// The password of the spectator.
 		/// </param>
-		public CreateSpectatorData (string name, byte[] image)
+		public CreateSpectatorData (string name, byte[] image) : this()
 		{
 			Name = name;
 			Image = image;

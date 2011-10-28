@@ -1,3 +1,9 @@
+2011-10-28  WOnder93  <omosnacek@gmail.com>
+
+	* Bang# Test Client.csproj:
+	  Migrated to Mono/.NET 4.0
+	Updated to comply with the new C# standard.
+
 2011-09-28  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

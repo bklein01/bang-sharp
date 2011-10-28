@@ -95,7 +95,7 @@ namespace Bang
 			int minPlayers, int maxPlayers, int maxSpectators,
 			string playerPassword, string spectatorPassword, bool shufflePlayers,
 			bool dodgeCity, bool highNoon,
-			bool fistfulOfCards, bool wildWestShow)
+			bool fistfulOfCards, bool wildWestShow) : this()
 		{
 			Name = name;
 			Description = description;
