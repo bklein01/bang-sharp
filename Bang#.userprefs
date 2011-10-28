@@ -1,19 +1,25 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ctype="Workbench">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Client/MainWindow.cs">
+    <Files>
+      <File FileName="Bang# Console Utils/AssemblyInfo.cs" Line="45" Column="36" />
+      <File FileName="Bang# Common/Structs/CreatePlayerData.cs" Line="75" Column="80" />
+      <File FileName="Bang# Common/Structs/CreateSessionData.cs" Line="98" Column="52" />
+      <File FileName="Bang# Common/Structs/CreateSpectatorData.cs" Line="67" Column="57" />
+      <File FileName="Bang# Client/MainWindow.cs" Line="2" Column="7" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
           <Node name="Bang# AI" expanded="True" />
-          <Node name="Bang# Console Utils" expanded="True" />
-          <Node name="Bang# Server Daemon" expanded="True">
-            <Node name="Session" expanded="True">
-              <Node name="Game" expanded="True">
-                <Node name="Cards" expanded="True" />
-              </Node>
-            </Node>
+          <Node name="Bang# Client" expanded="True">
+            <Node name="References" expanded="True" />
           </Node>
-          <Node name="Bang# Test Client" expanded="True" />
+          <Node name="Bang# Common" expanded="True">
+            <Node name="Structs" expanded="True" />
+          </Node>
+          <Node name="Bang# Console Utils" expanded="True" />
+          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" selected="True" />
         </State>
       </Pad>
     </Pads>
@@ -23,7 +29,7 @@
       <Catchpoint exceptionName="System.NullReferenceException" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="Bang# Common/TypeRestrictionServerSink.cs" line="67" offsetX="1270" offsetY="714" expression="sinkStack" liveUpdate="False" />
     <Watch file="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerSink.cs" line="72" offsetX="1326" offsetY="799" expression="Stream" liveUpdate="False" />
   </MonoDevelop.Ide.DebuggingService.PinnedWatches>

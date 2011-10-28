@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Bang</RootNamespace>
     <AssemblyName>BangSharpCommon</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <Description>Common library for Bang#</Description>
     <ReleaseVersion>1.1</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>

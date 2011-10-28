@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Bang.Client</RootNamespace>
     <AssemblyName>BangSharpTestClient</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
