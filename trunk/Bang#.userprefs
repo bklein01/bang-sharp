@@ -1,26 +1,31 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Client/MainWindow.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Server Daemon/Session/SessionPlayer.cs">
     <Files>
-      <File FileName="Bang# Console Utils/AssemblyInfo.cs" Line="45" Column="36" />
-      <File FileName="Bang# Common/Structs/CreatePlayerData.cs" Line="75" Column="80" />
-      <File FileName="Bang# Common/Structs/CreateSessionData.cs" Line="98" Column="52" />
-      <File FileName="Bang# Common/Structs/CreateSpectatorData.cs" Line="67" Column="57" />
-      <File FileName="Bang# Client/MainWindow.cs" Line="2" Column="7" />
+      <File FileName="Bang# Common/MethodRestrictionServerSink.cs" Line="64" Column="97" />
+      <File FileName="Bang# Common/Utils.cs" Line="373" Column="52" />
+      <File FileName="Bang# Test Client/Main.cs" Line="1" Column="1" />
+      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientSink.cs" Line="69" Column="21" />
+      <File FileName="Bang# Server Daemon/Session/SessionPlayer.cs" Line="19" Column="25" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Bang# AI" expanded="True" />
-          <Node name="Bang# Client" expanded="True">
-            <Node name="References" expanded="True" />
+          <Node name="Bang# Common" expanded="True" />
+          <Node name="Bang# Server Daemon" expanded="True">
+            <Node name="Session" expanded="True">
+              <Node name="SessionPlayer.cs" selected="True" />
+            </Node>
           </Node>
-          <Node name="Bang# Common" expanded="True">
-            <Node name="Structs" expanded="True" />
-          </Node>
-          <Node name="Bang# Console Utils" expanded="True" />
-          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" selected="True" />
+          <Node name="Bang# Test Client" expanded="True" />
+          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True" />
         </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

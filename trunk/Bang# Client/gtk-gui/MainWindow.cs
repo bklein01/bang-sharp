@@ -3,20 +3,21 @@
 
 public partial class MainWindow
 {
-	protected virtual void Build ()
+	protected virtual void Build()
 	{
-		global::Stetic.Gui.Initialize (this);
+		global::Stetic.Gui.Initialize(this);
 		// Widget MainWindow
 		this.Name = "MainWindow";
-		this.Title = global::Mono.Unix.Catalog.GetString ("Bang# Client");
+		this.Title = global::Mono.Unix.Catalog.GetString("Bang# Client");
 		this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 		this.AllowShrink = true;
-		if ((this.Child != null)) {
-			this.Child.ShowAll ();
+		if((this.Child != null))
+		{
+			this.Child.ShowAll();
 		}
 		this.DefaultWidth = 906;
 		this.DefaultHeight = 512;
-		this.Show ();
-		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
+		this.Show();
+		this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
 	}
 }
