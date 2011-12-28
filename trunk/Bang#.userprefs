@@ -1,21 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Server Daemon/Session/SessionPlayer.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Common/Utils.cs">
     <Files>
-      <File FileName="Bang# Common/MethodRestrictionServerSink.cs" Line="64" Column="97" />
-      <File FileName="Bang# Common/Utils.cs" Line="373" Column="52" />
-      <File FileName="Bang# Test Client/Main.cs" Line="1" Column="1" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientSink.cs" Line="69" Column="21" />
-      <File FileName="Bang# Server Daemon/Session/SessionPlayer.cs" Line="19" Column="25" />
+      <File FileName="Bang# Common/Utils.cs" Line="354" Column="34" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Bang# Common" expanded="True" />
+          <Node name="Bang# AI" expanded="True" />
+          <Node name="Bang# Common" expanded="True">
+            <Node name="Utils.cs" selected="True" />
+          </Node>
           <Node name="Bang# Server Daemon" expanded="True">
-            <Node name="Session" expanded="True">
-              <Node name="SessionPlayer.cs" selected="True" />
-            </Node>
+            <Node name="Session" expanded="True" />
           </Node>
           <Node name="Bang# Test Client" expanded="True" />
           <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True" />

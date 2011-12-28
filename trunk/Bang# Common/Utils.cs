@@ -343,7 +343,7 @@ namespace Bang
 				foreach(Type t in allowedTypes)
 					if(t.Equals(decl))
 						return true;
-					else if(t.IsAssignableFrom(decl) && !t.IsInterface)
+					else if(t.IsAssignableFrom(decl) && !decl.IsInterface)
 						foreach(MethodInfo mi in decl.GetInterfaceMap(t).TargetMethods)
 							if(mi.MethodHandle == m.MethodHandle)
 								return true;

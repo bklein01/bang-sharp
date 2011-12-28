@@ -4,6 +4,14 @@
 	  
 
 	* Utils.cs:
+	  Fixed a typo from the previous revision.
+
+2011-12-28  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Utils.cs:
 	  Fixed a .NET compatibility bug.
 
 2011-10-28  WOnder93  <omosnacek@gmail.com>
