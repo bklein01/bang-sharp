@@ -113,35 +113,35 @@ namespace Bang.AI
 				if(cardHelper.HasAbility(CharacterType.BlackJack) ||
 					cardHelper.HasAbility(CharacterType.KitCarlson) ||
 					cardHelper.HasAbility(CharacterType.PixiePete))
-					{
+				{
 
-						control.RespondUseAbility();
-						return;
-					}
+					control.RespondUseAbility();
+					return;
+				}
 				if(cardHelper.HasAbility(CharacterType.BillNoface))
-					if(player.MaxLifePoints - player.LifePoints > 2)
-					{
-						control.RespondUseAbility();
-						return;
-					}
+				if(player.MaxLifePoints - player.LifePoints > 2)
+				{
+					control.RespondUseAbility();
+					return;
+				}
 				if(cardHelper.HasAbility(CharacterType.JesseJones))
-					if(game.Players.Any(p => p.ID != player.ID && p.Hand.Count > 0))
-					{
-						control.RespondUseAbility();
-						return;
-					}
+				if(game.Players.Any(p => p.ID != player.ID && p.Hand.Count > 0))
+				{
+					control.RespondUseAbility();
+					return;
+				}
 				if(cardHelper.HasAbility(CharacterType.PatBrennan))
-					if(game.Players.Except(playerHelper.Allies).Any(p => p.Table.Any(c => cardHelper.IsCardWorthSkippingDraw(c.Type))))
-					{
-						control.RespondUseAbility();
-						return;
-					}
+				if(game.Players.Except(playerHelper.Allies).Any(p => p.Table.Any(c => cardHelper.IsCardWorthSkippingDraw(c.Type))))
+				{
+					control.RespondUseAbility();
+					return;
+				}
 				if(cardHelper.HasAbility(CharacterType.PedroRamirez))
-					if(game.GraveyardTop != null && cardHelper.IsCardWorthSkippingDraw(game.GraveyardTop.Type))
-					{
-						control.RespondUseAbility();
-						return;
-					}
+				if(game.GraveyardTop != null && cardHelper.IsCardWorthSkippingDraw(game.GraveyardTop.Type))
+				{
+					control.RespondUseAbility();
+					return;
+				}
 				control.RespondDraw();
 				return;
 			case RequestType.Play:
@@ -149,17 +149,17 @@ namespace Bang.AI
 				try
 				{
 					if(cardHelper.HasAbility(CharacterType.ChuckWengam))
-						if(player.LifePoints > 2)
-						{
-							control.RespondUseAbility();
-							return;
-						}
+					if(player.LifePoints > 2)
+					{
+						control.RespondUseAbility();
+						return;
+					}
 					if(cardHelper.HasAbility(CharacterType.JoseDelgado))
-						if(player.Hand.Any(c => c.Color == CardColor.Blue && !cardHelper.IsTableCardWorth(c.Type)))
-						{
-							control.RespondUseAbility();
-							return;
-						}
+					if(player.Hand.Any(c => c.Color == CardColor.Blue && !cardHelper.IsTableCardWorth(c.Type)))
+					{
+						control.RespondUseAbility();
+						return;
+					}
 				}
 				catch(GameException)
 				{
@@ -247,11 +247,11 @@ namespace Bang.AI
 								break;
 							case CardType.Volcanic:
 								if(!cardHelper.HasAbility(CharacterType.WillyTheKid))
-									if(!player.Table.Any(c => c.Type == CardType.Volcanic || c.Type == CardType.Carabine || c.Type == CardType.Winchester))
-									{
-										control.RespondCard(card.ID);
-										return;
-									}
+								if(!player.Table.Any(c => c.Type == CardType.Volcanic || c.Type == CardType.Carabine || c.Type == CardType.Winchester))
+								{
+									control.RespondCard(card.ID);
+									return;
+								}
 								break;
 							case CardType.Schofield:
 								if(player.Table.Any(c => c.Type == CardType.Volcanic))
@@ -262,7 +262,8 @@ namespace Bang.AI
 										return;
 									}
 								}
-								else if(!player.Table.Any(c => c.Type == CardType.Schofield || c.Type == CardType.Remington || c.Type == CardType.Carabine || c.Type == CardType.Winchester))
+								else
+								if(!player.Table.Any(c => c.Type == CardType.Schofield || c.Type == CardType.Remington || c.Type == CardType.Carabine || c.Type == CardType.Winchester))
 								{
 									control.RespondCard(card.ID);
 									return;
@@ -277,7 +278,8 @@ namespace Bang.AI
 										return;
 									}
 								}
-								else if(!player.Table.Any(c => c.Type == CardType.Remington || c.Type == CardType.Carabine || c.Type == CardType.Winchester))
+								else
+								if(!player.Table.Any(c => c.Type == CardType.Remington || c.Type == CardType.Carabine || c.Type == CardType.Winchester))
 								{
 									control.RespondCard(card.ID);
 									return;
@@ -292,7 +294,8 @@ namespace Bang.AI
 										return;
 									}
 								}
-								else if(!player.Table.Any(c => c.Type == CardType.Carabine || c.Type == CardType.Winchester))
+								else
+								if(!player.Table.Any(c => c.Type == CardType.Carabine || c.Type == CardType.Winchester))
 								{
 									control.RespondCard(card.ID);
 									return;
@@ -307,7 +310,8 @@ namespace Bang.AI
 										return;
 									}
 								}
-								else if(!player.Table.Any(c => c.Type == CardType.Winchester))
+								else
+								if(!player.Table.Any(c => c.Type == CardType.Winchester))
 								{
 									control.RespondCard(card.ID);
 									return;
@@ -567,7 +571,7 @@ namespace Bang.AI
 			case RequestType.DiscardCard:
 			case RequestType.SidKetchum:
 			case RequestType.GoldenCard:
-				List<ICard> availableCards = new List<ICard>(player.Hand);
+				List<ICard > availableCards = new List<ICard>(player.Hand);
 				while(availableCards.Count != 0)
 				{
 					ICard worst = cardHelper.WorstCard(availableCards);
@@ -766,11 +770,11 @@ namespace Bang.AI
 			case RequestType.StealCard:
 			case RequestType.CancelCard:
 				{
-					List<ICard> cards = new List<ICard>();
-					IEnumerable<IPublicPlayerView> nonAllies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Allies);
-					IEnumerable<IPublicPlayerView> nonEnemies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Enemies);
-					IEnumerable<IPublicPlayerView> allies = playerHelper.Allies;
-					IEnumerable<IPublicPlayerView> enemies = playerHelper.Enemies;
+					List<ICard > cards = new List<ICard>();
+					IEnumerable<IPublicPlayerView > nonAllies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Allies);
+					IEnumerable<IPublicPlayerView > nonEnemies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Enemies);
+					IEnumerable<IPublicPlayerView > allies = playerHelper.Allies;
+					IEnumerable<IPublicPlayerView > enemies = playerHelper.Enemies;
 					// First, look through the tables of non-allies:
 					foreach(IPublicPlayerView p in nonAllies)
 						cards.AddRange(p.Table.Where(c => c.Type != CardType.Jail));
@@ -879,7 +883,7 @@ namespace Bang.AI
 				return;
 			case RequestType.PatBrennan:
 				{
-					List<ICard> cards = new List<ICard>();
+					List<ICard > cards = new List<ICard>();
 					foreach(IPublicPlayerView p in game.Players.Except(playerHelper.Allies))
 						if(p.ID != player.ID)
 							cards.AddRange(p.Table);
@@ -892,8 +896,10 @@ namespace Bang.AI
 					break;
 				}
 			case RequestType.VeraCuster:
-				IPublicPlayerView best = cardHelper.BestCharacter(game.Players.Where(p => p.IsAlive));
-				control.RespondPlayer(best.ID);
+				{
+					IPublicPlayerView best = cardHelper.BestCharacter(game.Players.Where(p => p.IsAlive));
+					control.RespondPlayer(best.ID);
+				}
 				return;
 			case RequestType.LuckyDuke:
 				control.RespondCard(cardHelper.BestCheckDeckCard(player.Selection).ID);
