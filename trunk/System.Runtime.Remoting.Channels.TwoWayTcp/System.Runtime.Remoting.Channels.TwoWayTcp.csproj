@@ -45,6 +45,7 @@
     <Compile Include="TcpClientSink.cs" />
     <Compile Include="TcpClientChannel.cs" />
     <Compile Include="TcpClientSinkProvider.cs" />
+    <Compile Include="TcpInputStream.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -54,6 +54,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		private const int DefaultBufferSize = 1000;
 		private static int nextId = 0;
 
+		private object recieveLock = new object();
 		private object sendLock = new object();
 
 		private TcpConnectionPool pool;
@@ -122,11 +123,13 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		{
 			try
 			{
-				while(true)
-				{
-					Message message = InternalRecieveMessage();
-					ThreadPool.QueueUserWorkItem(FireMessage, message);
-				}
+				lock(recieveLock)
+					while(true)
+					{
+						Message message = InternalRecieveMessage();
+						ThreadPool.QueueUserWorkItem(FireMessage, message);
+						Monitor.Wait(recieveLock);
+					}
 			}
 			catch
 			{
@@ -213,7 +216,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 			int messageLength = reader.ReadInt32();
 			if(messageLength != 0)
-				message.Stream = new MemoryStream(reader.ReadBytes(messageLength));
+				message.Stream = new TcpInputStream(networkStream, messageLength, recieveLock);
 			else
 				message.Stream = new MemoryStream(0);
 			return message;
@@ -243,7 +246,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				byte[] buf = ms.GetBuffer();
 				writer.Write(buf, 0, (int)message.Stream.Length);
 			}
-			catch
+			catch(InvalidCastException)
 			{
 				int read;
 				byte[] buffer = new byte[DefaultBufferSize];
