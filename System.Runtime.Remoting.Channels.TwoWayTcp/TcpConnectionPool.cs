@@ -60,7 +60,15 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 			if(conn == null)
 			{
-				TcpClient client = new TcpClient(host, port);
+				TcpClient client;
+				try
+				{
+					client = new TcpClient(host, port);
+				}
+				catch(SocketException e)
+				{
+					throw new RemotingException("Unable to connect to the specified host!", e);
+				}
 				conn = new TcpConnection(this, client.Client);
 				hostConnections[key] = conn;
 				AddConnection(conn);

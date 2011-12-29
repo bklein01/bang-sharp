@@ -1,6 +1,20 @@
 2011-12-29  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
+	* System.Runtime.Remoting.Channels.TwoWayTcp.csproj:
+	  
+
+	* TcpConnectionPool.cs:
+	  Improved exception handling.
+
+	* TcpConnection.cs:
+	* TcpInputStream.cs:
+	  Improved message recieving performance by letting sinks read
+	  (almost) directly from the socket stream.
+
+2011-12-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
 	  
 
 	* TcpServerSink.cs:
