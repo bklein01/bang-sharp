@@ -79,21 +79,27 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			if(serverSinkProvider == null)
 				serverSinkProvider = new BinaryServerFormatterSinkProvider();
 
-			if(host == null)
-				if(useIpAddress)
+			try
+			{
+				if(host != null)
 				{
-					if(bindTo != IPAddress.Any)
-						host = bindTo.ToString();
-					else
-					{
-						IPAddress[] addresses = Dns.GetHostAddresses(Dns.GetHostName());
-						if(addresses.Length == 0)
-							throw new RemotingException("IP address could not be determined for this host!");
-						host = addresses[0].ToString();
-					}
+					if(useIpAddress)
+						host = Dns.GetHostName();
 				}
+				else if(bindTo != IPAddress.Any)
+					host = bindTo.ToString();
 				else
-					host = Dns.GetHostName();
+				{
+					IPAddress[] addresses = Dns.GetHostAddresses(Dns.GetHostName());
+					if(addresses.Length == 0)
+						throw new RemotingException("IP address could not be determined for this host!");
+					host = addresses[0].ToString();
+				}
+			}
+			catch(SocketException e)
+			{
+				throw new RemotingException("DNS error!", e);
+			}
 
 			channelData = new ChannelDataStore(new string[] { "tcp://" + TcpConnection.ThisMachineID });
 			for(IServerChannelSinkProvider provider = serverSinkProvider; provider != null; provider = provider.Next)
@@ -180,9 +186,15 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				return;
 
 			pool.OnRequestRecieved += serverSink.OnRequestRecieved;
-			listener = new TcpListener(bindTo, port);
-			listener.Start();
-
+			try
+			{
+				listener = new TcpListener(bindTo, port);
+				listener.Start();
+			}
+			catch(SocketException e)
+			{
+				throw new RemotingException("Unable to start listening!", e);
+			}
 			if(port == 0)
 				port = ((IPEndPoint)listener.LocalEndpoint).Port;
 

@@ -57,6 +57,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			TcpConnection connection = message.Connection;
 			message.Headers[CommonTransportKeys.IPAddress] = connection.RemoteAddress;
 			message.Headers[CommonTransportKeys.ConnectionId] = connection.ID;
+			message.Headers["__CustomErrorsEnabled"] = false;
 
 			string uri = (string)message.Headers[CommonTransportKeys.RequestUri];
 			TcpChannel.ParseChannelUrl(uri, out uri);
