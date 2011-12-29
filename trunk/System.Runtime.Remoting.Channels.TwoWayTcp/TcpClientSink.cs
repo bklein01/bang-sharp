@@ -71,7 +71,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				{
 					while(!responseCache.ContainsKey(request.ID))
 						Monitor.Wait(responseCache);
-					Message response = responseCache[request.ID];
+					Message response = responseCache [request.ID];
 					responseCache.Remove(request.ID);
 					responseHeaders = response.Headers;
 					responseStream = response.Stream;
