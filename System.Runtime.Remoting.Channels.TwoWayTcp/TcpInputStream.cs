@@ -29,7 +29,7 @@ using System.Threading;
 
 namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
-	public class TcpInputStream : Stream
+	internal class TcpInputStream : Stream
 	{
 		private object recieveLock;
 		private Stream baseStream;

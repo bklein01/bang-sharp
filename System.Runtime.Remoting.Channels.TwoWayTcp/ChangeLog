@@ -1,6 +1,14 @@
 2011-12-29  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
+	  
+
+	* TcpInputStream.cs:
+	  Changed the access modifier of TcpInputStream to 'internal'.
+
+2011-12-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
 	* System.Runtime.Remoting.Channels.TwoWayTcp.csproj:
 	  
 
