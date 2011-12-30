@@ -245,7 +245,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			{
 				MemoryStream ms = (MemoryStream)message.Stream;
 				byte[] buf = ms.GetBuffer();
-				writer.Write(buf, 0, (int)message.Stream.Length);
+				writer.Write(buf, 0, (int)ms.Length);
 			}
 			catch
 			{
