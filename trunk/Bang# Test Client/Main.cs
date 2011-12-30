@@ -43,6 +43,9 @@ namespace Bang.Client
 		{
 			ConsoleHelper.PrintLine("Bang# Command-Line Client");
 			ConsoleHelper.PrintLine("-------------------------");
+			ConsoleHelper.PrintLine("Interface version: {0}.{1}", Utils.InterfaceVersionMajor, Utils.InterfaceVersionMinor);
+			ConsoleHelper.PrintLine("Operating system: {0}", Environment.OSVersion);
+			ConsoleHelper.PrintLine("-------------------------");
 			string address;
 			string portString;
 			if(cmdArgs.Length != 2)
@@ -90,9 +93,9 @@ namespace Bang.Client
 				ConsoleHelper.PrintLine();
 
 				NestedCommand rootCmd = new NestedCommand();
-				NestedCommand<IServer> serverCmd = new NestedCommand<IServer>(cmd => _server);
+				NestedCommand<IServer > serverCmd = new NestedCommand<IServer>(cmd => _server);
 				serverCmd.MakeServerCommand();
-				NestedCommand<IServer, ISession> sessionCmd = (NestedCommand<IServer, ISession>)serverCmd["session"];
+				NestedCommand<IServer, ISession > sessionCmd = (NestedCommand<IServer, ISession>)serverCmd["session"];
 				sessionCmd["join"] = new FinalCommand<ISession>((session, cmd) =>
 				{
 					CreatePlayerData cpd;
@@ -371,7 +374,7 @@ namespace Bang.Client
 					}
 				});
 				rootCmd["server"] = serverCmd;
-				NestedCommand<IPlayerSessionControl> sessionControlCommand = new NestedCommand<IPlayerSessionControl>(cmd =>
+				NestedCommand<IPlayerSessionControl > sessionControlCommand = new NestedCommand<IPlayerSessionControl>(cmd =>
 				{
 					IPlayerSessionControl sessionControl = Instance.sessionControl;
 					if(sessionControl == null)
@@ -387,7 +390,7 @@ namespace Bang.Client
 					Instance.gameControl = null;
 				});
 				rootCmd["sessioncontrol"] = sessionControlCommand;
-				NestedCommand<IPlayerControl> gameControlCommand = new NestedCommand<IPlayerControl>(cmd => {
+				NestedCommand<IPlayerControl > gameControlCommand = new NestedCommand<IPlayerControl>(cmd => {
 					IPlayerControl gameControl = Instance.gameControl;
 					if(gameControl == null)
 					{
@@ -399,7 +402,7 @@ namespace Bang.Client
 				gameControlCommand.MakePlayerGameControlCommand();
 				rootCmd["gamecontrol"] = gameControlCommand;
 				rootCmd["exit"] = new FinalCommand(cmd => Environment.Exit(0));
-				while (true) // command-line loop
+				while(true) // command-line loop
 				{
 					try
 					{

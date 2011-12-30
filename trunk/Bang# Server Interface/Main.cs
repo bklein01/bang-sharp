@@ -36,6 +36,10 @@ namespace Bang.Server
 		{
 			ConsoleHelper.PrintLine("Bang# Server Interface");
 			ConsoleHelper.PrintLine("----------------------");
+			ConsoleHelper.PrintLine("Interface version: {0}.{1}", Utils.InterfaceVersionMajor, Utils.InterfaceVersionMinor);
+			ConsoleHelper.PrintLine("Server interface version: {0}.{1}", ServerUtils.InterfaceVersionMajor, ServerUtils.InterfaceVersionMinor);
+			ConsoleHelper.PrintLine("Operating system: {0}", Environment.OSVersion);
+			ConsoleHelper.PrintLine("----------------------");
 
 			string address;
 			string portString;

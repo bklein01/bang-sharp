@@ -4,6 +4,14 @@
 	  
 
 	* TcpConnection.cs:
+	  Just a code simplification...
+
+2011-12-30  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* TcpConnection.cs:
 	  Fixed possible deadlock.
 
 2011-12-29  WOnder93  <omosnacek@gmail.com>
