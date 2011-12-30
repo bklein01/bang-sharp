@@ -1,23 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerChannel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="System.Runtime.Remoting.Channels.TwoWayTcp/TcpInputStream.cs">
     <Files>
-      <File FileName="Bang# Common/Utils.cs" Line="23" Column="68" />
-      <File FileName="Bang# Common/AssemblyInfo.cs" Line="1" Column="1" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpClientSink.cs" Line="66" Column="52" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerChannel.cs" Line="86" Column="5" />
+      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpConnection.cs" Line="1" Column="1" />
+      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpInputStream.cs" Line="60" Column="11" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
-          <Node name="Bang# AI" expanded="True" />
-          <Node name="Bang# Common" expanded="True" />
-          <Node name="Bang# Server Daemon" expanded="True">
-            <Node name="Session" expanded="True" />
-          </Node>
-          <Node name="Bang# Test Client" expanded="True" />
-          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True" />
-        </State>
+        <State expanded="True" />
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True" />
@@ -28,9 +18,7 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Catchpoint exceptionName="System.NullReferenceException" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="Bang# Common/TypeRestrictionServerSink.cs" line="67" offsetX="1270" offsetY="714" expression="sinkStack" liveUpdate="False" />

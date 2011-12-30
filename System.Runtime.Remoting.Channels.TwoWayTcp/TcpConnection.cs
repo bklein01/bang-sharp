@@ -128,7 +128,8 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 					{
 						Message message = InternalRecieveMessage();
 						ThreadPool.QueueUserWorkItem(FireMessage, message);
-						Monitor.Wait(recieveLock);
+						while(message.Stream.Position != message.Stream.Length)
+							Monitor.Wait(recieveLock);
 					}
 			}
 			catch
@@ -246,7 +247,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				byte[] buf = ms.GetBuffer();
 				writer.Write(buf, 0, (int)message.Stream.Length);
 			}
-			catch(InvalidCastException)
+			catch
 			{
 				int read;
 				byte[] buffer = new byte[DefaultBufferSize];
