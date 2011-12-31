@@ -1,17 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="System.Runtime.Remoting.Channels.TwoWayTcp/TcpConnection.cs">
-    <Files>
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpInputStream.cs" Line="54" Column="22" />
-      <File FileName="System.Runtime.Remoting.Channels.TwoWayTcp/TcpConnection.cs" Line="233" Column="4" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True">
-            <Node name="TcpConnection.cs" selected="True" />
-          </Node>
-        </State>
+        <State expanded="True" selected="True" />
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True" />

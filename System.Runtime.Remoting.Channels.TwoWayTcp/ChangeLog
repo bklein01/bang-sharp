@@ -1,3 +1,20 @@
+2011-12-31  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* System.Runtime.Remoting.Channels.TwoWayTcp.csproj:
+	  
+
+	* TcpConnection.cs:
+	* TcpServerSink.cs:
+	* TcpClientSink.cs:
+	* TcpInputStream.cs:
+	* TcpServerChannel.cs:
+	* TcpConnectionPool.cs:
+	  TCP streams moved to TcpConnection as private classes.
+	New TCP channel protocol introduced - the message data is now
+	  divided into chunks for better streaming.
+	Improved performance of both sending and recieving messages.
+
 2011-12-30  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

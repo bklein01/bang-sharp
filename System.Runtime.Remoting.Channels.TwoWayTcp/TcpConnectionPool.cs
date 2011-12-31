@@ -67,7 +67,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				}
 				catch(SocketException e)
 				{
-					throw new RemotingException("Unable to connect to the specified host!", e);
+					throw new RemotingException("TCP error: Unable to connect to the specified host!", e);
 				}
 				conn = new TcpConnection(this, client.Client);
 				hostConnections[key] = conn;
