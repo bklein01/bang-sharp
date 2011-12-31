@@ -48,14 +48,287 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 	internal class TcpConnection
 	{
+		private class InputStream : Stream
+		{
+			private TcpConnection conn;
+			private int chunkIndex;
+			private int chunkLength;
+
+			public InputStream(TcpConnection connection)
+			{
+				conn = connection;
+				NextChunk();
+			}
+
+			public override void Flush()
+			{
+			}
+
+			private void Unlock()
+			{
+				lock(conn.recieveLock)
+				{
+					conn.recieveLocked = false;
+					Monitor.Pulse(conn.recieveLock);
+				}
+			}
+
+			protected override void Dispose(bool disposing)
+			{
+				if(!disposing)
+					return;
+				try
+				{
+					byte[] buffer = new byte[DefaultBufferSize];
+					int read;
+					do
+						read = Read(buffer, 0, buffer.Length);
+					while(read != 0);
+
+				}
+				catch(RemotingException)
+				{
+				}
+			}
+
+			private void NextChunk()
+			{
+				try
+				{
+					chunkLength = conn.reader.ReadInt32();
+				}
+				catch(IOException e)
+				{
+					conn.StopListening();
+					throw new RemotingException("TCP error!", e);
+				}
+				if(chunkLength < 0)
+				{
+					conn.StopListening();
+					throw new RemotingException("TCP error: Invalid chunk length!");
+				}
+				chunkIndex = 0;
+				if(chunkLength == 0)
+					Unlock();
+			}
+
+			public override int ReadByte()
+			{
+				if(chunkLength == 0)
+					return -1;
+				byte b;
+				try
+				{
+					b = conn.reader.ReadByte();
+				}
+				catch(IOException e)
+				{
+					conn.StopListening();
+					throw new RemotingException("TCP error!", e);
+				}
+				chunkIndex++;
+				if(chunkIndex >= chunkLength)
+					NextChunk();
+				return b;
+			}
+			public override int Read(byte[] buffer, int offset, int count)
+			{
+				if(chunkLength == 0)
+					return -1;
+				int totalRead = 0;
+				do
+				{
+					int segment = Math.Min(chunkLength, count);
+					int read = conn.reader.Read(buffer, offset, segment);
+					if(read != segment)
+					{
+						conn.StopListening();
+						throw new RemotingException("TCP error!");
+					}
+					totalRead += segment;
+					offset += segment;
+					count -= segment;
+					chunkIndex += segment;
+					if(chunkIndex >= chunkLength)
+						NextChunk();
+				}
+				while(count > 0 && chunkLength > 0);
+				return totalRead;
+			}
+
+			public override long Seek(long offset, SeekOrigin origin)
+			{
+				throw new NotSupportedException();
+			}
+
+			public override void SetLength(long value)
+			{
+				throw new NotSupportedException();
+			}
+
+			public override void Write(byte[] buffer, int offset, int count)
+			{
+				throw new NotSupportedException();
+			}
+
+			public override bool CanRead
+			{
+				get { return true; }
+			}
+			public override bool CanSeek
+			{
+				get { return false; }
+			}
+			public override bool CanWrite
+			{
+				get { return false; }
+			}
+
+			public override long Length
+			{
+				get { throw new NotSupportedException(); }
+			}
+			public override long Position
+			{
+				get { throw new NotSupportedException(); }
+				set { throw new NotSupportedException(); }
+			}
+		}
+		private class OutputStream : Stream
+		{
+			private TcpConnection conn;
+			private byte[] buffer;
+			private MemoryStream ms;
+			private bool disposed;
+
+			public OutputStream(TcpConnection connection)
+			{
+				conn = connection;
+				buffer = new byte[DefaultBufferSize];
+				ms = new MemoryStream(buffer);
+			}
+
+			public override void Flush()
+			{
+				int length = (int)ms.Position;
+				if(length == 0)
+					return;
+				try
+				{
+					conn.writer.Write(length);
+					conn.writer.Write(buffer, 0, length);
+				}
+				catch(IOException e)
+				{
+					conn.StopListening();
+					throw new RemotingException("TCP error!", e);
+				}
+				ms.Position = 0L;
+			}
+
+			private void Unlock()
+			{
+				lock(conn.sendLock)
+				{
+					conn.sendLocked = false;
+					Monitor.Pulse(conn.sendLock);
+				}
+			}
+
+			protected override void Dispose(bool disposing)
+			{
+				if(!disposing || disposed)
+					return;
+				Flush();
+				try
+				{
+					conn.writer.Write(0);
+				}
+				catch(IOException e)
+				{
+					conn.StopListening();
+					throw new RemotingException("TCP error!", e);
+				}
+				Unlock();
+				disposed = true;
+			}
+
+			public override int Read(byte[] buffer, int offset, int count)
+			{
+				throw new NotSupportedException();
+			}
+
+			public override long Seek(long offset, SeekOrigin origin)
+			{
+				throw new NotSupportedException();
+			}
+
+			public override void SetLength(long value)
+			{
+				throw new NotSupportedException();
+			}
+
+			public override void WriteByte(byte value)
+			{
+				ms.WriteByte(value);
+				if(ms.Position >= ms.Length)
+					Flush();
+			}
+			public override void Write(byte[] buffer, int offset, int count)
+			{
+				int segment = Math.Min((int)ms.Length, count);
+				do
+				{
+					try
+					{
+						ms.Write(buffer, offset, segment);
+					}
+					catch(IOException e)
+					{
+						conn.StopListening();
+						throw new RemotingException("TCP error!", e);
+					}
+					offset += segment;
+					count -= segment;
+					if(ms.Position >= ms.Length)
+						Flush();
+				}
+				while(count != 0);
+			}
+
+			public override bool CanRead
+			{
+				get { return false; }
+			}
+			public override bool CanSeek
+			{
+				get { return false; }
+			}
+			public override bool CanWrite
+			{
+				get { return true; }
+			}
+
+			public override long Length
+			{
+				get { throw new NotSupportedException(); }
+			}
+			public override long Position
+			{
+				get { throw new NotSupportedException(); }
+				set { throw new NotSupportedException(); }
+			}
+		}
 		public static readonly Guid ThisMachineID = Guid.NewGuid();
 		private static readonly byte[] magic = new byte[] { (byte)'T', (byte)'T', (byte)'C', (byte)'P' };
-		private const byte Version = 1;
-		private const int DefaultBufferSize = 1000;
+		private const byte Version = 2;
+		private const int DefaultBufferSize = 0x10000;
 		private static int nextId = 0;
 
 		private object recieveLock = new object();
 		private object sendLock = new object();
+		private bool recieveLocked = false;
+		private bool sendLocked = false;
 
 		private TcpConnectionPool pool;
 		private Socket socket;
@@ -101,7 +374,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			connId = nextId++;
 			networkStream = new NetworkStream(socket);
 			reader = new BinaryReader(networkStream);
-			writer = new BinaryWriter(new BufferedStream(networkStream));
+			writer = new BinaryWriter(networkStream);
 		}
 
 		private void FireMessage(object state)
@@ -126,10 +399,11 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				lock(recieveLock)
 					while(true)
 					{
+						while(recieveLocked)
+							Monitor.Wait(recieveLock);
+						recieveLocked = true;
 						Message message = InternalRecieveMessage();
 						ThreadPool.QueueUserWorkItem(FireMessage, message);
-						while(message.Stream.Position != message.Stream.Length)
-							Monitor.Wait(recieveLock);
 					}
 			}
 			catch
@@ -167,13 +441,22 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			recieveThread = null;
 		}
 
-		public void SendMessage(Message message)
+		public Stream SendMessage(Message message)
 		{
 			if(networkStream == null)
 				throw new RemotingException("TCP connection closed!");
+
+			if(message.Stream != null && message.Stream is OutputStream)
+			{
+				message.Stream.Close();
+				return null;
+			}
 			lock(sendLock)
 			{
-				InternalSendMessage(message);
+				while(sendLocked)
+					Monitor.Wait(sendLock);
+				sendLocked = true;
+				return InternalSendMessage(message);
 			}
 		}
 
@@ -189,10 +472,10 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			byte[] hdr = reader.ReadBytes(magic.Length);
 			for(int i = 0; i < magic.Length; i++)
 				if(hdr[i] != magic[i])
-					throw new RemotingException("TCP error!");
+					throw new RemotingException("TCP error: Invalid message header!");
 
 			if(!IsVersionCompatible(reader.ReadByte()))
-				throw new RemotingException("Remoting protocol not compatible!");
+				throw new RemotingException("TCP error: Invalid protocol version not compatible!");
 
 			switch((MessageType)reader.ReadByte())
 			{
@@ -203,7 +486,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				message.Type = MessageType.Response;
 				break;
 			default:
-				throw new RemotingException("TCP error!");
+				throw new RemotingException("TCP error: Invalid message type!");
 			}
 
 			id = new Guid(reader.ReadBytes(16));
@@ -214,18 +497,14 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			while((key = reader.ReadString()).Length != 0)
 				headers[key] = reader.ReadString();
 			message.Headers = headers;
-
-			int messageLength = reader.ReadInt32();
-			if(messageLength != 0)
-				message.Stream = new TcpInputStream(networkStream, messageLength, recieveLock);
-			else
-				message.Stream = new MemoryStream(0);
+			message.Stream = new InputStream(this);
 			return message;
 		}
-		private void InternalSendMessage(Message message)
+		private Stream InternalSendMessage(Message message)
 		{
 			if(writer == null)
-				throw new RemotingException("TCP connection closed!");
+				throw new RemotingException("TCP error: Connection closed!");
+
 			writer.Write(magic);
 			writer.Write(Version);
 			writer.Write((byte)message.Type);
@@ -239,22 +518,34 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				writer.Write((string)entry.Value);
 			}
 			writer.Write("");
-
-			writer.Write((int)message.Stream.Length);
-			try
+			Stream outStream = new OutputStream(this);
+			if(message.Stream != null)
 			{
-				MemoryStream ms = (MemoryStream)message.Stream;
-				byte[] buf = ms.GetBuffer();
-				writer.Write(buf, 0, (int)ms.Length);
+				MemoryStream ms = message.Stream as MemoryStream;
+				if(ms != null)
+					try
+					{
+						outStream.Write(ms.GetBuffer(), 0, (int)ms.Length);
+					}
+					catch(UnauthorizedAccessException)
+					{
+						ms = null;
+					}
+				if(ms == null)
+				{
+					byte[] buffer = new byte[DefaultBufferSize];
+					while(true)
+					{
+						int read = message.Stream.Read(buffer, 0, buffer.Length);
+						if(read == 0)
+							break;
+						outStream.Write(buffer, 0, read);
+					}
+				}
+				outStream.Close();
+				return null;
 			}
-			catch
-			{
-				int read;
-				byte[] buffer = new byte[DefaultBufferSize];
-				while((read = message.Stream.Read(buffer, 0, buffer.Length)) > 0)
-					writer.Write(buffer, 0, read);
-			}
-			writer.Flush();
+			return outStream;
 		}
 	}
 }

@@ -89,7 +89,9 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 		Stream IServerChannelSink.GetResponseStream (IServerResponseChannelSinkStack sinkStack, object state, IMessage msg, ITransportHeaders headers)
 		{
-			return null;
+			Message request = (Message)state;
+			Message response = new Message { Type = MessageType.Response, ID = request.ID, Headers = headers, Stream = null };
+			return request.Connection.SendMessage(response);
 		}
 
 		ServerProcessing IServerChannelSink.ProcessMessage (IServerChannelSinkStack sinkStack, IMessage requestMsg, ITransportHeaders requestHeaders, Stream requestStream, out IMessage responseMsg, out ITransportHeaders responseHeaders, out Stream responseStream)

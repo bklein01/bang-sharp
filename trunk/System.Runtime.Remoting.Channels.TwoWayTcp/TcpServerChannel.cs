@@ -92,13 +92,13 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				{
 					IPAddress[] addresses = Dns.GetHostAddresses(Dns.GetHostName());
 					if(addresses.Length == 0)
-						throw new RemotingException("IP address could not be determined for this host!");
+						throw new RemotingException("TCP error: IP address could not be determined for this host!");
 					host = addresses[0].ToString();
 				}
 			}
 			catch(SocketException e)
 			{
-				throw new RemotingException("DNS error!", e);
+				throw new RemotingException("TCP error: DNS error!", e);
 			}
 
 			channelData = new ChannelDataStore(new string[] { "tcp://" + TcpConnection.ThisMachineID });
@@ -193,7 +193,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			}
 			catch(SocketException e)
 			{
-				throw new RemotingException("Unable to start listening!", e);
+				throw new RemotingException("TCP error: Unable to start listening!", e);
 			}
 			if(port == 0)
 				port = ((IPEndPoint)listener.LocalEndpoint).Port;

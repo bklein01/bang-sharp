@@ -36,6 +36,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		private TcpConnection conn;
 		private Dictionary<Guid, IClientChannelSinkStack> stacks;
 		private Dictionary<Guid, Message> responseCache;
+		private Dictionary<IMethodMessage, Message> requestCache;
 
 		IDictionary IChannelSinkBase.Properties
 		{
@@ -52,6 +53,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			conn.OnResponseRecieved += OnResponseRecieved;
 			stacks = new Dictionary<Guid, IClientChannelSinkStack>();
 			responseCache = new Dictionary<Guid, Message>();
+			requestCache = new Dictionary<IMethodMessage, Message>();
 		}
 
 		void IClientChannelSink.ProcessMessage(IMessage msg, ITransportHeaders requestHeaders, Stream requestStream, out ITransportHeaders responseHeaders, out Stream responseStream)
@@ -63,42 +65,48 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			if(requestHeaders == null)
 				requestHeaders = new TransportHeaders();
 			requestHeaders[CommonTransportKeys.RequestUri] = methodMessage.Uri;
-			Message request = new Message { Type = MessageType.Request, ID = Guid.NewGuid(), Headers = requestHeaders, Stream = requestStream };
-			lock(responseCache)
+			Message request;
+			if(requestCache.ContainsKey(methodMessage))
 			{
-				conn.SendMessage(request);
-				if(!isOneWay)
+				request = requestCache[methodMessage];
+				request.Stream = requestStream;
+				requestCache.Remove(methodMessage);
+			}
+			else
+				request = new Message { Type = MessageType.Request, ID = Guid.NewGuid(), Headers = requestHeaders, Stream = requestStream };
+			conn.SendMessage(request);
+			if(!isOneWay)
+				lock(responseCache)
 				{
 					while(!responseCache.ContainsKey(request.ID))
 						Monitor.Wait(responseCache);
-					Message response = responseCache [request.ID];
+					Message response = responseCache[request.ID];
 					responseCache.Remove(request.ID);
 					responseHeaders = response.Headers;
 					responseStream = response.Stream;
 				}
-			}
 		}
 
 		void IClientChannelSink.AsyncProcessRequest(IClientChannelSinkStack sinkStack, IMessage msg, ITransportHeaders headers, Stream stream)
 		{
 			IMethodMessage methodMessage = (IMethodMessage)msg;
 			bool isOneWay = RemotingServices.IsOneWay(methodMessage.MethodBase);
-			try
+			if(headers == null)
+				headers = new TransportHeaders();
+			headers[CommonTransportKeys.RequestUri] = methodMessage.Uri;
+			Message request;
+			if(requestCache.ContainsKey(methodMessage))
 			{
-				if(headers == null)
-					headers = new TransportHeaders();
-				headers[CommonTransportKeys.RequestUri] = methodMessage.Uri;
-				Message request = new Message { Type = MessageType.Request, ID = Guid.NewGuid(), Headers = headers, Stream = stream };
-				if(!isOneWay)
-					lock(stacks)
-					{
-						stacks[request.ID] = sinkStack;
-					}
-				conn.SendMessage(request);
+				request = requestCache[methodMessage];
+				request.Stream = stream;
+				requestCache.Remove(methodMessage);
 			}
-			catch
-			{
-			}
+			else
+				request = new Message { Type = MessageType.Request, ID = Guid.NewGuid(), Headers = headers, Stream = stream };
+			if(!isOneWay)
+				lock(stacks)
+					stacks[request.ID] = sinkStack;
+			conn.SendMessage(request);
 		}
 
 		private void OnResponseRecieved(Message message)
@@ -107,9 +115,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			{
 				IClientChannelSinkStack sinkStack = stacks[message.ID];
 				lock(stacks)
-				{
 					stacks.Remove(message.ID);
-				}
 				sinkStack.AsyncProcessResponse(message.Headers, message.Stream);
 			}
 			catch(KeyNotFoundException)
@@ -127,9 +133,15 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			throw new NotSupportedException();
 		}
 
-		Stream IClientChannelSink.GetRequestStream (IMessage msg, ITransportHeaders headers)
+		Stream IClientChannelSink.GetRequestStream(IMessage msg, ITransportHeaders headers)
 		{
-			return null;
+			IMethodMessage methodMessage = (IMethodMessage)msg;
+			if(headers == null)
+				headers = new TransportHeaders();
+			headers[CommonTransportKeys.RequestUri] = methodMessage.Uri;
+			Message request = new Message { Type = MessageType.Request, ID = Guid.NewGuid(), Headers = headers, Stream = null };
+			requestCache[methodMessage] = request;
+			return conn.SendMessage(request);
 		}
 	}
 }
