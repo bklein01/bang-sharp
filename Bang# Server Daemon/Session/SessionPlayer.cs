@@ -57,7 +57,9 @@ namespace Bang.Server
 				}
 				catch(RemotingException)
 				{
+					session.Locked = false;
 					session.RemovePlayer(this);
+					session.Locked = true;
 					return false;
 				}
 			}

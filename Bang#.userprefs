@@ -3,7 +3,13 @@
   <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True">
+          <Node name="Bang# Common" expanded="True" />
+          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True">
+            <Node name="References" expanded="True" />
+            <Node name="AssemblyInfo.cs" selected="True" />
+          </Node>
+        </State>
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True" />
@@ -18,6 +24,5 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="Bang# Common/TypeRestrictionServerSink.cs" line="67" offsetX="1270" offsetY="714" expression="sinkStack" liveUpdate="False" />
-    <Watch file="System.Runtime.Remoting.Channels.TwoWayTcp/TcpServerSink.cs" line="72" offsetX="1326" offsetY="799" expression="Stream" liveUpdate="False" />
   </MonoDevelop.Ide.DebuggingService.PinnedWatches>
 </Properties>

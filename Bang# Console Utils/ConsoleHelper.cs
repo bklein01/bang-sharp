@@ -590,18 +590,36 @@ namespace Bang.ConsoleUtils
 			command["graveyardtop"] = new FinalCommand<IGame>((game, cmd) => { Print(game.GraveyardTop); });
 			command["current"] = new FinalCommand<IGame>((game, cmd) =>
 			{
-				PrintLine("Current player - #{0}:", game.CurrentPlayer.ID);
-				Print(game.CurrentPlayer);
+				IPublicPlayerView current = game.CurrentPlayer;
+				if(current == null)
+					PrintLine("No current player!");
+				else
+				{
+					PrintLine("Current player - #{0}:", current.ID);
+					Print(current);
+				}
 			});
 			command["requested"] = new FinalCommand<IGame>((game, cmd) =>
 			{
-				PrintLine("Requested player - #{0}:", game.RequestedPlayer.ID);
-				Print(game.RequestedPlayer);
+				IPublicPlayerView requested = game.RequestedPlayer;
+				if(requested == null)
+					PrintLine("No requested player!");
+				else
+				{
+					PrintLine("Requested player - #{0}:", requested.ID);
+					Print(requested);
+				}
 			});
 			command["causedby"] = new FinalCommand<IGame>((game, cmd) =>
 			{
-				PrintLine("Caused by player - #{0}:", game.CausedBy.ID);
-				Print(game.CausedBy);
+				IPublicPlayerView causedBy = game.CausedBy;
+				if(causedBy == null)
+					PrintLine("No caused by player!");
+				else
+				{
+					PrintLine("Caused by player - #{0}:", causedBy.ID);
+					Print(causedBy);
+				}
 			});
 		}
 
