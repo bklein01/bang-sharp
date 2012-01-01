@@ -1,3 +1,11 @@
+2012-01-01  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* SessionPlayer.cs:
+	  Fixed synchronization error when replacing a player.
+
 2011-10-28  WOnder93  <omosnacek@gmail.com>
 
 	* Bang# Server Daemon.csproj:

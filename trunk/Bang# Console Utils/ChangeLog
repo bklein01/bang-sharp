@@ -1,3 +1,11 @@
+2012-01-01  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ConsoleHelper.cs:
+	  Added null checks for dangerous IGame properties.
+
 2011-10-28  WOnder93  <omosnacek@gmail.com>
 
 	* Bang# Console Utils.csproj:
