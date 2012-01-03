@@ -38,7 +38,13 @@ namespace Bang.Server.Characters
 		public override bool HasCardEffect(Card card)
 		{
 			// Ignore blue cards since the ability works only on PLAYED cards.
-			return card.Owner == Player || card.Color == CardColor.Blue || card.Suit != CardSuit.Diamonds;
+			if(card.Owner == Player || card.Color == CardColor.Blue || card.Suit != CardSuit.Diamonds)
+				return true;
+			else
+			{
+				OnUsedAbility();
+				return false;
+			}
 		}
 	}
 }

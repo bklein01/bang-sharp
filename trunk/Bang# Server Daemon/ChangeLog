@@ -1,3 +1,25 @@
+2012-01-03  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ProxyCharacter.cs:
+	  Fixed the Bang.Server.ProxyCharacter.HasCardEffect() method.
+
+	* Player.cs:
+	* CalamityJanet.cs:
+	* ApacheKid.cs:
+	* BelleStar.cs:
+	* VeraCuster.cs:
+	* ElenaFuente.cs:
+	  Fixed OnUsedAbility reporting.
+
+	* GameCycle.cs:
+	* TableCard.cs:
+	* Jail.cs:
+	* Dynamite.cs:
+	  Fixed predraw checks priority.
+
 2012-01-01  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

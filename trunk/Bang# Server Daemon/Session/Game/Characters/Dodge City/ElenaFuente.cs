@@ -34,9 +34,16 @@ namespace Bang.Server.Characters
 		{
 		}
 		
-		public override bool IsMissed (Card card)
+		public override bool IsMissed(Card card)
 		{
-			return card.IsInHand;
+			if(base.IsMissed(card))
+				return true;
+			else if(card.IsInHand)
+			{
+				OnUsedAbility();
+				return true;
+			}
+			else return false;
 		}
 	}
 }

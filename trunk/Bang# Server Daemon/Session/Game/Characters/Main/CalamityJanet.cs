@@ -52,10 +52,13 @@ namespace Bang.Server.Characters
 			return base.IsBang(card);
 		}
 
-		public override void PlayCard (Card card)
+		public override void PlayCard(Card card)
 		{
 			if(card.Type == CardType.Missed)
+			{
+				OnUsedAbility();
 				bang.PlayVirtually(card);
+			}
 			else
 				base.PlayCard(card);
 		}

@@ -32,7 +32,13 @@ namespace Bang.Server.Characters
 		
 		public override bool HasCardEffect(Card card)
 		{
-			return Game.GameCycle.CurrentPlayer != Player || !card.IsOnTable;
+			if(Game.GameCycle.CurrentPlayer != Player || !card.IsOnTable)
+				return true;
+			else
+			{
+				OnUsedAbility();
+				return false;
+			}
 		}
 	}
 }
