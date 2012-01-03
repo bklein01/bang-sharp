@@ -771,6 +771,7 @@ namespace Bang.ConsoleUtils
 				}
 				return null;
 			});
+			sessionCommand.MakeSessionCommand();
 			command["session"] = sessionCommand;
 			sessionsCommand.MakeSessionCollectionCommand();
 			command["sessions"] = sessionsCommand;

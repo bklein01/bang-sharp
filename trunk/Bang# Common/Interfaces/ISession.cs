@@ -159,7 +159,7 @@ namespace Bang
 		/// <returns>
 		/// The <see cref="IPlayer"/> instance representing the spectator.
 		/// </returns>
-		ISpectator GetSpectator (int id);
+		ISpectator GetSpectator(int id);
 	}
 }
 
