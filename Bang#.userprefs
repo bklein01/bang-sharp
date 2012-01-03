@@ -1,14 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Test Client/Main.cs">
+    <Files>
+      <File FileName="Bang# Common/Interfaces/ISession.cs" Line="162" Column="26" />
+      <File FileName="Bang# Test Client/Main.cs" Line="101" Column="24" />
+      <File FileName="Bang# Console Utils/ConsoleHelper.cs" Line="755" Column="19" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Bang# Common" expanded="True" />
-          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True">
-            <Node name="References" expanded="True" />
-            <Node name="AssemblyInfo.cs" selected="True" />
-          </Node>
+          <Node name="Bang# Console Utils" expanded="True" />
+          <Node name="Bang# Server Interface" expanded="True" />
+          <Node name="Bang# Test Client" expanded="True" selected="True" />
+          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -20,7 +24,9 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/home/ondrej/Dokumenty/Developing/Mono/Bang#/Bang# Test Client/Main.cs" line="95" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="Bang# Common/TypeRestrictionServerSink.cs" line="67" offsetX="1270" offsetY="714" expression="sinkStack" liveUpdate="False" />

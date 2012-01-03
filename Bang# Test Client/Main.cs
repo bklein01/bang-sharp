@@ -70,15 +70,14 @@ namespace Bang.Client
 				ConsoleHelper.ErrorLine("Bad number format!");
 				return;
 			}
-
-			ConsoleHelper.PrintLine("Connecting to {0} on port {1}...", address, port);
-			IServer _server;
-			_server = Utils.Connect(address, port);
-
-			ConsoleHelper.PrintLine();
-
 			try
 			{
+				ConsoleHelper.PrintLine("Connecting to {0} on port {1}...", address, port);
+				IServer _server;
+				_server = Utils.Connect(address, port);
+
+				ConsoleHelper.PrintLine();
+
 				if(!Utils.IsServerCompatible(_server))
 				{
 					ConsoleHelper.ErrorLine("Server version {0}.{1} not compatible with client version {2}.{3}!",
