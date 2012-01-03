@@ -46,7 +46,8 @@ namespace Bang.Server.Characters
 				if(player.CharacterType == CharacterType.VeraCuster)
 					// you never know...
 					throw new BadPlayerException();
-				
+
+				parent.OnUsedAbility();
 				parent.SetCharacters(new CharacterType[] { player.CharacterType });
 				End();
 			}

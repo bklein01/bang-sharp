@@ -26,6 +26,11 @@ namespace Bang.Server.Cards
 {
 	public sealed class Dynamite : TableCard
 	{
+		public override int PredrawCheckPriority
+		{
+			get { return 1; }
+		}
+		
 		public Dynamite (Game game, int id, CardSuit suit, CardRank rank)
 			: base(game, id, CardType.Dynamite, suit, rank)
 		{

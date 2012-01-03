@@ -51,11 +51,17 @@ namespace Bang.Server.Cards
 				End();
 			}
 
-			protected override void OnRespondNoAction ()
+			protected override void OnRespondNoAction()
 			{
 				End();
 			}
 		}
+
+		public override int PredrawCheckPriority
+		{
+			get { return 2; }
+		}
+
 		public Jail(Game game, int id, CardSuit suit, CardRank rank)
 			: base(game, id, CardType.Jail, suit, rank)
 		{

@@ -292,7 +292,7 @@ namespace Bang.Server
 		{
 			int dist = 0;
 			foreach(Card c in table)
-				if(origin.HasCardEffect(c))
+				if(c.DistanceIn != 0 && origin.HasCardEffect(c))
 					dist += c.DistanceIn;
 			dist += character.DistanceIn;
 			return dist;
@@ -301,7 +301,7 @@ namespace Bang.Server
 		{
 			int dist = 0;
 			foreach (Card c in table)
-				if(target.HasCardEffect(c))
+				if(c.DistanceOut != 0 && target.HasCardEffect(c))
 					dist += c.DistanceOut;
 			dist += character.DistanceOut;
 			return dist;

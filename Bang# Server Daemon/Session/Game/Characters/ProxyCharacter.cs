@@ -118,7 +118,7 @@ namespace Bang.Server
 
 		public override bool HasCardEffect(Card card)
 		{
-			return characters.Count == 0 ? base.HasCardEffect(card) : characters.Any(c => c.HasCardEffect(card));
+			return characters.Count == 0 ? base.HasCardEffect(card) : !characters.All(c => c.HasCardEffect(card));
 		}
 		public override bool IsMissed(Card card)
 		{
