@@ -1,18 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Test Client/Main.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Bang# Server Daemon/AssemblyInfo.cs">
     <Files>
-      <File FileName="Bang# Common/Interfaces/ISession.cs" Line="162" Column="26" />
-      <File FileName="Bang# Test Client/Main.cs" Line="101" Column="24" />
-      <File FileName="Bang# Console Utils/ConsoleHelper.cs" Line="755" Column="19" />
+      <File FileName="Bang# Server Daemon/Session/Game/Player.cs" Line="331" Column="36" />
+      <File FileName="Bang# Server Daemon/Session/Game/Cards/Main/Jail.cs" Line="33" Column="12" />
+      <File FileName="Bang# Server Daemon/AssemblyInfo.cs" Line="27" Column="18" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Bang# Console Utils" expanded="True" />
-          <Node name="Bang# Server Interface" expanded="True" />
-          <Node name="Bang# Test Client" expanded="True" selected="True" />
-          <Node name="System.Runtime.Remoting.Channels.TwoWayTcp" expanded="True" />
+          <Node name="Bang# Server Daemon" expanded="True">
+            <Node name="AssemblyInfo.cs" selected="True" />
+          </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -24,9 +23,7 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/home/ondrej/Dokumenty/Developing/Mono/Bang#/Bang# Test Client/Main.cs" line="95" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="Bang# Common/TypeRestrictionServerSink.cs" line="67" offsetX="1270" offsetY="714" expression="sinkStack" liveUpdate="False" />

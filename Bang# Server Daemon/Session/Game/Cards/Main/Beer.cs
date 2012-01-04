@@ -32,8 +32,6 @@ namespace Bang.Server.Cards
 		
 		protected override void OnPlay(Player owner)
 		{
-			if(owner.LifePoints == owner.MaxLifePoints)
-				throw new BadUsageException();
 			owner.ModifyLifePoints(owner.BeerPower);
 		}
 	}
