@@ -1,5 +1,10 @@
 2012-01-04  WOnder93  <omosnacek@gmail.com>
 
+	* AssemblyInfo.cs:
+	  Oops... forgot to update version in the previous revision.
+
+2012-01-04  WOnder93  <omosnacek@gmail.com>
+
 	* ThreePlayersPlayerHelper.cs:
 	  Fixed the definiton of ally in
 	  Bang.AI.ThreePlayersPlayerHelper.
