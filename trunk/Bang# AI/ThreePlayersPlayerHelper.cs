@@ -62,8 +62,10 @@ namespace Bang.AI
 		{
 			get
 			{
-				IPublicPlayerView ally = Control.Game.GetPublicPlayerView(allyId);
-				return ally.IsAlive ? new List<IPublicPlayerView> { ally } : new List<IPublicPlayerView>();
+				IGame game = Control.Game;
+				IPublicPlayerView ally = game.GetPublicPlayerView(allyId);
+				IPublicPlayerView enemy = game.GetPublicPlayerView(enemyId);
+				return ally.IsAlive && enemy.IsAlive ? new List<IPublicPlayerView> { ally } : new List<IPublicPlayerView>();
 			}
 		}
 		public override IEnumerable<IPublicPlayerView> Enemies
