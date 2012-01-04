@@ -323,10 +323,15 @@ namespace Bang.Server
 			if(card == CardType.Bang && !UnlimitedBangs && bangsPlayed >= game.MaxBangs)
 				throw new CannotPlayBangException();
 
-			if(card == CardType.Beer && hitPoints == 0 && game.AlivePlayersCount == 2 && game.Players.Count != 2)
-				throw new CannotPlayBeerException();
+			if(card == CardType.Beer && hitPoints == 0)
+			{
+				if(game.AlivePlayersCount == 2 && game.Players.Count != 2)
+					throw new CannotPlayBeerException();
+				if(lifePoints == MaxLifePoints)
+					throw new BadUsageException();
+			}
 			
-			if (!character.CanPlayCard (card))
+			if(!character.CanPlayCard(card))
 				throw new BadCardException();
 		}
 		

@@ -1,3 +1,13 @@
+2012-01-04  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Player.cs:
+	* Beer.cs:
+	  Fixed handling of Beer being played with maximum lifepoints
+	  already.
+
 2012-01-03  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
