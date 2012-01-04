@@ -1,3 +1,17 @@
+2012-01-04  WOnder93  <omosnacek@gmail.com>
+
+	* ThreePlayersPlayerHelper.cs:
+	  Fixed the definiton of ally in
+	  Bang.AI.ThreePlayersPlayerHelper.
+
+	* AIPlayer.cs:
+	  Bang.AI.AIPlayer.triedAbility renamed to
+	  Bang.AI.AIPlayer.triedAbilities.
+	AI players' password set to empty.
+	Added region directives for better orientation in the code.
+	Some formatting fixes.
+	AI players now try to play General Stores as well.
+
 2011-12-28  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
