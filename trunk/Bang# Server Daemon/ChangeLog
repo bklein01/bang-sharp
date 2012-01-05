@@ -1,3 +1,11 @@
+2012-01-05  WOnder93  <omosnacek@gmail.com>
+
+	* ProxyCharacter.cs:
+	  Fixed the ProxyCharacter's HasCardEffect() method finally.
+
+	* AssemblyInfo.cs:
+	  
+
 2012-01-04  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
