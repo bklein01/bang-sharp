@@ -99,6 +99,86 @@ namespace Bang.AI
 			triedAbilities = new List<CharacterType>();
 		}
 
+		private bool TryRespondCard(int id)
+		{
+			try
+			{
+				control.RespondCard(id);
+				return true;
+			}
+			catch(GameException)
+			{
+			}
+			return false;
+		}
+		private bool TryRespondCardRemember(int id)
+		{
+			if(triedCards.Contains(id))
+				return false;
+			try
+			{
+				control.RespondCard(id);
+				triedCards.Add(id);
+				return true;
+			}
+			catch(GameException)
+			{
+			}
+			return false;
+		}
+		private bool TryRespondPlayer(int id)
+		{
+			try
+			{
+				control.RespondPlayer(id);
+				return true;
+			}
+			catch(GameException)
+			{
+			}
+			return false;
+		}
+		private bool TryRespondUseAbility()
+		{
+			try
+			{
+				control.RespondUseAbility();
+				return true;
+			}
+			catch(GameException)
+			{
+			}
+			return false;
+		}
+		private bool TryRespondUseAbilityRemember(CharacterType character)
+		{
+			if(!cardHelper.HasAbility(character) || triedAbilities.Contains(character))
+				return false;
+			try
+			{
+				control.RespondUseAbility();
+				characterToUse = character;
+				triedAbilities.Add(character);
+				return true;
+			}
+			catch(GameException)
+			{
+			}
+			return false;
+		}
+		private bool TryRespondNoAction()
+		{
+			try
+			{
+				control.RespondNoAction();
+				return true;
+			}
+			catch(GameException)
+			{
+			}
+			return false;
+		}
+
 		private void ProcessRequest(object state)
 		{
 			if(control == null)
@@ -119,319 +199,203 @@ namespace Bang.AI
 					control.RespondUseAbility();
 					return;
 				}
-				if(cardHelper.HasAbility(CharacterType.BillNoface))
-					if(player.MaxLifePoints - player.LifePoints > 2)
-					{
-						control.RespondUseAbility();
-						return;
-					}
-				if(cardHelper.HasAbility(CharacterType.JesseJones))
-					if(game.Players.Any(p => p.ID != player.ID && p.Hand.Count > 0))
-					{
-						control.RespondUseAbility();
-						return;
-					}
-				if(cardHelper.HasAbility(CharacterType.PatBrennan))
-					if(game.Players.Except(playerHelper.Allies).Any(p => p.Table.Any(c => cardHelper.IsCardWorthSkippingDraw(c.Type))))
-					{
-						control.RespondUseAbility();
-						return;
-					}
-				if(cardHelper.HasAbility(CharacterType.PedroRamirez))
-					if(game.GraveyardTop != null && cardHelper.IsCardWorthSkippingDraw(game.GraveyardTop.Type))
-					{
-						control.RespondUseAbility();
-						return;
-					}
+				if(cardHelper.HasAbility(CharacterType.BillNoface) &&
+					player.MaxLifePoints - player.LifePoints > 2)
+				{
+					control.RespondUseAbility();
+					return;
+				}
+				if(cardHelper.HasAbility(CharacterType.JesseJones) &&
+					game.Players.Any(p => p.ID != player.ID && p.Hand.Count > 0))
+				{
+					control.RespondUseAbility();
+					return;
+				}
+				if(cardHelper.HasAbility(CharacterType.PatBrennan) &&
+					game.Players.Except(playerHelper.Allies).Any(p => p.Table.Any(c => cardHelper.IsCardWorthSkippingDraw(c.Type))))
+				{
+					control.RespondUseAbility();
+					return;
+				}
+				if(cardHelper.HasAbility(CharacterType.PedroRamirez) &&
+					game.GraveyardTop != null && cardHelper.IsCardWorthSkippingDraw(game.GraveyardTop.Type))
+				{
+					control.RespondUseAbility();
+					return;
+				}
 				control.RespondDraw();
 				return;
 				#endregion
 				#region Play
 			case RequestType.Play:
 				// First, play cards that let us gain cards:
-				try
-				{
-					if(cardHelper.HasAbility(CharacterType.ChuckWengam))
-						if(player.LifePoints > 2)
-						{
-							control.RespondUseAbility();
-							return;
-						}
-					if(cardHelper.HasAbility(CharacterType.JoseDelgado))
-						if(player.Hand.Any(c => c.Color == CardColor.Blue && !cardHelper.IsTableCardWorth(c.Type)))
-						{
-							control.RespondUseAbility();
-							return;
-						}
-				}
-				catch(GameException)
-				{
-				}
+				if(cardHelper.HasAbility(CharacterType.ChuckWengam) &&
+					player.LifePoints > 2 &&
+					TryRespondUseAbilityRemember(CharacterType.ChuckWengam))
+					return;
+				if(cardHelper.HasAbility(CharacterType.JoseDelgado) &&
+					player.Hand.Any(c => c.Color == CardColor.Blue && !cardHelper.IsTableCardWorth(c.Type)) &&
+					TryRespondUseAbilityRemember(CharacterType.JoseDelgado))
+					return;
 				foreach(ICard c in player.Hand)
-					try
+					switch(c.Type)
 					{
-						switch(c.Type)
-						{
-						case CardType.WellsFargo:
-						case CardType.Diligenza:
-							control.RespondCard(c.ID);
+					case CardType.WellsFargo:
+					case CardType.Diligenza:
+						if(TryRespondCard(c.ID))
 							return;
-						}
-					}
-					catch(GameException)
-					{
+						break;
 					}
 				foreach(ICard c in player.Table)
-					try
-					{
-						if(c.Type == CardType.PonyExpress)
-						{
-							control.RespondCard(c.ID);
-							return;
-						}
-					}
-					catch(GameException)
-					{
-					}
+					if(c.Type == CardType.PonyExpress &&
+						TryRespondCard(c.ID))
+						return;
 				// Now get all the blue & green cards on table:
 				foreach(ICard card in player.Hand)
-					try
+					switch(card.Color)
 					{
-						switch(card.Color)
-						{
-						case CardColor.Green:
-							control.RespondCard(card.ID);
+					case CardColor.Green:
+						if(TryRespondCard(card.ID))
 							return;
-						case CardColor.Blue:
-							switch(card.Type)
+						break;
+					case CardColor.Blue:
+						switch(card.Type)
+						{
+						case CardType.Jail:
+							if(TryRespondCardRemember(card.ID))
+								return;
+							break;
+						case CardType.Appaloosa:
+							if(!player.Table.Any(c => c.Type == CardType.Appaloosa) &&
+								TryRespondCard(card.ID))
+								return;
+							break;
+						case CardType.Silver:
+							if(!player.Table.Any(c => c.Type == CardType.Silver) &&
+								TryRespondCard(card.ID))
+								return;
+							break;
+						case CardType.Mustang:
+							if(!player.Table.Any(c => c.Type == CardType.Mustang) &&
+								TryRespondCard(card.ID))
+								return;
+							break;
+						case CardType.Hideout:
+							if(!player.Table.Any(c => c.Type == CardType.Hideout) &&
+								TryRespondCard(card.ID))
+								return;
+							break;
+						case CardType.Barrel:
+							if(!player.Table.Any(c => c.Type == CardType.Barrel) &&
+								TryRespondCard(card.ID))
+								return;
+							break;
+						case CardType.Volcanic:
+							if(!cardHelper.HasAbility(CharacterType.WillyTheKid) &&
+								!player.Table.Any(c => c.Type == CardType.Volcanic ||
+									c.Type == CardType.Carabine ||
+									c.Type == CardType.Winchester) &&
+								TryRespondCard(card.ID))
+								return;
+							break;
+						case CardType.Schofield:
+							if(player.Table.Any(c => c.Type == CardType.Volcanic))
 							{
-							case CardType.Jail:
-								if(!triedCards.Contains(card.ID))
-								{
-									control.RespondCard(card.ID);
-									triedCards.Add(card.ID);
+								if(cardHelper.HasAbility(CharacterType.WillyTheKid) &&
+									TryRespondCard(card.ID))
 									return;
-								}
-								break;
-							case CardType.Appaloosa:
-								if(!player.Table.Any(c => c.Type == CardType.Appaloosa))
-								{
-									control.RespondCard(card.ID);
-									return;
-								}
-								break;
-							case CardType.Silver:
-								if(!player.Table.Any(c => c.Type == CardType.Silver))
-								{
-									control.RespondCard(card.ID);
-									return;
-								}
-								break;
-							case CardType.Mustang:
-								if(!player.Table.Any(c => c.Type == CardType.Mustang))
-								{
-									control.RespondCard(card.ID);
-									return;
-								}
-								break;
-							case CardType.Hideout:
-								if(!player.Table.Any(c => c.Type == CardType.Hideout))
-								{
-									control.RespondCard(card.ID);
-									return;
-								}
-								break;
-							case CardType.Barrel:
-								if(!player.Table.Any(c => c.Type == CardType.Barrel))
-								{
-									control.RespondCard(card.ID);
-									return;
-								}
-								break;
-							case CardType.Volcanic:
-								if(!cardHelper.HasAbility(CharacterType.WillyTheKid))
-									if(!player.Table.Any(c => c.Type == CardType.Volcanic ||
-										c.Type == CardType.Carabine ||
-										c.Type == CardType.Winchester))
-									{
-										control.RespondCard(card.ID);
-										return;
-									}
-								break;
-							case CardType.Schofield:
-								if(player.Table.Any(c => c.Type == CardType.Volcanic))
-								{
-									if(cardHelper.HasAbility(CharacterType.WillyTheKid))
-									{
-										control.RespondCard(card.ID);
-										return;
-									}
-								}
-								else if(!player.Table.Any(c => c.Type == CardType.Schofield ||
+							}
+							else
+							if(!player.Table.Any(c => c.Type == CardType.Schofield ||
 									c.Type == CardType.Remington ||
 									c.Type == CardType.Carabine ||
-									c.Type == CardType.Winchester))
-								{
-									control.RespondCard(card.ID);
+									c.Type == CardType.Winchester) &&
+								TryRespondCard(card.ID))
+								return;
+							break;
+						case CardType.Remington:
+							if(player.Table.Any(c => c.Type == CardType.Volcanic))
+							{
+								if(cardHelper.HasAbility(CharacterType.WillyTheKid) &&
+									TryRespondCard(card.ID))
 									return;
-								}
-								break;
-							case CardType.Remington:
-								if(player.Table.Any(c => c.Type == CardType.Volcanic))
-								{
-									if(cardHelper.HasAbility(CharacterType.WillyTheKid))
-									{
-										control.RespondCard(card.ID);
-										return;
-									}
-								}
-								else if(!player.Table.Any(c => c.Type == CardType.Remington ||
-									c.Type == CardType.Carabine ||
-									c.Type == CardType.Winchester))
-								{
-									control.RespondCard(card.ID);
-									return;
-								}
-								break;
-							case CardType.Carabine:
-								if(player.Table.Any(c => c.Type == CardType.Volcanic))
-								{
-									if(cardHelper.HasAbility(CharacterType.WillyTheKid))
-									{
-										control.RespondCard(card.ID);
-										return;
-									}
-								}
-								else if(!player.Table.Any(c => c.Type == CardType.Carabine ||
-									c.Type == CardType.Winchester))
-								{
-									control.RespondCard(card.ID);
-									return;
-								}
-								break;
-							case CardType.Winchester:
-								if(player.Table.Any(c => c.Type == CardType.Volcanic))
-								{
-									if(cardHelper.HasAbility(CharacterType.WillyTheKid))
-									{
-										control.RespondCard(card.ID);
-										return;
-									}
-								}
-								else if(!player.Table.Any(c => c.Type == CardType.Winchester))
-								{
-									control.RespondCard(card.ID);
-									return;
-								}
-								break;
 							}
+							else
+							if(!player.Table.Any(c => c.Type == CardType.Remington ||
+									c.Type == CardType.Carabine ||
+									c.Type == CardType.Winchester) &&
+								TryRespondCard(card.ID))
+								return;
+							break;
+						case CardType.Carabine:
+							if(player.Table.Any(c => c.Type == CardType.Volcanic))
+							{
+								if(cardHelper.HasAbility(CharacterType.WillyTheKid) &&
+									TryRespondCard(card.ID))
+									return;
+							}
+							else
+							if(!player.Table.Any(c => c.Type == CardType.Carabine ||
+									c.Type == CardType.Winchester) &&
+								TryRespondCard(card.ID))
+								return;
+							break;
+						case CardType.Winchester:
+							if(player.Table.Any(c => c.Type == CardType.Volcanic))
+							{
+								if(cardHelper.HasAbility(CharacterType.WillyTheKid) &&
+									TryRespondCard(card.ID))
+									return;
+							}
+							else
+							if(!player.Table.Any(c => c.Type == CardType.Winchester) &&
+								TryRespondCard(card.ID))
+								return;
 							break;
 						}
-					}
-					catch(GameException)
-					{
+						break;
 					}
 				// Then heal our and allies' lives:
 				if(player.LifePoints < player.MaxLifePoints)
 				{
 					// First, try playing canteen and beers:
 					foreach(ICard c in player.Table)
-						try
-						{
-							if(c.Type == CardType.Canteen)
-							{
-								control.RespondCard(c.ID);
-								return;
-							}
-						}
-						catch(GameException)
-						{
-						}
-					foreach(ICard c in player.Hand)
-						try
-						{
-							if(c.Type == CardType.Beer)
-							{
-								control.RespondCard(c.ID);
-								return;
-							}
-						}
-						catch(GameException)
-						{
-						}
-					// If we have the Sid Ketchum character, try to use his ability:
-					if(cardHelper.HasAbility(CharacterType.SidKetchum) && !triedAbilities.Contains(CharacterType.SidKetchum))
-						try
-						{
-							characterToUse = CharacterType.SidKetchum;
-							control.RespondUseAbility();
-							triedAbilities.Add(CharacterType.SidKetchum);
+						if(c.Type == CardType.Canteen &&
+							TryRespondCardRemember(c.ID))
 							return;
-						}
-						catch(GameException)
-						{
-						}
+					foreach(ICard c in player.Hand)
+						if(c.Type == CardType.Beer &&
+							TryRespondCardRemember(c.ID))
+							return;
+					// If we have the Sid Ketchum character, try to use his ability:
+					if(TryRespondUseAbilityRemember(CharacterType.SidKetchum))
+						return;
 					// Then search for whisky and tequila:
 					if(cardHelper.DiscardableCards >= 1)
 					{
 						// First, play whisky only if the life deficit is at least 2:
 						if(player.MaxLifePoints - player.LifePoints >= 2)
 							foreach(ICard c in player.Hand)
-								try
-								{
-									if(c.Type == CardType.Whisky && !triedCards.Contains(c.ID))
-									{
-										control.RespondCard(c.ID);
-										triedCards.Add(c.ID);
-										return;
-									}
-								}
-								catch(GameException)
-								{
-								}
+								if(c.Type == CardType.Whisky &&
+									TryRespondCardRemember(c.ID))
+									return;
 						// Then try to play tequila on self:
 						foreach(ICard c in player.Hand)
-							try
-							{
-								if(c.Type == CardType.Tequila && !triedCards.Contains(c.ID))
-								{
-									control.RespondCard(c.ID);
-									triedCards.Add(c.ID);
-									return;
-								}
-							}
-							catch(GameException)
-							{
-							}
+							if(c.Type == CardType.Tequila &&
+								TryRespondCardRemember(c.ID))
+								return;
 						// Finally play whisky regardless the life deficit:
 						foreach(ICard c in player.Hand)
-							try
-							{
-								if(c.Type == CardType.Whisky && !triedCards.Contains(c.ID))
-								{
-									control.RespondCard(c.ID);
-									triedCards.Add(c.ID);
-									return;
-								}
-							}
-							catch(GameException)
-							{
-							}
+							if(c.Type == CardType.Whisky &&
+								TryRespondCardRemember(c.ID))
+								return;
 					}
 					// If we have only 1 life remaining, try also saloon:
 					if(player.LifePoints == 1)
 						foreach(ICard c in player.Hand)
-							try
-							{
-								if(c.Type == CardType.Saloon)
-								{
-									control.RespondCard(c.ID);
-									return;
-								}
-							}
-							catch(GameException)
-							{
-							}
+							if(c.Type == CardType.Saloon &&
+								TryRespondCard(c.ID))
+								return;
 				}
 				// And now we try to heal our allies' lives:
 				int alliesCount = playerHelper.Allies.Count(p => p.LifePoints < p.MaxLifePoints);
@@ -439,148 +403,83 @@ namespace Bang.AI
 				// Try saloon if it doesn't make more harm than good:
 				if(alliesCount > enemiesCount)
 					foreach(ICard c in player.Hand)
-						try
-						{
-							if(c.Type == CardType.Saloon)
-							{
-								control.RespondCard(c.ID);
-								return;
-							}
-						}
-						catch(GameException)
-						{
-						}
+						if(c.Type == CardType.Saloon &&
+							TryRespondCard(c.ID))
+							return;
 				// Try tequila:
 				if(alliesCount >= 1 && cardHelper.DiscardableCards >= 1)
 					foreach(ICard c in player.Hand)
-						try
-						{
-							if(c.Type == CardType.Tequila && !triedCards.Contains(c.ID))
-							{
-								control.RespondCard(c.ID);
-								triedCards.Add(c.ID);
-								return;
-							}
-						}
-						catch(GameException)
-						{
-						}
+						if(c.Type == CardType.Tequila &&
+							TryRespondCardRemember(c.ID))
+							return;
 				// Then steal and cancel cards:
 				foreach(ICard c in player.Hand)
-					try
+					switch(c.Type)
 					{
-						if(!triedCards.Contains(c.ID))
-							switch(c.Type)
-							{
-							case CardType.Panic:
-							case CardType.CatBalou:
-								control.RespondCard(c.ID);
-								triedCards.Add(c.ID);
-								return;
-							case CardType.Brawl:
-							case CardType.RagTime:
-								if(cardHelper.DiscardableCards >= 1)
-								{
-									control.RespondCard(c.ID);
-									triedCards.Add(c.ID);
-									return;
-								}
-								break;
-							}
-					}
-					catch(GameException)
-					{
+					case CardType.Panic:
+					case CardType.CatBalou:
+						if(TryRespondCardRemember(c.ID))
+							return;
+						break;
+					case CardType.Brawl:
+					case CardType.RagTime:
+						if(cardHelper.DiscardableCards >= 1 &&
+							TryRespondCardRemember(c.ID))
+							return;
+						break;
 					}
 				foreach(ICard c in player.Table)
-					try
+					switch(c.Type)
 					{
-						if(!triedCards.Contains(c.ID))
-							switch(c.Type)
-							{
-							case CardType.Conestoga:
-							case CardType.CanCan:
-								control.RespondCard(c.ID);
-								triedCards.Add(c.ID);
-								return;
-							}
-					}
-					catch(GameException)
-					{
+					case CardType.Conestoga:
+					case CardType.CanCan:
+						if(TryRespondCardRemember(c.ID))
+							return;
+						break;
 					}
 				// Finally, attack:
 				foreach(ICard card in player.Hand)
-					try
+					switch(card.Type)
 					{
-						if(!triedCards.Contains(card.ID))
-							switch(card.Type)
-							{
-							case CardType.Bang:
-							case CardType.Indians:
-							case CardType.Duel:
-							case CardType.Gatling:
-							case CardType.Punch:
-							case CardType.Knife:
-							case CardType.Derringer:
-							case CardType.Howitzer:
-							case CardType.Pepperbox:
-							case CardType.Springfield:
-								control.RespondCard(card.ID);
-								triedCards.Add(card.ID);
-								return;
-							case CardType.Missed:
-								if(cardHelper.HasAbility(CharacterType.CalamityJanet) && player.Hand.Count(c => c.Type == CardType.Missed) >= 2)
-								{
-									control.RespondCard(card.ID);
-									triedCards.Add(card.ID);
-									return;
-								}
-								break;
-							}
-					}
-					catch(GameException)
-					{
+					case CardType.Bang:
+					case CardType.Indians:
+					case CardType.Duel:
+					case CardType.Gatling:
+					case CardType.Punch:
+					case CardType.Knife:
+					case CardType.Derringer:
+					case CardType.Howitzer:
+					case CardType.Pepperbox:
+					case CardType.Springfield:
+						if(TryRespondCardRemember(card.ID))
+							return;
+						break;
+					case CardType.Missed:
+						if(cardHelper.HasAbility(CharacterType.CalamityJanet) &&
+							player.Hand.Count(c => c.Type == CardType.Missed) >= 2 &&
+							TryRespondCardRemember(card.ID))
+							return;
+						break;
 					}
 				foreach(ICard c in player.Table)
-					try
+					switch(c.Type)
 					{
-						if(!triedCards.Contains(c.ID))
-							switch(c.Type)
-							{
-							case CardType.Derringer:
-							case CardType.Howitzer:
-							case CardType.Pepperbox:
-							case CardType.BuffaloRifle:
-								control.RespondCard(c.ID);
-								triedCards.Add(c.ID);
-								return;
-							}
+					case CardType.Derringer:
+					case CardType.Howitzer:
+					case CardType.Pepperbox:
+					case CardType.BuffaloRifle:
+						if(TryRespondCardRemember(c.ID))
+							return;
+						break;
 					}
-					catch(GameException)
-					{
-					}
-				if(cardHelper.HasAbility(CharacterType.DocHolyday) && !triedAbilities.Contains(CharacterType.DocHolyday))
-					try
-					{
-						characterToUse = CharacterType.DocHolyday;
-						control.RespondUseAbility();
-						triedAbilities.Add(CharacterType.DocHolyday);
-						return;
-					}
-					catch(GameException)
-					{
-					}
+				if(TryRespondUseAbilityRemember(CharacterType.DocHolyday))
+					return;
 
 				// Oh, and play General Store, if you have one:
 				foreach(ICard card in player.Hand)
-					if(card.Type == CardType.GeneralStore)
-						try
-						{
-							control.RespondCard(card.ID);
-							return;
-						}
-						catch(GameException)
-						{
-						}
+					if(card.Type == CardType.GeneralStore &&
+						TryRespondCard(card.ID))
+						return;
 
 				// End the play stage:
 				control.RespondNoAction();
@@ -596,14 +495,8 @@ namespace Bang.AI
 				while(availableCards.Count != 0)
 				{
 					ICard worst = cardHelper.WorstCard(availableCards);
-					try
-					{
-						control.RespondCard(worst.ID);
+					if(TryRespondCard(worst.ID))
 						return;
-					}
-					catch(GameException)
-					{
-					}
 					availableCards.Remove(worst);
 				}
 				control.RespondNoAction();
@@ -634,111 +527,66 @@ namespace Bang.AI
 
 				// Try only enemies then respond with no action:
 				foreach(IPublicPlayerView enemy in playerHelper.Enemies)
-					try
-					{
-						control.RespondPlayer(enemy.ID);
+					if(TryRespondPlayer(enemy.ID))
 						return;
-					}
-					catch(GameException)
-					{
-					}
 				control.RespondNoAction();
 				return;
 				#endregion
 				#region BeerRescue
 			case RequestType.BeerRescue:
-				try
-				{
-					control.RespondCard(player.Hand.First(c => c.Type == CardType.Beer).ID);
-					return;
-				}
-				catch(InvalidOperationException)
-				{
-				}
+				foreach(ICard c in player.Hand)
+					if(c.Type == CardType.Beer)
+					{
+						control.RespondCard(c.ID);
+						return;
+					}
 				control.RespondNoAction();
 				return;
 				#endregion
 				#region Shot
 			case RequestType.Shot:
 				// First try to use ability:
-				try
-				{
-					control.RespondUseAbility();
+				if(TryRespondUseAbility())
 					return;
-				}
-				catch(GameException)
-				{
-				}
-	
+
 				// Then try barrels:
 				foreach(ICard c in player.Table)
-					if(c.Type == CardType.Barrel)
-						try
-						{
-							control.RespondCard(c.ID);
-							return;
-						}
-						catch(GameException)
-						{
-						}
-	
+					if(c.Type == CardType.Barrel &&
+						TryRespondCard(c.ID))
+						return;
+
 				// Then seek for a Bible:
 				foreach(ICard c in player.Table)
-					if(c.Type == CardType.Bible)
-						try
-						{
-							control.RespondCard(c.ID);
-							return;
-						}
-						catch(GameException)
-						{
-						}
-	
+					if(c.Type == CardType.Bible &&
+						TryRespondCard(c.ID))
+						return;
+
 				// Then seek for a Dodge:
 				foreach(ICard c in player.Hand)
-					if(c.Type == CardType.Dodge)
-						try
-						{
-							control.RespondCard(c.ID);
-							return;
-						}
-						catch(GameException)
-						{
-						}
-	
+					if(c.Type == CardType.Dodge &&
+						TryRespondCard(c.ID))
+						return;
+
 				// Then try other table cards:
 				foreach(ICard c in player.Table)
-					try
-					{
-						control.RespondCard(c.ID);
+					if(TryRespondCard(c.ID))
 						return;
-					}
-					catch(GameException)
-					{
-					}
-	
+
 				// Then try Missed:
 				foreach(ICard c in player.Hand)
-					if(c.Type == CardType.Missed)
-						try
-						{
-							control.RespondCard(c.ID);
-							return;
-						}
-						catch(GameException)
-						{
-						}
-	
-				// Eventually try other hand cards (Elena Fuente):
-				foreach(ICard c in player.Hand)
-					try
-					{
-						control.RespondCard(c.ID);
+					if(c.Type == CardType.Missed &&
+						TryRespondCard(c.ID))
 						return;
-					}
-					catch(GameException)
-					{
-					}
+
+				// Eventually try other hand cards (Elena Fuente):
+				availableCards = new List<ICard>(player.Hand);
+				while(availableCards.Count != 0)
+				{
+					ICard worst = cardHelper.WorstCard(availableCards);
+					if(TryRespondCard(worst.ID))
+						return;
+					availableCards.Remove(worst);
+				}
 				control.RespondNoAction();
 				return;
 				#endregion
@@ -746,14 +594,8 @@ namespace Bang.AI
 			case RequestType.ThrowBang:
 				// Try all hand cards:
 				foreach(ICard c in player.Hand)
-					try
-					{
-						control.RespondCard(c.ID);
+					if(TryRespondCard(c.ID))
 						return;
-					}
-					catch(GameException)
-					{
-					}
 				control.RespondNoAction();
 				return;
 				#endregion
@@ -763,14 +605,8 @@ namespace Bang.AI
 			case RequestType.JailTarget:
 				// Try only enemies then respond with no action:
 				foreach(IPublicPlayerView enemy in playerHelper.Enemies)
-					try
-					{
-						control.RespondPlayer(enemy.ID);
+					if(TryRespondPlayer(enemy.ID))
 						return;
-					}
-					catch(GameException)
-					{
-					}
 				control.RespondNoAction();
 				return;
 				#endregion
@@ -793,104 +629,68 @@ namespace Bang.AI
 						maxDeficit = deficit;
 					}
 				}
-				if(poorestAlly != null)
-				{
-					control.RespondPlayer(poorestAlly.ID);
+				if(poorestAlly != null &&
+					TryRespondPlayer(poorestAlly.ID))
 					return;
-				}
 				control.RespondNoAction();
 				return;
 				#endregion
 				#region StealCard
 			case RequestType.StealCard:
 			case RequestType.CancelCard:
+				availableCards = new List<ICard>();
+				IEnumerable<IPublicPlayerView > nonAllies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Allies);
+				IEnumerable<IPublicPlayerView > nonEnemies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Enemies);
+				IEnumerable<IPublicPlayerView > allies = playerHelper.Allies;
+				IEnumerable<IPublicPlayerView > enemies = playerHelper.Enemies;
+				// First, look through the tables of non-allies:
+				foreach(IPublicPlayerView p in nonAllies)
+					availableCards.AddRange(p.Table.Where(c => c.Type != CardType.Jail));
+				while(availableCards.Count != 0)
 				{
-					List<ICard > cards = new List<ICard>();
-					IEnumerable<IPublicPlayerView > nonAllies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Allies);
-					IEnumerable<IPublicPlayerView > nonEnemies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Enemies);
-					IEnumerable<IPublicPlayerView > allies = playerHelper.Allies;
-					IEnumerable<IPublicPlayerView > enemies = playerHelper.Enemies;
-					// First, look through the tables of non-allies:
-					foreach(IPublicPlayerView p in nonAllies)
-						cards.AddRange(p.Table.Where(c => c.Type != CardType.Jail));
-					while(cards.Count != 0)
-					{
-						ICard best = cardHelper.BestCard(cards);
-						cards.Remove(best);
-						try
-						{
-							control.RespondCard(best.ID);
+					ICard best = cardHelper.BestCard(availableCards);
+					if(TryRespondCard(best.ID))
+						return;
+					availableCards.Remove(best);
+				}
+				foreach(IPublicPlayerView p in allies)
+					foreach(ICard c in p.Table)
+						if(TryRespondCard(c.ID))
 							return;
-						}
-						catch(GameException)
-						{
-						}
-					}
-					foreach(IPublicPlayerView p in allies)
-						try
-						{
-							control.RespondCard(p.Table.First(c => c.Type == CardType.Jail).ID);
-							return;
-						}
-						catch(InvalidOperationException)
-						{
-						}
-						catch(GameException)
-						{
-						}
-	
-					// Then try random cards from the hands of enemies:
-					foreach(IPublicPlayerView p in enemies)
-						try
-						{
-							control.RespondCard(p.Hand.GetRandom().ID);
-							return;
-						}
-						catch(InvalidOperationException)
-						{
-						}
-						catch(GameException)
-						{
-						}
-					// If we can't take card from any enemy, let's change our mind:
+
+				// Then try random cards from the hands of enemies:
+				foreach(IPublicPlayerView p in enemies)
 					try
 					{
-						control.RespondNoAction();
+						if(TryRespondCard(p.Hand.GetRandom().ID))
+							return;
+					}
+					catch(InvalidOperationException)
+					{
+					}
+				// If we can't take card from any enemy, let's change our mind:
+				if(TryRespondNoAction())
+					return;
+				// If we have no choice (e. g. in Brawl), try the remaining players' cards:
+				foreach(IPublicPlayerView p in allies)
+					availableCards.AddRange(p.Table);
+				while(availableCards.Count != 0)
+				{
+					ICard best = cardHelper.BestCard(availableCards);
+					if(TryRespondCard(best.ID))
 						return;
-					}
-					catch(GameException)
-					{
-					}
-					// If we have no choice (e. g. in Brawl), try the remaining players' cards:
-					foreach(IPublicPlayerView p in allies)
-						cards.AddRange(p.Table);
-					while(cards.Count != 0)
-					{
-						ICard best = cardHelper.BestCard(cards);
-						cards.Remove(best);
-						try
-						{
-							control.RespondCard(best.ID);
-							return;
-						}
-						catch(GameException)
-						{
-						}
-					}
-	
-					foreach(IPublicPlayerView p in nonEnemies)
-						try
-						{
-							control.RespondCard(p.Hand.GetRandom().ID);
-							return;
-						}
-						catch(InvalidOperationException)
-						{
-						}
-						catch(GameException)
-						{
-						}
+					availableCards.Remove(best);
 				}
+
+				foreach(IPublicPlayerView p in nonEnemies)
+					try
+					{
+						if(TryRespondCard(p.Hand.GetRandom().ID))
+							return;
+					}
+					catch(InvalidOperationException)
+					{
+					}
 				break;
 				#endregion
 				#region TakeDeadPlayersCard
@@ -912,39 +712,33 @@ namespace Bang.AI
 				#endregion
 				#region JoseDelgado
 			case RequestType.JoseDelgado:
-				try
+				ICard worstCard = cardHelper.WorstCard(player.Hand.Where(c => c.Color == CardColor.Blue));
+				if(worstCard != null)
 				{
-					control.RespondCard(cardHelper.WorstCard(player.Hand.Where(c => c.Color == CardColor.Blue)).ID);
+					control.RespondCard(worstCard.ID);
 					return;
-				}
-				catch(InvalidOperationException)
-				{
 				}
 				control.RespondNoAction();
 				return;
 				#endregion
 				#region PatBrennan
 			case RequestType.PatBrennan:
+				availableCards = new List<ICard>();
+				foreach(IPublicPlayerView p in game.Players.Except(playerHelper.Allies))
+					if(p.ID != player.ID)
+						availableCards.AddRange(p.Table);
+				ICard bestCard = cardHelper.BestCard(availableCards);
+				if(bestCard != null)
 				{
-					List<ICard > cards = new List<ICard>();
-					foreach(IPublicPlayerView p in game.Players.Except(playerHelper.Allies))
-						if(p.ID != player.ID)
-							cards.AddRange(p.Table);
-					ICard best = cardHelper.BestCard(cards);
-					if(best != null)
-					{
-						control.RespondCard(best.ID);
-						return;
-					}
-					break;
+					control.RespondCard(bestCard.ID);
+					return;
 				}
+				break;
 				#endregion
 				#region VeraCuster
 			case RequestType.VeraCuster:
-				{
-					IPublicPlayerView best = cardHelper.BestCharacter(game.Players.Where(p => p.IsAlive));
-					control.RespondPlayer(best.ID);
-				}
+				IPublicPlayerView bestPlayer = cardHelper.BestCharacter(game.Players.Where(p => p.IsAlive));
+				control.RespondPlayer(bestPlayer.ID);
 				return;
 				#endregion
 				#region LuckyDuke
@@ -964,7 +758,7 @@ namespace Bang.AI
 				return;
 				#endregion
 			}
-			throw new InvalidOperationException();
+			System.Diagnostics.Debug.Fail("Reached the end of Bang.AI.AIPlayer.ProcessRequest()!");
 		}
 		#endregion
 
