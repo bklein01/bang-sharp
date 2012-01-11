@@ -134,7 +134,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			public override int Read(byte[] buffer, int offset, int count)
 			{
 				if(chunkLength == 0)
-					return -1;
+					return 0;
 				int totalRead = 0;
 				do
 				{
