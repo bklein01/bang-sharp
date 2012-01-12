@@ -1,3 +1,12 @@
+2012-01-12  WOnder93  <omosnacek@gmail.com>
+
+	* ConsoleHelper.cs:
+	  Fixed the session player 'victories (role|character)...'
+	  command to display correct values.
+
+	* AssemblyInfo.cs:
+	  
+
 2012-01-03  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
