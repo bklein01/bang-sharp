@@ -1,5 +1,13 @@
 2012-01-12  WOnder93  <omosnacek@gmail.com>
 
+	* AssemblyInfo.cs:
+	  
+
+	* GameCycle.cs:
+	  Fixed the predraw check priority.
+
+2012-01-12  WOnder93  <omosnacek@gmail.com>
+
 	* Player.cs:
 	* Beer.cs:
 	* Saloon.cs:
