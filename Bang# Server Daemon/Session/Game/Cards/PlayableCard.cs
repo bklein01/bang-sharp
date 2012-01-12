@@ -35,19 +35,24 @@ namespace Bang.Server
 			if(Owner == null)
 				throw new BadCardException();
 			Owner.CheckPlayCard(Type);
-			
+
+			CheckPlay();
 			OnPlay();
 		}
-		public override void PlayVirtually (Card card)
+		public override void PlayVirtually(Card card)
 		{
 			if(Owner == null)
 				throw new BadCardException();
 			Owner.CheckPlayCard(Type);
 
+			CheckPlay();
 			OnPlayVirtually(card);
 		}
 
-		protected abstract void OnPlay ();
+		protected virtual void CheckPlay()
+		{
+		}
+		protected abstract void OnPlay();
 		protected abstract void OnPlayVirtually(Card card);
 	}
 }

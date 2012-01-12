@@ -32,13 +32,18 @@ namespace Bang.Server
 
 		protected override void PlayFromTable()
 		{
+			CheckPlayFromTable();
 			OnPlayFromTable();
 		}
-		protected override void PlayFromTableVirtually (Card card)
+		protected override void PlayFromTableVirtually(Card card)
 		{
+			CheckPlayFromTable();
 			OnPlayFromTableVirtually(card);
 		}
 
+		protected virtual void CheckPlayFromTable()
+		{
+		}
 		protected abstract void OnPlayFromTable ();
 		protected abstract void OnPlayFromTableVirtually (Card card);
 	}
