@@ -150,7 +150,7 @@ namespace Bang.Server
 			List<TableCard> table = new List<TableCard>(RequestedPlayer.Table);
 			// the list must be copied, or any removal from the table
 			// causes the enumerator to throw an InvalidOperationException
-			table.Sort((a, b) => b.PredrawCheckPriority - a.PredrawCheckPriority);
+			table.Sort((a, b) => a.PredrawCheckPriority - b.PredrawCheckPriority);
 			foreach(TableCard card in table)
 				try
 				{
