@@ -1,3 +1,23 @@
+2012-01-12  WOnder93  <omosnacek@gmail.com>
+
+	* Player.cs:
+	* Beer.cs:
+	* Saloon.cs:
+	* PlayableCard.cs:
+	* Whisky.cs:
+	* PlayableTableCard.cs:
+	* Canteen.cs:
+	  Added Bang.Server.PlayableCard.CheckPlay() and
+	  Bang.Server.PlayableTableCard.CheckPlayFromTable() methods
+	  to enable the final card implementations to refuse the card
+	  to be played.
+	Removed the check for full life points when playing beer in
+	  Bang.Server.Player.CheckPlayCard() as this is now covered
+	  with the new methods. 
+
+	* AssemblyInfo.cs:
+	  
+
 2012-01-05  WOnder93  <omosnacek@gmail.com>
 
 	* ProxyCharacter.cs:

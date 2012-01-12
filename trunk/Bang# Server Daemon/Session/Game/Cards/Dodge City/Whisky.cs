@@ -32,10 +32,13 @@ namespace Bang.Server.Cards
 		{
 		}
 
+		protected override void CheckPlay()
+		{
+			if(Owner.LifePoints == Owner.MaxLifePoints)
+				throw new BadUsageException();
+		}
 		protected override void OnPlay (Player owner)
 		{
-			if(owner.LifePoints == owner.MaxLifePoints)
-				throw new BadUsageException();
 			owner.ModifyLifePoints(2);
 		}
 	}

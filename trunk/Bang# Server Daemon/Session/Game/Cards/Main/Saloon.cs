@@ -21,6 +21,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System.Linq;
+
 namespace Bang.Server.Cards
 {
 	public sealed class Saloon : AllPlayersCard
@@ -30,6 +32,11 @@ namespace Bang.Server.Cards
 		{
 		}
 		
+		protected override void CheckPlay()
+		{
+			if(Game.Players.All(p => p.LifePoints == p.MaxLifePoints))
+				throw new BadUsageException();
+		}
 		protected override ResponseHandler OnPlay(Player owner, Player targetPlayer)
 		{
 			targetPlayer.ModifyLifePoints(1, owner);

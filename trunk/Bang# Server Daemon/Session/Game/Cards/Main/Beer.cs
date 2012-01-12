@@ -25,11 +25,16 @@ namespace Bang.Server.Cards
 {
 	public sealed class Beer : GeneralCard
 	{
-		public Beer (Game game, int id, CardSuit suit, CardRank rank)
+		public Beer(Game game, int id, CardSuit suit, CardRank rank)
 			: base(game, id, CardType.Beer, suit, rank)
 		{
 		}
-		
+
+		protected override void CheckPlay()
+		{
+			if(Owner.LifePoints == Owner.MaxLifePoints)
+				throw new BadUsageException();
+		}
 		protected override void OnPlay(Player owner)
 		{
 			owner.ModifyLifePoints(owner.BeerPower);
