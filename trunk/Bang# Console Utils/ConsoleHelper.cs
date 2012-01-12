@@ -623,6 +623,34 @@ namespace Bang.ConsoleUtils
 			});
 		}
 
+		private class RoleVictories
+		{
+			private Role role;
+
+			public RoleVictories(Role role)
+			{
+				this.role = role;
+			}
+
+			public void Execute(IPlayer player, Queue<string> cmd)
+			{
+				PrintLine(player.GetVictories(role));
+			}
+		}
+		private class CharacterVictories
+		{
+			private CharacterType character;
+
+			public CharacterVictories(CharacterType character)
+			{
+				this.character = character;
+			}
+
+			public void Execute(IPlayer player, Queue<string> cmd)
+			{
+				PrintLine(player.GetVictories(character));
+			}
+		}
 		public static void MakeSessionPlayerCommand<In>(this NestedCommand<In, IPlayer> command)
 		{
 			command["name"] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.Name); });
@@ -635,9 +663,9 @@ namespace Bang.ConsoleUtils
 			NestedCommand<IPlayer, IPlayer> victoriesCommand = new NestedCommand<IPlayer, IPlayer>((player, cmd) => player);
 			victoriesCommand[""] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.Victories); });
 			foreach(Role role in Utils.GetRoles())
-				victoriesCommand["Role" + role.ToString()] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.GetVictories(role)); });
+				victoriesCommand["Role" + role.ToString()] = new FinalCommand<IPlayer>(new RoleVictories(role).Execute);
 			foreach(CharacterType character in Utils.GetCharacterTypes())
-				victoriesCommand["Character" + character.ToString()] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.GetVictories(character)); });
+				victoriesCommand["Character" + character.ToString()] = new FinalCommand<IPlayer>(new CharacterVictories(character).Execute);
 			command["victories"] = victoriesCommand;
 		}
 		public static void MakeSessionSpectatorCommand<In>(this NestedCommand<In, ISpectator> command)
