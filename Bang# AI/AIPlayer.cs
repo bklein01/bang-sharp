@@ -265,6 +265,11 @@ namespace Bang.AI
 							if(TryRespondCardRemember(card.ID))
 								return;
 							break;
+						case CardType.Dynamite:
+							if(cardHelper.HasAbility(CharacterType.LuckyDuke) &&
+								TryRespondCard(card.ID))
+								return;
+							break;
 						case CardType.Appaloosa:
 							if(!player.Table.Any(c => c.Type == CardType.Appaloosa) &&
 								TryRespondCard(card.ID))

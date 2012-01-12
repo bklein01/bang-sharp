@@ -1,3 +1,12 @@
+2012-01-12  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* AIPlayer.cs:
+	  AI: Play Dynamite at least when having the ability of Lucky
+	  Duke.
+
 2012-01-10  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
