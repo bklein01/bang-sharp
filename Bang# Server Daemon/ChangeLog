@@ -1,3 +1,23 @@
+2012-01-13  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* AllPlayersCard.cs:
+	* TargetCardCard.cs:
+	* TargetPlayerCard.cs:
+	* Tequila.cs:
+	* AllPlayersTableCard.cs:
+	* TargetCardTableCard.cs:
+	* AllPlayersGoldenCard.cs:
+	* TargetCardGoldenCard.cs:
+	* TargetPlayerTableCard.cs:
+	* TargetPlayerGoldenCard.cs:
+	  Fixed the CheckPlay() methods.
+	When playing a card on self, don't check if the card has
+	  effect on the target player (because it is myself, so the
+	  card has always effect).
+
 2012-01-12  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

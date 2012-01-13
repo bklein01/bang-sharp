@@ -52,13 +52,15 @@ namespace Bang.Server
 				
 				if(parent.Range != 0 && parent.Range < Game.GetDistance(RequestedPlayer, targetPlayer))
 					throw new BadTargetPlayerException();
+
+				parent.CheckPlay(targetCard);
 				
 				if(card != parent)
 					Game.GameTable.PlayerPlayCard(card, parent.Type, targetCard);
 				else
 					Game.GameTable.PlayerPlayCard(card, targetCard);
 
-				if(targetPlayer.HasCardEffect(card))
+				if(targetPlayer == RequestedPlayer || targetPlayer.HasCardEffect(card))
 					parent.OnPlay(RequestedPlayer, targetCard);
 				End ();
 			}
@@ -93,6 +95,10 @@ namespace Bang.Server
 		protected override void OnPlayVirtually(Card card)
 		{
 			Game.GameCycle.PushTempHandler(new TargetCardCardResponseHandler(this, card));
+		}
+
+		protected virtual void CheckPlay(Card targetCard)
+		{
 		}
 		protected abstract void OnPlay (Player owner, Card targetCard);
 	}
