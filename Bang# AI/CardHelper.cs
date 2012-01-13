@@ -94,21 +94,21 @@ namespace Bang.AI
 				return 31;
 			case CardType.Barrel:
 				return 30;
-			case CardType.Jail:
-				return 29;
 			case CardType.Dodge:
-				return 28;
+				return 29;
 			case CardType.Bible:
-				return 27;
+				return 28;
 			case CardType.Indians:
-				return 26;
+				return 27;
 			case CardType.Gatling:
-				return 25;
+				return 26;
 			case CardType.Howitzer:
-				return 24;
+				return 25;
 			case CardType.Brawl:
-				return 23;
+				return 24;
 			case CardType.Duel:
+				return 23;
+			case CardType.Jail:
 				return 22;
 			case CardType.BuffaloRifle:
 				return 21;

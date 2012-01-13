@@ -1,3 +1,11 @@
+2012-01-13  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* CardHelper.cs:
+	  Decreased the value of card Jail.
+
 2012-01-12  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
