@@ -55,9 +55,10 @@ namespace Bang.Server.Characters
 				Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 1);
 				End ();
 			}
-			protected override void OnRespondNoAction ()
+			protected override void OnRespondNoAction()
 			{
-				End ();
+				End();
+				parent.BaseDraw();
 			}
 		}
 		public JesseJones (Player player)
@@ -65,9 +66,13 @@ namespace Bang.Server.Characters
 		{
 		}
 		
-		public override void Draw ()
+		public override void Draw()
 		{
 			Game.GameCycle.PushTempHandler(new JesseJonesResponseHandler(this));
+		}
+		private void BaseDraw()
+		{
+			base.Draw();
 		}
 	}
 }
