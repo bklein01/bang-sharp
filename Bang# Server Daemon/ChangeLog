@@ -3,6 +3,15 @@
 	* AssemblyInfo.cs:
 	  
 
+	* JesseJones.cs:
+	  Fixed RespondNoAction() on character Jesse Jones causing
+	  skip of the draw completely.
+
+2012-01-13  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
 	* AllPlayersCard.cs:
 	* TargetCardCard.cs:
 	* TargetPlayerCard.cs:
