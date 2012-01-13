@@ -51,7 +51,7 @@ namespace Bang.Server
 			List<ResponseHandler> handlers = new List<ResponseHandler>();
 			do
 			{
-				if(current.HasCardEffect(this))
+				if(current == owner || current.HasCardEffect(this))
 				{
 					ResponseHandler h = OnPlay(owner, current);
 					if(h != null)
@@ -76,7 +76,7 @@ namespace Bang.Server
 			List<ResponseHandler> handlers = new List<ResponseHandler>();
 			do
 			{
-				if(current.HasCardEffect(this))
+				if(current == owner || current.HasCardEffect(this))
 				{
 					ResponseHandler h = OnPlay(owner, current);
 					if(h != null)

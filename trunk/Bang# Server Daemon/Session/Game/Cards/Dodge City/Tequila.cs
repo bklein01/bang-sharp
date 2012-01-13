@@ -25,15 +25,18 @@ namespace Bang.Server.Cards
 {
 	public sealed class Tequila : TargetPlayerGoldenCard
 	{
-		public Tequila (Game game, int id, CardSuit suit, CardRank rank)
+		public Tequila(Game game, int id, CardSuit suit, CardRank rank)
 			: base(game, id, CardType.Tequila, suit, rank, RequestType.HealTarget, true)
 		{
 		}
-		
-		protected override void OnPlay (Player owner, Player targetPlayer)
+
+		protected override void CheckPlay(Player targetPlayer)
 		{
 			if(targetPlayer.LifePoints == targetPlayer.MaxLifePoints)
 				throw new BadUsageException();
+		}
+		protected override void OnPlay (Player owner, Player targetPlayer)
+		{
 			targetPlayer.ModifyLifePoints(1, owner);
 		}
 	}
