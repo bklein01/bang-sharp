@@ -1,3 +1,16 @@
+2012-01-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ServerUtils.cs:
+	  Bang.Server.ServerUtils.ServeAdmin() now doesn't register
+	  new well-known object service (which would cause isolation
+	  of the administration service), it only registers new
+	  channel instead.
+	Bang.Server.ServerUtils.ConnectAdmin() now connects to the
+	  common well-known object.
+
 2011-10-28  WOnder93  <omosnacek@gmail.com>
 
 	* Bang# Server.csproj:

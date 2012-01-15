@@ -30,7 +30,7 @@ namespace Bang.Server
 {
 	public static class ServerUtils
 	{
-		public const int InterfaceVersionMajor = 1;
+		public const int InterfaceVersionMajor = 2;
 		public const int InterfaceVersionMinor = 0;
 
 		public static bool IsServerCompatible(IServerBase server)
@@ -54,12 +54,11 @@ namespace Bang.Server
 
 		public static IServerBase ConnectAdmin(string address, int port)
 		{
-			return Utils.Connect<IServerBase>("BangSharpAdmin.rem", address, port, Utils.ClientSharedTypes.Concat(ClientSharedTypes));
+			return Utils.Connect<IServerBase>("BangSharp.rem", address, port, Utils.ClientSharedTypes.Concat(ClientSharedTypes));
 		}
-		public static void ServeAdmin<T>(int port, IPAddress bindTo)
-			where T : MarshalByRefObject, new()
+		public static void ServeAdmin(int port, IPAddress bindTo)
 		{
-			Utils.Serve<T>("BangSharpAdmin.rem", port, Utils.ServerSharedTypes.Concat(ServerSharedTypes), bindTo);
+			Utils.OpenChannel(port, Utils.ServerSharedTypes.Concat(ServerSharedTypes), bindTo);
 		}
 	}
 }

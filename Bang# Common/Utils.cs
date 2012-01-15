@@ -364,8 +364,12 @@ namespace Bang
 			ChannelServices.RegisterChannel(new TcpClientChannel("client", GetClientProvider(), GetServerProvider(allowedTypes)), false);
 			return (T)RemotingServices.Connect(typeof(T), "tcp://" + address + ":" + port + "/" + uri);
 		}
-		public static void Serve<T>(string uri, int port, IEnumerable<Type> allowedTypes, IPAddress bindTo)
+		public static void Serve<T>(string uri)
 			where T : MarshalByRefObject, new()
+		{
+			RemotingConfiguration.RegisterWellKnownServiceType(typeof(T), uri, WellKnownObjectMode.Singleton);
+		}
+		public static void OpenChannel(int port, IEnumerable<Type> allowedTypes, IPAddress bindTo)
 		{
 			Dictionary<string, object> properties = new Dictionary<string, object>();
 			properties.Add("name", "server:" + port);
@@ -373,7 +377,6 @@ namespace Bang
 			properties.Add("bindTo", bindTo.ToString());
 			TcpServerChannel channel = new TcpServerChannel(properties, GetClientProvider(), GetServerProvider(allowedTypes));
 			ChannelServices.RegisterChannel(channel, false);
-			RemotingConfiguration.RegisterWellKnownServiceType(typeof(T), uri, WellKnownObjectMode.Singleton);
 		}
 
 		public static readonly Type[] ClientSharedTypes = new Type[]
@@ -427,7 +430,8 @@ namespace Bang
 		public static void Serve<T>(int port)
 			where T : MarshalByRefObject, IServer, new()
 		{
-			Serve<T>("BangSharp.rem", port, ServerSharedTypes, IPAddress.Any);
+			Serve<T>("BangSharp.rem");
+			OpenChannel(port, ServerSharedTypes, IPAddress.Any);
 		}
 	}
 }
