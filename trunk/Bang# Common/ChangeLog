@@ -1,3 +1,12 @@
+2012-01-15  WOnder93  <omosnacek@gmail.com>
+
+	* Utils.cs:
+	  Separated channel registration from the well-known object
+	  registration.
+
+	* AssemblyInfo.cs:
+	  
+
 2012-01-10  WOnder93  <omosnacek@gmail.com>
 
 	* Interfaces.cs:

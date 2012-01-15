@@ -3,6 +3,14 @@
 	* AssemblyInfo.cs:
 	  
 
+	* Main.cs:
+	  Adapted to the new server interface.
+
+2012-01-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
 	* Server.cs:
 	* Session.cs:
 	* SessionPlayer.cs:
