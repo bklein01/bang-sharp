@@ -182,23 +182,13 @@ namespace Bang.Server
 			{
 				if(Locked)
 					throw new MethodAccessException();
-				Locked = true;
 
-				try
-				{
-					int id = sessions.GenerateID();
-					Session session = new Session(this, id, sessionData);
-					sessions.Add(id, session);
+				int id = sessions.GenerateID();
+				Session session = new Session(this, id, sessionData);
+				sessions.Add(id, session);
 
-					session.Join(sessionData.PlayerPassword, playerData, listener);
-					SaveState();
-				}
-				catch
-				{
-					Locked = false;
-					throw;
-				}
-				Locked = false;
+				session.Join(sessionData.PlayerPassword, playerData, listener);
+				SaveState();
 			}
 		}
 
@@ -244,8 +234,6 @@ namespace Bang.Server
 				foreach(Session s in sessionList)
 					s.End();
 				SaveState();
-
-				Locked = false;
 			}
 		}
 		public void RemoveSession(Session session)

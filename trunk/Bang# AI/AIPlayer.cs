@@ -763,7 +763,7 @@ namespace Bang.AI
 				return;
 				#endregion
 			}
-			System.Diagnostics.Debug.Fail("Reached the end of Bang.AI.AIPlayer.ProcessRequest()!");
+			Console.Error.WriteLine("ERROR: Reached the end of Bang.AI.AIPlayer.ProcessRequest()!");
 		}
 		#endregion
 

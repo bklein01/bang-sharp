@@ -66,10 +66,11 @@ namespace Bang.Server
 		private List<CharacterType> remainingCharacters;
 
 		public readonly object Lock = new object();
+		private bool locked;
 		public bool Locked
 		{
-			get;
-			set;
+			get { return locked; }
+			set { server.Locked = locked = value; }
 		}
 		public ISessionAdmin Admin
 		{
@@ -314,33 +315,24 @@ namespace Bang.Server
 			{
 				if(Locked)
 					throw new MethodAccessException();
-				Locked = true;
-				try
-				{
-					if(state != SessionState.WaitingForPlayers)
-						throw new BadSessionStateException();
-					if(players.Count >= this.data.MaxPlayers)
-						throw new TooManyPlayersException();
-					if(!this.data.PlayerPassword.CheckPassword(password))
-						throw new BadSessionPasswordException();
-			
-					int id = players.GenerateID();
-					if(creatorId == 0)
-						creatorId = id;
-					SessionPlayer player = new SessionPlayer(id, this, data);
-					players.Add(id, player);
-					playerList.Add(player);
-					player.RegisterListener(listener);
-					eventMgr.SendController(player);
-					eventMgr.OnPlayerJoinedSession(player);
-					server.SaveState();
-				}
-				catch
-				{
-					Locked = false;
-					throw;
-				}
-				Locked = false;
+
+				if(state != SessionState.WaitingForPlayers)
+					throw new BadSessionStateException();
+				if(players.Count >= this.data.MaxPlayers)
+					throw new TooManyPlayersException();
+				if(!this.data.PlayerPassword.CheckPassword(password))
+					throw new BadSessionPasswordException();
+
+				int id = players.GenerateID();
+				if(creatorId == 0)
+					creatorId = id;
+				SessionPlayer player = new SessionPlayer(id, this, data);
+				players.Add(id, player);
+				playerList.Add(player);
+				player.RegisterListener(listener);
+				eventMgr.SendController(player);
+				eventMgr.OnPlayerJoinedSession(player);
+				server.SaveState();
 			}
 		}
 
@@ -352,29 +344,20 @@ namespace Bang.Server
 			{
 				if(Locked)
 					throw new MethodAccessException();
-				Locked = true;
-				try
-				{
-					if(!this.data.PlayerPassword.CheckPassword(password))
-						throw new BadSessionPasswordException();
-	
-					SessionPlayer player = GetPlayer(id);
-					if(player.HasListener && !player.IsAI)
-						throw new InvalidOperationException();
-					player.Update(data);
-					player.RegisterListener(listener);
-					eventMgr.SendController(player);
-					if(state == SessionState.Playing)
-						game.RegisterPlayer(player);
-					eventMgr.OnPlayerUpdated(player);
-					server.SaveState();
-				}
-				catch
-				{
-					Locked = false;
-					throw;
-				}
-				Locked = false;
+
+				if(!this.data.PlayerPassword.CheckPassword(password))
+					throw new BadSessionPasswordException();
+
+				SessionPlayer player = GetPlayer(id);
+				if(player.HasListener && !player.IsAI)
+					throw new InvalidOperationException();
+				player.Update(data);
+				player.RegisterListener(listener);
+				eventMgr.SendController(player);
+				if(state == SessionState.Playing)
+					game.RegisterPlayer(player);
+				eventMgr.OnPlayerUpdated(player);
+				server.SaveState();
 			}
 		}
 
@@ -386,31 +369,22 @@ namespace Bang.Server
 			{
 				if(Locked)
 					throw new MethodAccessException();
-				Locked = true;
-				try
-				{
-					if(!this.data.SpectatorPassword.CheckPassword(password))
-						throw new BadSessionPasswordException();
-					if(spectators.Count >= this.data.MaxSpectators)
-						throw new TooManySpectatorsException();
-				
-					int id = spectators.GenerateID();
-					SessionSpectator spectator = new SessionSpectator(id, this, data);
-					spectators.Add(id, spectator);
-					spectatorList.Add(spectator);
-					spectator.RegisterListener(listener);
-					eventMgr.SendController(spectator);
-					if(state == SessionState.Playing)
-						game.RegisterSpectator(spectator);
-					eventMgr.OnSpectatorJoinedSession(spectator);
-					server.SaveState();
-				}
-				catch
-				{
-					Locked = false;
-					throw;
-				}
-				Locked = false;
+
+				if(!this.data.SpectatorPassword.CheckPassword(password))
+					throw new BadSessionPasswordException();
+				if(spectators.Count >= this.data.MaxSpectators)
+					throw new TooManySpectatorsException();
+
+				int id = spectators.GenerateID();
+				SessionSpectator spectator = new SessionSpectator(id, this, data);
+				spectators.Add(id, spectator);
+				spectatorList.Add(spectator);
+				spectator.RegisterListener(listener);
+				eventMgr.SendController(spectator);
+				if(state == SessionState.Playing)
+					game.RegisterSpectator(spectator);
+				eventMgr.OnSpectatorJoinedSession(spectator);
+				server.SaveState();
 			}
 		}
 		
@@ -502,7 +476,6 @@ namespace Bang.Server
 			{
 				if(Locked)
 					throw new MethodAccessException();
-				Locked = true;
 
 				if(state == SessionState.WaitingForPlayers)
 				{
@@ -510,9 +483,7 @@ namespace Bang.Server
 					for(int i = 0; i < count; i++)
 					{
 						AI.AIPlayer ai = new AI.AIPlayer();
-						Locked = false;
 						Join(data.PlayerPassword, ai.CreateData, ai);
-						Locked = true;
 					}
 					if(data.ShufflePlayers)
 						playerList.Shuffle();
@@ -525,8 +496,6 @@ namespace Bang.Server
 				game.Start();
 				state = SessionState.Playing;
 				server.SaveState();
-
-				Locked = false;
 			}
 		}
 		
@@ -536,15 +505,12 @@ namespace Bang.Server
 			{
 				if(Locked)
 					throw new MethodAccessException();
-				Locked = true;
 
 				state = SessionState.Ended;
 				eventMgr.OnSessionEnded();
 				if(game != null)
 					game.Disconnect();
 				server.RemoveSession(this);
-
-				Locked = false;
 			}
 		}
 
@@ -555,21 +521,15 @@ namespace Bang.Server
 			{
 				if(Locked)
 					throw new MethodAccessException();
-				Locked = true;
 
 				player.UnregisterListener();
 				if(state != SessionState.WaitingForPlayers || player.IsCreator)
-				{
-					Locked = false;
 					return;
-				}
 				player.Control.Disconnect();
 				players.Remove(player.ID);
 				playerList.Remove(player);
 				eventMgr.OnPlayerLeftSession(player);
 				server.SaveState();
-
-				Locked = false;
 			}
 		}
 		public void RemoveSpectator(SessionSpectator spectator)
@@ -578,7 +538,6 @@ namespace Bang.Server
 			{
 				if(Locked)
 					throw new MethodAccessException();
-				Locked = true;
 
 				spectator.UnregisterListener();
 				spectator.Control.Disconnect();
@@ -586,8 +545,6 @@ namespace Bang.Server
 				spectatorList.Remove(spectator);
 				eventMgr.OnSpectatorLeftSession(spectator);
 				server.SaveState();
-
-				Locked = false;
 			}
 		}
 	}

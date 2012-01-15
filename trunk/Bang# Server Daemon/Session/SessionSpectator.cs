@@ -46,11 +46,14 @@ namespace Bang.Server
 					return false;
 				try
 				{
+					session.Locked = true;
 					listener.Ping();
+					session.Locked = false;
 					return true;
 				}
 				catch(RemotingException)
 				{
+					Console.Error.WriteLine("Ping failed, removing player...");
 					session.RemoveSpectator(this);
 					return false;
 				}

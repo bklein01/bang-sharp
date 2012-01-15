@@ -37,11 +37,8 @@ namespace Bang.Server
 			{
 				if(session.Locked)
 					throw new MethodAccessException();
-				session.Locked = true;
 
 				session.EventManager.SendChatMessage(spectator, message);
-
-				session.Locked = false;
 			}
 		}
 		

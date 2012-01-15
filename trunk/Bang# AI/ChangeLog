@@ -1,3 +1,11 @@
+2012-01-15  WOnder93  <omosnacek@gmail.com>
+
+	* AIPlayer.cs:
+	  Error/diagnostic messages are now printed to stderr.
+
+	* AssemblyInfo.cs:
+	  
+
 2012-01-13  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

@@ -1,3 +1,19 @@
+2012-01-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Server.cs:
+	* Session.cs:
+	* SessionPlayer.cs:
+	* SessionSpectator.cs:
+	* PlayerControl.cs:
+	* SessionEventManager.cs:
+	* SessionPlayerControl.cs:
+	* SessionSpectatorControl.cs:
+	  Changed the manual non-reentrant session/server locks.
+	Added some diagnostic message printing to stderr.
+
 2012-01-13  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

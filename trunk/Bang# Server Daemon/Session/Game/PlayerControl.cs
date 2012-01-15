@@ -70,20 +70,10 @@ namespace Bang.Server
 			{
 				if(game.Session.Locked)
 					throw new MethodAccessException();
-				game.Session.Locked = true;
 
-				try
-				{
-					game.GameCycle.PlayerRespondDraw(player);
-					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
-				}
-				catch
-				{
-					game.Session.Locked = false;
-					throw;
-				}
-				game.Session.Locked = false;
+				game.GameCycle.PlayerRespondDraw(player);
+				if(game.Session.State == SessionState.Playing)
+					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 			}
 		}
 
@@ -97,20 +87,10 @@ namespace Bang.Server
 			{
 				if(game.Session.Locked)
 					throw new MethodAccessException();
-				game.Session.Locked = true;
 
-				try
-				{
-					game.GameCycle.PlayerRespondCard(player, game.GameTable.GetCard(id));
-					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
-				}
-				catch
-				{
-					game.Session.Locked = false;
-					throw;
-				}
-				game.Session.Locked = false;
+				game.GameCycle.PlayerRespondCard(player, game.GameTable.GetCard(id));
+				if(game.Session.State == SessionState.Playing)
+					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 			}
 		}
 
@@ -124,20 +104,10 @@ namespace Bang.Server
 			{
 				if(game.Session.Locked)
 					throw new MethodAccessException();
-				game.Session.Locked = true;
 
-				try
-				{
-					game.GameCycle.PlayerRespondPlayer(player, game.GetPlayer(id));
-					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
-				}
-				catch
-				{
-					game.Session.Locked = false;
-					throw;
-				}
-				game.Session.Locked = false;
+				game.GameCycle.PlayerRespondPlayer(player, game.GetPlayer(id));
+				if(game.Session.State == SessionState.Playing)
+					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 			}
 		}
 
@@ -151,20 +121,10 @@ namespace Bang.Server
 			{
 				if(game.Session.Locked)
 					throw new MethodAccessException();
-				game.Session.Locked = true;
-				
-				try
-				{
-					game.GameCycle.PlayerRespondCharacter(player, character);
-					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
-				}
-				catch
-				{
-					game.Session.Locked = false;
-					throw;
-				}
-				game.Session.Locked = false;
+
+				game.GameCycle.PlayerRespondCharacter(player, character);
+				if(game.Session.State == SessionState.Playing)
+					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 			}
 		}
 
@@ -178,20 +138,10 @@ namespace Bang.Server
 			{
 				if(game.Session.Locked)
 					throw new MethodAccessException();
-				game.Session.Locked = true;
 
-				try
-				{
-					game.GameCycle.PlayerRespondNoAction(player);
-					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
-				}
-				catch
-				{
-					game.Session.Locked = false;
-					throw;
-				}
-				game.Session.Locked = false;
+				game.GameCycle.PlayerRespondNoAction(player);
+				if(game.Session.State == SessionState.Playing)
+					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 			}
 		}
 
@@ -207,18 +157,9 @@ namespace Bang.Server
 					throw new MethodAccessException();
 				game.Session.Locked = true;
 
-				try
-				{
-					game.GameCycle.PlayerRespondUseAbility(player);
-					if(game.Session.State == SessionState.Playing)
-						game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
-				}
-				catch
-				{
-					game.Session.Locked = false;
-					throw;
-				}
-				game.Session.Locked = false;
+				game.GameCycle.PlayerRespondUseAbility(player);
+				if(game.Session.State == SessionState.Playing)
+					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
 			}
 		}
 	}
