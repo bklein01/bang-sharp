@@ -178,7 +178,7 @@ namespace Bang.Client
 					}
 
 					ConsoleHelper.Print("Session Password: ");
-					password = new Password(ConsoleHelper.ReadLine());
+					password = ConsoleHelper.ReadPassword();
 
 					ConsoleHelper.Print("Player Name: ");
 					playerName = ConsoleHelper.ReadLine();
@@ -219,7 +219,7 @@ namespace Bang.Client
 					}
 
 					ConsoleHelper.Print("Session Password: ");
-					password = new Password(ConsoleHelper.ReadLine());
+					password = ConsoleHelper.ReadPassword();
 
 					ConsoleHelper.Print("Player Password: ");
 					playerPassword = ConsoleHelper.ReadPassword();
