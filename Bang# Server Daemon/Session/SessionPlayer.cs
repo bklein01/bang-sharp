@@ -52,14 +52,15 @@ namespace Bang.Server
 					return false;
 				try
 				{
+					session.Locked = true;
 					listener.Ping();
+					session.Locked = false;
 					return true;
 				}
 				catch(RemotingException)
 				{
-					session.Locked = false;
+					Console.Error.WriteLine("Ping failed, removing player...");
 					session.RemovePlayer(this);
-					session.Locked = true;
 					return false;
 				}
 			}

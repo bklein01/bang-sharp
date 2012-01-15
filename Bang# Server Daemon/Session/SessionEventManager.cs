@@ -1,7 +1,6 @@
-using System.Threading;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.Remoting;
 namespace Bang.Server
 {
 	public sealed class SessionEventManager
@@ -12,63 +11,84 @@ namespace Bang.Server
 		{
 			this.session = session;
 		}
-		
+
 		public void SendController(SessionPlayer player)
 		{
 			if(!player.HasListener)
 				return;
+
+			session.Locked = true;
 			try
 			{
 				player.Listener.OnJoinedSession(player.Control);
 			}
-			catch
+			catch(Exception e)
 			{
+				Console.Error.WriteLine("INFO: Exception thrown by client:");
+				Console.Error.WriteLine(e);
 				session.RemovePlayer(player);
 			}
+			session.Locked = false;
 		}
 		public void SendController(SessionSpectator spectator)
 		{
 			if(!spectator.HasListener)
 				return;
+
+			session.Locked = true;
 			try
 			{
 				spectator.Listener.OnJoinedSession (spectator.Control);
 			}
-			catch
+			catch(Exception e)
 			{
+				Console.Error.WriteLine("INFO: Exception thrown by client:");
+				Console.Error.WriteLine(e);
 				session.RemoveSpectator(spectator);
 			}
+			session.Locked = false;
 		}
-		
+
 		public void SendGameController (SessionPlayer player, IPlayerControl control)
 		{
 			if(!player.HasListener)
 				return;
+
+			session.Locked = true;
 			try
 			{
 				player.Listener.OnJoinedGame(control);
 			}
-			catch
+			catch(Exception e)
 			{
+				Console.Error.WriteLine("INFO: Exception thrown by client:");
+				Console.Error.WriteLine(e);
 				session.RemovePlayer(player);
 			}
+			session.Locked = false;
 		}
 		public void SendGameController(SessionSpectator spectator, ISpectatorControl control)
 		{
 			if(!spectator.HasListener)
 				return;
+
+			session.Locked = true;
 			try
 			{
 				spectator.Listener.OnJoinedGame(control);
 			}
-			catch
+			catch(Exception e)
 			{
+				Console.Error.WriteLine("INFO: Exception thrown by client:");
+				Console.Error.WriteLine(e);
 				session.RemoveSpectator(spectator);
 			}
+			session.Locked = false;
 		}
-		
+
 		public void OnSessionEnded()
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -76,8 +96,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnSessionEnded();
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -88,13 +110,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnSessionEnded();
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnGameEnded ()
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -102,8 +128,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnGameEnded();
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -114,14 +142,18 @@ namespace Bang.Server
 					{
 						s.Listener.OnGameEnded();
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
-		
+
 		public void OnPlayerJoinedSession (SessionPlayer player)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -129,8 +161,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerJoinedSession(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -141,13 +175,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerJoinedSession(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnSpectatorJoinedSession (SessionSpectator spectator)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -155,8 +193,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnSpectatorJoinedSession(spectator);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -167,13 +207,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnSpectatorJoinedSession(spectator);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerLeftSession (SessionPlayer player)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -181,8 +225,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerLeftSession(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -193,13 +239,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerLeftSession(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnSpectatorLeftSession (SessionSpectator spectator)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -207,8 +257,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnSpectatorLeftSession(spectator);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -219,13 +271,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnSpectatorLeftSession(spectator);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerUpdated (SessionPlayer player)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -233,8 +289,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerUpdated(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -245,14 +303,18 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerUpdated(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 
 		public void SendChatMessage (SessionPlayer player, string message)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -260,8 +322,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnChatMessage(player, message);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -272,13 +336,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnChatMessage(player, message);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void SendChatMessage (SessionSpectator spectator, string message)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -286,8 +354,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnChatMessage(spectator, message);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -298,14 +368,18 @@ namespace Bang.Server
 					{
 						s.Listener.OnChatMessage(spectator, message);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 
 		public void OnNewRequest(RequestType requestType, IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener && p.ID == requestedPlayer.ID)
@@ -313,14 +387,18 @@ namespace Bang.Server
 					{
 						p.Listener.OnNewRequest(requestType, causedBy);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
+			session.Locked = false;
 		}
-		
+
 		public void OnPlayerDrewFromDeck(Player player, List<Card> drawnCards, bool revealCards)
 		{
+			session.Locked = true;
 			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c));
 			ReadOnlyCollection<ICard> emptyCards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c.Empty));
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
@@ -333,8 +411,10 @@ namespace Bang.Server
 						else
 							p.Listener.OnPlayerDrewFromDeck(player, emptyCards);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -348,13 +428,16 @@ namespace Bang.Server
 						else
 							s.Listener.OnPlayerDrewFromDeck(player, emptyCards);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
 		}
 		public void OnPlayerDrewFromGraveyard (Player player, List<Card> drawnCards)
 		{
+			session.Locked = true;
 			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c));
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
@@ -363,8 +446,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerDrewFromGraveyard(player, cards);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -375,13 +460,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerDrewFromGraveyard(player, cards);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerDiscardedCard (Player player, Card card)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -389,8 +478,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerDiscardedCard(player, card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -401,13 +492,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerDiscardedCard(player, card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerPlayedCard (Player player, Card card)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -415,8 +510,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerPlayedCard(player, card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -427,13 +524,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerPlayedCard(player, card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerPlayedCard (Player player, Card card, Player targetPlayer)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -441,8 +542,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerPlayedCard(player, card, targetPlayer);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -453,13 +556,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerPlayedCard(player, card, targetPlayer);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerPlayedCard(Player player, Card card, Player targetPlayer, Card targetCard)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -470,8 +577,10 @@ namespace Bang.Server
 						else
 							p.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -485,13 +594,17 @@ namespace Bang.Server
 						else
 							s.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerPlayedCard (Player player, Card card, CardType asCard)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -499,8 +612,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerPlayedCard(player, card, asCard);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -511,13 +626,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerPlayedCard(player, card, asCard);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerPlayedCard (Player player, Card card, CardType asCard, Player targetPlayer)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -525,8 +644,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -537,13 +658,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerPlayedCard(Player player, Card card, CardType asCard, Player targetPlayer, Card targetCard)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -554,8 +679,10 @@ namespace Bang.Server
 						else
 							p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -569,13 +696,17 @@ namespace Bang.Server
 						else
 							s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerPlayedCardOnTable (Player player, Card card)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -583,8 +714,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerPlayedCardOnTable(player, card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -595,13 +728,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerPlayedCardOnTable(player, card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPassedTableCard (Player player, Card card, Player targetPlayer)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -609,8 +746,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPassedTableCard(player, card, targetPlayer);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -621,13 +760,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPassedTableCard(player, card, targetPlayer);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerPassed (Player player)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -635,8 +778,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerPassed(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -647,13 +792,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerPassed(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerRespondedWithCard (Player player, Card card)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -661,8 +810,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerRespondedWithCard(player, card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -673,13 +824,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerRespondedWithCard(player, card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerRespondedWithCard (Player player, Card card, CardType asCard)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -687,8 +842,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerRespondedWithCard(player, card, asCard);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -699,13 +856,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerRespondedWithCard(player, card, asCard);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnDrawnIntoSelection(List<Card> drawnCards, Player selectionOwner)
 		{
+			session.Locked = true;
 			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c));
 			ReadOnlyCollection<ICard> emptyCards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c.Empty));
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
@@ -720,8 +881,10 @@ namespace Bang.Server
 						else
 							p.Listener.OnDrawnIntoSelection(emptyCards);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -735,13 +898,17 @@ namespace Bang.Server
 						else
 							s.Listener.OnDrawnIntoSelection(emptyCards);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerPickedFromSelection(Player player, Card card, bool revealCard)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -752,8 +919,10 @@ namespace Bang.Server
 						else
 							p.Listener.OnPlayerPickedFromSelection(player, card.Empty);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -767,13 +936,17 @@ namespace Bang.Server
 						else
 							s.Listener.OnPlayerPickedFromSelection(player, card.Empty);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnUndrawnFromSelection(Card card, Player selectionOwner)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -786,8 +959,10 @@ namespace Bang.Server
 						else
 							p.Listener.OnUndrawnFromSelection(card.Empty);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -801,13 +976,17 @@ namespace Bang.Server
 						else
 							s.Listener.OnUndrawnFromSelection(card.Empty);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerStoleCard(Player player, Player targetPlayer, Card targetCard)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -818,8 +997,10 @@ namespace Bang.Server
 						else
 							p.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -833,13 +1014,17 @@ namespace Bang.Server
 						else
 							s.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerCancelledCard (Player player, Player targetPlayer, Card targetCard)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -847,8 +1032,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -859,13 +1046,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnDeckChecked (Card card)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -873,8 +1064,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnDeckChecked(card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -885,13 +1078,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnDeckChecked(card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnCardCancelled (Card card)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -899,8 +1096,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnCardCancelled(card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -911,14 +1110,18 @@ namespace Bang.Server
 					{
 						s.Listener.OnCardCancelled(card);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 
 		public void OnPlayerCheckedDeck(Player player, Card checkedCard, Card causedBy, bool result)
 		{
+			session.Locked = true;
 			CardType causedByType = causedBy == null ? CardType.Unknown : causedBy.Type;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
@@ -927,8 +1130,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerCheckedDeck(player, checkedCard, causedByType, result);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -939,13 +1144,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerCheckedDeck(player, checkedCard, causedByType, result);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnLifePointsChanged (Player player, int delta, Player causedBy)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -953,8 +1162,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnLifePointsChanged(player, delta, causedBy);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -965,13 +1176,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnLifePointsChanged(player, delta, causedBy);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerDied (Player player, Player causedBy)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach (SessionPlayer p in players)
 				if (p.HasListener)
@@ -979,8 +1194,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerDied(player, causedBy);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -991,13 +1208,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerDied(player, causedBy);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerUsedAbility(Player player, CharacterType character)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -1005,8 +1226,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerUsedAbility(player, character);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -1017,13 +1240,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerUsedAbility(player, character);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerUsedAbility(Player player, CharacterType character, Player targetPlayer)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -1031,8 +1258,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerUsedAbility(player, character, targetPlayer);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 			
@@ -1043,13 +1272,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerUsedAbility(player, character, targetPlayer);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerGainedAdditionalCharacters(Player player)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -1057,8 +1290,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerGainedAdditionalCharacters(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -1069,13 +1304,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerGainedAdditionalCharacters(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnPlayerLostAdditionalCharacters(Player player)
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -1083,8 +1322,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnPlayerLostAdditionalCharacters(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 			
@@ -1095,13 +1336,17 @@ namespace Bang.Server
 					{
 						s.Listener.OnPlayerLostAdditionalCharacters(player);
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 		public void OnDeckRegenerated()
 		{
+			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				if(p.HasListener)
@@ -1109,8 +1354,10 @@ namespace Bang.Server
 					{
 						p.Listener.OnDeckRegenerated();
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemovePlayer(p);
 					}
 
@@ -1121,10 +1368,13 @@ namespace Bang.Server
 					{
 						s.Listener.OnDeckRegenerated();
 					}
-					catch
+					catch(Exception e)
 					{
+						Console.Error.WriteLine("INFO: Exception thrown by client:");
+						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Locked = false;
 		}
 	}
 }
