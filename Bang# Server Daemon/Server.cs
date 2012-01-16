@@ -30,7 +30,7 @@ using System.IO;
 using System.Linq;
 namespace Bang.Server
 {
-	public sealed class Server : MarshalByRefObject, IServerBase
+	public sealed class Server : ImmortalMarshalByRefObject, IServerBase
 	{
 		private sealed class ServerAdmin : ImmortalMarshalByRefObject, IServerAdmin
 		{
