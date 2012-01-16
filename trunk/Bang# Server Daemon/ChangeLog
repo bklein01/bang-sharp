@@ -1,3 +1,15 @@
+2012-01-16  WOnder93  <omosnacek@gmail.com>
+
+	* Server.cs:
+	  The Bang.Server.Server type actually has to be derived from
+	  ImmortalMarshalByRefObject (all the time I had thought it
+	  doesn't have to). This should actually fix the
+	  'administration port isolation' problem I thought to have
+	  fixed recently.
+
+	* AssemblyInfo.cs:
+	  
+
 2012-01-15  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
