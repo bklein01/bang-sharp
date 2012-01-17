@@ -44,6 +44,11 @@ namespace Bang.Server.Characters
 				Game.GameTable.PlayerStealCard(RequestedPlayer, card);
 				End();
 			}
+			protected override void OnRespondNoAction()
+			{
+				Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 2);
+				End();
+			}
 		}
 		public PatBrennan (Player player)
 			: base(player, CharacterType.PatBrennan)
