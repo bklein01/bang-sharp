@@ -60,6 +60,7 @@ namespace Bang.Server
 				catch(RemotingException)
 				{
 					Console.Error.WriteLine("Ping failed, removing player...");
+					session.Locked = false;
 					session.RemovePlayer(this);
 					return false;
 				}

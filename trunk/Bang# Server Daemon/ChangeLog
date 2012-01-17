@@ -1,5 +1,21 @@
 2012-01-17  WOnder93  <omosnacek@gmail.com>
 
+	* SessionPlayer.cs:
+	  Fixed session deadlock.
+
+	* JesseJones.cs:
+	  (Revert revision 66)
+	Bang.Server.Character.Draw() throws Bang.BadUsageException,
+	  draw the cards manually instead.
+
+	* PatBrennan.cs:
+	  Added missing OnRespondNoAction() method.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-17  WOnder93  <omosnacek@gmail.com>
+
 	* DocHolyday.cs:
 	  Changed the Doc Holyday request to only ask for the cards to
 	  discard, the target player is then requested in a ShotTarget

@@ -196,6 +196,7 @@ namespace Bang
 		/// Player is requested to choose a card from the table to steal instead of standard draw.
 		/// Acceptable responses:
 		/// 	RespondCard - player chooses the specified card
+		/// 	RespondNoAction - fallback to normal draw
 		/// </summary>
 		PatBrennan,
 		/// <summary>
