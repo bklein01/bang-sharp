@@ -451,10 +451,6 @@ namespace Bang.AI
 					case CardType.Duel:
 					case CardType.Gatling:
 					case CardType.Punch:
-					case CardType.Knife:
-					case CardType.Derringer:
-					case CardType.Howitzer:
-					case CardType.Pepperbox:
 					case CardType.Springfield:
 						if(TryRespondCardRemember(card.ID))
 							return;
@@ -469,6 +465,7 @@ namespace Bang.AI
 				foreach(ICard c in player.Table)
 					switch(c.Type)
 					{
+					case CardType.Knife:
 					case CardType.Derringer:
 					case CardType.Howitzer:
 					case CardType.Pepperbox:
@@ -523,17 +520,8 @@ namespace Bang.AI
 					catch(BadCardException)
 					{
 					}
-					catch(BadUsageException)
-					{
-						break;
-					}
 					availableCards.Remove(worst);
 				}
-
-				// Try only enemies then respond with no action:
-				foreach(IPublicPlayerView enemy in playerHelper.Enemies)
-					if(TryRespondPlayer(enemy.ID))
-						return;
 				control.RespondNoAction();
 				return;
 				#endregion

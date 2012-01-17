@@ -48,7 +48,7 @@ namespace Bang
 		/// <summary>
 		/// The minor interface version.
 		/// </summary>
-		public const int InterfaceVersionMinor = 0;
+		public const int InterfaceVersionMinor = 1;
 
 		/// <summary>
 		/// Checks the interface version compatibility for the specified server.

@@ -1,3 +1,13 @@
+2012-01-17  WOnder93  <omosnacek@gmail.com>
+
+	* DocHolyday.cs:
+	  Changed the Doc Holyday request to only ask for the cards to
+	  discard, the target player is then requested in a ShotTarget
+	  request.
+
+	* AssemblyInfo.cs:
+	  
+
 2012-01-16  WOnder93  <omosnacek@gmail.com>
 
 	* Server.cs:
