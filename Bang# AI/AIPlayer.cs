@@ -726,7 +726,8 @@ namespace Bang.AI
 					control.RespondCard(bestCard.ID);
 					return;
 				}
-				break;
+				control.RespondNoAction();
+				return;
 				#endregion
 				#region VeraCuster
 			case RequestType.VeraCuster:

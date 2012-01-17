@@ -1,5 +1,13 @@
 2012-01-17  WOnder93  <omosnacek@gmail.com>
 
+	* AIPlayer.cs:
+	  Fixed irresponsivity with Pat Brennan.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-17  WOnder93  <omosnacek@gmail.com>
+
 	* AssemblyInfo.cs:
 	  
 
