@@ -203,6 +203,8 @@ namespace Bang.ConsoleUtils
 					pos = 0;
 					break;
 				case ConsoleKey.UpArrow:
+					if(history.Count == 0)
+						break;
 					if(historyIndex < 0)
 						historyIndex = history.Count;
 					if(historyIndex - 1 < 0)
@@ -293,7 +295,7 @@ namespace Bang.ConsoleUtils
 				case ConsoleKey.Tab:
 					string[] rawLine = line.ToString(0, pos).ToLower().Split(' ');
 					string text = rawLine.Length == 0 ? "" : rawLine[rawLine.Length - 1];
-					IEnumerable<string> cmdLine = rawLine.Take(rawLine.Length - 1).Where(s => s.Length > 0);
+					IEnumerable<string > cmdLine = rawLine.Take(rawLine.Length - 1).Where(s => s.Length > 0);
 					ICommand cmd = command;
 					foreach(string t in cmdLine)
 					{
