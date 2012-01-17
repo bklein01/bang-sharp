@@ -197,15 +197,13 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		private class OutputStream : Stream
 		{
 			private TcpConnection conn;
-			private byte[] buffer;
 			private MemoryStream ms;
 			private bool disposed;
 
 			public OutputStream(TcpConnection connection)
 			{
 				conn = connection;
-				buffer = new byte[DefaultBufferSize];
-				ms = new MemoryStream(buffer);
+				ms = new MemoryStream(conn.sendBuffer);
 			}
 
 			public override void Flush()
@@ -216,7 +214,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				try
 				{
 					conn.writer.Write(length);
-					conn.writer.Write(buffer, 0, length);
+					conn.writer.Write(conn.sendBuffer, 0, length);
 				}
 				catch(IOException e)
 				{
@@ -329,6 +327,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		private object sendLock = new object();
 		private bool recieveLocked = false;
 		private bool sendLocked = false;
+		private byte[] sendBuffer = new byte[DefaultBufferSize];
 
 		private TcpConnectionPool pool;
 		private Socket socket;
