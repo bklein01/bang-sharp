@@ -179,10 +179,9 @@ namespace Bang
 		#endregion
 		#region Character Requests
 		/// <summary>
-		/// Player is requested to choose 2 cards to discard and a player to shoot at.
+		/// Player is requested to choose 2 cards to discard  in order to shoot on a player.
 		/// Acceptable responses:
 		/// 	RespondCard - player adds the specified card to those to be discarded
-		/// 	RespondPlayer - player chooses the specified player as the target of the shot
 		/// 	RespondNoAction - player cancels the action
 		/// </summary>
 		DocHolyday,

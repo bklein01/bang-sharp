@@ -29,9 +29,44 @@ namespace Bang.Server.Characters
 	{
 		private sealed class DocHolydayResponseHandler : ResponseHandler
 		{
+			private sealed class TargetPlayerResponseHandler : ResponseHandler
+			{
+				private DocHolydayResponseHandler parent;
+
+				public TargetPlayerResponseHandler(DocHolydayResponseHandler parent)
+					: base(RequestType.ShotTarget, parent.RequestedPlayer)
+				{
+					this.parent = parent;
+				}
+
+				protected override void OnRespondPlayer(Player targetPlayer)
+				{
+					if(targetPlayer != null)
+						throw new BadUsageException();
+
+					if(targetPlayer == RequestedPlayer)
+						throw new BadTargetPlayerException();
+
+					if(!targetPlayer.IsAlive)
+						throw new BadTargetPlayerException();
+
+					if(RequestedPlayer.WeaponRange < Game.GetDistance(RequestedPlayer, targetPlayer))
+						throw new BadTargetPlayerException();
+
+					parent.parent.OnUsedAbility(targetPlayer);
+					foreach(Card c in parent.selected)
+						Game.GameTable.CancelCard(c);
+					if(parent.selected.Any(c => targetPlayer.HasCardEffect(c)))
+						Game.GameCycle.PushTempHandler(new ShotResponseHandler(targetPlayer, RequestedPlayer));
+					End();
+				}
+				protected override void OnRespondNoAction()
+				{
+					End();
+				}
+			}
 			private DocHolyday parent;
 			private List<Card> selected;
-			private Player targetPlayer;
 
 			public DocHolydayResponseHandler(DocHolyday parent)
 				: base(RequestType.DocHolyday, parent.Player)
@@ -44,48 +79,21 @@ namespace Bang.Server.Characters
 			{
 				if(selected.Count == 2)
 					throw new BadUsageException();
-				if (card.Owner != RequestedPlayer)
-					throw new BadCardException ();
-				card.AssertInHand ();
-				
-				if (selected.Contains (card))
+				if(card.Owner != RequestedPlayer)
 					throw new BadCardException();
-				selected.Add (card);
-				CheckAttack ();
+				card.AssertInHand();
+				
+				if(selected.Contains(card))
+					throw new BadCardException();
+				selected.Add(card);
+				if(selected.Count == 2)
+				{
+					Game.GameCycle.PushTempHandler(new TargetPlayerResponseHandler(this));
+					End();
+				}
 			}
-			protected override void OnRespondPlayer (Player player)
+			protected override void OnRespondNoAction()
 			{
-				if (targetPlayer != null)
-					throw new BadUsageException();
-				
-				if (player == RequestedPlayer)
-					throw new BadTargetPlayerException ();
-				
-				if (!player.IsAlive)
-					throw new BadTargetPlayerException ();
-				
-				if (RequestedPlayer.WeaponRange < Game.GetDistance (RequestedPlayer, player))
-					throw new BadTargetPlayerException ();
-				
-				targetPlayer = player;
-				CheckAttack();
-			}
-			protected override void OnRespondNoAction ()
-			{
-				End ();
-			}
-			
-			private void CheckAttack()
-			{
-				if(selected.Count != 2 || targetPlayer == null)
-					return;
-				if(!selected.Any(c => targetPlayer.HasCardEffect(c)))
-					return;
-				
-				parent.OnUsedAbility(targetPlayer);
-				foreach(Card c in selected)
-					Game.GameTable.CancelCard(c);
-				Game.GameCycle.PushTempHandler (new ShotResponseHandler (targetPlayer, RequestedPlayer));
 				End();
 			}
 		}

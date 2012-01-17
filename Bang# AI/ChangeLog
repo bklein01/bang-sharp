@@ -1,3 +1,15 @@
+2012-01-17  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* AIPlayer.cs:
+	  Changed the Doc Holyday request to only ask for the cards to
+	  discard, the target player is then requested in a ShotTarget
+	  request.
+	Fixed the AI trying to play Knife (and other green cards) from
+	  hand.
+
 2012-01-15  WOnder93  <omosnacek@gmail.com>
 
 	* AIPlayer.cs:
