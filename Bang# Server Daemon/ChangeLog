@@ -1,5 +1,13 @@
 2012-01-17  WOnder93  <omosnacek@gmail.com>
 
+	* JoseDelgado.cs:
+	  Discard not cancel the blue cards.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-17  WOnder93  <omosnacek@gmail.com>
+
 	* SessionPlayer.cs:
 	  Fixed session deadlock.
 

@@ -47,7 +47,7 @@ namespace Bang.Server.Characters
 				
 				parent.abilityUses++;
 				parent.OnUsedAbility();
-				Game.GameTable.CancelCard (card);
+				Game.GameTable.PlayerDiscardCard(card);
 				Game.GameTable.PlayerDrawFromDeck (RequestedPlayer, 2);
 				End();
 			}
