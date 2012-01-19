@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +32,7 @@ namespace Bang.Server
 			private TargetCardCard parent;
 			private Card card;
 
-			public TargetCardCardResponseHandler (TargetCardCard parent, Card card)
+			public TargetCardCardResponseHandler(TargetCardCard parent, Card card)
 				: base(parent.reqType, card.Owner)
 			{
 				this.parent = parent;
@@ -62,11 +64,11 @@ namespace Bang.Server
 
 				if(targetPlayer == RequestedPlayer || targetPlayer.HasCardEffect(card))
 					parent.OnPlay(RequestedPlayer, targetCard);
-				End ();
+				End();
 			}
-			protected override void OnRespondNoAction ()
+			protected override void OnRespondNoAction()
 			{
-				End ();
+				End();
 			}
 		}
 		private RequestType reqType;
@@ -83,14 +85,14 @@ namespace Bang.Server
 			this.reqType = reqType;
 			this.includeSelf = includeSelf;
 		}
-		protected TargetCardCard (Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType)
+		protected TargetCardCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType)
 			: this(game, id, type, suit, rank, reqType, false)
 		{
 		}
 
-		protected override void OnPlay ()
+		protected override void OnPlay()
 		{
-			Game.GameCycle.PushTempHandler (new TargetCardCardResponseHandler (this));
+			Game.GameCycle.PushTempHandler(new TargetCardCardResponseHandler(this));
 		}
 		protected override void OnPlayVirtually(Card card)
 		{
@@ -100,7 +102,6 @@ namespace Bang.Server
 		protected virtual void CheckPlay(Card targetCard)
 		{
 		}
-		protected abstract void OnPlay (Player owner, Card targetCard);
+		protected abstract void OnPlay(Player owner, Card targetCard);
 	}
 }
-

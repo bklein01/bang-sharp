@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -61,11 +63,11 @@ namespace Bang.Server
 
 				if(targetPlayer == RequestedPlayer || targetPlayer.HasCardEffect(card))
 					parent.OnPlayFromTable(RequestedPlayer, targetPlayer);
-				End ();
+				End();
 			}
-			protected override void OnRespondNoAction ()
+			protected override void OnRespondNoAction()
 			{
-				End ();
+				End();
 			}
 		}
 		private RequestType reqType;
@@ -82,14 +84,14 @@ namespace Bang.Server
 			this.reqType = reqType;
 			this.includeSelf = includeSelf;
 		}
-		protected TargetPlayerTableCard (Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType)
+		protected TargetPlayerTableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType)
 			: this(game, id, type, suit, rank, reqType, false)
 		{
 		}
 
-		protected override void OnPlayFromTable ()
+		protected override void OnPlayFromTable()
 		{
-			Game.GameCycle.PushTempHandler (new TargetPlayerTableCardResponseHandler (this));
+			Game.GameCycle.PushTempHandler(new TargetPlayerTableCardResponseHandler(this));
 		}
 		protected override void OnPlayFromTableVirtually(Card card)
 		{
@@ -99,7 +101,6 @@ namespace Bang.Server
 		protected virtual void CheckPlay(Player targetPlayer)
 		{
 		}
-		protected abstract void OnPlayFromTable (Player owner, Player targetPlayer);
+		protected abstract void OnPlayFromTable(Player owner, Player targetPlayer);
 	}
 }
-

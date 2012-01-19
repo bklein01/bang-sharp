@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,19 +27,18 @@ namespace Bang.Server.Characters
 {
 	public sealed class ChuckWengam : Character
 	{
-		public ChuckWengam (Player player)
+		public ChuckWengam(Player player)
 			: base(player, CharacterType.ChuckWengam)
 		{
 		}
 		
-		public override void UseAbility ()
+		public override void UseAbility()
 		{
-			if (Player.LifePoints <= 1)
+			if(Player.LifePoints <= 1)
 				throw new BadUsageException();
 			OnUsedAbility();
-			Player.ModifyLifePoints (-1);
-			Game.GameTable.PlayerDrawFromDeck (Player, 2);
+			Player.ModifyLifePoints(-1);
+			Game.GameTable.PlayerDrawFromDeck(Player, 2);
 		}
 	}
 }
-

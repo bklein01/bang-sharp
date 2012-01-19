@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System.Collections.Generic;
+
 namespace Bang.Server.Characters
 {
 	public sealed class SidKetchum : Character
@@ -56,12 +59,12 @@ namespace Bang.Server.Characters
 					End();
 				}
 			}
-			protected override void OnRespondNoAction ()
+			protected override void OnRespondNoAction()
 			{
 				End();
 			}
 		}
-		public SidKetchum (Player player)
+		public SidKetchum(Player player)
 			: base(player, CharacterType.SidKetchum)
 		{
 		}
@@ -74,4 +77,3 @@ namespace Bang.Server.Characters
 		}
 	}
 }
-

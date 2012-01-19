@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+
 namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
 	internal class TcpConnectionPool
@@ -112,4 +113,3 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		}
 	}
 }
-

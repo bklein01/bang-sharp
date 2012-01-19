@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,12 +35,12 @@ namespace Bang.Server.Characters
 			cardsToDraw = 0;
 		}
 		
-		public override void OnPlayedCard (Card card)
+		public override void OnPlayedCard(Card card)
 		{
-			if (Game.GameCycle.CurrentPlayer == Player)
+			if(Game.GameCycle.CurrentPlayer == Player)
 				return;
 			
-			if (card.Type == CardType.Bang || card.Type == CardType.Beer)
+			if(card.Type == CardType.Bang || card.Type == CardType.Beer)
 				cardsToDraw++;
 		}
 		public override void OnRespondedWithCard(Card card)
@@ -60,4 +62,3 @@ namespace Bang.Server.Characters
 		}
 	}
 }
-

@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,15 +23,44 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
 using System.Collections.Generic;
+
 namespace Bang.ConsoleUtils
 {
+	/// <summary>
+	/// Represents a command template.
+	/// </summary>
+	/// <typeparam name='In'>
+	/// The type of the input parameter of the command template.
+	/// </typeparam>
 	public abstract class Command<In> : ICommand
 	{
+		/// <summary>
+		/// Gets the subcommands of this command template.
+		/// </summary>
+		/// <value>
+		/// The subcommands of this command template.
+		/// </value>
 		public abstract IEnumerable<string> Subcommands { get; }
+		/// <summary>
+		/// Gets the subcommand template with the specified name.
+		/// </summary>
+		/// <returns>
+		/// The subcommand template with the specified name.
+		/// </returns>
+		/// <param name='text'>
+		/// The name of the subcommand to get.
+		/// </param>
 		public abstract ICommand GetSubcommand(string text);
+		/// <summary>
+		/// Executes the command.
+		/// </summary>
+		/// <param name='param'>
+		/// The input parameter of the command template.
+		/// </param>
+		/// <param name='cmd'>
+		/// The command name queue.
+		/// </param>
 		public abstract void Execute(In param, Queue<string> cmd);
 	}
 }
-

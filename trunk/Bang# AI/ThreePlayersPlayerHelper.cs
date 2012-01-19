@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
 namespace Bang.AI
 {
 	internal sealed class ThreePlayersPlayerHelper : PlayerHelper
@@ -52,6 +52,7 @@ namespace Bang.AI
 				allyRole = Role.Renegade;
 				break;
 			default:
+				Console.Error.WriteLine("FATAL: Invalid role for a three-player game!");
 				throw new InvalidOperationException();
 			}
 			enemyId = control.Game.Players.First(p => p.Role == enemyRole).ID;
@@ -80,4 +81,3 @@ namespace Bang.AI
 		}
 	}
 }
-

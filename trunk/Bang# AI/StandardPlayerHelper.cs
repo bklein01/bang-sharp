@@ -2,8 +2,8 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
-// 
+// Copyright (c) 2012 Ondrej Mosnáček
+//
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+
 namespace Bang.AI
 {
 	internal sealed class StandardPlayerHelper : PlayerHelper
@@ -233,10 +234,10 @@ namespace Bang.AI
 			Dictionary<int, Role> roleDistribution = new Dictionary<int, Role>();
 			bool changed;
 			int iteration = 0;
-			//ConsoleUtils.DebugLine("AI: P#{0}: Starting estimation...", ThisPlayer.ID);
+			Console.Error.WriteLine("INFO: AI: P#{0}: Starting estimation...", ThisPlayer.ID);
 			do
 			{
-				//ConsoleUtils.DebugLine("AI: P#{0}: Iteration #{1}...", ThisPlayer.ID, iteration);
+				Console.Error.WriteLine("INFO: AI: P#{0}: Iteration #{1}...", ThisPlayer.ID, iteration);
 				foreach(PlayerEntry e in incognitoPlayers)
 				{
 					roleDistribution[e.ID] = Role.Unknown;
@@ -279,7 +280,7 @@ namespace Bang.AI
 				{
 					Role newRole = roleDistribution[e.ID];
 					stats[e.ID][newRole]++;
-					//ConsoleUtils.DebugLine("AI: P#{0} - {1} => {2}", e.ID, e.EstimatedRole, newRole);
+					Console.Error.WriteLine("INFO: AI: P#{0} - {1} => {2}", e.ID, e.EstimatedRole, newRole);
 					if(e.EstimatedRole != newRole)
 					{
 						e.EstimatedRole = newRole;
@@ -293,10 +294,10 @@ namespace Bang.AI
 			if(changed)
 				foreach(PlayerEntry e in incognitoPlayers)
 				{
-					//ConsoleUtils.DebugLine("Stats P#{0}:", e.ID);
+					Console.Error.WriteLine("INFO: AI: Stats P#{0}:", e.ID);
 					Dictionary<Role, int> iterations = stats[e.ID];
-					//foreach(KeyValuePair<Role, int> it in iterations)
-						//ConsoleUtils.DebugLine("{0}: {1}", it.Key, it.Value);
+					foreach(KeyValuePair<Role, int> it in iterations)
+						Console.Error.WriteLine("INFO: AI: {0}: {1}", it.Key, it.Value);
 					int max = iterations.Values.Max();
 					if(iterations.Values.Count(i => i == max) > 1)
 						e.EstimatedRole = Role.Unknown;
@@ -450,4 +451,3 @@ namespace Bang.AI
 		}
 	}
 }
-

@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -25,9 +25,28 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+
 namespace Bang.ConsoleUtils
 {
+	/// <summary>
+	/// The delegate for the nested command template.
+	/// </summary>
+	/// <typeparam name='In'>
+	/// The type of the input parameter of the command template.
+	/// </typeparam>
+	/// <typeparam name='Out'>
+	/// The type of the output parameter of the command template.
+	/// </typeparam>
 	public delegate Out NestedCommandDelegate<In, Out>(In param, Queue<string> cmd);
+	/// <summary>
+	/// Represents a nested command template.
+	/// </summary>
+	/// <typeparam name='In'>
+	/// The type of the input parameter of the command template.
+	/// </typeparam>
+	/// <typeparam name='Out'>
+	/// The type of the output parameter of the command template.
+	/// </typeparam>
 	public class NestedCommand<In, Out> : Command<In>
 	{
 		private NestedCommandDelegate<In, Out> del;
@@ -38,6 +57,12 @@ namespace Bang.ConsoleUtils
 			get { return subcommands.Keys; }
 		}
 
+		/// <summary>
+		/// Gets or sets the subcommand with the specified name.
+		/// </summary>
+		/// <param name='text'>
+		/// The name of the subcommand.
+		/// </param>
 		public Command<Out> this[string text]
 		{
 			get
@@ -65,6 +90,12 @@ namespace Bang.ConsoleUtils
 			}
 		}
 
+		/// <summary>
+		/// Creates a new nested command template with the specified delegate.
+		/// </summary>
+		/// <param name='del'>
+		/// The delegate to be invoked when this command executes.
+		/// </param>
 		public NestedCommand(NestedCommandDelegate<In, Out> del)
 		{
 			this.del = del;
@@ -107,18 +138,38 @@ namespace Bang.ConsoleUtils
 		}
 	}
 
+	/// <summary>
+	/// The delegate for the root nested command template.
+	/// </summary>
+	/// <typeparam name='Out'>
+	/// The type of the output parameter of the command template.
+	/// </typeparam>
 	public delegate Out NestedCommandDelegate<Out>(Queue<string> cmd);
+	/// <summary>
+	/// Represents a root nested command template.
+	/// </summary>
 	public class NestedCommand<Out> : NestedCommand<object, Out>
 	{
+		/// <summary>
+		/// Creates a new root nested command template with the specified delegate.
+		/// </summary>
+		/// <param name='del'>
+		/// The delegate to be invoked when this command executes.
+		/// </param>
 		public NestedCommand(NestedCommandDelegate<Out> del) : base((param, cmd) => del(cmd))
 		{
 		}
 	}
+	/// <summary>
+	/// Represents a root nested command template.
+	/// </summary>
 	public class NestedCommand : NestedCommand<object>
 	{
+		/// <summary>
+		/// Creates a new root nested command template with the specified delegate.
+		/// </summary>
 		public NestedCommand() : base(cmd => new object())
 		{
 		}
 	}
 }
-

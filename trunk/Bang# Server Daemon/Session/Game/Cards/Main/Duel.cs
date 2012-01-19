@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -46,35 +48,34 @@ namespace Bang.Server.Cards
 				PushHandler(new ThrowBangResponseHandler(current, owner, this));
 			}
 
-			protected override void OnContinue ()
+			protected override void OnContinue()
 			{
 				End();
 			}
 			
-			private void NextPlayer ()
+			private void NextPlayer()
 			{
 				current = current == targetPlayer ? owner : targetPlayer;
 			}
 			
-			void IResultHandler.OnResult (bool result)
+			void IResultHandler.OnResult(bool result)
 			{
-				if (result)
+				if(result)
 				{
-					NextPlayer ();
-					PushHandler (new ThrowBangResponseHandler(current, owner, this));
+					NextPlayer();
+					PushHandler(new ThrowBangResponseHandler(current, owner, this));
 				}
 			}
 		}
 		
-		public Duel (Game game, int id, CardSuit suit, CardRank rank)
+		public Duel(Game game, int id, CardSuit suit, CardRank rank)
 			: base(game, id, CardType.Duel, suit, rank, RequestType.DuelTarget)
 		{
 		}
 		
-		protected override void OnPlay (Player owner, Player targetPlayer)
+		protected override void OnPlay(Player owner, Player targetPlayer)
 		{
 			Game.GameCycle.PushTempHandler(new DuelResponseHandler(this, targetPlayer, owner));
 		}
 	}
 }
-

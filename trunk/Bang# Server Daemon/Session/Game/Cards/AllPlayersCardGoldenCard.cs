@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,20 +32,20 @@ namespace Bang.Server
 			private AllPlayersCardGoldenCard parent;
 			private Player targetPlayer;
 
-			public AllPlayersCardGoldenCardResponseHandler (AllPlayersCardGoldenCard parent, Player targetPlayer, Player owner)
+			public AllPlayersCardGoldenCardResponseHandler(AllPlayersCardGoldenCard parent, Player targetPlayer, Player owner)
 				: base(parent.reqType, owner)
 			{
 				this.parent = parent;
 				this.targetPlayer = targetPlayer;
 			}
 
-			protected override void OnRespondCard (Card targetCard)
+			protected override void OnRespondCard(Card targetCard)
 			{
-				if (targetCard.Owner != targetPlayer)
-					throw new BadTargetCardException ();
+				if(targetCard.Owner != targetPlayer)
+					throw new BadTargetCardException();
 
 				parent.OnPlay(RequestedPlayer, targetCard);
-				End ();
+				End();
 			}
 		}
 		private RequestType reqType;
@@ -53,7 +55,7 @@ namespace Bang.Server
 		{
 			this.reqType = reqType;
 		}
-		protected AllPlayersCardGoldenCard (Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType)
+		protected AllPlayersCardGoldenCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType)
 			: base(game, id, type, suit, rank)
 		{
 			this.reqType = reqType;
@@ -68,4 +70,3 @@ namespace Bang.Server
 		protected abstract void OnPlay(Player owner, Card targetCard);
 	}
 }
-

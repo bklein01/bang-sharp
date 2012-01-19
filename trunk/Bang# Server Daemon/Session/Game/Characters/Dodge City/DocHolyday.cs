@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +25,7 @@
 // THE SOFTWARE.
 using System.Collections.Generic;
 using System.Linq;
+
 namespace Bang.Server.Characters
 {
 	public sealed class DocHolyday : Character
@@ -97,15 +100,14 @@ namespace Bang.Server.Characters
 				End();
 			}
 		}
-		public DocHolyday (Player player)
+		public DocHolyday(Player player)
 			: base(player, CharacterType.DocHolyday)
 		{
 		}
 		
-		public override void UseAbility ()
+		public override void UseAbility()
 		{
 			Game.GameCycle.PushTempHandler(new DocHolydayResponseHandler(this));
 		}
 	}
 }
-

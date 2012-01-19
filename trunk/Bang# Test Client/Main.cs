@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -29,6 +29,7 @@ using System.Collections.ObjectModel;
 using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 using Bang.ConsoleUtils;
+
 namespace Bang.Client
 {
 	public sealed class TestClient : ImmortalMarshalByRefObject, IPlayerEventListener
@@ -92,9 +93,9 @@ namespace Bang.Client
 				ConsoleHelper.PrintLine();
 
 				NestedCommand rootCmd = new NestedCommand();
-				NestedCommand<IServer > serverCmd = new NestedCommand<IServer>(cmd => _server);
+				NestedCommand<IServer> serverCmd = new NestedCommand<IServer>(cmd => _server);
 				serverCmd.MakeServerCommand();
-				NestedCommand<IServer, ISession > sessionCmd = (NestedCommand<IServer, ISession>)serverCmd["session"];
+				NestedCommand<IServer, ISession> sessionCmd = (NestedCommand<IServer, ISession>)serverCmd["session"];
 				sessionCmd["join"] = new FinalCommand<ISession>((session, cmd) =>
 				{
 					CreatePlayerData cpd;
@@ -373,7 +374,7 @@ namespace Bang.Client
 					}
 				});
 				rootCmd["server"] = serverCmd;
-				NestedCommand<IPlayerSessionControl > sessionControlCommand = new NestedCommand<IPlayerSessionControl>(cmd =>
+				NestedCommand<IPlayerSessionControl> sessionControlCommand = new NestedCommand<IPlayerSessionControl>(cmd =>
 				{
 					IPlayerSessionControl sessionControl = Instance.sessionControl;
 					if(sessionControl == null)
@@ -389,7 +390,7 @@ namespace Bang.Client
 					Instance.gameControl = null;
 				});
 				rootCmd["sessioncontrol"] = sessionControlCommand;
-				NestedCommand<IPlayerControl > gameControlCommand = new NestedCommand<IPlayerControl>(cmd => {
+				NestedCommand<IPlayerControl> gameControlCommand = new NestedCommand<IPlayerControl>(cmd => {
 					IPlayerControl gameControl = Instance.gameControl;
 					if(gameControl == null)
 					{
@@ -439,7 +440,7 @@ namespace Bang.Client
 			if(aiPlayer != null)
 				aiPlayer.OnJoinedSession(control);
 		}
-		void IPlayerEventListener.OnJoinedGame (IPlayerControl control)
+		void IPlayerEventListener.OnJoinedGame(IPlayerControl control)
 		{
 			this.gameControl = control;
 			ConsoleHelper.GameEvent("Acquired game controller!");
@@ -519,7 +520,7 @@ namespace Bang.Client
 			if(aiPlayer != null)
 				aiPlayer.OnChatMessage(player, message);
 		}
-		void IEventListener.OnChatMessage (ISpectator spectator, string message)
+		void IEventListener.OnChatMessage(ISpectator spectator, string message)
 		{
 			ConsoleHelper.SessionEvent("Chat: {0}: {1}", spectator.Name, message);
 			if(aiPlayer != null)
@@ -598,7 +599,7 @@ namespace Bang.Client
 			if(aiPlayer != null)
 				aiPlayer.OnPlayerPassed(player);
 		}
-		void IEventListener.OnPlayerRespondedWithCard (IPublicPlayerView player, ICard card)
+		void IEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card)
 		{
 			ConsoleHelper.GameEvent("Player #{0} responded with card {1} #{2}.", player.ID, card.Type, card.ID);
 			if(aiPlayer != null)
@@ -616,7 +617,7 @@ namespace Bang.Client
 			if(aiPlayer != null)
 				aiPlayer.OnDrawnIntoSelection(drawnCards);
 		}
-		void IEventListener.OnPlayerPickedFromSelection (IPublicPlayerView player, ICard card)
+		void IEventListener.OnPlayerPickedFromSelection(IPublicPlayerView player, ICard card)
 		{
 			ConsoleHelper.GameEvent("Player #{0} picked card {1} #{2} from selection.", player.ID, card.Type, card.ID);
 			if(aiPlayer != null)
@@ -694,7 +695,7 @@ namespace Bang.Client
 			if(aiPlayer != null)
 				aiPlayer.OnPlayerLostAdditionalCharacters(player);
 		}
-		void IEventListener.OnDeckRegenerated ()
+		void IEventListener.OnDeckRegenerated()
 		{
 			ConsoleHelper.GameEvent("The deck was regenerated.");
 			if(aiPlayer != null)
@@ -703,4 +704,3 @@ namespace Bang.Client
 		#endregion
 	}
 }
-

@@ -1,8 +1,10 @@
-// ResultHandler.cs
+// IResultHandler.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +27,6 @@ namespace Bang.Server
 {
 	public interface IResultHandler
 	{
-		void OnResult (bool result);
+		void OnResult(bool result);
 	}
 }
-

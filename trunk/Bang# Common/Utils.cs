@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -28,12 +28,13 @@
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Reflection;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.TwoWayTcp;
-using System.IO;
-using System.Reflection;
-using System.Net;
+
 namespace Bang
 {
 	/// <summary>
@@ -135,18 +136,54 @@ namespace Bang
 			CardType.Conestoga,
 			CardType.PonyExpress,
 		};
+		/// <summary>
+		/// Gets the list of all available card types without the default type.
+		/// </summary>
+		/// <returns>
+		/// The list of all available card types.
+		/// </returns>
 		public static List<CardType> GetCardTypes()
 		{
 			return GetCardTypes(null, false);
 		}
+		/// <summary>
+		/// Gets the list of all available card types.
+		/// </summary>
+		/// <returns>
+		/// The list of all available card types.
+		/// </returns>
+		/// <param name='includeDefault'>
+		/// A <see cref="bool"/> indicating wheter to include also the default type.
+		/// </param>
 		public static List<CardType> GetCardTypes(bool includeDefault)
 		{
 			return GetCardTypes(null, includeDefault);
 		}
+		/// <summary>
+		/// Gets the list of all available card types for the specified session.
+		/// </summary>
+		/// <returns>
+		/// The list of all available card types for the specified session.
+		/// </returns>
+		/// <param name='session'>
+		/// The <see cref="Session"/> to get the card types for.
+		/// </param>
 		public static List<CardType> GetCardTypes(ISession session)
 		{
 			return GetCardTypes(session, false);
 		}
+		/// <summary>
+		/// Gets the list of all available card types for the specified session.
+		/// </summary>
+		/// <returns>
+		/// The list of all available card types for the specified session.
+		/// </returns>
+		/// <param name='session'>
+		/// The <see cref="Session"/> to get the card types for.
+		/// </param>
+		/// <param name='includeDefault'>
+		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="CardType.Unknown"/>).
+		/// </param>
 		public static List<CardType> GetCardTypes(ISession session, bool includeDefault)
 		{
 			int count = MainCards.Length;
@@ -181,10 +218,25 @@ namespace Bang
 			Role.Outlaw,
 			Role.Renegade,
 		};
+		/// <summary>
+		/// Gets the list of all roles without the default type.
+		/// </summary>
+		/// <returns>
+		/// The list of all roles.
+		/// </returns>
 		public static List<Role> GetRoles()
 		{
 			return GetRoles(false);
 		}
+		/// <summary>
+		/// Gets the list of all roles.
+		/// </summary>
+		/// <returns>
+		/// The list of all roles.
+		/// </returns>
+		/// <param name='includeDefault'>
+		/// A <see cref="bool"/> indicating wheter to include also the default role (<see cref="Role.Unknown"/>).
+		/// </param>
 		public static List<Role> GetRoles(bool includeDefault)
 		{
 			int count = Roles.Length;
@@ -237,18 +289,54 @@ namespace Bang
 			CharacterType.VeraCuster,
 			//CharacterType.,
 		};
+		/// <summary>
+		/// Gets the list of all available character types for the specified session without the default type.
+		/// </summary>
+		/// <returns>
+		/// The list of all available character types for the specified session.
+		/// </returns>
 		public static List<CharacterType> GetCharacterTypes()
 		{
 			return GetCharacterTypes(null, false);
 		}
+		/// <summary>
+		/// Gets the list of all available character types for the specified session.
+		/// </summary>
+		/// <returns>
+		/// The list of all available character types for the specified session.
+		/// </returns>
+		/// <param name='includeDefault'>
+		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="CharacterType.Unknown"/>).
+		/// </param>
 		public static List<CharacterType> GetCharacterTypes(bool includeDefault)
 		{
 			return GetCharacterTypes(null, includeDefault);
 		}
+		/// <summary>
+		/// Gets the list of all available character types for the specified session.
+		/// </summary>
+		/// <returns>
+		/// The list of all available character types for the specified session.
+		/// </returns>
+		/// <param name='session'>
+		/// The <see cref="Session"/> to get the character types for.
+		/// </param>
 		public static List<CharacterType> GetCharacterTypes(ISession session)
 		{
 			return GetCharacterTypes(session, false);
 		}
+		/// <summary>
+		/// Gets the list of all available character types for the specified session.
+		/// </summary>
+		/// <returns>
+		/// The list of all available character types for the specified session.
+		/// </returns>
+		/// <param name='session'>
+		/// The <see cref="Session"/> to get the character types for.
+		/// </param>
+		/// <param name='includeDefault'>
+		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="CharacterType.Unknown"/>).
+		/// </param>
 		public static List<CharacterType> GetCharacterTypes(ISession session, bool includeDefault)
 		{
 			int count = MainCharacters.Length;
@@ -435,4 +523,3 @@ namespace Bang
 		}
 	}
 }
-

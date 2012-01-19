@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -26,9 +26,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 namespace Bang.ConsoleUtils
 {
+	/// <summary>
+	/// The delegate for the final command template.
+	/// </summary>
+	/// <typeparam name='In'>
+	/// The type of the input parameter of the command template.
+	/// </typeparam>
 	public delegate void FinalCommandDelegate<In>(In param, Queue<string> cmd);
+	/// <summary>
+	/// Represents a final command template.
+	/// </summary>
+	/// <typeparam name='In'>
+	/// The type of the input parameter of the command template.
+	/// </typeparam>
 	public class FinalCommand<In> : Command<In>
 	{
 		private FinalCommandDelegate<In> del;
@@ -38,6 +51,12 @@ namespace Bang.ConsoleUtils
 			get { return Enumerable.Empty<string>(); }
 		}
 
+		/// <summary>
+		/// Creates a new final command template with the specified delegate.
+		/// </summary>
+		/// <param name='del'>
+		/// The delegate to be invoked when this command executes.
+		/// </param>
 		public FinalCommand(FinalCommandDelegate<In> del)
 		{
 			this.del = del;
@@ -53,13 +72,24 @@ namespace Bang.ConsoleUtils
 		}
 	}
 
+	/// <summary>
+	/// The delegate for the root final command template.
+	/// </summary>
 	public delegate void FinalCommandDelegate(Queue<string> cmd);
+	/// <summary>
+	/// Represents a root final command template.
+	/// </summary>
 	public class FinalCommand : FinalCommand<object>
 	{
+		/// <summary>
+		/// Creates a new root final command template with the specified delegate.
+		/// </summary>
+		/// <param name='del'>
+		/// The delegate to be invoked when this command executes.
+		/// </param>
 		public FinalCommand(FinalCommandDelegate del)
 			: base((param, cmd) => del(cmd))
 		{
 		}
 	}
 }
-

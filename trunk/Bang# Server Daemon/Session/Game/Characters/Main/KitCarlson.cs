@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,15 +31,15 @@ namespace Bang.Server.Characters
 		{
 			private KitCarlson parent;
 			
-			public KitCarlsonResponseHandler (KitCarlson parent)
+			public KitCarlsonResponseHandler(KitCarlson parent)
 				: base(RequestType.KitCarlson, parent.Player)
 			{
 				this.parent = parent;
 			}
 			
-			protected override void OnStart ()
+			protected override void OnStart()
 			{
-				Game.GameTable.DrawIntoSelection (3, RequestedPlayer);
+				Game.GameTable.DrawIntoSelection(3, RequestedPlayer);
 			}
 			
 			protected override void OnRespondCard(Card card)
@@ -48,22 +50,21 @@ namespace Bang.Server.Characters
 				Game.GameTable.PlayerPickFromSelection(RequestedPlayer, card);
 				if(Game.GameTable.Selection.Count == 1)
 				{
-					Game.GameTable.UndrawFromSelection (Game.GameTable.Selection[0]);
+					Game.GameTable.UndrawFromSelection(Game.GameTable.Selection[0]);
 					End();
 				}
 			}
 		}
 		
-		public KitCarlson (Player player)
+		public KitCarlson(Player player)
 			: base(player, CharacterType.KitCarlson)
 		{
 		}
 		
-		public override void Draw ()
+		public override void Draw()
 		{
 			OnUsedAbility();
 			Game.GameCycle.PushTempHandler(new KitCarlsonResponseHandler(this));
 		}
 	}
 }
-

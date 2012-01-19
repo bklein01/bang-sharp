@@ -1,8 +1,8 @@
-// AI.CardEvaluator.cs
+// CardHelper.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 namespace Bang.AI
 {
 	internal sealed class CardHelper
@@ -76,6 +77,7 @@ namespace Bang.AI
 				return lifeHelp < lifeDeficit;
 			}
 		}
+
 		public int EvaluateCard(CardType type)
 		{
 			switch(type)
@@ -168,6 +170,7 @@ namespace Bang.AI
 			}
 			return -1;
 		}
+
 		private int GetLifeHelp(CardType type, ref int beerPower, ref int discardableCards)
 		{
 			switch(type)
@@ -246,6 +249,7 @@ namespace Bang.AI
 			}
 			return false;
 		}
+
 		public ICard WorstCard(IEnumerable<ICard> cards)
 		{
 			int lastValue = -1;
@@ -290,6 +294,7 @@ namespace Bang.AI
 				return null;
 			}
 		}
+
 		public int EvaluateCheckDeckCard(ICard card)
 		{
 			switch(card.Suit)
@@ -327,6 +332,7 @@ namespace Bang.AI
 				return null;
 			}
 		}
+
 		public int EvaluateCharacter(CharacterType character)
 		{
 			switch(character)
@@ -440,4 +446,3 @@ namespace Bang.AI
 		}
 	}
 }
-

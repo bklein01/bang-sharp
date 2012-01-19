@@ -1,8 +1,8 @@
-// cs
+// ConsoleHelper.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -25,9 +25,10 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Collections.ObjectModel;
+
 namespace Bang.ConsoleUtils
 {
 	/// <summary>
@@ -91,12 +92,24 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tRank: {0}", card.Rank);
 			PrintLine("\tSuit: {0}", card.Suit);
 		}
+		/// <summary>
+		/// Prints the main properties of an <see cref="ISpectator"/> to the console.
+		/// </summary>
+		/// <param name="spectator">
+		/// The <see cref="ISpectator"/> to print.
+		/// </param>
 		public static void Print(ISpectator spectator)
 		{
 			if(spectator == null)
 				return;
 			PrintLine("\tName: {0}", spectator.Name);
 		}
+		/// <summary>
+		/// Prints the main properties of an <see cref="IPlayer"/> to the console.
+		/// </summary>
+		/// <param name="player">
+		/// The <see cref="IPlayer"/> to print.
+		/// </param>
 		public static void Print(IPlayer player)
 		{
 			if(player == null)
@@ -107,6 +120,12 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tHasListener: {0}", player.HasListener);
 			PrintLine("\tHasPassword: {0}", player.HasPassword);
 		}
+		/// <summary>
+		/// Prints the main properties of an <see cref="ISession"/> to the console.
+		/// </summary>
+		/// <param name="session">
+		/// The <see cref="ISession"/> to print.
+		/// </param>
 		public static void Print(ISession session)
 		{
 			if(session == null)
@@ -116,6 +135,12 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tState: {0}", session.State);
 		}
 
+		/// <summary>
+		/// Reads a line from the console.
+		/// </summary>
+		/// <returns>
+		/// The line.
+		/// </returns>
 		public static string ReadLine()
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -124,6 +149,12 @@ namespace Bang.ConsoleUtils
 			Console.ForegroundColor = backup;
 			return res;
 		}
+		/// <summary>
+		/// Reads a password from the console.
+		/// </summary>
+		/// <returns>
+		/// The password.
+		/// </returns>
 		public static Password ReadPassword()
 		{
 			StringBuilder line = new StringBuilder();
@@ -295,7 +326,7 @@ namespace Bang.ConsoleUtils
 				case ConsoleKey.Tab:
 					string[] rawLine = line.ToString(0, pos).ToLower().Split(' ');
 					string text = rawLine.Length == 0 ? "" : rawLine[rawLine.Length - 1];
-					IEnumerable<string > cmdLine = rawLine.Take(rawLine.Length - 1).Where(s => s.Length > 0);
+					IEnumerable<string> cmdLine = rawLine.Take(rawLine.Length - 1).Where(s => s.Length > 0);
 					ICommand cmd = command;
 					foreach(string t in cmdLine)
 					{
@@ -348,15 +379,42 @@ namespace Bang.ConsoleUtils
 			history.Add(txt);
 			return txt;
 		}
+		/// <summary>
+		/// Reads and executes a command for the nested command template.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template.
+		/// </param>
+		/// <typeparam name='Out'>
+		/// The output type of the command template.
+		/// </typeparam>
 		public static void ReadAndExecute<Out>(this NestedCommand<Out> command)
 		{
 			command.ReadAndExecute<object>(new object());
 		}
+		/// <summary>
+		/// Reads and executes a command for the command template.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template.
+		/// </param>
+		/// <param name='param'>
+		/// The parameter to be passed to the command template.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The output type of the command template.
+		/// </typeparam>
 		public static void ReadAndExecute<In>(this Command<In> command, In param)
 		{
 			command.Execute(param, new Queue<string>(ReadCommandLine(command).ToLower().Split(' ').Where(s => s.Length > 0)));
 		}
 
+		/// <summary>
+		/// Prints the specified object to the console.
+		/// </summary>
+		/// <param name='value'>
+		/// The <see cref="object"/> to print.
+		/// </param>
 		public static void Print(object value)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -364,6 +422,12 @@ namespace Bang.ConsoleUtils
 			Console.Write(value);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints the specified text string to the console.
+		/// </summary>
+		/// <param name='text'>
+		/// The <see cref="string"/> to print.
+		/// </param>
 		public static void Print(string text)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -371,6 +435,15 @@ namespace Bang.ConsoleUtils
 			Console.Write(text);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints the specified format string with arguments to the console.
+		/// </summary>
+		/// <param name='format'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		/// <param name='args'>
+		/// The arguments for the format string.
+		/// </param>
 		public static void Print(string format, params object[] args)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -378,6 +451,9 @@ namespace Bang.ConsoleUtils
 			Console.Write(format, args);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a line to the console.
+		/// </summary>
 		public static void PrintLine()
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -385,6 +461,12 @@ namespace Bang.ConsoleUtils
 			Console.WriteLine();
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a line with the specified object to the console.
+		/// </summary>
+		/// <param name='value'>
+		/// The <see cref="object"/> to print.
+		/// </param>
 		public static void PrintLine(object value)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -392,13 +474,28 @@ namespace Bang.ConsoleUtils
 			Console.WriteLine(value);
 			Console.ForegroundColor = backup;
 		}
-		public static void PrintLine(string message)
+		/// <summary>
+		/// Prints a line with the specified text string to the console.
+		/// </summary>
+		/// <param name='text'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		public static void PrintLine(string text)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
 			Console.ForegroundColor = defaultFg;
-			Console.WriteLine(message);
+			Console.WriteLine(text);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a line with the specified format string with arguments to the console.
+		/// </summary>
+		/// <param name='format'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		/// <param name='args'>
+		/// The arguments for the format string.
+		/// </param>
 		public static void PrintLine(string format, params object[] args)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -406,41 +503,80 @@ namespace Bang.ConsoleUtils
 			Console.WriteLine(format, args);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a debug line with the specified object to the standard error stream.
+		/// </summary>
+		/// <param name='value'>
+		/// The <see cref="object"/> to print.
+		/// </param>
 		public static void DebugLine(object value)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
 			Console.ForegroundColor = debugColor;
-			Console.Write("Debug: ");
-			Console.WriteLine(value);
+			Console.Error.Write("Debug: ");
+			Console.Error.WriteLine(value);
 			Console.ForegroundColor = backup;
 		}
-		public static void DebugLine(string message)
+		/// <summary>
+		/// Prints a debug line with the specified text string to the standard error stream.
+		/// </summary>
+		/// <param name='text'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		public static void DebugLine(string text)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
 			Console.ForegroundColor = debugColor;
-			Console.Write("Debug: ");
-			Console.WriteLine(message);
+			Console.Error.Write("Debug: ");
+			Console.Error.WriteLine(text);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a line with the specified format string with arguments to the console.
+		/// </summary>
+		/// <param name='format'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		/// <param name='args'>
+		/// The arguments for the format string.
+		/// </param>
 		public static void DebugLine(string format, params object[] args)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
 			Console.ForegroundColor = debugColor;
-			Console.Write("Debug: ");
-			Console.WriteLine(format, args);
+			Console.Error.Write("Debug: ");
+			Console.Error.WriteLine(format, args);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a success line (text 'Done!') to the console.
+		/// </summary>
 		public static void SuccessLine()
 		{
 			SuccessLine("Done!");
 		}
-		public static void SuccessLine(string message)
+		/// <summary>
+		/// Prints a line with the specified text string to the console.
+		/// </summary>
+		/// <param name='text'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		public static void SuccessLine(string text)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
 			Console.ForegroundColor = successColor;
-			Console.WriteLine(message);
+			Console.WriteLine(text);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a line with the specified format string with arguments to the console.
+		/// </summary>
+		/// <param name='format'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		/// <param name='args'>
+		/// The arguments for the format string.
+		/// </param>
 		public static void SuccessLine(string format, params object[] args)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -448,14 +584,29 @@ namespace Bang.ConsoleUtils
 			Console.WriteLine(format, args);
 			Console.ForegroundColor = backup;
 		}
-		public static void ErrorLine(string error)
+		/// <summary>
+		/// Prints an error line with the specified text string to the console.
+		/// </summary>
+		/// <param name='text'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		public static void ErrorLine(string text)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
 			Console.ForegroundColor = failColor;
 			Console.Write("ERROR: ");
-			Console.WriteLine(error);
+			Console.WriteLine(text);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints an error line with the specified format string with arguments to the console.
+		/// </summary>
+		/// <param name='format'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		/// <param name='args'>
+		/// The arguments for the format string.
+		/// </param>
 		public static void ErrorLine(string format, params object[] args)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -464,6 +615,12 @@ namespace Bang.ConsoleUtils
 			Console.WriteLine(format, args);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a session event line with the specified text string to the console.
+		/// </summary>
+		/// <param name='text'>
+		/// The <see cref="string"/> to print.
+		/// </param>
 		public static void SessionEvent(string message)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -472,6 +629,15 @@ namespace Bang.ConsoleUtils
 			Console.WriteLine(message);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a session event line with the specified format string with arguments to the console.
+		/// </summary>
+		/// <param name='format'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		/// <param name='args'>
+		/// The arguments for the format string.
+		/// </param>
 		public static void SessionEvent(string format, params object[] args)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -480,6 +646,12 @@ namespace Bang.ConsoleUtils
 			Console.WriteLine(format, args);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a game event line with the specified text string to the console.
+		/// </summary>
+		/// <param name='text'>
+		/// The <see cref="string"/> to print.
+		/// </param>
 		public static void GameEvent(string message)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -488,6 +660,12 @@ namespace Bang.ConsoleUtils
 			Console.WriteLine(message);
 			Console.ForegroundColor = backup;
 		}
+		/// <summary>
+		/// Prints a game event line with the specified text string to the console.
+		/// </summary>
+		/// <param name='text'>
+		/// The <see cref="string"/> to print.
+		/// </param>
 		public static void GameEvent(string format, params object[] args)
 		{
 			ConsoleColor backup = Console.ForegroundColor;
@@ -497,6 +675,15 @@ namespace Bang.ConsoleUtils
 			Console.ForegroundColor = backup;
 		}
 
+		/// <summary>
+		/// Makes the command template a card collection command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a card collection command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeCardCollectionCommand<In>(this NestedCommand<In, ReadOnlyCollection<ICard>> command)
 		{
 			command[""] = new FinalCommand<ReadOnlyCollection<ICard>>((cards, cmd) =>
@@ -509,6 +696,15 @@ namespace Bang.ConsoleUtils
 			});
 			command["count"] = new FinalCommand<ReadOnlyCollection<ICard>>((cards, cmd) => { PrintLine(cards.Count); });
 		}
+		/// <summary>
+		/// Makes the command template a player collection command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a player collection command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakePlayerCollectionCommand<In>(this NestedCommand<In, ReadOnlyCollection<IPublicPlayerView>> command)
 		{
 			command[""] = new FinalCommand<ReadOnlyCollection<IPublicPlayerView>>((players, cmd) =>
@@ -521,6 +717,15 @@ namespace Bang.ConsoleUtils
 			});
 			command["count"] = new FinalCommand<ReadOnlyCollection<IPublicPlayerView>>((players, cmd) => { PrintLine(players.Count); });
 		}
+		/// <summary>
+		/// Makes the command template a public player view command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a public player view command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakePublicPlayerViewCommand<In>(this NestedCommand<In, IPublicPlayerView> command)
 		{
 			command["issheriff"] = new FinalCommand<IPublicPlayerView>((player, cmd) => { PrintLine(player.IsSheriff); });
@@ -542,6 +747,15 @@ namespace Bang.ConsoleUtils
 			});
 			command["role"] = new FinalCommand<IPublicPlayerView>((player, cmd) => { PrintLine(player.IsAlive); });
 		}
+		/// <summary>
+		/// Makes the command template a private player view command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a private player view command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakePrivatePlayerViewCommand<In>(this NestedCommand<In, IPrivatePlayerView> command)
 		{
 			command["issheriff"] = new FinalCommand<IPrivatePlayerView>((player, cmd) => { PrintLine(player.IsSheriff); });
@@ -562,6 +776,15 @@ namespace Bang.ConsoleUtils
 			selectionCommand.MakeCardCollectionCommand();
 			command["selection"] = selectionCommand;
 		}
+		/// <summary>
+		/// Makes the command template a game command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a game command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeGameCommand<In>(this NestedCommand<In, IGame> command)
 		{
 			NestedCommand<IGame, ReadOnlyCollection<IPublicPlayerView>> playersCommand = new NestedCommand<IGame, ReadOnlyCollection<IPublicPlayerView>>((game, cmd) => game.Players);
@@ -653,6 +876,15 @@ namespace Bang.ConsoleUtils
 				PrintLine(player.GetVictories(character));
 			}
 		}
+		/// <summary>
+		/// Makes the command template a session player command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a session player command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeSessionPlayerCommand<In>(this NestedCommand<In, IPlayer> command)
 		{
 			command["name"] = new FinalCommand<IPlayer>((player, cmd) => { PrintLine(player.Name); });
@@ -670,10 +902,28 @@ namespace Bang.ConsoleUtils
 				victoriesCommand["Character" + character.ToString()] = new FinalCommand<IPlayer>(new CharacterVictories(character).Execute);
 			command["victories"] = victoriesCommand;
 		}
+		/// <summary>
+		/// Makes the command template a session spectator command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a session spectator command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeSessionSpectatorCommand<In>(this NestedCommand<In, ISpectator> command)
 		{
 			command["name"] = new FinalCommand<ISpectator>((spectator, cmd) => { PrintLine(spectator.Name); });
 		}
+		/// <summary>
+		/// Makes the command template a session player collection command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a session player collection command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeSessionPlayerCollectionCommand<In>(this NestedCommand<In, ReadOnlyCollection<IPlayer>> command)
 		{
 			command[""] = new FinalCommand<ReadOnlyCollection<IPlayer>>((players, cmd) =>
@@ -686,6 +936,15 @@ namespace Bang.ConsoleUtils
 			});
 			command["count"] = new FinalCommand<ReadOnlyCollection<IPlayer>>((players, cmd) => { PrintLine(players.Count); });
 		}
+		/// <summary>
+		/// Makes the command template a session spectator collection command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a session spectator collection command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeSessionSpectatorCollectionCommand<In>(this NestedCommand<In, ReadOnlyCollection<ISpectator>> command)
 		{
 			command[""] = new FinalCommand<ReadOnlyCollection<ISpectator>>((spectators, cmd) =>
@@ -698,6 +957,15 @@ namespace Bang.ConsoleUtils
 			});
 			command["count"] = new FinalCommand<ReadOnlyCollection<ISpectator>>((spectators, cmd) => { PrintLine(spectators.Count); });
 		}
+		/// <summary>
+		/// Makes the command template a session command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a session command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeSessionCommand<In>(this NestedCommand<In, ISession> command)
 		{
 			command["name"] = new FinalCommand<ISession>((session, cmd) => { PrintLine(session.Name); });
@@ -764,6 +1032,15 @@ namespace Bang.ConsoleUtils
 			command["spectator"] = spectatorCommand;
 		}
 
+		/// <summary>
+		/// Makes the command template a session collection command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a session collection command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeSessionCollectionCommand<In>(this NestedCommand<In, ReadOnlyCollection<ISession>> command)
 		{
 			command[""] = new FinalCommand<ReadOnlyCollection<ISession>>((sessions, cmd) =>
@@ -776,6 +1053,15 @@ namespace Bang.ConsoleUtils
 			});
 			command["count"] = new FinalCommand<ReadOnlyCollection<ISession>>((sessions, cmd) => { PrintLine(sessions.Count); });
 		}
+		/// <summary>
+		/// Makes the command template a server command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a server command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeServerCommand<In>(this NestedCommand<In, IServer> command)
 		{
 			command["name"] = new FinalCommand<IServer>((server, cmd) => { PrintLine(server.Name); });
@@ -807,6 +1093,15 @@ namespace Bang.ConsoleUtils
 			command["sessions"] = sessionsCommand;
 		}
 
+		/// <summary>
+		/// Makes the command template a player game control command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a player game control command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakePlayerGameControlCommand<In>(this NestedCommand<In, IPlayerControl> command)
 		{
 			NestedCommand<IPlayerControl, IGame> gameCommand = new NestedCommand<IPlayerControl, IGame>((control, cmd) => control.Game);
@@ -881,6 +1176,15 @@ namespace Bang.ConsoleUtils
 				}
 			});
 		}
+		/// <summary>
+		/// Makes the command template a spectator game control command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a spectator game control command.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeSpectatorGameControlCommand<In>(this NestedCommand<In, ISpectatorControl> command, OnDisconnected onDisconnected)
 		{
 			NestedCommand<ISpectatorControl, IGame> gameCommand = new NestedCommand<ISpectatorControl, IGame>((control, cmd) => control.Game);
@@ -888,7 +1192,22 @@ namespace Bang.ConsoleUtils
 			command["game"] = gameCommand;
 		}
 
+		/// <summary>
+		/// Represents a delegate to be invoked when a session control is disconnected.
+		/// </summary>
 		public delegate void OnDisconnected();
+		/// <summary>
+		/// Makes the command template a player session control command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a player session control command.
+		/// </param>
+		/// <param name='onDisconnected'>
+		/// The delegate to be invoked when the session control is disconnected.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakePlayerSessionControlCommand<In>(this NestedCommand<In, IPlayerSessionControl> command, OnDisconnected onDisconnected)
 		{
 			NestedCommand<IPlayerSessionControl, ISession> sessionCommand = new NestedCommand<IPlayerSessionControl, ISession>((sessionControl, cmd) => sessionControl.Session);
@@ -933,6 +1252,18 @@ namespace Bang.ConsoleUtils
 				}
 			});
 		}
+		/// <summary>
+		/// Makes the command template a spectator session control command.
+		/// </summary>
+		/// <param name='command'>
+		/// The command template to make a spectator session control command.
+		/// </param>
+		/// <param name='onDisconnected'>
+		/// The delegate to be invoked when the session control is disconnected.
+		/// </param>
+		/// <typeparam name='In'>
+		/// The type of the input parameter of the command.
+		/// </typeparam>
 		public static void MakeSpectatorSessionControlCommand<In>(this NestedCommand<In, ISpectatorSessionControl> command, OnDisconnected onDisconnected)
 		{
 			NestedCommand<ISpectatorSessionControl, ISession> sessionCommand = new NestedCommand<ISpectatorSessionControl, ISession>((sessionControl, cmd) => sessionControl.Session);
@@ -956,4 +1287,3 @@ namespace Bang.ConsoleUtils
 		}
 	}
 }
-

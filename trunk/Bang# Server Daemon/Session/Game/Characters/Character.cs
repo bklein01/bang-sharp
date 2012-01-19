@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Collections.Generic;
 using Bang.Server.Characters;
+
 namespace Bang.Server
 {
 	public class Character
@@ -96,15 +98,15 @@ namespace Bang.Server
 			player.Game.Session.EventManager.OnPlayerUsedAbility(player, type, targetPlayer);
 		}
 
-		public virtual bool HasCardEffect (Card card)
+		public virtual bool HasCardEffect(Card card)
 		{
 			return true;
 		}
-		public virtual bool IsMissed (Card card)
+		public virtual bool IsMissed(Card card)
 		{
 			return card.Type == CardType.Missed;
 		}
-		public virtual bool IsBang (Card card)
+		public virtual bool IsBang(Card card)
 		{
 			return card.Type == CardType.Bang;
 		}
@@ -113,15 +115,15 @@ namespace Bang.Server
 			return true;
 		}
 		
-		public virtual void Draw ()
+		public virtual void Draw()
 		{
 			throw new BadUsageException();
 		}
-		public virtual void PlayCard (Card card)
+		public virtual void PlayCard(Card card)
 		{
-			card.Play ();
+			card.Play();
 		}
-		public virtual void UseAbility ()
+		public virtual void UseAbility()
 		{
 		}
 		public virtual void CheckDeck(Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
@@ -131,15 +133,15 @@ namespace Bang.Server
 			Game.Session.EventManager.OnPlayerCheckedDeck(player, checkedCard, causedBy, result);
 			resultMethod(causedBy, result);
 		}
-		public virtual void CheckMissed (CardResultMethod resultMethod)
+		public virtual void CheckMissed(CardResultMethod resultMethod)
 		{
 			throw new BadUsageException();
 		}
 		
-		public virtual void OnHit (int hitPoints, Player causedBy)
+		public virtual void OnHit(int hitPoints, Player causedBy)
 		{
 		}
-		public virtual void OnEmptyHand ()
+		public virtual void OnEmptyHand()
 		{
 		}
 		public virtual void OnPlayerDied(Player player)
@@ -151,16 +153,16 @@ namespace Bang.Server
 		public virtual void OnPlayContinue()
 		{
 		}
-		public virtual void OnTurnEnded ()
+		public virtual void OnTurnEnded()
 		{
 		}
-		public virtual void OnPlayedCard (Card card)
+		public virtual void OnPlayedCard(Card card)
 		{
 		}
-		public virtual void OnRespondedWithCard (Card card)
+		public virtual void OnRespondedWithCard(Card card)
 		{
 		}
-		public virtual bool SavePlayer ()
+		public virtual bool SavePlayer()
 		{
 			return false;
 		}

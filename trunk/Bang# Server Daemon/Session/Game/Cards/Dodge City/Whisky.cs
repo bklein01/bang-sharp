@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -37,10 +37,9 @@ namespace Bang.Server.Cards
 			if(Owner.LifePoints == Owner.MaxLifePoints)
 				throw new BadUsageException();
 		}
-		protected override void OnPlay (Player owner)
+		protected override void OnPlay(Player owner)
 		{
 			owner.ModifyLifePoints(2);
 		}
 	}
 }
-

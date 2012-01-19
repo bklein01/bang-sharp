@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Runtime.Remoting;
-using System.Runtime.Remoting.Services;
+
 namespace System
 {
 	/// <summary>
@@ -51,4 +51,3 @@ namespace System
 		}
 	}
 }
-

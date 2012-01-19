@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+
 namespace Bang.Server
 {
 	public sealed class Server : ImmortalMarshalByRefObject, IServerBase
@@ -72,7 +73,7 @@ namespace Bang.Server
 		}
 		public string Name
 		{
-			get { return Config.Instance.GetString ("Server.Name", "Bang# Server"); }
+			get { return Config.Instance.GetString("Server.Name", "Bang# Server"); }
 		}
 		public string Description
 		{
@@ -124,6 +125,7 @@ namespace Bang.Server
 		private static readonly uint StateVersion = 2;
 		private bool LoadState()
 		{
+			Console.Error.Write("INFO: Loading server state... ");
 			try
 			{
 				Stream stream = File.OpenRead(StatePath);
@@ -147,10 +149,12 @@ namespace Bang.Server
 						sessions.Add(session.ID, session);
 					}
 				}
+				Console.Error.WriteLine("Success!");
 				return true;
 			}
 			catch
 			{
+				Console.Error.WriteLine("Error!");
 				return false;
 			}
 		}
@@ -158,6 +162,7 @@ namespace Bang.Server
 		{
 			lock(Lock)
 			{
+				Console.Error.Write("INFO: Saving server state... ");
 				try
 				{
 					if(!new FileInfo(StatePath).Exists)
@@ -169,9 +174,11 @@ namespace Bang.Server
 						writer.Write(StateVersion);
 						Write(writer);
 					}
+					Console.Error.WriteLine("Success!");
 				}
 				catch
 				{
+					Console.Error.WriteLine("Error!");
 				}
 			}
 		}
@@ -186,6 +193,7 @@ namespace Bang.Server
 				int id = sessions.GenerateID();
 				Session session = new Session(this, id, sessionData);
 				sessions.Add(id, session);
+				Console.Error.WriteLine("INFO: Created session #{0}.", id);
 
 				session.Join(sessionData.PlayerPassword, playerData, listener);
 				SaveState();
@@ -230,6 +238,7 @@ namespace Bang.Server
 				if(Locked)
 					throw new MethodAccessException();
 
+				Console.Error.WriteLine("INFO: Resetting sessions...");
 				List<Session> sessionList = new List<Session>(sessions.Values);
 				foreach(Session s in sessionList)
 					s.End();
@@ -240,6 +249,7 @@ namespace Bang.Server
 		{
 			lock(Lock)
 			{
+				Console.Error.WriteLine("INFO: Removing session #{0}...", session.ID);
 				sessions.Remove(session.ID);
 				session.Disconnect();
 				SaveState();

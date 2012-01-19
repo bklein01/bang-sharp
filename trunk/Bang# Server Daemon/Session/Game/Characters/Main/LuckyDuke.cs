@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +34,7 @@ namespace Bang.Server.Characters
 			private CheckDeckMethod checkMethod;
 			private CardResultMethod resultMethod;
 			
-			public LuckyDukeResponseHandler (LuckyDuke parent, Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
+			public LuckyDukeResponseHandler(LuckyDuke parent, Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
 				: base(RequestType.LuckyDuke, parent.Player)
 			{
 				this.causedBy = causedBy;
@@ -40,9 +42,9 @@ namespace Bang.Server.Characters
 				this.resultMethod = resultMethod;
 			}
 			
-			protected override void OnStart ()
+			protected override void OnStart()
 			{
-				Game.GameTable.DrawIntoSelection (2, null);
+				Game.GameTable.DrawIntoSelection(2, null);
 			}
 			
 			protected override void OnRespondCard(Card card)
@@ -58,16 +60,15 @@ namespace Bang.Server.Characters
 			}
 		}
 		
-		public LuckyDuke (Player player)
+		public LuckyDuke(Player player)
 			: base(player, CharacterType.LuckyDuke)
 		{
 		}
 		
-		public override void CheckDeck (Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
+		public override void CheckDeck(Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
 		{
 			OnUsedAbility();
 			Game.GameCycle.PushTempHandler(new LuckyDukeResponseHandler(this, causedBy, checkMethod, resultMethod));
 		}
 	}
 }
-

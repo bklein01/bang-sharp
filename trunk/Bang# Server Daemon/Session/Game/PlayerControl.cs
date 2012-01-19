@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using System.Threading;
+
 namespace Bang.Server
 {
 	public sealed class PlayerControl : ImmortalMarshalByRefObject, IPlayerControl
@@ -55,7 +57,7 @@ namespace Bang.Server
 			get { return player.Game; }
 		}
 		
-		public PlayerControl (Player player)
+		public PlayerControl(Player player)
 		{
 			this.player = player;
 		}
@@ -155,7 +157,6 @@ namespace Bang.Server
 			{
 				if(game.Session.Locked)
 					throw new MethodAccessException();
-				game.Session.Locked = true;
 
 				game.GameCycle.PlayerRespondUseAbility(player);
 				if(game.Session.State == SessionState.Playing)

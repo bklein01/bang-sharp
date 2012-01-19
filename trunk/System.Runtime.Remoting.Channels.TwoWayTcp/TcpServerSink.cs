@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -27,6 +27,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
+
 namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
 	internal class TcpServerSink : IServerChannelSink
@@ -87,17 +88,16 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			request.Connection.SendMessage(response);
 		}
 
-		Stream IServerChannelSink.GetResponseStream (IServerResponseChannelSinkStack sinkStack, object state, IMessage msg, ITransportHeaders headers)
+		Stream IServerChannelSink.GetResponseStream(IServerResponseChannelSinkStack sinkStack, object state, IMessage msg, ITransportHeaders headers)
 		{
 			Message request = (Message)state;
 			Message response = new Message { Type = MessageType.Response, ID = request.ID, Headers = headers, Stream = null };
 			return request.Connection.SendMessage(response);
 		}
 
-		ServerProcessing IServerChannelSink.ProcessMessage (IServerChannelSinkStack sinkStack, IMessage requestMsg, ITransportHeaders requestHeaders, Stream requestStream, out IMessage responseMsg, out ITransportHeaders responseHeaders, out Stream responseStream)
+		ServerProcessing IServerChannelSink.ProcessMessage(IServerChannelSinkStack sinkStack, IMessage requestMsg, ITransportHeaders requestHeaders, Stream requestStream, out IMessage responseMsg, out ITransportHeaders responseHeaders, out Stream responseStream)
 		{
 			throw new NotSupportedException();
 		}
 	}
 }
-
