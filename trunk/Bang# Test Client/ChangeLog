@@ -1,5 +1,13 @@
 2012-01-19  WOnder93  <omosnacek@gmail.com>
 
+	* AssemblyInfo.cs:
+	  
+
+	* Main.cs:
+	  Added an automatic test for AI players to the test client.
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
 	* Main.cs:
 	  Fixed the UI grammar: no past perfect, past simple
 	  everywhere.
