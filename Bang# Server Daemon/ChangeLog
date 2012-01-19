@@ -1,5 +1,14 @@
 2012-01-19  WOnder93  <omosnacek@gmail.com>
 
+	* Session.cs:
+	* Dynamite.cs:
+	  Added back missing usings.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
 	* Main.cs:
 	* Server.cs:
 	* AssemblyInfo.cs:
