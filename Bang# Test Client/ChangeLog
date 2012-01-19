@@ -1,6 +1,15 @@
 2012-01-19  WOnder93  <omosnacek@gmail.com>
 
 	* Main.cs:
+	  Fixed the UI grammar: no past perfect, past simple
+	  everywhere.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
 	* AssemblyInfo.cs:
 	  Global code reformatting.
 	Updated copyright year.
