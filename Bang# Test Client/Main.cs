@@ -24,10 +24,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Remoting;
 using System.Runtime.Serialization;
+using System.Threading;
 using Bang.ConsoleUtils;
 
 namespace Bang.Client
@@ -37,6 +39,7 @@ namespace Bang.Client
 		private IPlayerControl gameControl;
 		private IPlayerSessionControl sessionControl;
 		private IPlayerEventListener aiPlayer;
+		private bool aiTest = false;
 
 		private static readonly TestClient Instance = new TestClient();
 
@@ -240,6 +243,55 @@ namespace Bang.Client
 						ConsoleHelper.ErrorLine("Cannot join session: {0}", e.GetType());
 					}
 				});
+				sessionCmd["aitestcontinue"] = new FinalCommand<ISession>((session, cmd) =>
+				{
+					CreatePlayerData cpd;
+					Password password;
+					int id;
+					try
+					{
+						id = int.Parse(cmd.Dequeue());
+					}
+					catch(FormatException)
+					{
+						ConsoleHelper.ErrorLine("Bad number format!");
+						return;
+					}
+
+					if(Instance.sessionControl != null)
+					{
+						ConsoleHelper.ErrorLine("Already connected to a session!");
+						return;
+					}
+
+					password = new Password("_aitest");
+
+					AI.AIPlayer ai = new AI.AIPlayer();
+					cpd = ai.CreateData;
+					cpd.Name = "TestAI";
+					cpd.Password = new Password("_aitest");
+
+					try
+					{
+						Instance.aiPlayer = ai;
+						Instance.aiTest = true;
+						session.Replace(id, password, cpd, Instance);
+						if(Instance.sessionControl.Session.State != SessionState.Playing)
+							Instance.sessionControl.StartGame();
+						ConsoleHelper.SuccessLine("Joined AI Test session!");
+						Console.ReadKey(true);
+						Instance.sessionControl.Disconnect();
+						Instance.sessionControl = null;
+						Instance.gameControl = null;
+						ConsoleHelper.SuccessLine("AI test session disconnected!");
+					}
+					catch(GameException e)
+					{
+						ConsoleHelper.ErrorLine("Cannot join session: {0}", e.GetType());
+					}
+					Instance.aiPlayer = null;
+					Instance.aiTest = false;
+				});
 				serverCmd["session"] = sessionCmd;
 				serverCmd["test"] = new FinalCommand<IServer>((server, cmd) =>
 				{
@@ -304,6 +356,61 @@ namespace Bang.Client
 						server.CreateSession(csd, cpd, Instance);
 						Instance.aiPlayer = ai;
 						ConsoleHelper.SuccessLine("Test AI session created!");
+					}
+					catch(GameException e)
+					{
+						ConsoleHelper.ErrorLine("Cannot create session: {0}", e.GetType());
+					}
+				});
+				serverCmd["aitest"] = new FinalCommand<IServer>((server, cmd) =>
+				{
+					if(Instance.sessionControl != null)
+					{
+						ConsoleHelper.ErrorLine("Already connected to a session!");
+						return;
+					}
+					int playerCount = 4;
+					if(cmd.Count != 0)
+					{
+						try
+						{
+							playerCount = int.Parse(cmd.Dequeue());
+						}
+						catch(FormatException)
+						{
+							ConsoleHelper.ErrorLine("Bad number format!");
+							return;
+						}
+					}
+					
+					CreateSessionData csd = new CreateSessionData
+					{
+						Name = "AI Test",
+						Description = "An AI testing session.",
+						MaxPlayers = playerCount,
+						MinPlayers = playerCount,
+						MaxSpectators = 0,
+						PlayerPassword = new Password("_aitest"),
+						DodgeCity = true
+					};
+					AI.AIPlayer ai = new AI.AIPlayer();
+					CreatePlayerData cpd = ai.CreateData;
+					cpd.Name = "TestAI";
+					cpd.Password = new Password("_aitest");
+					try
+					{
+						server.CreateSession(csd, cpd, Instance);
+						Instance.aiPlayer = ai;
+						Instance.aiTest = true;
+						Instance.sessionControl.StartGame();
+						ConsoleHelper.SuccessLine("AI test session created!");
+						Console.ReadKey(true);
+						Instance.sessionControl.Disconnect();
+						Instance.sessionControl = null;
+						Instance.gameControl = null;
+						Instance.aiPlayer = null;
+						Instance.aiTest = false;
+						ConsoleHelper.SuccessLine("AI test session disconnected!");
 					}
 					catch(GameException e)
 					{
@@ -474,6 +581,44 @@ namespace Bang.Client
 				aiPlayer.OnSessionEnded();
 				aiPlayer = null;
 			}
+			if(aiTest)
+				aiTest = false;
+		}
+
+		private static void PrintTable(int colWidth, IEnumerable<IEnumerable> lines)
+		{
+			foreach(IEnumerable line in lines)
+			{
+				foreach(object value in line)
+					ConsoleHelper.Print("{0," + colWidth + "}", value);
+				ConsoleHelper.PrintLine();
+			}
+		}
+		private static IEnumerable GetRoleHeaders(IEnumerable<Role> roles)
+		{
+			yield return "Player";
+			foreach(Role r in roles)
+				yield return r;
+		}
+		private static IEnumerable GetRolePlayerLine(IEnumerable<Role> roles, IPlayer player)
+		{
+			yield return player.ID;
+			foreach(Role r in roles)
+				yield return player.GetVictories(r);
+		}
+		private static IEnumerable<IEnumerable> GetRolePlayerLines(ISession session)
+		{
+			List<Role > roles = Utils.GetRoles(true);
+			yield return GetRoleHeaders(roles);
+			foreach(IPlayer player in session.Players)
+				yield return GetRolePlayerLine(roles, player);
+		}
+		
+		private static IEnumerable<IEnumerable> GetScorePlayerLines(ISession session)
+		{
+			yield return new object[] { "Player", "Score" };
+			foreach(IPlayer player in session.Players)
+				yield return new object[] { player.ID, player.Score };
 		}
 		void IEventListener.OnGameEnded()
 		{
@@ -481,6 +626,27 @@ namespace Bang.Client
 
 			if(aiPlayer != null)
 				aiPlayer.OnGameEnded();
+			if(aiTest)
+			{
+				ISession session = sessionControl.Session;
+				int gamesPlayed = session.GamesPlayed;
+				ConsoleHelper.PrintLine("AI TEST REPORT");
+				ConsoleHelper.PrintLine("--------------");
+				ConsoleHelper.PrintLine("Games played: {0}", gamesPlayed);
+				
+				ConsoleHelper.PrintLine("ROLE TABLE");
+				PrintTable(9, GetRolePlayerLines(session));
+
+				ConsoleHelper.PrintLine("SCORE TABLE");
+				PrintTable(9, GetScorePlayerLines(session));
+
+				//ConsoleHelper.PrintLine("CHARACTER TABLE");
+				//List<CharacterType > characters = Utils.GetCharacterTypes(session, true);
+				
+				ThreadPool.QueueUserWorkItem(state => {
+					this.sessionControl.StartGame();
+				});
+			}
 		}
 
 		void IEventListener.OnPlayerJoinedSession(IPlayer player)
