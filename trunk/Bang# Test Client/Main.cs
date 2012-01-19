@@ -509,7 +509,7 @@ namespace Bang.Client
 		}
 		void IEventListener.OnPlayerUpdated(IPlayer player)
 		{
-			ConsoleHelper.SessionEvent("Player #{0} '{1}' has been updated.", player.ID, player.Name);
+			ConsoleHelper.SessionEvent("Player #{0} '{1}' was updated.", player.ID, player.Name);
 			if(aiPlayer != null)
 				aiPlayer.OnPlayerUpdated(player);
 		}
@@ -529,13 +529,13 @@ namespace Bang.Client
 
 		void IEventListener.OnPlayerDrewFromDeck(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
 		{
-			ConsoleHelper.GameEvent("Player #{0} has drawn {1} cards from the deck.", player.ID, drawnCards.Count);
+			ConsoleHelper.GameEvent("Player #{0} drew {1} cards from the deck.", player.ID, drawnCards.Count);
 			if(aiPlayer != null)
 				aiPlayer.OnPlayerDrewFromDeck(player, drawnCards);
 		}
 		void IEventListener.OnPlayerDrewFromGraveyard(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
 		{
-			ConsoleHelper.GameEvent("Player #{0} has drawn {1} cards from the graveyard.", player.ID, drawnCards.Count);
+			ConsoleHelper.GameEvent("Player #{0} drew {1} cards from the graveyard.", player.ID, drawnCards.Count);
 			if(aiPlayer != null)
 				aiPlayer.OnPlayerDrewFromGraveyard(player, drawnCards);
 		}
