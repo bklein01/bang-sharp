@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Linq;
+
 namespace Bang
 {
 	/// <summary>
@@ -102,7 +105,7 @@ namespace Bang
 		/// </returns>
 		public bool CheckPassword(string password)
 		{
-			return Hash.SequenceEqual(CreateHash (password));
+			return Hash.SequenceEqual(CreateHash(password));
 		}
 		/// <summary>
 		/// Checks if the specified password hash matches this hash.
@@ -113,10 +116,9 @@ namespace Bang
 		/// <returns>
 		/// True if the password hashes match, otherwise false.
 		/// </returns>
-		public bool CheckPassword (Password password)
+		public bool CheckPassword(Password password)
 		{
 			return Hash.SequenceEqual(password.Hash);
 		}
 	}
 }
-

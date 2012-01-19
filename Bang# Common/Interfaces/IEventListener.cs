@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System.Collections.ObjectModel;
+
 namespace Bang
 {
 	/// <summary>
@@ -62,21 +65,21 @@ namespace Bang
 		/// <param name="player">
 		/// The <see cref="IPlayer"/> that has joined the session.
 		/// </param>
-		void OnPlayerLeftSession (IPlayer player);
+		void OnPlayerLeftSession(IPlayer player);
 		/// <summary>
 		/// Fired when a spectator has left the session.
 		/// </summary>
 		/// <param name="spectator">
 		/// The <see cref="ISpectator"/> that has left the session.
 		/// </param>
-		void OnSpectatorLeftSession (ISpectator spectator);
+		void OnSpectatorLeftSession(ISpectator spectator);
 		/// <summary>
 		/// Fired when a player has updated.
 		/// </summary>
 		/// <param name="player">
 		/// The <see cref="IPlayer"/> that has updated.
 		/// </param>
-		void OnPlayerUpdated (IPlayer player);
+		void OnPlayerUpdated(IPlayer player);
 
 		/// <summary>
 		/// Fired when a player has sent a chat message.
@@ -97,7 +100,7 @@ namespace Bang
 		/// <param name="message">
 		/// The content of the message.
 		/// </param>
-		void OnChatMessage (ISpectator spectator, string message);
+		void OnChatMessage(ISpectator spectator, string message);
 
 		/// <summary>
 		/// Fired when a player has drawn one or more cards from the deck.
@@ -118,7 +121,7 @@ namespace Bang
 		/// <param name="drawnCards">
 		/// The <see cref="ReadOnlyCollection<ICard>"/> that contains the drawn cards.
 		/// </param>
-		void OnPlayerDrewFromGraveyard (IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards);
+		void OnPlayerDrewFromGraveyard(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards);
 		/// <summary>
 		/// Fired when a player has discarded one of his cards.
 		/// </summary>
@@ -128,7 +131,7 @@ namespace Bang
 		/// <param name="card">
 		/// The discarded <see cref="ICard"/>.
 		/// </param>
-		void OnPlayerDiscardedCard (IPublicPlayerView player, ICard card);
+		void OnPlayerDiscardedCard(IPublicPlayerView player, ICard card);
 		/// <summary>
 		/// Fired when a player has played a card.
 		/// </summary>
@@ -138,7 +141,7 @@ namespace Bang
 		/// <param name="card">
 		/// The played <see cref="ICard"/>.
 		/// </param>
-		void OnPlayerPlayedCard (IPublicPlayerView player, ICard card);
+		void OnPlayerPlayedCard(IPublicPlayerView player, ICard card);
 		/// <summary>
 		/// Fired when a player has played a card on a target player.
 		/// </summary>
@@ -151,7 +154,7 @@ namespace Bang
 		/// <param name="targetPlayer">
 		/// The <see cref="IPublicPlayerView"/> of the target player.
 		/// </param>
-		void OnPlayerPlayedCard (IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer);
+		void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer);
 		/// <summary>
 		/// Fired when a player plays a card on a target card.
 		/// </summary>
@@ -167,7 +170,7 @@ namespace Bang
 		/// <param name="targetCard">
 		/// The target <see cref="ICard"/>.
 		/// </param>
-		void OnPlayerPlayedCard (IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer, ICard targetCard);
+		void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer, ICard targetCard);
 		/// <summary>
 		/// Fired when a player has played a card with the effect of another card type.
 		/// </summary>
@@ -241,14 +244,14 @@ namespace Bang
 		/// <param name="targetPlayer">
 		/// The <see cref="IPublicPlayerView"/> of the target player.
 		/// </param>
-		void OnPassedTableCard (IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer);
+		void OnPassedTableCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer);
 		/// <summary>
 		/// Fired when a player has ended his turn.
 		/// </summary>
 		/// <param name="player">
 		/// The <see cref="IPublicPlayerView"/> of the player.
 		/// </param>
-		void OnPlayerPassed (IPublicPlayerView player);
+		void OnPlayerPassed(IPublicPlayerView player);
 		/// <summary>
 		/// Fired when a player has responded with a card.
 		/// </summary>
@@ -258,7 +261,7 @@ namespace Bang
 		/// <param name="card">
 		/// The <see cref="ICard"/> responded with.
 		/// </param>
-		void OnPlayerRespondedWithCard (IPublicPlayerView player, ICard card);
+		void OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card);
 		/// <summary>
 		/// Fired when a player has responded with a card with the effect of another card type.
 		/// </summary>
@@ -278,7 +281,7 @@ namespace Bang
 		/// <param name="drawnCards">
 		/// The <see cref="ReadOnlyCollection<ICard>"/> containing the drawn cards.
 		/// </param>
-		void OnDrawnIntoSelection (ReadOnlyCollection<ICard> drawnCards);
+		void OnDrawnIntoSelection(ReadOnlyCollection<ICard> drawnCards);
 		/// <summary>
 		/// Fired when a player has picked a card from the selection.
 		/// </summary>
@@ -288,14 +291,14 @@ namespace Bang
 		/// <param name="card">
 		/// The picked <see cref="ICard"/>.
 		/// </param>
-		void OnPlayerPickedFromSelection (IPublicPlayerView player, ICard card);
+		void OnPlayerPickedFromSelection(IPublicPlayerView player, ICard card);
 		/// <summary>
 		/// Fired when a card has been undrawn from the selection back to the deck.
 		/// </summary>
 		/// <param name="card">
 		/// The undrawn <see cref="ICard"/>.
 		/// </param>
-		void OnUndrawnFromSelection (ICard card);
+		void OnUndrawnFromSelection(ICard card);
 		/// <summary>
 		/// Fired when a player has stolen a card from another player.
 		/// </summary>
@@ -308,7 +311,7 @@ namespace Bang
 		/// <param name="targetCard">
 		/// The stolen <see cref="ICard"/>.
 		/// </param>
-		void OnPlayerStoleCard (IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard);
+		void OnPlayerStoleCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard);
 		/// <summary>
 		/// Fired when a player has cancelled a card from another player.
 		/// </summary>
@@ -321,21 +324,21 @@ namespace Bang
 		/// <param name="targetCard">
 		/// The canceled <see cref="ICard"/>.
 		/// </param>
-		void OnPlayerCancelledCard (IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard);
+		void OnPlayerCancelledCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard);
 		/// <summary>
 		/// Fired when a card has been taken from the deck and cancelled (while 'deck checking').
 		/// </summary>
 		/// <param name="card">
 		/// The checked <see cref="ICard"/>.
 		/// </param>
-		void OnDeckChecked (ICard card);
+		void OnDeckChecked(ICard card);
 		/// <summary>
 		/// Fired when a card has been cancelled (not by a player).
 		/// </summary>
 		/// <param name="card">
 		/// The cancelled <see cref="ICard"/>.
 		/// </param>
-		void OnCardCancelled (ICard card);
+		void OnCardCancelled(ICard card);
 
 		/// <summary>
 		/// Fired when a player has 'checked the deck'.
@@ -352,7 +355,7 @@ namespace Bang
 		/// <param name="result">
 		/// The <see cref="bool"/> indicating wheter the deck checking finished with a positive result.
 		/// </param>
-		void OnPlayerCheckedDeck (IPublicPlayerView player, ICard checkedCard, CardType causedBy, bool result);
+		void OnPlayerCheckedDeck(IPublicPlayerView player, ICard checkedCard, CardType causedBy, bool result);
 		/// <summary>
 		/// Fired when a player's life point count has changed.
 		/// </summary>
@@ -419,4 +422,3 @@ namespace Bang
 		void OnDeckRegenerated();
 	}
 }
-

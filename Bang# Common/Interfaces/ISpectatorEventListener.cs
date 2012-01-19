@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,14 +36,13 @@ namespace Bang
 		/// <param name="control">
 		/// The <see cref="ISpectatorSessionControl"/> instance for this spectator.
 		/// </param>
-		void OnJoinedSession (ISpectatorSessionControl control);
+		void OnJoinedSession(ISpectatorSessionControl control);
 		/// <summary>
 		/// Called when the spectator successfully joins a game.
 		/// </summary>
 		/// <param name="control">
 		/// The <see cref="ISpectatorControl"/> instance for this spectator.
 		/// </param>
-		void OnJoinedGame (ISpectatorControl control);
+		void OnJoinedGame(ISpectatorControl control);
 	}
 }
-

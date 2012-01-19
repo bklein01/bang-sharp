@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,16 +25,17 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+
 namespace Bang.Server
 {
 	public class QueueResponseHandler : ResponseHandler
 	{
 		private Queue<ResponseHandler> queue;
 
-		protected QueueResponseHandler (Player requested, Player causedBy)
+		protected QueueResponseHandler(Player requested, Player causedBy)
 			: base(requested, causedBy)
 		{
-			queue = new Queue<ResponseHandler> ();
+			queue = new Queue<ResponseHandler>();
 		}
 		protected QueueResponseHandler(Player requested)
 			: this(requested, null)
@@ -42,10 +45,10 @@ namespace Bang.Server
 			this(null, null)
 		{
 		}
-		protected QueueResponseHandler (Player requested, Player causedBy, int capacity)
+		protected QueueResponseHandler(Player requested, Player causedBy, int capacity)
 			: base(requested, causedBy)
 		{
-			queue = new Queue<ResponseHandler> (capacity);
+			queue = new Queue<ResponseHandler>(capacity);
 		}
 		protected QueueResponseHandler(Player requested, int capacity)
 			: this(requested, null, capacity)
@@ -63,27 +66,26 @@ namespace Bang.Server
 				queue.Enqueue(h);
 		}
 
-		protected void AddHandler (ResponseHandler handler)
+		protected void AddHandler(ResponseHandler handler)
 		{
-			queue.Enqueue (handler);
+			queue.Enqueue(handler);
 		}
 
-		protected override void OnStart ()
+		protected override void OnStart()
 		{
 			try {
-				PushHandler (queue.Dequeue ());
-			} catch (InvalidOperationException) {
-				End ();
+				PushHandler(queue.Dequeue());
+			} catch(InvalidOperationException) {
+				End();
 			}
 		}
-		protected override void OnNext ()
+		protected override void OnNext()
 		{
 			try {
-				PushHandler (queue.Dequeue ());
-			} catch (InvalidOperationException) {
-				End ();
+				PushHandler(queue.Dequeue());
+			} catch(InvalidOperationException) {
+				End();
 			}
 		}
 	}
 }
-

@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,14 +33,14 @@ namespace Bang.Server
 			private Card card;
 			private Card extraCard;
 
-			public TargetCardGoldenCardResponseHandler (TargetCardGoldenCard parent, Card card, Card extraCard)
+			public TargetCardGoldenCardResponseHandler(TargetCardGoldenCard parent, Card card, Card extraCard)
 				: base(parent.reqType, card.Owner)
 			{
 				this.parent = parent;
 				this.card = card;
 				this.extraCard = extraCard;
 			}
-			public TargetCardGoldenCardResponseHandler (TargetCardGoldenCard parent, Card extraCard)
+			public TargetCardGoldenCardResponseHandler(TargetCardGoldenCard parent, Card extraCard)
 				: this(parent, parent, extraCard)
 			{
 			}
@@ -65,11 +67,11 @@ namespace Bang.Server
 				
 				if(targetPlayer == RequestedPlayer || targetPlayer.HasCardEffect(card))
 					parent.OnPlay(RequestedPlayer, targetCard);
-				End ();
+				End();
 			}
-			protected override void OnRespondNoAction ()
+			protected override void OnRespondNoAction()
 			{
-				End ();
+				End();
 			}
 		}
 		private RequestType reqType;
@@ -86,7 +88,7 @@ namespace Bang.Server
 			this.reqType = reqType;
 			this.includeSelf = includeSelf;
 		}
-		protected TargetCardGoldenCard (Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType)
+		protected TargetCardGoldenCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType)
 			: this(game, id, type, suit, rank, reqType, false)
 		{
 		}
@@ -95,7 +97,7 @@ namespace Bang.Server
 		{
 			Game.GameCycle.PushTempHandler(new TargetCardGoldenCardResponseHandler(this, extraCard));
 		}
-		protected override void OnPlayVirtually (Card card, Card extraCard)
+		protected override void OnPlayVirtually(Card card, Card extraCard)
 		{
 			Game.GameCycle.PushTempHandler(new TargetCardGoldenCardResponseHandler(this, card, extraCard));
 		}
@@ -104,7 +106,6 @@ namespace Bang.Server
 		{
 		}
 
-		protected abstract void OnPlay (Player owner, Card targetCard);
+		protected abstract void OnPlay(Player owner, Card targetCard);
 	}
 }
-

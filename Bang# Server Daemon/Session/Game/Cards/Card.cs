@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Bang.Server.Cards;
+
 namespace Bang.Server
 {
 	public class Card : ImmortalMarshalByRefObject, ICard
@@ -52,7 +55,7 @@ namespace Bang.Server
 				get { return CardRank.Unknown; }
 			}
 			
-			public EmptyCard (Card parent)
+			public EmptyCard(Card parent)
 			{
 				this.id = parent.id;
 			}
@@ -97,7 +100,7 @@ namespace Bang.Server
 		}
 		public bool IsInHand
 		{
-			get { return owner == null ? false : owner.Hand.Contains (this); }
+			get { return owner == null ? false : owner.Hand.Contains(this); }
 		}
 		public bool IsOnTable
 		{
@@ -159,12 +162,12 @@ namespace Bang.Server
 			empty.Disconnect();
 		}
 		
-		public void AssertInHand ()
+		public void AssertInHand()
 		{
-			if (owner == null)
-				throw new BadCardException ();
-			if (!owner.Hand.Contains (this))
-				throw new BadCardException ();
+			if(owner == null)
+				throw new BadCardException();
+			if(!owner.Hand.Contains(this))
+				throw new BadCardException();
 		}
 		public void AssertOnTable()
 		{
@@ -174,13 +177,13 @@ namespace Bang.Server
 				throw new BadCardException();
 		}
 
-		public virtual void CheckMissed (CardResultMethod resultMethod)
+		public virtual void CheckMissed(CardResultMethod resultMethod)
 		{
 			throw new BadCardException();
 		}
-		public virtual void Play ()
+		public virtual void Play()
 		{
-			throw new BadUsageException ();
+			throw new BadUsageException();
 		}
 		public virtual void PlayVirtually(Card card)
 		{

@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -26,6 +26,7 @@
 using System;
 using System.Collections;
 using System.Runtime.Remoting.Messaging;
+
 namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
 	public class TcpClientChannel : IChannelSender, IChannelReceiver
@@ -156,10 +157,9 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			return null;
 		}
 
-		public string Parse (string url, out string objectURI)
+		public string Parse(string url, out string objectURI)
 		{
-			return TcpChannel.ParseChannelUrl (url, out objectURI);
+			return TcpChannel.ParseChannelUrl(url, out objectURI);
 		}
 	}
 }
-

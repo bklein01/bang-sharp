@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -38,14 +40,14 @@ namespace Bang
 		/// <param name="control">
 		/// The <see cref="IPlayerSessionControl"/> instance for this player.
 		/// </param>
-		void OnJoinedSession (IPlayerSessionControl control);
+		void OnJoinedSession(IPlayerSessionControl control);
 		/// <summary>
 		/// Called when the player successfully joins a game.
 		/// </summary>
 		/// <param name="control">
 		/// The <see cref="IPlayerControl"/> instance for this player.
 		/// </param>
-		void OnJoinedGame (IPlayerControl control);
+		void OnJoinedGame(IPlayerControl control);
 
 		/// <summary>
 		/// Fired when the player is requested for an action.
@@ -59,4 +61,3 @@ namespace Bang
 		void OnNewRequest(RequestType requestType, IPublicPlayerView causedBy);
 	}
 }
-

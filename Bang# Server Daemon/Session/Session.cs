@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -27,9 +27,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+
 namespace Bang.Server
 {
 	public sealed class Session : ImmortalMarshalByRefObject, ISession
@@ -43,7 +43,7 @@ namespace Bang.Server
 				this.parent = parent;
 			}
 
-			void ISessionAdmin.End ()
+			void ISessionAdmin.End()
 			{
 				parent.End();
 			}
@@ -142,19 +142,19 @@ namespace Bang.Server
 		}
 		public ReadOnlyCollection<SessionPlayer> Players
 		{
-			get { return new ReadOnlyCollection<SessionPlayer> (playerList); }
+			get { return new ReadOnlyCollection<SessionPlayer>(playerList); }
 		}
 		public ReadOnlyCollection<SessionSpectator> Spectators
 		{
-			get { return new ReadOnlyCollection<SessionSpectator> (spectatorList); }
+			get { return new ReadOnlyCollection<SessionSpectator>(spectatorList); }
 		}
 		ReadOnlyCollection<IPlayer> ISession.Players
 		{
-			get { return new ReadOnlyCollection<IPlayer> (playerList.ConvertAll<IPlayer>(p => p)); }
+			get { return new ReadOnlyCollection<IPlayer>(playerList.ConvertAll<IPlayer>(p => p)); }
 		}
 		ReadOnlyCollection<ISpectator> ISession.Spectators
 		{
-			get { return new ReadOnlyCollection<ISpectator> (spectatorList.ConvertAll<ISpectator>(s => s)); }
+			get { return new ReadOnlyCollection<ISpectator>(spectatorList.ConvertAll<ISpectator>(s => s)); }
 		}
 		public SessionEventManager EventManager
 		{
@@ -549,4 +549,3 @@ namespace Bang.Server
 		}
 	}
 }
-

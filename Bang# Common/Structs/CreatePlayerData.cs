@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+
 namespace Bang
 {
 	/// <summary>
@@ -72,7 +75,7 @@ namespace Bang
 		/// <param name="password">
 		/// The password of the player.
 		/// </param>
-		public CreatePlayerData (string name, byte[] image, string password) : this()
+		public CreatePlayerData(string name, byte[] image, string password) : this()
 		{
 			Name = name;
 			Image = image;
@@ -80,4 +83,3 @@ namespace Bang
 		}
 	}
 }
-

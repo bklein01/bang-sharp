@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,26 +32,26 @@ namespace Bang.Server.Characters
 			private ElGringo parent;
 			private Player targetPlayer;
 
-			public ElGringoResponseHandler (ElGringo parent, Player targetPlayer)
+			public ElGringoResponseHandler(ElGringo parent, Player targetPlayer)
 				: base(RequestType.StealCard, parent.Player)
 			{
 				this.parent = parent;
 				this.targetPlayer = targetPlayer;
 			}
 
-			protected override void OnRespondCard (Card targetCard)
+			protected override void OnRespondCard(Card targetCard)
 			{
-				if (targetCard.Owner != targetPlayer)
-					throw new BadTargetCardException ();
-				targetCard.AssertInHand ();
+				if(targetCard.Owner != targetPlayer)
+					throw new BadTargetCardException();
+				targetCard.AssertInHand();
 				
 				parent.OnUsedAbility();
 				Game.GameTable.PlayerStealCard(RequestedPlayer, targetCard);
-				End ();
+				End();
 			}
-			protected override void OnRespondNoAction ()
+			protected override void OnRespondNoAction()
 			{
-				End ();
+				End();
 			}
 		}
 		public override int MaxLifePoints
@@ -57,16 +59,15 @@ namespace Bang.Server.Characters
 			get { return 3; }
 		}
 		
-		public ElGringo (Player player)
+		public ElGringo(Player player)
 			: base(player, CharacterType.ElGringo)
 		{
 		}
 		
-		public override void OnHit (int hitPoints, Player causedBy)
+		public override void OnHit(int hitPoints, Player causedBy)
 		{
 			if(causedBy != null && causedBy != Player && causedBy.Hand.Count != 0)
 				Game.GameCycle.PushTempHandler(new ElGringoResponseHandler(this, causedBy));
 		}
 	}
 }
-

@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,18 +24,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System.Collections.Generic;
+
 namespace Bang.Server
 {
 	public abstract class AllPlayersTableCard : PlayableTableCard
 	{
 		private bool includeSelf;
 
-		protected AllPlayersTableCard (Game game, int id, CardType type, CardSuit suit, CardRank rank, bool includeSelf)
+		protected AllPlayersTableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, bool includeSelf)
 			: base(game, id, type, suit, rank)
 		{
 			this.includeSelf = includeSelf;
 		}
-		protected AllPlayersTableCard (Game game, int id, CardType type, CardSuit suit, CardRank rank)
+		protected AllPlayersTableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank)
 			: this(game, id, type, suit, rank, false)
 		{
 		}
@@ -87,7 +90,6 @@ namespace Bang.Server
 				Game.GameCycle.PushTempHandler(new QueueResponseHandler(handlers));
 		}
 
-		protected abstract ResponseHandler OnPlayFromTable (Player owner, Player targetPlayer);
+		protected abstract ResponseHandler OnPlayFromTable(Player owner, Player targetPlayer);
 	}
 }
-

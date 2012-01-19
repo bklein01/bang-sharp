@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,16 +27,15 @@ namespace Bang.Server.Characters
 {
 	public sealed class BartCassidy : Character
 	{
-		public BartCassidy (Player player)
+		public BartCassidy(Player player)
 			: base(player, CharacterType.BartCassidy)
 		{
 		}
 
-		public override void OnHit (int hitPoints, Player causedBy)
+		public override void OnHit(int hitPoints, Player causedBy)
 		{
 			OnUsedAbility();
 			Game.GameTable.PlayerDrawFromDeck(Player, hitPoints);
 		}
 	}
 }
-

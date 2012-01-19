@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +46,7 @@ namespace Bang
 		/// <param name="message">
 		/// The message to be sent.
 		/// </param>
-		void SendChatMessage (string message);
+		void SendChatMessage(string message);
 
 		/// <summary>
 		/// Disconnects and removes the spectator from the session.
@@ -52,4 +54,3 @@ namespace Bang
 		void Disconnect();
 	}
 }
-

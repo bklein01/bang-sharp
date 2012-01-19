@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 namespace Bang.Server
 {
 	public class ProxyCharacter : Character
@@ -231,7 +232,7 @@ namespace Bang.Server
 			else
 				characters.ForEach(c => c.OnTurnStarted());
 		}
-		public override void OnPlayContinue ()
+		public override void OnPlayContinue()
 		{
 			if(characters.Count == 0)
 				base.OnPlayContinue();
@@ -265,4 +266,3 @@ namespace Bang.Server
 		}
 	}
 }
-

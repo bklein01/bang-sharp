@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+
 namespace Bang.Server
 {
 	public sealed class GameTable
@@ -61,34 +64,34 @@ namespace Bang.Server
 			get { return cards.Values; }
 		}
 		
-		public GameTable (Game game)
+		public GameTable(Game game)
 		{
 			this.game = game;
 			selection = new List<Card>();
-			GenerateCards ();
+			GenerateCards();
 		}
 		
-		public Card GetCard (int id)
+		public Card GetCard(int id)
 		{
 			try {
 				return cards[id];
-			} catch (KeyNotFoundException) {
-				throw new InvalidIdException ();
+			} catch(KeyNotFoundException) {
+				throw new InvalidIdException();
 			}
 		}
 		
-		public void Deal ()
+		public void Deal()
 		{
 			bool repeat;
 			do
 			{
 				repeat = false;
-				foreach (Player p in game.Players)
+				foreach(Player p in game.Players)
 				{
 					int d = p.InitialCardCount - p.Hand.Count;
-					if (d > 0)
+					if(d > 0)
 					{
-						PlayerDrawFromDeck (p, d >= 2 ? 2 : d);
+						PlayerDrawFromDeck(p, d >= 2 ? 2 : d);
 						repeat = true;
 					}
 				}
@@ -96,21 +99,21 @@ namespace Bang.Server
 			while(repeat);
 		}
 		
-		public ReadOnlyCollection<Card> PlayerDrawFromDeck (Player player, int count, bool revealCards)
+		public ReadOnlyCollection<Card> PlayerDrawFromDeck(Player player, int count, bool revealCards)
 		{
-			List<Card> drawn = new List<Card> (count);
-			for (int i = 0; i < count; i++)
+			List<Card> drawn = new List<Card>(count);
+			for(int i = 0; i < count; i++)
 			{
-				Card card = PopCardFromDeck ();
-				player.AddCardToHand (card);
-				drawn.Add (card);
+				Card card = PopCardFromDeck();
+				player.AddCardToHand(card);
+				drawn.Add(card);
 			}
 			game.Session.EventManager.OnPlayerDrewFromDeck(player, drawn, revealCards);
-			return new ReadOnlyCollection<Card> (drawn);
+			return new ReadOnlyCollection<Card>(drawn);
 		}
-		public ReadOnlyCollection<Card> PlayerDrawFromDeck (Player player, int count)
+		public ReadOnlyCollection<Card> PlayerDrawFromDeck(Player player, int count)
 		{
-			return PlayerDrawFromDeck (player, count, false);
+			return PlayerDrawFromDeck(player, count, false);
 		}
 		public ReadOnlyCollection<Card> PlayerDrawFromGraveyard(Player player, int count)
 		{
@@ -124,64 +127,64 @@ namespace Bang.Server
 			game.Session.EventManager.OnPlayerDrewFromGraveyard(player, drawn);
 			return new ReadOnlyCollection<Card>(drawn);
 		}
-		public void PlayerDiscardCard (Card card)
+		public void PlayerDiscardCard(Card card)
 		{
 			Player owner = card.Owner;
-			if (owner == null)
-				throw new InvalidOperationException ();
+			if(owner == null)
+				throw new InvalidOperationException();
 			
-			if (!owner.RemoveCardFromHand (card))
-				if (!owner.RemoveCardFromTable (card as TableCard))
-					throw new InvalidOperationException ();
+			if(!owner.RemoveCardFromHand(card))
+				if(!owner.RemoveCardFromTable(card as TableCard))
+					throw new InvalidOperationException();
 			PutCardToGraveyard(card);
 			
-			game.Session.EventManager.OnPlayerDiscardedCard (owner, card);
+			game.Session.EventManager.OnPlayerDiscardedCard(owner, card);
 			owner.CheckEmptyHand();
 		}
-		public void PlayerPlayCard (Card card)
+		public void PlayerPlayCard(Card card)
 		{
 			Player owner = card.Owner;
-			if (owner == null)
-				throw new InvalidOperationException ();
+			if(owner == null)
+				throw new InvalidOperationException();
 			
-			if (!owner.RemoveCardFromHand (card))
-				if (!owner.RemoveCardFromTable (card as TableCard))
-					throw new InvalidOperationException ();
-			PutCardToGraveyard (card);
+			if(!owner.RemoveCardFromHand(card))
+				if(!owner.RemoveCardFromTable(card as TableCard))
+					throw new InvalidOperationException();
+			PutCardToGraveyard(card);
 			
-			game.Session.EventManager.OnPlayerPlayedCard (owner, card);
-			owner.OnPlayedCard (card);
-			owner.CheckEmptyHand ();
+			game.Session.EventManager.OnPlayerPlayedCard(owner, card);
+			owner.OnPlayedCard(card);
+			owner.CheckEmptyHand();
 		}
-		public void PlayerPlayCard (Card card, Player targetPlayer)
+		public void PlayerPlayCard(Card card, Player targetPlayer)
 		{
 			Player owner = card.Owner;
-			if (owner == null)
-				throw new InvalidOperationException ();
+			if(owner == null)
+				throw new InvalidOperationException();
 			
-			if (!owner.RemoveCardFromHand (card))
-				if (!owner.RemoveCardFromTable (card as TableCard))
-					throw new InvalidOperationException ();
-			PutCardToGraveyard (card);
+			if(!owner.RemoveCardFromHand(card))
+				if(!owner.RemoveCardFromTable(card as TableCard))
+					throw new InvalidOperationException();
+			PutCardToGraveyard(card);
 			
-			game.Session.EventManager.OnPlayerPlayedCard (owner, card, targetPlayer);
-			owner.OnPlayedCard (card);
-			owner.CheckEmptyHand ();
+			game.Session.EventManager.OnPlayerPlayedCard(owner, card, targetPlayer);
+			owner.OnPlayedCard(card);
+			owner.CheckEmptyHand();
 		}
-		public void PlayerPlayCard (Card card, Card targetCard)
+		public void PlayerPlayCard(Card card, Card targetCard)
 		{
 			Player owner = card.Owner;
-			if (owner == null)
-				throw new InvalidOperationException ();
+			if(owner == null)
+				throw new InvalidOperationException();
 			
-			if (!owner.RemoveCardFromHand (card))
-				if (!owner.RemoveCardFromTable (card as TableCard))
-					throw new InvalidOperationException ();
-			PutCardToGraveyard (card);
+			if(!owner.RemoveCardFromHand(card))
+				if(!owner.RemoveCardFromTable(card as TableCard))
+					throw new InvalidOperationException();
+			PutCardToGraveyard(card);
 			
-			game.Session.EventManager.OnPlayerPlayedCard (owner, card, targetCard.Owner, targetCard);
-			owner.OnPlayedCard (card);
-			owner.CheckEmptyHand ();
+			game.Session.EventManager.OnPlayerPlayedCard(owner, card, targetCard.Owner, targetCard);
+			owner.OnPlayedCard(card);
+			owner.CheckEmptyHand();
 		}
 		public void PlayerPlayCard(Card card, CardType asCard)
 		{
@@ -240,36 +243,36 @@ namespace Bang.Server
 			game.Session.EventManager.OnPlayerPlayedCardOnTable(owner, card);
 			owner.CheckEmptyHand();
 		}
-		public void PassTableCard (TableCard card, Player targetPlayer)
+		public void PassTableCard(TableCard card, Player targetPlayer)
 		{
 			Player owner = card.Owner;
-			if (owner == null)
-				throw new InvalidOperationException ();
+			if(owner == null)
+				throw new InvalidOperationException();
 			if(!owner.RemoveCardFromHand(card))
-				if(!owner.RemoveCardFromTable (card))
-					throw new InvalidOperationException ();
+				if(!owner.RemoveCardFromTable(card))
+					throw new InvalidOperationException();
 			
-			targetPlayer.AddCardToTable (card);
-			game.Session.EventManager.OnPassedTableCard (owner, card, targetPlayer);
+			targetPlayer.AddCardToTable(card);
+			game.Session.EventManager.OnPassedTableCard(owner, card, targetPlayer);
 		}
-		public void PlayerPass (Player player)
+		public void PlayerPass(Player player)
 		{
-			game.Session.EventManager.OnPlayerPassed (player);
+			game.Session.EventManager.OnPlayerPassed(player);
 		}
-		public void PlayerRespondWithCard (Card card)
+		public void PlayerRespondWithCard(Card card)
 		{
 			Player owner = card.Owner;
-			if (owner == null)
-				throw new InvalidOperationException ();
+			if(owner == null)
+				throw new InvalidOperationException();
 			
-			if (!owner.RemoveCardFromHand (card))
-				if (!owner.RemoveCardFromTable (card as TableCard))
-					throw new InvalidOperationException ();
-			PutCardToGraveyard (card);
+			if(!owner.RemoveCardFromHand(card))
+				if(!owner.RemoveCardFromTable(card as TableCard))
+					throw new InvalidOperationException();
+			PutCardToGraveyard(card);
 			
-			game.Session.EventManager.OnPlayerRespondedWithCard (owner, card);
-			owner.OnRespondedWithCard (card);
-			owner.CheckEmptyHand ();
+			game.Session.EventManager.OnPlayerRespondedWithCard(owner, card);
+			owner.OnRespondedWithCard(card);
+			owner.CheckEmptyHand();
 		}
 		public void PlayerRespondWithCard(Card card, CardType asCard)
 		{
@@ -286,14 +289,14 @@ namespace Bang.Server
 			owner.OnRespondedWithCard(card);
 			owner.CheckEmptyHand();
 		}
-		public void DrawIntoSelection (int count, Player owner)
+		public void DrawIntoSelection(int count, Player owner)
 		{
-			List<Card> drawn = new List<Card> (count);
-			for (int i = 0; i < count; i++)
+			List<Card> drawn = new List<Card>(count);
+			for(int i = 0; i < count; i++)
 			{
-				Card card = PopCardFromDeck ();
-				selection.Add (card);
-				drawn.Add (card);
+				Card card = PopCardFromDeck();
+				selection.Add(card);
+				drawn.Add(card);
 			}
 			selectionOwner = owner;
 			game.Session.EventManager.OnDrawnIntoSelection(drawn, owner);
@@ -302,17 +305,17 @@ namespace Bang.Server
 		{
 			if(selectionOwner != null && selectionOwner != player)
 				throw new InvalidOperationException();
-			if (!selection.Remove (card))
+			if(!selection.Remove(card))
 				throw new InvalidOperationException();
-			player.AddCardToHand (card);
-			game.Session.EventManager.OnPlayerPickedFromSelection (player, card, selectionOwner == null);
+			player.AddCardToHand(card);
+			game.Session.EventManager.OnPlayerPickedFromSelection(player, card, selectionOwner == null);
 		}
-		public void UndrawFromSelection (Card card)
+		public void UndrawFromSelection(Card card)
 		{
-			if (!selection.Remove (card))
-				throw new InvalidOperationException ();
-			PutCardToDeck (card);
-			game.Session.EventManager.OnUndrawnFromSelection (card, selectionOwner);
+			if(!selection.Remove(card))
+				throw new InvalidOperationException();
+			PutCardToDeck(card);
+			game.Session.EventManager.OnUndrawnFromSelection(card, selectionOwner);
 		}
 		public void CancelSelection()
 		{
@@ -320,37 +323,37 @@ namespace Bang.Server
 			foreach(Card c in selectionCopy)
 				CancelCard(c);
 		}
-		public void PlayerStealCard (Player player, Card card)
+		public void PlayerStealCard(Player player, Card card)
 		{
 			Player owner = card.Owner;
-			if (owner == null)
-				throw new InvalidOperationException ();
-			if (!owner.RemoveCardFromHand (card))
-				if (!owner.RemoveCardFromTable (card as TableCard))
-					throw new InvalidOperationException ();
+			if(owner == null)
+				throw new InvalidOperationException();
+			if(!owner.RemoveCardFromHand(card))
+				if(!owner.RemoveCardFromTable(card as TableCard))
+					throw new InvalidOperationException();
 			
-			player.AddCardToHand (card);
-			game.Session.EventManager.OnPlayerStoleCard (player, owner, card);
-			owner.CheckEmptyHand ();
-		}
-		public void PlayerCancelCard (Player player, Card card)
-		{
-			Player owner = card.Owner;
-			if (owner == null)
-				throw new InvalidOperationException ();
-			if (!owner.RemoveCardFromHand (card))
-				if (!owner.RemoveCardFromTable (card as TableCard))
-					throw new InvalidOperationException ();
-
-			PutCardToGraveyard (card);
-			game.Session.EventManager.OnPlayerCancelledCard (player, owner, card);
+			player.AddCardToHand(card);
+			game.Session.EventManager.OnPlayerStoleCard(player, owner, card);
 			owner.CheckEmptyHand();
 		}
-		public Card CheckDeck ()
+		public void PlayerCancelCard(Player player, Card card)
 		{
-			Card checkedCard = PopCardFromDeck ();
-			PutCardToGraveyard (checkedCard);
-			game.Session.EventManager.OnDeckChecked (checkedCard);
+			Player owner = card.Owner;
+			if(owner == null)
+				throw new InvalidOperationException();
+			if(!owner.RemoveCardFromHand(card))
+				if(!owner.RemoveCardFromTable(card as TableCard))
+					throw new InvalidOperationException();
+
+			PutCardToGraveyard(card);
+			game.Session.EventManager.OnPlayerCancelledCard(player, owner, card);
+			owner.CheckEmptyHand();
+		}
+		public Card CheckDeck()
+		{
+			Card checkedCard = PopCardFromDeck();
+			PutCardToGraveyard(checkedCard);
+			game.Session.EventManager.OnDeckChecked(checkedCard);
 			return checkedCard;
 		}
 		public void CancelCard(Card card)
@@ -368,47 +371,47 @@ namespace Bang.Server
 			PutCardToGraveyard(card);
 			game.Session.EventManager.OnCardCancelled(card);
 			if(owner != null)
-				owner.CheckEmptyHand ();
+				owner.CheckEmptyHand();
 		}
 		
-		private void RegenerateDeck ()
+		private void RegenerateDeck()
 		{
-			Card top = graveyard.Pop ();
-			while (graveyard.Count != 0)
-				deck.Push (graveyard.Pop ());
-			graveyard.Push (top);
+			Card top = graveyard.Pop();
+			while(graveyard.Count != 0)
+				deck.Push(graveyard.Pop());
+			graveyard.Push(top);
 			
 			game.Session.EventManager.OnDeckRegenerated();
 		}
-		private Card PopCardFromDeck ()
+		private Card PopCardFromDeck()
 		{
-			if (deck.Count == 0)
-				RegenerateDeck ();
-			return deck.Pop ();
+			if(deck.Count == 0)
+				RegenerateDeck();
+			return deck.Pop();
 		}
-		private Card PopCardFromGraveyard ()
+		private Card PopCardFromGraveyard()
 		{
-			if (graveyard.Count == 0)
+			if(graveyard.Count == 0)
 				throw new BadGameStateException();
-			return graveyard.Pop ();
+			return graveyard.Pop();
 		}
-		private void PutCardToDeck (Card card)
+		private void PutCardToDeck(Card card)
 		{
 			card.Owner = null;
 			deck.Push(card);
 		}
-		private void PutCardToGraveyard (Card card)
+		private void PutCardToGraveyard(Card card)
 		{
 			card.Owner = null;
-			graveyard.Push (card);
+			graveyard.Push(card);
 		}
-		private void AddCardToSelection (Card card)
+		private void AddCardToSelection(Card card)
 		{
-			selection.Add (card);
+			selection.Add(card);
 		}
-		private bool RemoveCardFromSelection (Card card)
+		private bool RemoveCardFromSelection(Card card)
 		{
-			return selection.Remove (card);
+			return selection.Remove(card);
 		}
 		
 		private void GenerateCards()
@@ -553,9 +556,8 @@ namespace Bang.Server
 			//card = Card.GetCard(game, idStack.Peek(), CardType., CardSuit., CardRank.); cardList.Add(card); cards.Add(idStack.Pop(), card);
 			
 			cardList.Shuffle();
-			deck = new Stack<Card> (cardList);
-			graveyard = new Stack<Card> (count);
+			deck = new Stack<Card>(cardList);
+			graveyard = new Stack<Card>(count);
 		}
 	}
 }
-

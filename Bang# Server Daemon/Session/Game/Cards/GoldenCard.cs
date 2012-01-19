@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -54,15 +56,15 @@ namespace Bang.Server
 				if(card != parent)
 					parent.OnPlayVirtually(card, extraCard);
 				else
-					parent.OnPlay (extraCard);
+					parent.OnPlay(extraCard);
 				End();
 			}
-			protected override void OnRespondNoAction ()
+			protected override void OnRespondNoAction()
 			{
 				End();
 			}
 		}
-		protected GoldenCard (Game game, int id, CardType type, CardSuit suit, CardRank rank)
+		protected GoldenCard(Game game, int id, CardType type, CardSuit suit, CardRank rank)
 			: base(game, id, type, suit, rank)
 		{
 		}
@@ -75,8 +77,7 @@ namespace Bang.Server
 		{
 			Game.GameCycle.PushTempHandler(new GoldenCardResponseHandler(this, card));
 		}
-		protected abstract void OnPlay (Card extraCard);
+		protected abstract void OnPlay(Card extraCard);
 		protected abstract void OnPlayVirtually(Card card, Card extraCard);
 	}
 }
-

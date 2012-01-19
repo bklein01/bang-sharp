@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -39,7 +39,7 @@ namespace Bang.Server
 			Game.GameTable.PlayerDiscardCard(extraCard);
 			OnPlay(owner);
 		}
-		protected override void OnPlayVirtually (Card card, Card extraCard)
+		protected override void OnPlayVirtually(Card card, Card extraCard)
 		{
 			Player owner = Owner;
 			Game.GameTable.PlayerPlayCard(card, this.Type);
@@ -48,4 +48,3 @@ namespace Bang.Server
 		protected abstract void OnPlay(Player owner);
 	}
 }
-

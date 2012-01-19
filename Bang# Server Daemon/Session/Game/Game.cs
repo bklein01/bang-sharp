@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+
 namespace Bang.Server
 {
 	public sealed class Game : ImmortalMarshalByRefObject, IGame
@@ -38,7 +41,7 @@ namespace Bang.Server
 				get { return game; }
 			}
 
-			public SpectatorControl (Game game)
+			public SpectatorControl(Game game)
 			{
 				this.game = game;
 			}
@@ -71,7 +74,7 @@ namespace Bang.Server
 		}
 		ReadOnlyCollection<IPublicPlayerView> IGame.Players
 		{
-			get { return new ReadOnlyCollection<IPublicPlayerView> (playerList.ConvertAll<IPublicPlayerView>(p => p)); }
+			get { return new ReadOnlyCollection<IPublicPlayerView>(playerList.ConvertAll<IPublicPlayerView>(p => p)); }
 		}
 		public int AlivePlayersCount
 		{
@@ -142,14 +145,14 @@ namespace Bang.Server
 				session.EventManager.SendGameController(p, player.Control);
 			}
 			
-			spectatorControl = new SpectatorControl (this);
-			foreach (SessionSpectator s in session.Spectators)
-				session.EventManager.SendGameController (s, spectatorControl);
+			spectatorControl = new SpectatorControl(this);
+			foreach(SessionSpectator s in session.Spectators)
+				session.EventManager.SendGameController(s, spectatorControl);
 		}
-		private IEnumerable<Role> GenerateRoles (int playerCount)
+		private IEnumerable<Role> GenerateRoles(int playerCount)
 		{
 			List<Role> roles;
-			switch (playerCount)
+			switch(playerCount)
 			{
 			case 2:
 				roles = new List<Role>() { Role.Outlaw };
@@ -189,28 +192,28 @@ namespace Bang.Server
 				c.Disconnect();
 		}
 
-		public void Start ()
+		public void Start()
 		{
-			GameCycle.StartCycle ();
+			GameCycle.StartCycle();
 			session.EventManager.OnNewRequest(cycle.RequestType, cycle.RequestedPlayer, cycle.CausedBy);
 		}
 		
-		public Player NextPlayer (Player player)
+		public Player NextPlayer(Player player)
 		{
-			int i = playerList.IndexOf (player);
+			int i = playerList.IndexOf(player);
 			do
 			{
-				if (++i == playerList.Count)
+				if(++i == playerList.Count)
 					i = 0;
 			}
-			while (!playerList[i].IsAlive);
+			while(!playerList[i].IsAlive);
 			return playerList[i];
 		}
-		public int GetDistance (Player player, Player targetPlayer)
+		public int GetDistance(Player player, Player targetPlayer)
 		{
 			int playerCount = playerList.Count;
-			int start = playerList.IndexOf (player);
-			int end = playerList.IndexOf (targetPlayer);
+			int start = playerList.IndexOf(player);
+			int end = playerList.IndexOf(targetPlayer);
 			if(start == end)
 				return 0;
 			
@@ -218,22 +221,22 @@ namespace Bang.Server
 			int upIndex = start;
 			int downIndex = start;
 
-			while (upIndex != end && downIndex != end)
+			while(upIndex != end && downIndex != end)
 			{
 				do
 				{
 					upIndex++;
-					if (upIndex == playerCount)
+					if(upIndex == playerCount)
 						upIndex = 0;
 				}
-				while (!playerList[upIndex].IsAlive);
+				while(!playerList[upIndex].IsAlive);
 				do
 				{
-					if (downIndex == 0)
+					if(downIndex == 0)
 						downIndex = playerCount;
 					downIndex--;
 				}
-				while (!playerList[downIndex].IsAlive);
+				while(!playerList[downIndex].IsAlive);
 				dist++;
 			}
 			return dist - player.GetDistanceOut(targetPlayer) + targetPlayer.GetDistanceIn(player);
@@ -492,4 +495,3 @@ namespace Bang.Server
 		}
 	}
 }
-

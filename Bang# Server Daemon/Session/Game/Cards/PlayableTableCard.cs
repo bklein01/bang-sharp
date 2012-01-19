@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +27,7 @@ namespace Bang.Server
 {
 	public abstract class PlayableTableCard : TableCard
 	{
-		protected PlayableTableCard (Game game, int id, CardType type, CardSuit suit, CardRank rank)
+		protected PlayableTableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank)
 			: base(game, id, type, suit, rank)
 		{
 		}
@@ -44,8 +46,7 @@ namespace Bang.Server
 		protected virtual void CheckPlayFromTable()
 		{
 		}
-		protected abstract void OnPlayFromTable ();
-		protected abstract void OnPlayFromTableVirtually (Card card);
+		protected abstract void OnPlayFromTable();
+		protected abstract void OnPlayFromTableVirtually(Card card);
 	}
 }
-

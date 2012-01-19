@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +29,11 @@ namespace Bang.Server
 	{
 		IResultHandler handler;
 
-		public ThrowBangResponseHandler (Player requested, Player causedBy, IResultHandler handler) : base(RequestType.ThrowBang, requested, causedBy)
+		public ThrowBangResponseHandler(Player requested, Player causedBy, IResultHandler handler) : base(RequestType.ThrowBang, requested, causedBy)
 		{
 			this.handler = handler;
 		}
-		public ThrowBangResponseHandler (Player requested, Player causedBy) : this(requested, causedBy, null)
+		public ThrowBangResponseHandler(Player requested, Player causedBy) : this(requested, causedBy, null)
 		{
 		}
 
@@ -48,17 +50,16 @@ namespace Bang.Server
 			else
 				Game.GameTable.PlayerRespondWithCard(card);
 
-			if (handler != null)
-				handler.OnResult (true);
-			End ();
+			if(handler != null)
+				handler.OnResult(true);
+			End();
 		}
-		protected override void OnRespondNoAction ()
+		protected override void OnRespondNoAction()
 		{
-			RequestedPlayer.ModifyLifePoints (-1, CausedBy);
-			if (handler != null)
-				handler.OnResult (false);
-			End ();
+			RequestedPlayer.ModifyLifePoints(-1, CausedBy);
+			if(handler != null)
+				handler.OnResult(false);
+			End();
 		}
 	}
 }
-

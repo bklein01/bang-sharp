@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System.Linq;
+
 namespace Bang.Server.Cards
 {
 	public sealed class GeneralStore : AllPlayersCard
@@ -30,36 +33,35 @@ namespace Bang.Server.Cards
 		{
 			private GeneralStore card;
 			
-			public GeneralStoreResponseHandler (GeneralStore card, Player requested)
+			public GeneralStoreResponseHandler(GeneralStore card, Player requested)
 				: base(RequestType.GeneralStore, requested)
 			{
 				this.card = card;
 			}
 			
-			protected override void OnRespondCard (Card card)
+			protected override void OnRespondCard(Card card)
 			{
-				if (!Game.GameTable.Selection.Contains (card))
-					throw new BadCardException ();
+				if(!Game.GameTable.Selection.Contains(card))
+					throw new BadCardException();
 				
-				Game.GameTable.PlayerPickFromSelection (RequestedPlayer, card);
+				Game.GameTable.PlayerPickFromSelection(RequestedPlayer, card);
 				End();
 			}
 		}
-		public GeneralStore (Game game, int id, CardSuit suit, CardRank rank)
+		public GeneralStore(Game game, int id, CardSuit suit, CardRank rank)
 			: base(game, id, CardType.GeneralStore, suit, rank, true)
 		{
 		}
 		
-		protected override void OnPlay ()
+		protected override void OnPlay()
 		{
-			base.OnPlay ();
-			Game.GameTable.DrawIntoSelection (Game.Players.Count(p => p.IsAlive && p.HasCardEffect(this)), null);
+			base.OnPlay();
+			Game.GameTable.DrawIntoSelection(Game.Players.Count(p => p.IsAlive && p.HasCardEffect(this)), null);
 		}
 		
-		protected override ResponseHandler OnPlay (Player owner, Player targetPlayer)
+		protected override ResponseHandler OnPlay(Player owner, Player targetPlayer)
 		{
 			return new GeneralStoreResponseHandler(this, targetPlayer);
 		}
 	}
 }
-

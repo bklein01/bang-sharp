@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +28,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+
 namespace Bang.AI
 {
 	/// <summary>
@@ -34,6 +37,7 @@ namespace Bang.AI
 	public sealed class AIPlayer : ImmortalMarshalByRefObject, IPlayerEventListener
 	{
 		private static readonly IEnumerator<string> names = new List<string>() { "John", "Mike", "George", "Kelly", "Susan", "Greg", "Andy", "Simon" }.GetEnumerator();
+
 		private static string NextName()
 		{
 			if(!names.MoveNext())
@@ -493,7 +497,7 @@ namespace Bang.AI
 			case RequestType.DiscardCard:
 			case RequestType.SidKetchum:
 			case RequestType.GoldenCard:
-				List<ICard > availableCards = new List<ICard>(player.Hand);
+				List<ICard> availableCards = new List<ICard>(player.Hand);
 				while(availableCards.Count != 0)
 				{
 					ICard worst = cardHelper.WorstCard(availableCards);
@@ -632,10 +636,10 @@ namespace Bang.AI
 			case RequestType.StealCard:
 			case RequestType.CancelCard:
 				availableCards = new List<ICard>();
-				IEnumerable<IPublicPlayerView > nonAllies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Allies);
-				IEnumerable<IPublicPlayerView > nonEnemies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Enemies);
-				IEnumerable<IPublicPlayerView > allies = playerHelper.Allies;
-				IEnumerable<IPublicPlayerView > enemies = playerHelper.Enemies;
+				IEnumerable<IPublicPlayerView> nonAllies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Allies);
+				IEnumerable<IPublicPlayerView> nonEnemies = game.Players.Where(p => p.IsAlive).Except(playerHelper.Enemies);
+				IEnumerable<IPublicPlayerView> allies = playerHelper.Allies;
+				IEnumerable<IPublicPlayerView> enemies = playerHelper.Enemies;
 				// First, look through the tables of non-allies:
 				foreach(IPublicPlayerView p in nonAllies)
 					availableCards.AddRange(p.Table.Where(c => c.Type != CardType.Jail));
@@ -760,6 +764,7 @@ namespace Bang.AI
 		void IEventListener.Ping()
 		{
 		}
+
 		void IEventListener.OnSessionEnded()
 		{
 			sessionControl = null;
@@ -767,18 +772,18 @@ namespace Bang.AI
 			playerHelper = null;
 			cardHelper = null;
 		}
-		void IEventListener.OnGameEnded ()
+		void IEventListener.OnGameEnded()
 		{
 			control = null;
 			playerHelper = null;
 			cardHelper = null;
 		}
 
-		void IEventListener.OnPlayerJoinedSession (IPlayer player) { }
-		void IEventListener.OnSpectatorJoinedSession (ISpectator spectator) { }
-		void IEventListener.OnPlayerLeftSession (IPlayer player) { }
-		void IEventListener.OnSpectatorLeftSession (ISpectator spectator) { }
-		void IEventListener.OnPlayerUpdated (IPlayer player) { }
+		void IEventListener.OnPlayerJoinedSession(IPlayer player) { }
+		void IEventListener.OnSpectatorJoinedSession(ISpectator spectator) { }
+		void IEventListener.OnPlayerLeftSession(IPlayer player) { }
+		void IEventListener.OnSpectatorLeftSession(ISpectator spectator) { }
+		void IEventListener.OnPlayerUpdated(IPlayer player) { }
 
 		void IEventListener.OnChatMessage(IPlayer player, string message) { }
 		void IEventListener.OnChatMessage(ISpectator spectator, string message) { }
@@ -799,7 +804,7 @@ namespace Bang.AI
 				triedAbilities.Clear();
 			}
 		}
-		void IEventListener.OnPlayerDrewFromGraveyard (IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
+		void IEventListener.OnPlayerDrewFromGraveyard(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
 		{
 			if(control == null)
 				return;
@@ -810,12 +815,8 @@ namespace Bang.AI
 				triedAbilities.Clear();
 			}
 		}
-		void IEventListener.OnPlayerDiscardedCard(IPublicPlayerView player, ICard card)
-		{
-		}
-		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card)
-		{
-		}
+		void IEventListener.OnPlayerDiscardedCard(IPublicPlayerView player, ICard card) { }
+		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card) { }
 		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
 		{
 			switch(card.Type)
@@ -847,10 +848,10 @@ namespace Bang.AI
 				break;
 			}
 		}
-		void IEventListener.OnPlayerPlayedCard (IPublicPlayerView player, ICard card, CardType asCard)
+		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard)
 		{
 		}
-		void IEventListener.OnPlayerPlayedCard (IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer)
+		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer)
 		{
 			switch(asCard)
 			{
@@ -865,7 +866,7 @@ namespace Bang.AI
 				break;
 			}
 		}
-		void IEventListener.OnPlayerPlayedCard (IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer, ICard targetCard)
+		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			switch(asCard)
 			{
@@ -881,9 +882,7 @@ namespace Bang.AI
 				break;
 			}
 		}
-		void IEventListener.OnPlayerPlayedCardOnTable (IPublicPlayerView player, ICard card)
-		{
-		}
+		void IEventListener.OnPlayerPlayedCardOnTable(IPublicPlayerView player, ICard card) { }
 		void IEventListener.OnPassedTableCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
 		{
 			if(control == null)
@@ -892,24 +891,12 @@ namespace Bang.AI
 			if(card.Type == CardType.Jail)
 				playerHelper.RegisterAttack(targetPlayer, player);
 		}
-		void IEventListener.OnPlayerPassed (IPublicPlayerView player)
-		{
-		}
-		void IEventListener.OnPlayerRespondedWithCard (IPublicPlayerView player, ICard card)
-		{
-		}
-		void IEventListener.OnPlayerRespondedWithCard (IPublicPlayerView player, ICard card, CardType asCard)
-		{
-		}
-		void IEventListener.OnDrawnIntoSelection (ReadOnlyCollection<ICard> drawnCards)
-		{
-		}
-		void IEventListener.OnPlayerPickedFromSelection (IPublicPlayerView player, ICard card)
-		{
-		}
-		void IEventListener.OnUndrawnFromSelection (ICard card)
-		{
-		}
+		void IEventListener.OnPlayerPassed(IPublicPlayerView player) { }
+		void IEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card) { }
+		void IEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card, CardType asCard) { }
+		void IEventListener.OnDrawnIntoSelection(ReadOnlyCollection<ICard> drawnCards) { }
+		void IEventListener.OnPlayerPickedFromSelection(IPublicPlayerView player, ICard card) { }
+		void IEventListener.OnUndrawnFromSelection(ICard card) { }
 		void IEventListener.OnPlayerStoleCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			if(control == null)
@@ -927,7 +914,7 @@ namespace Bang.AI
 				else
 					playerHelper.RegisterAttack(targetPlayer, player);
 		}
-		void IEventListener.OnPlayerCancelledCard (IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
+		void IEventListener.OnPlayerCancelledCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			if(control == null)
 				return;
@@ -938,15 +925,9 @@ namespace Bang.AI
 				else
 					playerHelper.RegisterAttack(targetPlayer, player);
 		}
-		void IEventListener.OnDeckChecked (ICard card)
-		{
-		}
-		void IEventListener.OnCardCancelled (ICard card)
-		{
-		}
-		void IEventListener.OnPlayerCheckedDeck (IPublicPlayerView player, ICard checkedCard, CardType causedBy, bool result)
-		{
-		}
+		void IEventListener.OnDeckChecked(ICard card) { }
+		void IEventListener.OnCardCancelled(ICard card) { }
+		void IEventListener.OnPlayerCheckedDeck(IPublicPlayerView player, ICard checkedCard, CardType causedBy, bool result) { }
 		void IEventListener.OnLifePointsChanged(IPublicPlayerView player, int delta, IPublicPlayerView causedBy)
 		{
 			if(control == null)
@@ -962,24 +943,15 @@ namespace Bang.AI
 
 			playerHelper.OnRoleRevealed(player);
 		}
-		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character)
-		{
-		}
+		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character) { }
 		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character, IPublicPlayerView targetPlayer)
 		{
 			if(character == CharacterType.DocHolyday || character == CharacterType.JesseJones)
 				playerHelper.RegisterAttack(player, targetPlayer);
 		}
-		void IEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player)
-		{
-		}
-		void IEventListener.OnPlayerLostAdditionalCharacters(IPublicPlayerView player)
-		{
-		}
-		void IEventListener.OnDeckRegenerated()
-		{
-		}
+		void IEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player) { }
+		void IEventListener.OnPlayerLostAdditionalCharacters(IPublicPlayerView player) { }
+		void IEventListener.OnDeckRegenerated() { }
 		#endregion
 	}
 }
-

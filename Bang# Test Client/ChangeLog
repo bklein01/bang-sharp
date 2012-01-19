@@ -1,3 +1,12 @@
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* AssemblyInfo.cs:
+	  Global code reformatting.
+	Updated copyright year.
+	Various small fixes.
+	Added some documentation.
+
 2012-01-15  WOnder93  <omosnacek@gmail.com>
 
 	* Main.cs:

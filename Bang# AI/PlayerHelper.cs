@@ -1,8 +1,8 @@
-// AI.PlayerHelper.cs
+// PlayerHelper.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,8 +23,8 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
 using System.Collections.Generic;
+
 namespace Bang.AI
 {
 	internal abstract class PlayerHelper
@@ -69,4 +69,3 @@ namespace Bang.AI
 		}
 	}
 }
-

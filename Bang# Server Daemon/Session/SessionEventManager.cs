@@ -1,13 +1,39 @@
+// SessionEventManager.cs
+//  
+// Author:  WOnder93 <omosnacek@gmail.com>
+// 
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+
 namespace Bang.Server
 {
 	public sealed class SessionEventManager
 	{
 		private Session session;
 		
-		public SessionEventManager (Session session)
+		public SessionEventManager(Session session)
 		{
 			this.session = session;
 		}
@@ -38,7 +64,7 @@ namespace Bang.Server
 			session.Locked = true;
 			try
 			{
-				spectator.Listener.OnJoinedSession (spectator.Control);
+				spectator.Listener.OnJoinedSession(spectator.Control);
 			}
 			catch(Exception e)
 			{
@@ -49,7 +75,7 @@ namespace Bang.Server
 			session.Locked = false;
 		}
 
-		public void SendGameController (SessionPlayer player, IPlayerControl control)
+		public void SendGameController(SessionPlayer player, IPlayerControl control)
 		{
 			if(!player.HasListener)
 				return;
@@ -104,7 +130,7 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
+			foreach(SessionSpectator s in spectators)
 				if(s.HasListener)
 					try
 					{
@@ -118,12 +144,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnGameEnded ()
+		public void OnGameEnded()
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnGameEnded();
@@ -136,8 +162,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnGameEnded();
@@ -151,12 +177,12 @@ namespace Bang.Server
 			session.Locked = false;
 		}
 
-		public void OnPlayerJoinedSession (SessionPlayer player)
+		public void OnPlayerJoinedSession(SessionPlayer player)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerJoinedSession(player);
@@ -169,8 +195,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerJoinedSession(player);
@@ -183,12 +209,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnSpectatorJoinedSession (SessionSpectator spectator)
+		public void OnSpectatorJoinedSession(SessionSpectator spectator)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnSpectatorJoinedSession(spectator);
@@ -202,7 +228,7 @@ namespace Bang.Server
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if (s.HasListener)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnSpectatorJoinedSession(spectator);
@@ -215,12 +241,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerLeftSession (SessionPlayer player)
+		public void OnPlayerLeftSession(SessionPlayer player)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerLeftSession(player);
@@ -233,8 +259,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerLeftSession(player);
@@ -247,12 +273,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnSpectatorLeftSession (SessionSpectator spectator)
+		public void OnSpectatorLeftSession(SessionSpectator spectator)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnSpectatorLeftSession(spectator);
@@ -265,8 +291,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnSpectatorLeftSession(spectator);
@@ -279,12 +305,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerUpdated (SessionPlayer player)
+		public void OnPlayerUpdated(SessionPlayer player)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerUpdated(player);
@@ -297,8 +323,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerUpdated(player);
@@ -312,12 +338,12 @@ namespace Bang.Server
 			session.Locked = false;
 		}
 
-		public void SendChatMessage (SessionPlayer player, string message)
+		public void SendChatMessage(SessionPlayer player, string message)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnChatMessage(player, message);
@@ -330,8 +356,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnChatMessage(player, message);
@@ -344,12 +370,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void SendChatMessage (SessionSpectator spectator, string message)
+		public void SendChatMessage(SessionSpectator spectator, string message)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnChatMessage(spectator, message);
@@ -362,8 +388,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnChatMessage(spectator, message);
@@ -435,13 +461,13 @@ namespace Bang.Server
 						session.RemoveSpectator(s);
 					}
 		}
-		public void OnPlayerDrewFromGraveyard (Player player, List<Card> drawnCards)
+		public void OnPlayerDrewFromGraveyard(Player player, List<Card> drawnCards)
 		{
 			session.Locked = true;
 			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c));
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerDrewFromGraveyard(player, cards);
@@ -454,8 +480,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerDrewFromGraveyard(player, cards);
@@ -468,12 +494,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerDiscardedCard (Player player, Card card)
+		public void OnPlayerDiscardedCard(Player player, Card card)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerDiscardedCard(player, card);
@@ -486,8 +512,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerDiscardedCard(player, card);
@@ -500,12 +526,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerPlayedCard (Player player, Card card)
+		public void OnPlayerPlayedCard(Player player, Card card)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerPlayedCard(player, card);
@@ -518,8 +544,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerPlayedCard(player, card);
@@ -532,12 +558,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerPlayedCard (Player player, Card card, Player targetPlayer)
+		public void OnPlayerPlayedCard(Player player, Card card, Player targetPlayer)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerPlayedCard(player, card, targetPlayer);
@@ -550,8 +576,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerPlayedCard(player, card, targetPlayer);
@@ -585,8 +611,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						if(targetCard.IsOnTable)
@@ -602,12 +628,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerPlayedCard (Player player, Card card, CardType asCard)
+		public void OnPlayerPlayedCard(Player player, Card card, CardType asCard)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerPlayedCard(player, card, asCard);
@@ -620,8 +646,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerPlayedCard(player, card, asCard);
@@ -634,12 +660,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerPlayedCard (Player player, Card card, CardType asCard, Player targetPlayer)
+		public void OnPlayerPlayedCard(Player player, Card card, CardType asCard, Player targetPlayer)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
@@ -652,8 +678,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
@@ -687,8 +713,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						if(targetCard.IsOnTable)
@@ -704,12 +730,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerPlayedCardOnTable (Player player, Card card)
+		public void OnPlayerPlayedCardOnTable(Player player, Card card)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerPlayedCardOnTable(player, card);
@@ -722,8 +748,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerPlayedCardOnTable(player, card);
@@ -736,12 +762,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPassedTableCard (Player player, Card card, Player targetPlayer)
+		public void OnPassedTableCard(Player player, Card card, Player targetPlayer)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPassedTableCard(player, card, targetPlayer);
@@ -754,8 +780,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPassedTableCard(player, card, targetPlayer);
@@ -768,12 +794,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerPassed (Player player)
+		public void OnPlayerPassed(Player player)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerPassed(player);
@@ -786,8 +812,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerPassed(player);
@@ -800,12 +826,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerRespondedWithCard (Player player, Card card)
+		public void OnPlayerRespondedWithCard(Player player, Card card)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerRespondedWithCard(player, card);
@@ -818,8 +844,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerRespondedWithCard(player, card);
@@ -832,12 +858,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerRespondedWithCard (Player player, Card card, CardType asCard)
+		public void OnPlayerRespondedWithCard(Player player, Card card, CardType asCard)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerRespondedWithCard(player, card, asCard);
@@ -850,8 +876,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerRespondedWithCard(player, card, asCard);
@@ -927,8 +953,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						if(revealCard)
@@ -967,8 +993,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						if(selectionOwner == null)
@@ -1005,8 +1031,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						if(targetCard.IsOnTable)
@@ -1022,12 +1048,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerCancelledCard (Player player, Player targetPlayer, Card targetCard)
+		public void OnPlayerCancelledCard(Player player, Player targetPlayer, Card targetCard)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
@@ -1040,8 +1066,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
@@ -1054,12 +1080,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnDeckChecked (Card card)
+		public void OnDeckChecked(Card card)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnDeckChecked(card);
@@ -1072,8 +1098,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnDeckChecked(card);
@@ -1086,12 +1112,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnCardCancelled (Card card)
+		public void OnCardCancelled(Card card)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnCardCancelled(card);
@@ -1104,8 +1130,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnCardCancelled(card);
@@ -1124,8 +1150,8 @@ namespace Bang.Server
 			session.Locked = true;
 			CardType causedByType = causedBy == null ? CardType.Unknown : causedBy.Type;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerCheckedDeck(player, checkedCard, causedByType, result);
@@ -1138,8 +1164,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerCheckedDeck(player, checkedCard, causedByType, result);
@@ -1152,12 +1178,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnLifePointsChanged (Player player, int delta, Player causedBy)
+		public void OnLifePointsChanged(Player player, int delta, Player causedBy)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnLifePointsChanged(player, delta, causedBy);
@@ -1170,8 +1196,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnLifePointsChanged(player, delta, causedBy);
@@ -1184,12 +1210,12 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerDied (Player player, Player causedBy)
+		public void OnPlayerDied(Player player, Player causedBy)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
-			foreach (SessionPlayer p in players)
-				if (p.HasListener)
+			foreach(SessionPlayer p in players)
+				if(p.HasListener)
 					try
 					{
 						p.Listener.OnPlayerDied(player, causedBy);
@@ -1202,8 +1228,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnPlayerDied(player, causedBy);
@@ -1362,8 +1388,8 @@ namespace Bang.Server
 					}
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
-			foreach (SessionSpectator s in spectators)
-				if (s.HasListener)
+			foreach(SessionSpectator s in spectators)
+				if(s.HasListener)
 					try
 					{
 						s.Listener.OnDeckRegenerated();

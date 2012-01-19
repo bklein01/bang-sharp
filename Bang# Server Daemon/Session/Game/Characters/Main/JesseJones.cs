@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +31,7 @@ namespace Bang.Server.Characters
 		{
 			private JesseJones parent;
 
-			public JesseJonesResponseHandler (JesseJones parent)
+			public JesseJonesResponseHandler(JesseJones parent)
 				: base(RequestType.StealCard, parent.Player)
 			{
 				this.parent = parent;
@@ -53,23 +55,22 @@ namespace Bang.Server.Characters
 				parent.OnUsedAbility(targetPlayer);
 				Game.GameTable.PlayerStealCard(RequestedPlayer, targetCard);
 				Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 1);
-				End ();
+				End();
 			}
 			protected override void OnRespondNoAction()
 			{
 				Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 2);
-				End ();
+				End();
 			}
 		}
-		public JesseJones (Player player)
+		public JesseJones(Player player)
 			: base(player, CharacterType.JesseJones)
 		{
 		}
 		
-		public override void Draw ()
+		public override void Draw()
 		{
 			Game.GameCycle.PushTempHandler(new JesseJonesResponseHandler(this));
 		}
 	}
 }
-

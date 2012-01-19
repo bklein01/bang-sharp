@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting;
 using System.Runtime.Serialization;
+
 namespace Bang.Server
 {
 	static class MainClass
@@ -137,7 +138,7 @@ namespace Bang.Server
 					ConsoleHelper.SuccessLine("Server password changed successfully!");
 				});
 				rootCmd["exit"] = new FinalCommand(cmd => Environment.Exit(0));
-				while (true) // command-line loop
+				while(true) // command-line loop
 				{
 					try
 					{
@@ -199,4 +200,3 @@ namespace Bang.Server
 		}
 	}
 }
-

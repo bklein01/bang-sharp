@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,10 +23,9 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
+using System;
+
 namespace Bang.Server
 {
 	public sealed class ServerMain
@@ -36,6 +35,7 @@ namespace Bang.Server
 			int port = Config.Instance.GetInteger("Server.Port", 2147);
 			int adminPort = Config.Instance.GetInteger("Server.AdminPort", 2148);
 
+			Console.Error.WriteLine("INFO: Starting to listen (main port: {0}, admin port: {1})", port, adminPort);
 			Utils.Serve<Server>(port);
 			ServerUtils.ServeAdmin(adminPort, System.Net.IPAddress.Any);
 

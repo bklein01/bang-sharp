@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +23,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System.Linq;
 namespace Bang.Server.Cards
 {
 	public sealed class Dynamite : TableCard
@@ -31,12 +32,12 @@ namespace Bang.Server.Cards
 			get { return 1; }
 		}
 		
-		public Dynamite (Game game, int id, CardSuit suit, CardRank rank)
+		public Dynamite(Game game, int id, CardSuit suit, CardRank rank)
 			: base(game, id, CardType.Dynamite, suit, rank)
 		{
 		}
 		
-		protected override void OnPredrawCheck ()
+		protected override void OnPredrawCheck()
 		{
 			Owner.CheckDeck(this, c => c.Suit != CardSuit.Spades || c.Rank < CardRank.Two && c.Rank > CardRank.Nine, OnResult);
 		}
@@ -58,4 +59,3 @@ namespace Bang.Server.Cards
 		}
 	}
 }
-

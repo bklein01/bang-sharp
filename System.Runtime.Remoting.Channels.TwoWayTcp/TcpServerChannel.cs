@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -29,6 +29,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
+
 namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
 	public class TcpServerChannel : IChannelReceiver, IChannelSender
@@ -166,7 +167,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		{
 			get { return supressChannelData ? null : channelData; }
 		}
-		string[] IChannelReceiver.GetUrlsForUri (string objectUri)
+		string[] IChannelReceiver.GetUrlsForUri(string objectUri)
 		{
 			if(!objectUri.StartsWith("/"))
 				objectUri = "/" + objectUri;
@@ -255,4 +256,3 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		}
 	}
 }
-

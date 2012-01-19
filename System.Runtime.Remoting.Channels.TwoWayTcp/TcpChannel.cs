@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+
 namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
 	internal static class TcpChannel
@@ -44,51 +45,50 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			port = null;
 
 			// url needs to be at least "tcp:"
-			if (url.Length < 4 || url[3] != ':' ||
-			    (url[0] != 'T' && url[0] != 't') ||
-			    (url[1] != 'C' && url[1] != 'c') ||
-			    (url[2] != 'P' && url[2] != 'p'))
+			if(url.Length < 4 || url[3] != ':' ||
+				(url[0] != 'T' && url[0] != 't') ||
+				(url[1] != 'C' && url[1] != 'c') ||
+				(url[2] != 'P' && url[2] != 'p'))
 				return null;
 			
 			// "tcp:" is acceptable
-			if (url.Length == 4)
+			if(url.Length == 4)
 				return url;
 			
 			// must be of the form "tcp://"
-			if (url.Length <= 5 || url[4] != '/' || url[5] != '/')
+			if(url.Length <= 5 || url[4] != '/' || url[5] != '/')
 				return null;
 			
 			// "tcp://" is acceptable
-			if (url.Length == 6)
+			if(url.Length == 6)
 				return url;
 			
 			int i;
-			for (i = 6; i < url.Length; i++) {
-				if (url[i] == ':' || url[i] == '/')
+			for(i = 6; i < url.Length; i++) {
+				if(url[i] == ':' || url[i] == '/')
 					break;
 			}
 			
-			host = url.Substring (6, i - 6);
+			host = url.Substring(6, i - 6);
 			
-			if (i + 1 < url.Length && url[i] == ':') {
+			if(i + 1 < url.Length && url[i] == ':') {
 				int start = i + 1;
 				
-				for (i++; i < url.Length; i++) {
-					if (url[i] == '/')
+				for(i++; i < url.Length; i++) {
+					if(url[i] == '/')
 						break;
 				}
 				
-				if (i > start)
-					port = url.Substring (start, i - start);
+				if(i > start)
+					port = url.Substring(start, i - start);
 			}
 			
-			if (i >= url.Length || url[i] != '/')
+			if(i >= url.Length || url[i] != '/')
 				return url;
 			
-			objectUri = url.Substring (i);
+			objectUri = url.Substring(i);
 			
-			return url.Substring (0, i);
+			return url.Substring(0, i);
 		}
 	}
 }
-

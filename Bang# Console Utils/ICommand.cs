@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -25,12 +25,15 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+
 namespace Bang.ConsoleUtils
 {
+	/// <summary>
+	/// Represents a text command template.
+	/// </summary>
 	public interface ICommand
 	{
 		IEnumerable<string> Subcommands { get; }
 		ICommand GetSubcommand(string text);
 	}
 }
-

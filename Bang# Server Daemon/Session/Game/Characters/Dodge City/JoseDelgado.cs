@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,51 +31,50 @@ namespace Bang.Server.Characters
 		{
 			private JoseDelgado parent;
 			
-			public JoseDelgadoResponseHandler (JoseDelgado parent)
+			public JoseDelgadoResponseHandler(JoseDelgado parent)
 				: base(RequestType.JoseDelgado, parent.Player)
 			{
 				this.parent = parent;
 			}
 			
-			protected override void OnRespondCard (Card card)
+			protected override void OnRespondCard(Card card)
 			{
-				if (card.Owner != RequestedPlayer)
-					throw new BadCardException ();
+				if(card.Owner != RequestedPlayer)
+					throw new BadCardException();
 				
-				card.AssertInHand ();
+				card.AssertInHand();
 				
-				if (card.Color != CardColor.Blue)
-					throw new BadCardException ();
+				if(card.Color != CardColor.Blue)
+					throw new BadCardException();
 				
 				parent.abilityUses++;
 				parent.OnUsedAbility();
 				Game.GameTable.PlayerDiscardCard(card);
-				Game.GameTable.PlayerDrawFromDeck (RequestedPlayer, 2);
+				Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 2);
 				End();
 			}
-			protected override void OnRespondNoAction ()
+			protected override void OnRespondNoAction()
 			{
 				End();
 			}
 		}
 		private int abilityUses;
 		
-		public JoseDelgado (Player player)
+		public JoseDelgado(Player player)
 			: base(player, CharacterType.JoseDelgado)
 		{
 		}
 		
-		public override void UseAbility ()
+		public override void UseAbility()
 		{
-			if (abilityUses >= 2)
-				throw new BadUsageException ();
+			if(abilityUses >= 2)
+				throw new BadUsageException();
 			Game.GameCycle.PushTempHandler(new JoseDelgadoResponseHandler(this));
 		}
 		
-		public override void OnTurnEnded ()
+		public override void OnTurnEnded()
 		{
 			abilityUses = 0;
 		}
 	}
 }
-

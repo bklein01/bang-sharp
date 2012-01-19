@@ -2,7 +2,9 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
+// 
+// Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+
 namespace Bang.Server
 {
 	public sealed class Player : ImmortalMarshalByRefObject, IPublicPlayerView
@@ -153,15 +156,15 @@ namespace Bang.Server
 		}
 		ReadOnlyCollection<ICard> IPublicPlayerView.Hand
 		{
-			get { return new ReadOnlyCollection<ICard> (hand.ConvertAll<ICard>(c => c.Empty)); }
+			get { return new ReadOnlyCollection<ICard>(hand.ConvertAll<ICard>(c => c.Empty)); }
 		}
 		public ReadOnlyCollection<TableCard> Table
 		{
-			get { return new ReadOnlyCollection<TableCard> (table); }
+			get { return new ReadOnlyCollection<TableCard>(table); }
 		}
 		ReadOnlyCollection<ICard> IPublicPlayerView.Table
 		{
-			get { return new ReadOnlyCollection<ICard> (table.ConvertAll<ICard>(c => c)); }
+			get { return new ReadOnlyCollection<ICard>(table.ConvertAll<ICard>(c => c)); }
 		}
 		public Role Role
 		{
@@ -171,7 +174,7 @@ namespace Bang.Server
 		{
 			get
 			{
-				if (game.Players.Count <= 3)
+				if(game.Players.Count <= 3)
 					return role;
 				else
 					return role == Role.Sheriff ? Role.Sheriff : isAlive ? Role.Unknown : role;
@@ -280,13 +283,13 @@ namespace Bang.Server
 			control = new PlayerControl(this);
 		}
 		
-		public void PlayCard (Card card)
+		public void PlayCard(Card card)
 		{
-			character.PlayCard (card);
+			character.PlayCard(card);
 		}
-		public void CheckDeck (Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
+		public void CheckDeck(Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
 		{
-			character.CheckDeck (causedBy, checkMethod, resultMethod);
+			character.CheckDeck(causedBy, checkMethod, resultMethod);
 		}
 		public int GetDistanceIn(Player origin)
 		{
@@ -297,26 +300,26 @@ namespace Bang.Server
 			dist += character.DistanceIn;
 			return dist;
 		}
-		public int GetDistanceOut (Player target)
+		public int GetDistanceOut(Player target)
 		{
 			int dist = 0;
-			foreach (Card c in table)
+			foreach(Card c in table)
 				if(c.DistanceOut != 0 && target.HasCardEffect(c))
 					dist += c.DistanceOut;
 			dist += character.DistanceOut;
 			return dist;
 		}
-		public bool HasCardEffect (Card card)
+		public bool HasCardEffect(Card card)
 		{
-			return character.HasCardEffect (card);
+			return character.HasCardEffect(card);
 		}
 		public void CheckMissed(Card card, CardResultMethod resultMethod)
 		{
 			card.CheckMissed((causedBy, result) => resultMethod(causedBy, result || character.IsMissed(card)));
 		}
-		public bool IsBang (Card card)
+		public bool IsBang(Card card)
 		{
-			return character.IsBang (card);
+			return character.IsBang(card);
 		}
 		public void CheckPlayCard(CardType card)
 		{
@@ -332,26 +335,26 @@ namespace Bang.Server
 		
 		private sealed class BeerRescue : ResponseHandler
 		{
-			public BeerRescue (Player player, Player causedBy)
+			public BeerRescue(Player player, Player causedBy)
 				: base(RequestType.BeerRescue, player, causedBy)
 			{
 			}
 
-			protected override void OnRespondCard (Card card)
+			protected override void OnRespondCard(Card card)
 			{
-				if (card.Owner != RequestedPlayer)
-					throw new BadCardException ();
-				card.AssertInHand ();
-				if (card.Type != CardType.Beer)
-					throw new BadCardException ();
+				if(card.Owner != RequestedPlayer)
+					throw new BadCardException();
+				card.AssertInHand();
+				if(card.Type != CardType.Beer)
+					throw new BadCardException();
 
 				card.Play();
 				End();
 			}
-			protected override void OnRespondNoAction ()
+			protected override void OnRespondNoAction()
 			{
-				Game.PlayerDied (RequestedPlayer, CausedBy);
-				End ();
+				Game.PlayerDied(RequestedPlayer, CausedBy);
+				End();
 			}
 			protected override void OnRespondUseAbility()
 			{
@@ -362,8 +365,8 @@ namespace Bang.Server
 				}
 				else
 				{
-					Game.PlayerDied (RequestedPlayer, CausedBy);
-					End ();
+					Game.PlayerDied(RequestedPlayer, CausedBy);
+					End();
 				}
 			}
 		}
@@ -401,23 +404,23 @@ namespace Bang.Server
 			ModifyLifePoints(delta, null);
 		}
 		
-		public void AddCardToHand (Card card)
+		public void AddCardToHand(Card card)
 		{
 			if(card == null)
 				return;
 			card.Owner = this;
 			hand.Add(card);
 		}
-		public void AddCardToTable (TableCard card)
+		public void AddCardToTable(TableCard card)
 		{
 			if(card == null)
 				return;
 			card.Owner = this;
-			table.Add (card);
+			table.Add(card);
 		}
 		public bool RemoveCardFromHand(Card card)
 		{
-			return hand.Remove (card);
+			return hand.Remove(card);
 		}
 		public bool RemoveCardFromTable(TableCard card)
 		{
@@ -459,7 +462,7 @@ namespace Bang.Server
 		{
 			bangsPlayed++;
 		}
-		public void OnPlayedCard (Card card)
+		public void OnPlayedCard(Card card)
 		{
 			character.OnPlayedCard(card);
 		}
@@ -469,4 +472,3 @@ namespace Bang.Server
 		}
 	}
 }
-

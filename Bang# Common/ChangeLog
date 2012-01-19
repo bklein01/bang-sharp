@@ -1,3 +1,65 @@
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
+	* Utils.cs:
+	* Config.cs:
+	* Role.cs:
+	* AssemblyInfo.cs:
+	* CardSuit.cs:
+	* CardType.cs:
+	* CardRank.cs:
+	* CardColor.cs:
+	* ICard.cs:
+	* Password.cs:
+	* IGame.cs:
+	* RequestType.cs:
+	* IServer.cs:
+	* SessionState.cs:
+	* IPlayer.cs:
+	* ISession.cs:
+	* CharacterType.cs:
+	* ISpectator.cs:
+	* GameException.cs:
+	* CreatePlayerData.cs:
+	* IPlayerControl.cs:
+	* IIdentificable.cs:
+	* IEventListener.cs:
+	* CreateSessionData.cs:
+	* ImmortalMarshalByRefObject.cs:
+	* BadCardException.cs:
+	* CreateSpectatorData.cs:
+	* MethodRestrictionServerSink.cs:
+	* BadUsageException.cs:
+	* IPublicPlayerView.cs:
+	* ISpectatorControl.cs:
+	* IPrivatePlayerView.cs:
+	* BadPlayerException.cs:
+	* InvalidIdException.cs:
+	* IPlayerEventListener.cs:
+	* IPlayerSessionControl.cs:
+	* BadGameStateException.cs:
+	* MustBeCreatorException.cs:
+	* BadTargetCardException.cs:
+	* TooManyPlayersException.cs:
+	* ISpectatorEventListener.cs:
+	* CannotPlayBangException.cs:
+	* CannotPlayBeerException.cs:
+	* ISpectatorSessionControl.cs:
+	* MethodRestrictionServerSinkProvider.cs:
+	* BadSessionStateException.cs:
+	* BadTargetPlayerException.cs:
+	* BadCharacterTypeException.cs:
+	* BadServerPasswordException.cs:
+	* BadPlayerPasswordException.cs:
+	* TooManySpectatorsException.cs:
+	* BadSessionPasswordException.cs:
+	* MinPlayersOutOfRangeException.cs:
+	* MaxPlayersOutOfRangeException.cs:
+	* MaxSpectatorsOutOfRangeException.cs:
+	  Global code reformatting.
+	Updated copyright year.
+	Various small fixes.
+	Added some documentation.
+
 2012-01-17  WOnder93  <omosnacek@gmail.com>
 
 	* Utils.cs:

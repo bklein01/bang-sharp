@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -28,6 +28,7 @@ using System.Collections;
 using System.IO;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Messaging;
+
 namespace Bang
 {
 	internal class MethodRestrictionServerSink : IServerChannelSink
@@ -72,4 +73,3 @@ namespace Bang
 		}
 	}
 }
-
