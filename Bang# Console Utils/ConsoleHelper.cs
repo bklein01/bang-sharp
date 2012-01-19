@@ -62,10 +62,10 @@ namespace Bang.ConsoleUtils
 		}
 
 		/// <summary>
-		/// Prints the main properties of an <see cref="IPublicPlayerView"/> to the console.
+		/// Prints the main properties of an <see cref="Bang.IPublicPlayerView"/> to the console.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> to print.
+		/// The <see cref="Bang.IPublicPlayerView"/> to print.
 		/// </param>
 		public static void Print(IPublicPlayerView player)
 		{
@@ -78,10 +78,10 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tCharacter: {0}", player.CharacterType);
 		}
 		/// <summary>
-		/// Prints the main properties of an <see cref="ICard"/> to the console.
+		/// Prints the main properties of an <see cref="Bang.ICard"/> to the console.
 		/// </summary>
 		/// <param name="card">
-		/// The <see cref="ICard"/> to print.
+		/// The <see cref="Bang.ICard"/> to print.
 		/// </param>
 		public static void Print(ICard card)
 		{
@@ -93,10 +93,10 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tSuit: {0}", card.Suit);
 		}
 		/// <summary>
-		/// Prints the main properties of an <see cref="ISpectator"/> to the console.
+		/// Prints the main properties of an <see cref="Bang.ISpectator"/> to the console.
 		/// </summary>
 		/// <param name="spectator">
-		/// The <see cref="ISpectator"/> to print.
+		/// The <see cref="Bang.ISpectator"/> to print.
 		/// </param>
 		public static void Print(ISpectator spectator)
 		{
@@ -105,10 +105,10 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tName: {0}", spectator.Name);
 		}
 		/// <summary>
-		/// Prints the main properties of an <see cref="IPlayer"/> to the console.
+		/// Prints the main properties of an <see cref="Bang.IPlayer"/> to the console.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPlayer"/> to print.
+		/// The <see cref="Bang.IPlayer"/> to print.
 		/// </param>
 		public static void Print(IPlayer player)
 		{
@@ -121,10 +121,10 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tHasPassword: {0}", player.HasPassword);
 		}
 		/// <summary>
-		/// Prints the main properties of an <see cref="ISession"/> to the console.
+		/// Prints the main properties of an <see cref="Bang.ISession"/> to the console.
 		/// </summary>
 		/// <param name="session">
-		/// The <see cref="ISession"/> to print.
+		/// The <see cref="Bang.ISession"/> to print.
 		/// </param>
 		public static void Print(ISession session)
 		{

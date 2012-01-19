@@ -49,35 +49,35 @@ namespace Bang
 		/// Fired when a player has joined the session.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPlayer"/> that has joined the session.
+		/// The <see cref="Bang.IPlayer"/> that has joined the session.
 		/// </param>
 		void OnPlayerJoinedSession(IPlayer player);
 		/// <summary>
 		/// Fired when a spectator has joined the session.
 		/// </summary>
 		/// <param name="spectator">
-		/// The <see cref="ISpectator"/> that has joined the session.
+		/// The <see cref="Bang.ISpectator"/> that has joined the session.
 		/// </param>
 		void OnSpectatorJoinedSession(ISpectator spectator);
 		/// <summary>
 		/// Fired when a player has left the session.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPlayer"/> that has joined the session.
+		/// The <see cref="Bang.IPlayer"/> that has joined the session.
 		/// </param>
 		void OnPlayerLeftSession(IPlayer player);
 		/// <summary>
 		/// Fired when a spectator has left the session.
 		/// </summary>
 		/// <param name="spectator">
-		/// The <see cref="ISpectator"/> that has left the session.
+		/// The <see cref="Bang.ISpectator"/> that has left the session.
 		/// </param>
 		void OnSpectatorLeftSession(ISpectator spectator);
 		/// <summary>
 		/// Fired when a player has updated.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPlayer"/> that has updated.
+		/// The <see cref="Bang.IPlayer"/> that has updated.
 		/// </param>
 		void OnPlayerUpdated(IPlayer player);
 
@@ -85,7 +85,7 @@ namespace Bang
 		/// Fired when a player has sent a chat message.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPlayer"/> that has sent the message.
+		/// The <see cref="Bang.IPlayer"/> that has sent the message.
 		/// </param>
 		/// <param name="message">
 		/// The content of the message.
@@ -95,7 +95,7 @@ namespace Bang
 		/// Fired when a spectator has sent a chat message.
 		/// </summary>
 		/// <param name="spectator">
-		/// The <see cref="ISpectator"/> that has sent the message.
+		/// The <see cref="Bang.ISpectator"/> that has sent the message.
 		/// </param>
 		/// <param name="message">
 		/// The content of the message.
@@ -106,117 +106,117 @@ namespace Bang
 		/// Fired when a player has drawn one or more cards from the deck.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="drawnCards">
-		/// The <see cref="ReadOnlyCollection<ICard>"/> that contains the drawn cards.
+		/// The <see cref="System.Collections.ObjectModel.ReadOnlyCollection<ICard>"/> containing the drawn cards.
 		/// </param>
 		void OnPlayerDrewFromDeck(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards);
 		/// <summary>
 		/// Fired when a player has drawn one or more cards from the graveyard.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="drawnCards">
-		/// The <see cref="ReadOnlyCollection<ICard>"/> that contains the drawn cards.
+		/// The <see cref="System.Collections.ObjectModel.ReadOnlyCollection<ICard>"/> that contains the drawn cards.
 		/// </param>
 		void OnPlayerDrewFromGraveyard(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards);
 		/// <summary>
 		/// Fired when a player has discarded one of his cards.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The discarded <see cref="ICard"/>.
+		/// The discarded <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnPlayerDiscardedCard(IPublicPlayerView player, ICard card);
 		/// <summary>
 		/// Fired when a player has played a card.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The played <see cref="ICard"/>.
+		/// The played <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnPlayerPlayedCard(IPublicPlayerView player, ICard card);
 		/// <summary>
 		/// Fired when a player has played a card on a target player.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The played <see cref="ICard"/>.
+		/// The played <see cref="Bang.ICard"/>.
 		/// </param>
 		/// <param name="targetPlayer">
-		/// The <see cref="IPublicPlayerView"/> of the target player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the target player.
 		/// </param>
 		void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer);
 		/// <summary>
 		/// Fired when a player plays a card on a target card.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The played <see cref="ICard"/>.
+		/// The played <see cref="Bang.ICard"/>.
 		/// </param>
 		/// <param name="targetPlayer">
-		/// The <see cref="IPublicPlayerView"/> of the owner of the target card.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the owner of the target card.
 		/// </param>
 		/// <param name="targetCard">
-		/// The target <see cref="ICard"/>.
+		/// The target <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer, ICard targetCard);
 		/// <summary>
 		/// Fired when a player has played a card with the effect of another card type.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The played <see cref="ICard"/>.
+		/// The played <see cref="Bang.ICard"/>.
 		/// </param>
 		/// <param name="asCard">
-		/// The <see cref="CardType"/> whose effect the card has had.
+		/// The <see cref="Bang.CardType"/> whose effect the card has had.
 		/// </param>
 		void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard);
 		/// <summary>
 		/// Fired when a player plays a card with the effect of another card type on a target player.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The played <see cref="ICard"/>.
+		/// The played <see cref="Bang.ICard"/>.
 		/// </param>
 		/// <param name="asCard">
-		/// The <see cref="CardType"/> whose effect the card has had.
+		/// The <see cref="Bang.CardType"/> whose effect the card has had.
 		/// </param>
 		/// <param name="targetPlayer">
-		/// The <see cref="IPublicPlayerView"/> of the target player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the target player.
 		/// </param>
 		void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer);
 		/// <summary>
 		/// Fired when a player has played a card with the effect of another card type on a target card.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The played <see cref="ICard"/>.
+		/// The played <see cref="Bang.ICard"/>.
 		/// </param>
 		/// <param name="asCard">
-		/// The <see cref="CardType"/> whose effect the card has had.
+		/// The <see cref="Bang.CardType"/> whose effect the card has had.
 		/// </param>
 		/// <param name="targetPlayer">
-		/// The <see cref="IPublicPlayerView"/> of the owner of the target card.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the owner of the target card.
 		/// </param>
 		/// <param name="targetCard">
-		/// The target <see cref="ICard"/>.
+		/// The target <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer, ICard targetCard);
 		/// <summary>
@@ -226,117 +226,117 @@ namespace Bang
 		/// Fired when a player discards one of his cards.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The played <see cref="ICard"/>.
+		/// The played <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnPlayerPlayedCardOnTable(IPublicPlayerView player, ICard card);
 		/// <summary>
 		/// Fired when a player has passed a card to another player's table.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The passed <see cref="ICard"/>.
+		/// The passed <see cref="Bang.ICard"/>.
 		/// </param>
 		/// <param name="targetPlayer">
-		/// The <see cref="IPublicPlayerView"/> of the target player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the target player.
 		/// </param>
 		void OnPassedTableCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer);
 		/// <summary>
 		/// Fired when a player has ended his turn.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		void OnPlayerPassed(IPublicPlayerView player);
 		/// <summary>
 		/// Fired when a player has responded with a card.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The <see cref="ICard"/> responded with.
+		/// The <see cref="Bang.ICard"/> responded with.
 		/// </param>
 		void OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card);
 		/// <summary>
 		/// Fired when a player has responded with a card with the effect of another card type.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The <see cref="ICard"/> responded with.
+		/// The <see cref="Bang.ICard"/> responded with.
 		/// </param>
 		/// <param name="asCard">
-		/// The <see cref="CardType"/> whose effect the card has had.
+		/// The <see cref="Bang.CardType"/> whose effect the card has had.
 		/// </param>
 		void OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card, CardType asCard);
 		/// <summary>
 		/// Fired when one or more cards have been drawn into the selection.
 		/// </summary>
 		/// <param name="drawnCards">
-		/// The <see cref="ReadOnlyCollection<ICard>"/> containing the drawn cards.
+		/// The <see cref="System.Collections.ObjectModel.ReadOnlyCollection<ICard>"/> containing the drawn cards.
 		/// </param>
 		void OnDrawnIntoSelection(ReadOnlyCollection<ICard> drawnCards);
 		/// <summary>
 		/// Fired when a player has picked a card from the selection.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="card">
-		/// The picked <see cref="ICard"/>.
+		/// The picked <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnPlayerPickedFromSelection(IPublicPlayerView player, ICard card);
 		/// <summary>
 		/// Fired when a card has been undrawn from the selection back to the deck.
 		/// </summary>
 		/// <param name="card">
-		/// The undrawn <see cref="ICard"/>.
+		/// The undrawn <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnUndrawnFromSelection(ICard card);
 		/// <summary>
 		/// Fired when a player has stolen a card from another player.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="targetPlayer">
-		/// The <see cref="IPublicPlayerView"/> of the owner of the target card.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the owner of the target card.
 		/// </param>
 		/// <param name="targetCard">
-		/// The stolen <see cref="ICard"/>.
+		/// The stolen <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnPlayerStoleCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard);
 		/// <summary>
 		/// Fired when a player has cancelled a card from another player.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="targetPlayer">
-		/// The <see cref="IPublicPlayerView"/> of the owner of the target card.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the owner of the target card.
 		/// </param>
 		/// <param name="targetCard">
-		/// The canceled <see cref="ICard"/>.
+		/// The canceled <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnPlayerCancelledCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard);
 		/// <summary>
 		/// Fired when a card has been taken from the deck and cancelled (while 'deck checking').
 		/// </summary>
 		/// <param name="card">
-		/// The checked <see cref="ICard"/>.
+		/// The checked <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnDeckChecked(ICard card);
 		/// <summary>
 		/// Fired when a card has been cancelled (not by a player).
 		/// </summary>
 		/// <param name="card">
-		/// The cancelled <see cref="ICard"/>.
+		/// The cancelled <see cref="Bang.ICard"/>.
 		/// </param>
 		void OnCardCancelled(ICard card);
 
@@ -344,13 +344,13 @@ namespace Bang
 		/// Fired when a player has 'checked the deck'.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="checkedCard">
-		/// The <see cref="ICard"/> checked from the deck.
+		/// The <see cref="Bang.ICard"/> checked from the deck.
 		/// </param>
 		/// <param name="causedBy">
-		/// The <see cref="CardType"/> because of which the card has been checked.
+		/// The <see cref="Bang.CardType"/> because of which the card has been checked.
 		/// </param>
 		/// <param name="result">
 		/// The <see cref="bool"/> indicating wheter the deck checking finished with a positive result.
@@ -360,60 +360,60 @@ namespace Bang
 		/// Fired when a player's life point count has changed.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="delta">
 		/// The differece between the new and old life point count (in this order).
 		/// </param>
 		/// <param name="causedBy">
-		/// The <see cref="IPublicPlayerView"/> of the player that had caused the change.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player that had caused the change.
 		/// </param>
 		void OnLifePointsChanged(IPublicPlayerView player, int delta, IPublicPlayerView causedBy);
 		/// <summary>
 		/// Fired when a player has died.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the dead player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the dead player.
 		/// </param>
 		/// <param name="causedBy">
-		/// The <see cref="IPublicPlayerView"/> of the player that killed the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player that killed the player.
 		/// </param>
 		void OnPlayerDied(IPublicPlayerView player, IPublicPlayerView causedBy);
 		/// <summary>
 		/// Fired when a player used his character's ability.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="character">
-		/// The <see cref="CharacterType"/> of the ability used.
+		/// The <see cref="Bang.CharacterType"/> of the ability used.
 		/// </param>
 		void OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character);
 		/// <summary>
 		/// Fired when a player used his character's ability on another player.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </param>
 		/// <param name="character">
-		/// The <see cref="CharacterType"/> of the ability used.
+		/// The <see cref="Bang.CharacterType"/> of the ability used.
 		/// </param>
 		/// <param name="targetPlayer">
-		/// The <see cref="IPublicPlayerView"/> of the target player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the target player.
 		/// </param>
 		void OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character, IPublicPlayerView targetPlayer);
 		/// <summary>
 		/// Fired when a player has gained additional characters.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player that has gained the characters.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player that has gained the characters.
 		/// </param>
 		void OnPlayerGainedAdditionalCharacters(IPublicPlayerView player);
 		/// <summary>
 		/// Fired when a player has lost his additional characters.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="IPublicPlayerView"/> of the player that has lost the characters.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player that has lost the characters.
 		/// </param>
 		void OnPlayerLostAdditionalCharacters(IPublicPlayerView player);
 		/// <summary>

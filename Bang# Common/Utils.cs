@@ -55,10 +55,10 @@ namespace Bang
 		/// Checks the interface version compatibility for the specified server.
 		/// </summary>
 		/// <param name="server">
-		/// The <see cref="IServer"/> to check.
+		/// The <see cref="Bang.IServer"/> to check.
 		/// </param>
 		/// <returns>
-		/// True if the server is compatible, otherwise false.
+		/// <c>true</c>. if the server is compatible, otherwise <c>false</c>.
 		/// </returns>
 		public static bool IsServerCompatible(IServer server)
 		{
@@ -166,7 +166,7 @@ namespace Bang
 		/// The list of all available card types for the specified session.
 		/// </returns>
 		/// <param name='session'>
-		/// The <see cref="Session"/> to get the card types for.
+		/// The <see cref="Bang.ISession"/> to get the card types for.
 		/// </param>
 		public static List<CardType> GetCardTypes(ISession session)
 		{
@@ -179,10 +179,10 @@ namespace Bang
 		/// The list of all available card types for the specified session.
 		/// </returns>
 		/// <param name='session'>
-		/// The <see cref="Session"/> to get the card types for.
+		/// The <see cref="Bang.ISession"/> to get the card types for.
 		/// </param>
 		/// <param name='includeDefault'>
-		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="CardType.Unknown"/>).
+		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="Bang.CardType.Unknown"/>).
 		/// </param>
 		public static List<CardType> GetCardTypes(ISession session, bool includeDefault)
 		{
@@ -235,7 +235,7 @@ namespace Bang
 		/// The list of all roles.
 		/// </returns>
 		/// <param name='includeDefault'>
-		/// A <see cref="bool"/> indicating wheter to include also the default role (<see cref="Role.Unknown"/>).
+		/// A <see cref="bool"/> indicating wheter to include also the default role (<see cref="Bang.Role.Unknown"/>).
 		/// </param>
 		public static List<Role> GetRoles(bool includeDefault)
 		{
@@ -306,7 +306,7 @@ namespace Bang
 		/// The list of all available character types for the specified session.
 		/// </returns>
 		/// <param name='includeDefault'>
-		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="CharacterType.Unknown"/>).
+		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="Bang.CharacterType.Unknown"/>).
 		/// </param>
 		public static List<CharacterType> GetCharacterTypes(bool includeDefault)
 		{
@@ -319,7 +319,7 @@ namespace Bang
 		/// The list of all available character types for the specified session.
 		/// </returns>
 		/// <param name='session'>
-		/// The <see cref="Session"/> to get the character types for.
+		/// The <see cref="Bang.ISession"/> to get the character types for.
 		/// </param>
 		public static List<CharacterType> GetCharacterTypes(ISession session)
 		{
@@ -332,10 +332,10 @@ namespace Bang
 		/// The list of all available character types for the specified session.
 		/// </returns>
 		/// <param name='session'>
-		/// The <see cref="Session"/> to get the character types for.
+		/// The <see cref="Bang.ISession"/> to get the character types for.
 		/// </param>
 		/// <param name='includeDefault'>
-		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="CharacterType.Unknown"/>).
+		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="Bang.CharacterType.Unknown"/>).
 		/// </param>
 		public static List<CharacterType> GetCharacterTypes(ISession session, bool includeDefault)
 		{
@@ -368,7 +368,7 @@ namespace Bang
 		/// Shuffles the list.
 		/// </summary>
 		/// <param name="list">
-		/// The <see cref="List<T>"/> to be shuffled.
+		/// The <see cref="System.Collections.Generic.List<T>"/> to be shuffled.
 		/// </param>
 		public static void Shuffle<T>(this List<T> list)
 		{
@@ -388,7 +388,7 @@ namespace Bang
 		/// Generates a new id for the dictionary.
 		/// </summary>
 		/// <param name="dict">
-		/// The <see cref="Dictionary<int, T>"/> for which to generate a new id.
+		/// The <see cref="System.Collections.Generic.Dictionary<int, T>"/> for which to generate a new id.
 		/// </param>
 		/// <returns>
 		/// The generated id.
@@ -408,7 +408,7 @@ namespace Bang
 		/// Gets a random element from the specified list.
 		/// </summary>
 		/// <param name="list">
-		/// The <see cref="IList<T>"/> from which to get a random element.
+		/// The <see cref="System.Collections.Generic.IList<T>"/> from which to get a random element.
 		/// </param>
 		/// <returns>
 		/// A random element from the list.
@@ -513,7 +513,7 @@ namespace Bang
 		/// The port on which to listen.
 		/// </param>
 		/// <typeparam name="T">
-		/// The service type (must implement the <see cref="IServer"/> interface).
+		/// The service type (must implement the <see cref="Bang.IServer"/> interface).
 		/// </typeparam>
 		public static void Serve<T>(int port)
 			where T : MarshalByRefObject, IServer, new()

@@ -58,7 +58,7 @@ namespace Bang.AI
 		private List<CharacterType> triedAbilities;
 
 		/// <summary>
-		/// Gets this AI player's <see cref="CreatePlayerData"/>. Can be ignored.
+		/// Gets this AI player's <see cref="Bang.CreatePlayerData"/>. Can be ignored.
 		/// </summary>
 		public CreatePlayerData CreateData
 		{

@@ -31,7 +31,7 @@ namespace Bang
 	public interface ISpectatorControl
 	{
 		/// <summary>
-		/// Gets the current <see cref="IGame"/>.
+		/// Gets the current <see cref="Bang.IGame"/>.
 		/// </summary>
 		IGame Game { get; }
 	}

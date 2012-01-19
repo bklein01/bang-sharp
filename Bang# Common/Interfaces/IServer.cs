@@ -59,13 +59,13 @@ namespace Bang
 		/// Creates a new session on the server.
 		/// </summary>
 		/// <param name="sessionData">
-		/// The <see cref="CreateSessionData"/> containing the information about the session.
+		/// The <see cref="Bang.CreateSessionData"/> containing the information about the session.
 		/// </param>
 		/// <param name="playerData">
-		/// The <see cref="CreatePlayerData"/> containing the information about the creator.
+		/// The <see cref="Bang.CreatePlayerData"/> containing the information about the creator.
 		/// </param>
 		/// <param name="listener">
-		/// The <see cref="PlayerEventListener"/> of the creator.
+		/// The <see cref="Bang.IPlayerEventListener"/> of the creator.
 		/// </param>
 		void CreateSession(CreateSessionData sessionData, CreatePlayerData playerData, IPlayerEventListener listener);
 

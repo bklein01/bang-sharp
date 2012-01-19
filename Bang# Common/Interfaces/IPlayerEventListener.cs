@@ -38,14 +38,14 @@ namespace Bang
 		/// Called when the player successfully joins a session.
 		/// </summary>
 		/// <param name="control">
-		/// The <see cref="IPlayerSessionControl"/> instance for this player.
+		/// The <see cref="Bang.IPlayerSessionControl"/> instance for this player.
 		/// </param>
 		void OnJoinedSession(IPlayerSessionControl control);
 		/// <summary>
 		/// Called when the player successfully joins a game.
 		/// </summary>
 		/// <param name="control">
-		/// The <see cref="IPlayerControl"/> instance for this player.
+		/// The <see cref="Bang.IPlayerControl"/> instance for this player.
 		/// </param>
 		void OnJoinedGame(IPlayerControl control);
 
@@ -53,10 +53,10 @@ namespace Bang
 		/// Fired when the player is requested for an action.
 		/// </summary>
 		/// <param name="requestType">
-		/// The new <see cref="RequestType"/>.
+		/// The new <see cref="Bang.RequestType"/>.
 		/// </param>
 		/// <param name="causedBy">
-		/// The <see cref="IPublicPlayerView"/> of the player that caused the request.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player that caused the request.
 		/// </param>
 		void OnNewRequest(RequestType requestType, IPublicPlayerView causedBy);
 	}

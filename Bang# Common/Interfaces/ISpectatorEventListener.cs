@@ -34,14 +34,14 @@ namespace Bang
 		/// Called when the spectator successfully joins a session.
 		/// </summary>
 		/// <param name="control">
-		/// The <see cref="ISpectatorSessionControl"/> instance for this spectator.
+		/// The <see cref="Bang.ISpectatorSessionControl"/> instance for this spectator.
 		/// </param>
 		void OnJoinedSession(ISpectatorSessionControl control);
 		/// <summary>
 		/// Called when the spectator successfully joins a game.
 		/// </summary>
 		/// <param name="control">
-		/// The <see cref="ISpectatorControl"/> instance for this spectator.
+		/// The <see cref="Bang.ISpectatorControl"/> instance for this spectator.
 		/// </param>
 		void OnJoinedGame(ISpectatorControl control);
 	}

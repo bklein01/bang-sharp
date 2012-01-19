@@ -108,10 +108,10 @@ namespace Bang
 		/// The session password.
 		/// </param>
 		/// <param name="data">
-		/// The <see cref="CreatePlayerData"/> contatining the information about the player.
+		/// The <see cref="Bang.CreatePlayerData"/> contatining the information about the player.
 		/// </param>
 		/// <param name="listener">
-		/// The <see cref="PlayerEventListener"/> of the player.
+		/// The <see cref="Bang.IPlayerEventListener"/> of the player.
 		/// </param>
 		void Join(Password password, CreatePlayerData data, IPlayerEventListener listener);
 		/// <summary>
@@ -124,10 +124,10 @@ namespace Bang
 		/// The session password.
 		/// </param>
 		/// <param name="data">
-		/// The <see cref="CreatePlayerData"/> contatining the information about the new player.
+		/// The <see cref="Bang.CreatePlayerData"/> contatining the information about the new player.
 		/// </param>
 		/// <param name="listener">
-		/// The <see cref="PlayerEventListener"/> of the new player.
+		/// The <see cref="Bang.PlayerEventListener"/> of the new player.
 		/// </param>
 		void Replace(int id, Password password, CreatePlayerData data, IPlayerEventListener listener);
 		/// <summary>
@@ -137,10 +137,10 @@ namespace Bang
 		/// The session password.
 		/// </param>
 		/// <param name="data">
-		/// The <see cref="CreateSpectatorData"/> contatining the information about the spectator.
+		/// The <see cref="Bang.CreateSpectatorData"/> contatining the information about the spectator.
 		/// </param>
 		/// <param name="listener">
-		/// The <see cref="SpectatorEventListener"/> of the spectator.
+		/// The <see cref="Bang.ISpectatorEventListener"/> of the spectator.
 		/// </param>
 		void Spectate(Password password, CreateSpectatorData data, ISpectatorEventListener listener);
 		/// <summary>
@@ -150,7 +150,7 @@ namespace Bang
 		/// The ID of the player.
 		/// </param>
 		/// <returns>
-		/// The <see cref="IPlayer"/> instance representing the player.
+		/// The <see cref="Bang.IPlayer"/> instance representing the player.
 		/// </returns>
 		IPlayer GetPlayer(int id);
 		/// <summary>
@@ -160,7 +160,7 @@ namespace Bang
 		/// The ID of the spectator.
 		/// </param>
 		/// <returns>
-		/// The <see cref="IPlayer"/> instance representing the spectator.
+		/// The <see cref="Bang.ISpectator"/> instance representing the spectator.
 		/// </returns>
 		ISpectator GetSpectator(int id);
 	}

@@ -2,6 +2,25 @@
 
 	* Utils.cs:
 	* Config.cs:
+	* AssemblyInfo.cs:
+	* IGame.cs:
+	* Password.cs:
+	* IServer.cs:
+	* ISession.cs:
+	* IEventListener.cs:
+	* IPlayerControl.cs:
+	* ImmortalMarshalByRefObject.cs:
+	* ISpectatorControl.cs:
+	* IPlayerEventListener.cs:
+	* IPlayerSessionControl.cs:
+	* ISpectatorEventListener.cs:
+	* ISpectatorSessionControl.cs:
+	  Some documentation fixes.
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
+	* Utils.cs:
+	* Config.cs:
 	* Role.cs:
 	* AssemblyInfo.cs:
 	* CardSuit.cs:

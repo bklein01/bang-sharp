@@ -31,12 +31,12 @@ namespace Bang
 	public interface IPlayerSessionControl
 	{
 		/// <summary>
-		/// Gets the <see cref="IPlayer"/> controlled by this <see cref="IPlayerSessionControl"/>
+		/// Gets the <see cref="Bang.IPlayer"/> controlled by this <see cref="Bang.IPlayerSessionControl"/>
 		/// </summary>
 		IPlayer Player { get; }
 
 		/// <summary>
-		/// Gets the <see cref="ISession"/> instance representing the session.
+		/// Gets the <see cref="Bang.ISession"/> instance representing the session.
 		/// </summary>
 		ISession Session { get; }
 

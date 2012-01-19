@@ -48,26 +48,26 @@ namespace Bang
 		ReadOnlyCollection<ICard> Selection { get; }
 
 		/// <summary>
-		/// Gets the <see cref="IPublicPlayerView"/> of the player currently on turn.
+		/// Gets the <see cref="Bang.IPublicPlayerView"/> of the player currently on turn.
 		/// </summary>
 		IPublicPlayerView CurrentPlayer { get; }
 		/// <summary>
-		/// Gets the <see cref="IPublicPlayerView"/> of the player currently requested for a response.
+		/// Gets the <see cref="Bang.IPublicPlayerView"/> of the player currently requested for a response.
 		/// </summary>
 		IPublicPlayerView RequestedPlayer { get; }
 		/// <summary>
-		/// Gets the <see cref="IPublicPlayerView"/> of the player that caused the current request, or null if no player caused it.
+		/// Gets the <see cref="Bang.IPublicPlayerView"/> of the player that caused the current request, or null if no player caused it.
 		/// </summary>
 		IPublicPlayerView CausedBy { get; }
 		
 		/// <summary>
-		/// Gets the <see cref="IPublicPlayerView"/> of the player with the specified ID.
+		/// Gets the <see cref="Bang.IPublicPlayerView"/> of the player with the specified ID.
 		/// </summary>
 		/// <param name="id">
 		/// The ID of the player.
 		/// </param>
 		/// <returns>
-		/// The <see cref="IPublicPlayerView"/> of the player.
+		/// The <see cref="Bang.IPublicPlayerView"/> of the player.
 		/// </returns>
 		IPublicPlayerView GetPublicPlayerView(int id);
 	}

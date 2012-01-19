@@ -120,7 +120,7 @@ namespace Bang
 		}
 
 		/// <summary>
-		/// Gets the <see cref="System.String"/> for the specified key.
+		/// Gets the <see cref="string"/> for the specified key.
 		/// </summary>
 		/// <param name="key">
 		/// The key of the configuration entry.
@@ -146,7 +146,7 @@ namespace Bang
 			}
 		}
 		/// <summary>
-		/// Gets the <see cref="System.Int32"/> for the specified key.
+		/// Gets the <see cref="int"/> for the specified key.
 		/// </summary>
 		/// <param name="key">
 		/// The key of the configuration entry.
@@ -176,7 +176,7 @@ namespace Bang
 			}
 		}
 		/// <summary>
-		/// Gets the <see cref="System.Bool"/> for the specified key.
+		/// Gets the <see cref="bool"/> for the specified key.
 		/// </summary>
 		/// <param name="key">
 		/// The key of the configuration entry.
@@ -207,7 +207,7 @@ namespace Bang
 			}
 		}
 		/// <summary>
-		/// Gets the list of <see cref="System.String"/> for the specified key.
+		/// Gets the list of <see cref="string"/> for the specified key.
 		/// </summary>
 		/// <param name="key">
 		/// The key of the configuration entry.
@@ -231,7 +231,7 @@ namespace Bang
 			}
 		}
 		/// <summary>
-		/// Gets the list of <see cref="System.Int32"/> for the specified key.
+		/// Gets the list of <see cref="int"/> for the specified key.
 		/// </summary>
 		/// <param name="key">
 		/// The key of the configuration entry.
@@ -259,7 +259,7 @@ namespace Bang
 			}
 		}
 		/// <summary>
-		/// Sets the <see cref="System.String"/> for the specified key.
+		/// Sets the <see cref="string"/> for the specified key.
 		/// </summary>
 		/// <param name="key">
 		/// The key of the configuration entry.
@@ -285,7 +285,7 @@ namespace Bang
 			}
 		}
 		/// <summary>
-		/// Sets the <see cref="System.Int32"/> for the specified key.
+		/// Sets the <see cref="int"/> for the specified key.
 		/// </summary>
 		/// <param name="key">
 		/// The key of the configuration entry.
@@ -311,7 +311,7 @@ namespace Bang
 			}
 		}
 		/// <summary>
-		/// Sets the <see cref="System.Boolean"/> for the specified key.
+		/// Sets the <see cref="bool"/> for the specified key.
 		/// </summary>
 		/// <param name="key">
 		/// The key of the configuration entry.
@@ -337,7 +337,7 @@ namespace Bang
 			}
 		}
 		/// <summary>
-		/// Sets the list of <see cref="System.String"/> for the specified key.
+		/// Sets the list of <see cref="string"/> for the specified key.
 		/// </summary>
 		/// <param name="key">
 		/// The key of the configuration entry.
@@ -362,7 +362,7 @@ namespace Bang
 			}
 		}
 		/// <summary>
-		/// Sets the list of <see cref="System.Int32"/> for the specified key.
+		/// Sets the list of <see cref="int"/> for the specified key.
 		/// </summary>
 		/// <param name="key">
 		/// The key of the configuration entry.

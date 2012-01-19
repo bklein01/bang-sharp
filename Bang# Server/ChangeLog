@@ -2,6 +2,12 @@
 
 	* ServerUtils.cs:
 	* AssemblyInfo.cs:
+	  Some documentation fixes.
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
+	* ServerUtils.cs:
+	* AssemblyInfo.cs:
 	* IServerBase.cs:
 	* IServerAdmin.cs:
 	* ISessionAdmin.cs:
