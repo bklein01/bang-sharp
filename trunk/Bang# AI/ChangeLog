@@ -1,6 +1,12 @@
 2012-01-19  WOnder93  <omosnacek@gmail.com>
 
 	* AIPlayer.cs:
+	* AssemblyInfo.cs:
+	  Some documentation fixes.
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
+	* AIPlayer.cs:
 	* CardHelper.cs:
 	* AssemblyInfo.cs:
 	* PlayerHelper.cs:

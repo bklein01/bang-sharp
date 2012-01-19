@@ -1,5 +1,11 @@
 2012-01-19  WOnder93  <omosnacek@gmail.com>
 
+	* AssemblyInfo.cs:
+	* ConsoleHelper.cs:
+	  Some documentation fixes.
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
 	* Command.cs:
 	* ICommand.cs:
 	* FinalCommand.cs:

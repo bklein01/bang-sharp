@@ -50,7 +50,7 @@ namespace Bang.Server
 		/// <c>true</c> if the server is compatible, otherwise <c>false</c>.
 		/// </returns>
 		/// <param name='server'>
-		/// The <see cref="IServerBase"/> to check.
+		/// The <see cref="Bang.Server.IServerBase"/> to check.
 		/// </param>
 		public static bool IsServerCompatible(IServerBase server)
 		{

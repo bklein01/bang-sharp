@@ -101,7 +101,7 @@ namespace Bang
 		/// The password to be checked.
 		/// </param>
 		/// <returns>
-		/// True if the passwords match, otherwise false.
+		/// <c>true</c>. if the passwords match, otherwise <c>false</c>.
 		/// </returns>
 		public bool CheckPassword(string password)
 		{
@@ -114,7 +114,7 @@ namespace Bang
 		/// The password hash to be checked.
 		/// </param>
 		/// <returns>
-		/// True if the password hashes match, otherwise false.
+		/// <c>true</c>. if the password hashes match, otherwise <c>false</c>.
 		/// </returns>
 		public bool CheckPassword(Password password)
 		{

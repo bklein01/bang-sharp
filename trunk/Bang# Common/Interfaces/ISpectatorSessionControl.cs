@@ -31,12 +31,12 @@ namespace Bang
 	public interface ISpectatorSessionControl
 	{
 		/// <summary>
-		/// Gets the <see cref="ISpectator"/> controlled by this <see cref="ISpectatorControl"/>.
+		/// Gets the <see cref="Bang.ISpectator"/> controlled by this <see cref="Bang.ISpectatorControl"/>.
 		/// </summary>
 		ISpectator Spectator { get; }
 
 		/// <summary>
-		/// Gets the <see cref="ISession"/> instance representing the session.
+		/// Gets the <see cref="Bang.ISession"/> instance representing the session.
 		/// </summary>
 		ISession Session { get; }
 

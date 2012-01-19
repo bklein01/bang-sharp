@@ -31,12 +31,12 @@ namespace Bang
 	public interface IPlayerControl
 	{
 		/// <summary>
-		/// Gets the current <see cref="IGame"/>.
+		/// Gets the current <see cref="Bang.IGame"/>.
 		/// </summary>
 		IGame Game { get; }
 
 		/// <summary>
-		/// Gets the <see cref="IPrivatePlayerView"/> of the player.
+		/// Gets the <see cref="Bang.IPrivatePlayerView"/> of the player.
 		/// </summary>
 		IPrivatePlayerView PrivatePlayerView { get; }
 		
@@ -62,7 +62,7 @@ namespace Bang
 		/// Responds to the game with the specified character.
 		/// </summary>
 		/// <param name="type">
-		/// A <see cref="CharacterType"/>
+		/// A <see cref="Bang.CharacterType"/>
 		/// </param>
 		void RespondCharacter(CharacterType type);
 		/// <summary>

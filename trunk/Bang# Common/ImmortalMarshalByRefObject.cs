@@ -33,7 +33,7 @@ namespace System
 	/// </summary>
 	/// <remarks>
 	/// Classes implementing listeners or session or game controllers should derive from this class.
-	/// When their objects should be no longer accessible remotely (and garbage collected) their <see cref="Disconnect"/> method should be called.
+	/// When their objects should be no longer accessible remotely (and garbage collected) their <see cref="Bang.ImmortalMarshalByRefObject.Disconnect"/> method should be called.
 	/// </remarks>
 	public class ImmortalMarshalByRefObject : MarshalByRefObject
 	{
