@@ -1,5 +1,14 @@
 2012-01-19  WOnder93  <omosnacek@gmail.com>
 
+	* TwoPlayersPlayerHelper.cs:
+	* ThreePlayersPlayerHelper.cs:
+	  Added back missing usings.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
 	* AIPlayer.cs:
 	* AssemblyInfo.cs:
 	  Some documentation fixes.
