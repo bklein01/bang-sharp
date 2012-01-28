@@ -1,3 +1,13 @@
+2012-01-28  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ConsoleHelper.cs:
+	  Added synchronization locks.
+	Fixed + improved ReadLine's position jumping and text
+	  clearing.
+
 2012-01-19  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

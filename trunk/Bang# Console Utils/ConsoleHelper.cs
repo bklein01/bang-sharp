@@ -54,6 +54,9 @@ namespace Bang.ConsoleUtils
 		//private const ConsoleColor inputColor = ConsoleColor.Blue;
 		//private const ConsoleColor eventColor = ConsoleColor.Yellow;
 
+		private static readonly object colorLock = new object();
+		private static readonly object readLock = new object();
+
 		static ConsoleHelper()
 		{
 			Console.ForegroundColor = defaultFg;
@@ -143,10 +146,17 @@ namespace Bang.ConsoleUtils
 		/// </returns>
 		public static string ReadLine()
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = inputColor;
-			string res = Console.ReadLine();
-			Console.ForegroundColor = backup;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = inputColor;
+			}
+			string res;
+			lock(readLock)
+				res = Console.ReadLine();
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 			return res;
 		}
 		/// <summary>
@@ -159,26 +169,29 @@ namespace Bang.ConsoleUtils
 		{
 			StringBuilder line = new StringBuilder();
 			ConsoleKeyInfo key;
-			while((key = Console.ReadKey(true)).Key != ConsoleKey.Enter)
+			lock(readLock)
 			{
-				switch(key.Key)
+				while((key = Console.ReadKey(true)).Key != ConsoleKey.Enter)
 				{
-				case ConsoleKey.Escape:
-					line = new StringBuilder();
-					break;
-				case ConsoleKey.Backspace:
-					if(line.Length == 0)
+					switch(key.Key)
+					{
+					case ConsoleKey.Escape:
+						line = new StringBuilder();
 						break;
-					line = line.Remove(line.Length - 1, 1);
-					break;
-				default:
-					if(key.KeyChar == '\0')
+					case ConsoleKey.Backspace:
+						if(line.Length == 0)
+							break;
+						line = line.Remove(line.Length - 1, 1);
 						break;
-					line = line.Append(key.KeyChar);
-					break;
+					default:
+						if(key.KeyChar == '\0')
+							break;
+						line = line.Append(key.KeyChar);
+						break;
+					}
 				}
+				Console.WriteLine();
 			}
-			Console.WriteLine();
 			return new Password(line.ToString());
 		}
 
@@ -202,179 +215,182 @@ namespace Bang.ConsoleUtils
 				Console.CursorTop = value / Console.BufferWidth;
 			}
 		}
-		private static void Backspace(int len)
+		private static void Clear(int length)
 		{
-			for(int i = 0; i < len; i++)
-			{
-				// Also write space because of the stupid Windows console...
-				Console.Write('\b');
+			for(int i = 0; i < length; i++)
 				Console.Write(' ');
-				Console.Write('\b');
-			}
 		}
 		private static string ReadCommandLine(ICommand command)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = inputColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = inputColor;
+			}
 			StringBuilder line = new StringBuilder();
 			int pos = 0;
 			ConsoleKeyInfo key;
 			string currentText = null;
 			int historyIndex = -1;
-			int len;
-			while((key = Console.ReadKey(true)).Key != ConsoleKey.Enter)
+			lock(readLock)
 			{
-				switch(key.Key)
+				while((key = Console.ReadKey(true)).Key != ConsoleKey.Enter)
 				{
-				case ConsoleKey.Escape:
-					len = line.Length;
-					ConsolePos += len - pos;
-					line = new StringBuilder();
-					Backspace(len);
-					pos = 0;
-					break;
-				case ConsoleKey.UpArrow:
-					if(history.Count == 0)
-						break;
-					if(historyIndex < 0)
-						historyIndex = history.Count;
-					if(historyIndex - 1 < 0)
-						break;
-					
-					historyIndex--;
-					currentText = line.ToString();
-					len = line.Length;
-					ConsolePos += len - pos;
-					Backspace(len);
-
-					string h = history[historyIndex];
-					Console.Write(h);
-					line = new StringBuilder(h);
-					pos = h.Length;
-					break;
-				case ConsoleKey.DownArrow:
-					if(historyIndex < 0)
-						break;
-					
-					len = line.Length;
-					ConsolePos += len - pos;
-					Backspace(len);
-
-					string newText;
-					if(++historyIndex >= history.Count)
+					switch(key.Key)
 					{
-						historyIndex = -1;
-						newText = currentText;
-					}
-					else
-						newText = history[historyIndex];
-					
-					Console.Write(newText);
-					line = new StringBuilder(newText);
-					pos = newText.Length;
-					break;
-				case ConsoleKey.RightArrow:
-					if(pos == line.Length)
+					case ConsoleKey.Escape:
+						ConsolePos -= pos;
+						Clear(line.Length);
+						ConsolePos -= line.Length;
+						line = new StringBuilder();
+						pos = 0;
 						break;
-					ConsolePos++;
-					pos++;
-					break;
-				case ConsoleKey.LeftArrow:
-					if(pos == 0)
+					case ConsoleKey.UpArrow:
+						if(history.Count == 0)
+							break;
+						if(historyIndex < 0)
+							historyIndex = history.Count;
+						if(historyIndex - 1 < 0)
+							break;
+						
+						historyIndex--;
+						currentText = line.ToString();
+						ConsolePos -= pos;
+						Clear(line.Length);
+						ConsolePos -= line.Length;
+	
+						string h = history[historyIndex];
+						Console.Write(h);
+						line = new StringBuilder(h);
+						pos = h.Length;
 						break;
-					ConsolePos--;
-					pos--;
-					break;
-				case ConsoleKey.Home:
-					if(pos == 0)
-						break;
-					ConsolePos -= pos;
-					pos = 0;
-					break;
-				case ConsoleKey.End:
-					if(pos == line.Length)
-						break;
-					len = line.Length;
-					ConsolePos += len - pos;
-					pos = len;
-					break;
-				case ConsoleKey.Backspace:
-					if(pos == 0)
-						break;
-					
-					len = line.Length;
-					ConsolePos += len - pos;
-					Backspace(len);
-
-					line = line.Remove(pos - 1, 1);
-					Console.Write(line.ToString());
-					pos--;
-					ConsolePos -= line.Length - pos;
-					break;
-				case ConsoleKey.Delete:
-					if(pos == line.Length)
-						break;
-					
-					len = line.Length;
-					ConsolePos += len - pos;
-					Backspace(len);
-
-					line = line.Remove(pos, 1);
-					Console.Write(line.ToString());
-					ConsolePos -= line.Length - pos;
-					break;
-				case ConsoleKey.Tab:
-					string[] rawLine = line.ToString(0, pos).ToLower().Split(' ');
-					string text = rawLine.Length == 0 ? "" : rawLine[rawLine.Length - 1];
-					IEnumerable<string> cmdLine = rawLine.Take(rawLine.Length - 1).Where(s => s.Length > 0);
-					ICommand cmd = command;
-					foreach(string t in cmdLine)
-					{
-						ICommand child = cmd.GetSubcommand(t);
-						if(child != null)
-							cmd = child;
-					}
-					string suggested = "";
-					foreach(string t in cmd.Subcommands)
-						if(t.StartsWith(text))
+					case ConsoleKey.DownArrow:
+						if(historyIndex < 0)
+							break;
+						
+						ConsolePos -= pos;
+						Clear(line.Length);
+						ConsolePos -= line.Length;
+	
+						string newText;
+						if(++historyIndex >= history.Count)
 						{
-							if(suggested.Length == 0)
-								suggested = t + ' ';
-							else
-							{
-								suggested = And(suggested, t);
-								if(suggested.Length == 0)
-									break;
-							}
+							historyIndex = -1;
+							newText = currentText;
 						}
-
-					if(suggested.Length != 0)
-					{
-						string addition = suggested.Substring(text.Length);
-						line = line.Insert(pos, addition);
-						len = line.Length;
-						ConsolePos += len - pos;
-						Backspace(len);
-						Console.Write(line.ToString());
-						pos += addition.Length;
-						ConsolePos -= len - pos;
-					}
-					break;
-				default:
-					if(key.KeyChar == '\0')
+						else
+							newText = history[historyIndex];
+						
+						Console.Write(newText);
+						line = new StringBuilder(newText);
+						pos = newText.Length;
 						break;
-					line = line.Insert(pos, key.KeyChar);
-					len = line.Length;
-					ConsolePos += len - pos;
-					Backspace(len);
-					Console.Write(line.ToString());
-					pos++;
-					ConsolePos -= len - pos;
-					break;
+					case ConsoleKey.RightArrow:
+						if(pos == line.Length)
+							break;
+						ConsolePos++;
+						pos++;
+						break;
+					case ConsoleKey.LeftArrow:
+						if(pos == 0)
+							break;
+						ConsolePos--;
+						pos--;
+						break;
+					case ConsoleKey.Home:
+						if(pos == 0)
+							break;
+						ConsolePos -= pos;
+						pos = 0;
+						break;
+					case ConsoleKey.End:
+						if(pos == line.Length)
+							break;
+						ConsolePos += line.Length - pos;
+						pos = line.Length;
+						break;
+					case ConsoleKey.Backspace:
+						if(pos == 0)
+							break;
+						
+						ConsolePos--;
+						pos--;
+						Clear(line.Length - pos);
+						ConsolePos -= line.Length - pos;
+	
+						line = line.Remove(pos, 1);
+						Console.Write(line.ToString(pos, line.Length - pos));
+						if(pos < line.Length)
+							ConsolePos -= line.Length - pos;
+						break;
+					case ConsoleKey.Delete:
+						if(pos == line.Length)
+							break;
+						
+						Clear(line.Length - pos);
+						ConsolePos -= line.Length - pos;
+	
+						line = line.Remove(pos, 1);
+						Console.Write(line.ToString(pos, line.Length - pos));
+						ConsolePos -= line.Length - pos;
+						break;
+					case ConsoleKey.Tab:
+						string[] rawLine = line.ToString(0, pos).ToLower().Split(' ');
+						string text = rawLine.Length == 0 ? "" : rawLine[rawLine.Length - 1];
+						IEnumerable<string> cmdLine = rawLine.Take(rawLine.Length - 1).Where(s => s.Length > 0);
+						ICommand cmd = command;
+						foreach(string t in cmdLine)
+						{
+							ICommand child = cmd.GetSubcommand(t);
+							if(child != null)
+								cmd = child;
+						}
+						string suggested = "";
+						foreach(string t in cmd.Subcommands)
+							if(t.StartsWith(text))
+							{
+								if(suggested.Length == 0)
+									suggested = t + ' ';
+								else
+								{
+									suggested = And(suggested, t);
+									if(suggested.Length == 0)
+										break;
+								}
+							}
+	
+						if(suggested.Length != 0)
+						{
+							string addition = suggested.Substring(text.Length);
+							Clear(line.Length - pos);
+							if(pos < line.Length)
+								ConsolePos -= line.Length - pos;
+							line = line.Insert(pos, addition);
+							Console.Write(line.ToString(pos, line.Length - pos));
+							pos += addition.Length;
+							if(pos < line.Length)
+								ConsolePos -= line.Length - pos;
+						}
+						break;
+					default:
+						if(key.KeyChar == '\0')
+							break;
+						Clear(line.Length - pos);
+						if(pos < line.Length)
+							ConsolePos -= line.Length - pos;
+						line = line.Insert(pos, key.KeyChar);
+						Console.Write(line.ToString(pos, line.Length - pos));
+						pos++;
+						if(pos < line.Length)
+							ConsolePos -= line.Length - pos;
+						break;
+					}
 				}
+				Console.WriteLine();
 			}
-			Console.WriteLine();
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 			string txt = line.ToString();
 			history.Add(txt);
 			return txt;
@@ -417,10 +433,15 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void Print(object value)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = defaultFg;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = defaultFg;
+			}
 			Console.Write(value);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints the specified text string to the console.
@@ -430,10 +451,15 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void Print(string text)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = defaultFg;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = defaultFg;
+			}
 			Console.Write(text);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints the specified format string with arguments to the console.
@@ -446,20 +472,30 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void Print(string format, params object[] args)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = defaultFg;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = defaultFg;
+			}
 			Console.Write(format, args);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a line to the console.
 		/// </summary>
 		public static void PrintLine()
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = defaultFg;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = defaultFg;
+			}
 			Console.WriteLine();
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a line with the specified object to the console.
@@ -469,10 +505,15 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void PrintLine(object value)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = defaultFg;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = defaultFg;
+			}
 			Console.WriteLine(value);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a line with the specified text string to the console.
@@ -482,10 +523,15 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void PrintLine(string text)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = defaultFg;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = defaultFg;
+			}
 			Console.WriteLine(text);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a line with the specified format string with arguments to the console.
@@ -498,10 +544,15 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void PrintLine(string format, params object[] args)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = defaultFg;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = defaultFg;
+			}
 			Console.WriteLine(format, args);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a debug line with the specified object to the standard error stream.
@@ -511,11 +562,16 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void DebugLine(object value)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = debugColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = debugColor;
+			}
 			Console.Error.Write("Debug: ");
 			Console.Error.WriteLine(value);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a debug line with the specified text string to the standard error stream.
@@ -525,11 +581,16 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void DebugLine(string text)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = debugColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = debugColor;
+			}
 			Console.Error.Write("Debug: ");
 			Console.Error.WriteLine(text);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a line with the specified format string with arguments to the console.
@@ -542,11 +603,16 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void DebugLine(string format, params object[] args)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = debugColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = debugColor;
+			}
 			Console.Error.Write("Debug: ");
 			Console.Error.WriteLine(format, args);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a success line (text 'Done!') to the console.
@@ -563,10 +629,15 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void SuccessLine(string text)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = successColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = successColor;
+			}
 			Console.WriteLine(text);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a line with the specified format string with arguments to the console.
@@ -579,10 +650,15 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void SuccessLine(string format, params object[] args)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = successColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = successColor;
+			}
 			Console.WriteLine(format, args);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints an error line with the specified text string to the console.
@@ -592,11 +668,16 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void ErrorLine(string text)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = failColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = failColor;
+			}
 			Console.Write("ERROR: ");
 			Console.WriteLine(text);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints an error line with the specified format string with arguments to the console.
@@ -609,11 +690,16 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void ErrorLine(string format, params object[] args)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = failColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = failColor;
+			}
 			Console.Write("ERROR: ");
 			Console.WriteLine(format, args);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a session event line with the specified text string to the console.
@@ -623,11 +709,16 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void SessionEvent(string message)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = eventColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = eventColor;
+			}
 			Console.Write("Session event: ");
 			Console.WriteLine(message);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a session event line with the specified format string with arguments to the console.
@@ -640,11 +731,16 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void SessionEvent(string format, params object[] args)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = eventColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = eventColor;
+			}
 			Console.Write("Session event: ");
 			Console.WriteLine(format, args);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a game event line with the specified text string to the console.
@@ -654,11 +750,16 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void GameEvent(string message)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = eventColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = eventColor;
+			}
 			Console.Write("Game event: ");
 			Console.WriteLine(message);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 		/// <summary>
 		/// Prints a game event line with the specified text string to the console.
@@ -668,11 +769,16 @@ namespace Bang.ConsoleUtils
 		/// </param>
 		public static void GameEvent(string format, params object[] args)
 		{
-			ConsoleColor backup = Console.ForegroundColor;
-			Console.ForegroundColor = eventColor;
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = eventColor;
+			}
 			Console.Write("Game event: ");
 			Console.WriteLine(format, args);
-			Console.ForegroundColor = backup;
+			lock(colorLock)
+				Console.ForegroundColor = backup;
 		}
 
 		/// <summary>
