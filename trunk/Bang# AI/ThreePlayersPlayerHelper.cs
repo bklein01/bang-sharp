@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bang.AI
+namespace BangSharp.AI
 {
 	internal sealed class ThreePlayersPlayerHelper : PlayerHelper
 	{

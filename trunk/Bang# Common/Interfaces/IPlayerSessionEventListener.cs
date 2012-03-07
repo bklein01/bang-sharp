@@ -1,4 +1,4 @@
-// IResultHandler.cs
+// IPlayerSessionEventListener.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,10 +23,41 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server
+namespace BangSharp
 {
-	public interface IResultHandler
+	/// <summary>
+	/// Represents the event listener for a player.
+	/// </summary>
+	public interface IPlayerSessionEventListener : ISessionEventListener
 	{
-		void OnResult(bool result);
+		/// <summary>
+		/// Gets a value indicating wheter this listener implementation is an AI.
+		/// </summary>
+		bool IsAI { get; }
+		/// <summary>
+		/// Called when the player successfully joins a session.
+		/// </summary>
+		/// <param name="control">
+		/// The <see cref="BangSharp.IPlayerSessionControl"/> instance for this player.
+		/// </param>
+		void OnJoinedSession(IPlayerSessionControl control);
+		/// <summary>
+		/// Called when the player successfully joins a game.
+		/// </summary>
+		/// <param name="control">
+		/// The <see cref="BangSharp.IPlayerControl"/> instance for this player.
+		/// </param>
+		void OnJoinedGame(IPlayerControl control);
+
+		/// <summary>
+		/// Fired when the player is requested for an action.
+		/// </summary>
+		/// <param name="requestType">
+		/// The new <see cref="BangSharp.RequestType"/>.
+		/// </param>
+		/// <param name="causedBy">
+		/// The <see cref="BangSharp.IPublicPlayerView"/> of the player that caused the request.
+		/// </param>
+		void OnNewRequest(RequestType requestType, IPublicPlayerView causedBy);
 	}
 }

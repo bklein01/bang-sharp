@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Gdk;
-namespace Bang.Client
+namespace BangSharp.Client
 {
 	public class CardWidget : Gtk.DrawingArea
 	{

@@ -1,3 +1,143 @@
+2012-03-07  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* Server.cs:
+	* AssemblyInfo.cs:
+	* Session.cs:
+	* Game.cs:
+	* ServerEventManager.cs:
+	* Player.cs:
+	* SessionPlayer.cs:
+	* Delegates.cs:
+	* GameTable.cs:
+	* GameCycle.cs:
+	* Bang# Server Daemon.csproj:
+	* Card.cs:
+	* SessionSpectator.cs:
+	* PlayerControl.cs:
+	* IResultHandler.cs:
+	* SessionEventManager.cs:
+	* Duel.cs:
+	* Beer.cs:
+	* Jail.cs:
+	* SessionPlayerControl.cs:
+	* ResponseHandler.cs:
+	* Bang.cs:
+	* TableCard.cs:
+	* GoldenCard.cs:
+	* Panic.cs:
+	* GeneralCard.cs:
+	* Barrel.cs:
+	* Missed.cs:
+	* Saloon.cs:
+	* Gatling.cs:
+	* Indians.cs:
+	* SessionSpectatorControl.cs:
+	* PlayableCard.cs:
+	* Mustang.cs:
+	* CatBalou.cs:
+	* Dynamite.cs:
+	* Carabine.cs:
+	* Volcanic.cs:
+	* ShotResponseHandler.cs:
+	* TargetCardCard.cs:
+	* Appaloosa.cs:
+	* Character.cs:
+	* Diligenza.cs:
+	* Schofield.cs:
+	* Remington.cs:
+	* AllPlayersCard.cs:
+	* QueueResponseHandler.cs:
+	* WellsFargo.cs:
+	* Winchester.cs:
+	* Punch.cs:
+	* Brawl.cs:
+	* TargetPlayerCard.cs:
+	* Bible.cs:
+	* Knife.cs:
+	* GeneralTableCard.cs:
+	* Dodge.cs:
+	* Whisky.cs:
+	* GeneralGoldenCard.cs:
+	* PlayableTableCard.cs:
+	* CanCan.cs:
+	* Silver.cs:
+	* GeneralStore.cs:
+	* ElGringo.cs:
+	* Canteen.cs:
+	* Hideout.cs:
+	* ThrowBangResponseHandler.cs:
+	* RagTime.cs:
+	* Tequila.cs:
+	* Howitzer.cs:
+	* LuckyDuke.cs:
+	* AllPlayersTableCard.cs:
+	* BlackJack.cs:
+	* ProxyCharacter.cs:
+	* TargetCardTableCard.cs:
+	* Sombrero.cs:
+	* IronPlate.cs:
+	* Pepperbox.cs:
+	* Conestoga.cs:
+	* Derringer.cs:
+	* SidKetchum.cs:
+	* VultureSam.cs:
+	* RoseDoolan.cs:
+	* JesseJones.cs:
+	* PaulRegret.cs:
+	* KitCarlson.cs:
+	* AllPlayersGoldenCard.cs:
+	* TargetCardGoldenCard.cs:
+	* TargetPlayerTableCard.cs:
+	* WillyTheKid.cs:
+	* Jourdonnais.cs:
+	* BartCassidy.cs:
+	* Springfield.cs:
+	* PonyExpress.cs:
+	* PedroRamirez.cs:
+	* TargetPlayerGoldenCard.cs:
+	* SlabTheKiller.cs:
+	* CalamityJanet.cs:
+	* TenGallonHat.cs:
+	* SuzyLafayette.cs:
+	* BuffaloRifle.cs:
+	* AllPlayersCardGoldenCard.cs:
+	* ApacheKid.cs:
+	* PixiePete.cs:
+	* BelleStar.cs:
+	* DocHolyday.cs:
+	* MollyStark.cs:
+	* BillNoface.cs:
+	* TequilaJoe.cs:
+	* PatBrennan.cs:
+	* VeraCuster.cs:
+	* GregDigger.cs:
+	* HerbHunter.cs:
+	* JoseDelgado.cs:
+	* SeanMallory.cs:
+	* ChuckWengam.cs:
+	* ElenaFuente.cs:
+	  Changed the root namespace to BangSharp.
+	Improved password hashing.
+	Improved the draw system.
+	Renamed CardResultHandler to CardResultCallback.
+	IResultHandler replaced by the ResultCallback delegate.
+	Fixed printing IsAlive instead of Role in Console Utils.
+	Fixed AI role estimation.
+	Fixed remoting channels management.
+	Fixed revealing role publicly after the game has ended.
+	Fixed useless server state saving when resetting sessions.
+	Fixed discarding cards after death.
+	Fixed replacing with AI player in TestClient - when being
+	  requested it ignored the event.
+	Fixed AI not reacting on Brawl choosing when non-allies had
+	  empty hands.
+	When a player cannot be replaced,
+	  BangSharp.CannotReplacePlayerException is now thrown instead
+	  of InvalidOperationException.
+	Introduced server events.
+	Several minor tweaks.
+
 2012-01-19  WOnder93  <omosnacek@gmail.com>
 
 	* Session.cs:

@@ -1,4 +1,4 @@
-// ISpectatorEventListener.cs
+// ISpectatorSessionEventListener.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,25 +23,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Represents the event listener for a spectator.
 	/// </summary>
-	public interface ISpectatorEventListener : IEventListener
+	public interface ISpectatorSessionEventListener : ISessionEventListener
 	{
 		/// <summary>
 		/// Called when the spectator successfully joins a session.
 		/// </summary>
 		/// <param name="control">
-		/// The <see cref="Bang.ISpectatorSessionControl"/> instance for this spectator.
+		/// The <see cref="BangSharp.ISpectatorSessionControl"/> instance for this spectator.
 		/// </param>
 		void OnJoinedSession(ISpectatorSessionControl control);
 		/// <summary>
 		/// Called when the spectator successfully joins a game.
 		/// </summary>
 		/// <param name="control">
-		/// The <see cref="Bang.ISpectatorControl"/> instance for this spectator.
+		/// The <see cref="BangSharp.ISpectatorControl"/> instance for this spectator.
 		/// </param>
 		void OnJoinedGame(ISpectatorControl control);
 	}

@@ -1,7 +1,7 @@
 using System;
 using Gtk;
 
-namespace Bang.Client
+namespace BangSharp.Client
 {
 	class MainClass
 	{

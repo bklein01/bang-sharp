@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class Game : ImmortalMarshalByRefObject, IGame
 	{

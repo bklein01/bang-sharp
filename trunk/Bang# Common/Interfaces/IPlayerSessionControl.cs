@@ -23,7 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Provides methods and properties available to the player to interact with the session.
@@ -31,12 +31,12 @@ namespace Bang
 	public interface IPlayerSessionControl
 	{
 		/// <summary>
-		/// Gets the <see cref="Bang.IPlayer"/> controlled by this <see cref="Bang.IPlayerSessionControl"/>
+		/// Gets the <see cref="BangSharp.IPlayer"/> controlled by this <see cref="BangSharp.IPlayerSessionControl"/>
 		/// </summary>
 		IPlayer Player { get; }
 
 		/// <summary>
-		/// Gets the <see cref="Bang.ISession"/> instance representing the session.
+		/// Gets the <see cref="BangSharp.ISession"/> instance representing the session.
 		/// </summary>
 		ISession Session { get; }
 

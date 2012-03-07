@@ -26,7 +26,7 @@
 using System.Threading;
 using System;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class ServerMain
 	{
@@ -36,8 +36,9 @@ namespace Bang.Server
 			int adminPort = Config.Instance.GetInteger("Server.AdminPort", 2148);
 
 			Console.Error.WriteLine("INFO: Starting to listen (main port: {0}, admin port: {1})", port, adminPort);
-			Utils.Serve<Server>(port);
-			ServerUtils.ServeAdmin(adminPort, System.Net.IPAddress.Any);
+			Utils.Serve<Server>();
+			Utils.OpenServerChannel(port);
+			ServerUtils.OpenServerAdminChannel(adminPort, System.Net.IPAddress.Any);
 
 			Thread.Sleep(Timeout.Infinite);
 		}

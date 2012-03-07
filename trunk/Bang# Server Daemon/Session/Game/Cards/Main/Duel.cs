@@ -23,11 +23,11 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server.Cards
+namespace BangSharp.Server.Cards
 {
 	public sealed class Duel : TargetPlayerCard
 	{
-		private class DuelResponseHandler : ResponseHandler, IResultHandler
+		private class DuelResponseHandler : ResponseHandler
 		{
 			private Duel card;
 			private Player targetPlayer;
@@ -45,7 +45,7 @@ namespace Bang.Server.Cards
 			protected override void OnStart()
 			{
 				current = targetPlayer;
-				PushHandler(new ThrowBangResponseHandler(current, owner, this));
+				PushHandler(new ThrowBangResponseHandler(current, owner, OnResult));
 			}
 
 			protected override void OnContinue()
@@ -58,12 +58,12 @@ namespace Bang.Server.Cards
 				current = current == targetPlayer ? owner : targetPlayer;
 			}
 			
-			void IResultHandler.OnResult(bool result)
+			private void OnResult(bool result)
 			{
 				if(result)
 				{
 					NextPlayer();
-					PushHandler(new ThrowBangResponseHandler(current, owner, this));
+					PushHandler(new ThrowBangResponseHandler(current, owner, OnResult));
 				}
 			}
 		}

@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Collections.Generic;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public class TableCard : PlayableCard
 	{
@@ -80,14 +80,14 @@ namespace Bang.Server
 			throw new BadUsageException();
 		}
 
-		public override void CheckMissed(CardResultMethod resultMethod)
+		public override void CheckMissed(CardResultCallback resultCallback)
 		{
 			if(IsOnTable && !playBlocked)
-				OnCheckMissed(resultMethod);
+				OnCheckMissed(resultCallback);
 			else
 				throw new BadCardException();
 		}
-		protected virtual void OnCheckMissed(CardResultMethod resultMethod)
+		protected virtual void OnCheckMissed(CardResultCallback resultCallback)
 		{
 			throw new BadCardException();
 		}

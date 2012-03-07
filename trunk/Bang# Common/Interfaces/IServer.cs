@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Collections.ObjectModel;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Provides information about a game server.
@@ -54,20 +54,35 @@ namespace Bang
 		/// Gets the collection of the sessions currently hosted on the server.
 		/// </summary>
 		ReadOnlyCollection<ISession> Sessions { get; }
-		
+
+		/// <summary>
+		/// Registers a server event listener.
+		/// </summary>
+		/// <param name="listener">
+		/// The listener to register.
+		/// </param>
+		void RegisterListener(IServerEventListener listener);
+		/// <summary>
+		/// Unregisters the server event listener.
+		/// </summary>
+		/// <param name="listener">
+		/// The listener to unregister.
+		/// </param>
+		void UnregisterListener(IServerEventListener listener);
+
 		/// <summary>
 		/// Creates a new session on the server.
 		/// </summary>
 		/// <param name="sessionData">
-		/// The <see cref="Bang.CreateSessionData"/> containing the information about the session.
+		/// The <see cref="BangSharp.CreateSessionData"/> containing the information about the session.
 		/// </param>
 		/// <param name="playerData">
-		/// The <see cref="Bang.CreatePlayerData"/> containing the information about the creator.
+		/// The <see cref="BangSharp.CreatePlayerData"/> containing the information about the creator.
 		/// </param>
 		/// <param name="listener">
-		/// The <see cref="Bang.IPlayerEventListener"/> of the creator.
+		/// The <see cref="BangSharp.IPlayerSessionEventListener"/> of the creator.
 		/// </param>
-		void CreateSession(CreateSessionData sessionData, CreatePlayerData playerData, IPlayerEventListener listener);
+		void CreateSession(CreateSessionData sessionData, CreatePlayerData playerData, IPlayerSessionEventListener listener);
 
 		ISession GetSession(int id);
 	}

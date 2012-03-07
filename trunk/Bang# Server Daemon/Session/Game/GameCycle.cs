@@ -26,7 +26,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class Draw : ResponseHandler
 	{
@@ -54,12 +54,12 @@ namespace Bang.Server
 
 		protected override void OnRespondDraw()
 		{
-			Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 2);
+			RequestedPlayer.Draw(false);
 			End();
 		}
 		protected override void OnRespondUseAbility()
 		{
-			RequestedPlayer.Character.Draw();
+			RequestedPlayer.Draw(true);
 			End();
 		}
 	}
@@ -118,7 +118,7 @@ namespace Bang.Server
 
 		protected override void OnStart()
 		{
-			if(RequestedPlayer.Hand.Count <= RequestedPlayer.MaxCardCount)
+			if(RequestedPlayer.SkipTurn || !RequestedPlayer.IsAlive || RequestedPlayer.Hand.Count <= RequestedPlayer.MaxCardCount)
 				End();
 		}
 

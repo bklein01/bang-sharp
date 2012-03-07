@@ -29,7 +29,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
-namespace Bang.ConsoleUtils
+namespace BangSharp.ConsoleUtils
 {
 	/// <summary>
 	/// This class contains utility methods for communication with the user via console.
@@ -65,10 +65,10 @@ namespace Bang.ConsoleUtils
 		}
 
 		/// <summary>
-		/// Prints the main properties of an <see cref="Bang.IPublicPlayerView"/> to the console.
+		/// Prints the main properties of an <see cref="BangSharp.IPublicPlayerView"/> to the console.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="Bang.IPublicPlayerView"/> to print.
+		/// The <see cref="BangSharp.IPublicPlayerView"/> to print.
 		/// </param>
 		public static void Print(IPublicPlayerView player)
 		{
@@ -81,10 +81,10 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tCharacter: {0}", player.CharacterType);
 		}
 		/// <summary>
-		/// Prints the main properties of an <see cref="Bang.ICard"/> to the console.
+		/// Prints the main properties of an <see cref="BangSharp.ICard"/> to the console.
 		/// </summary>
 		/// <param name="card">
-		/// The <see cref="Bang.ICard"/> to print.
+		/// The <see cref="BangSharp.ICard"/> to print.
 		/// </param>
 		public static void Print(ICard card)
 		{
@@ -96,10 +96,10 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tSuit: {0}", card.Suit);
 		}
 		/// <summary>
-		/// Prints the main properties of an <see cref="Bang.ISpectator"/> to the console.
+		/// Prints the main properties of an <see cref="BangSharp.ISpectator"/> to the console.
 		/// </summary>
 		/// <param name="spectator">
-		/// The <see cref="Bang.ISpectator"/> to print.
+		/// The <see cref="BangSharp.ISpectator"/> to print.
 		/// </param>
 		public static void Print(ISpectator spectator)
 		{
@@ -108,10 +108,10 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tName: {0}", spectator.Name);
 		}
 		/// <summary>
-		/// Prints the main properties of an <see cref="Bang.IPlayer"/> to the console.
+		/// Prints the main properties of an <see cref="BangSharp.IPlayer"/> to the console.
 		/// </summary>
 		/// <param name="player">
-		/// The <see cref="Bang.IPlayer"/> to print.
+		/// The <see cref="BangSharp.IPlayer"/> to print.
 		/// </param>
 		public static void Print(IPlayer player)
 		{
@@ -124,10 +124,10 @@ namespace Bang.ConsoleUtils
 			PrintLine("\tHasPassword: {0}", player.HasPassword);
 		}
 		/// <summary>
-		/// Prints the main properties of an <see cref="Bang.ISession"/> to the console.
+		/// Prints the main properties of an <see cref="BangSharp.ISession"/> to the console.
 		/// </summary>
 		/// <param name="session">
-		/// The <see cref="Bang.ISession"/> to print.
+		/// The <see cref="BangSharp.ISession"/> to print.
 		/// </param>
 		public static void Print(ISession session)
 		{
@@ -702,6 +702,47 @@ namespace Bang.ConsoleUtils
 				Console.ForegroundColor = backup;
 		}
 		/// <summary>
+		/// Prints a server event line with the specified text string to the console.
+		/// </summary>
+		/// <param name='text'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		public static void ServerEvent(string message)
+		{
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = eventColor;
+			}
+			Console.Write("Server event: ");
+			Console.WriteLine(message);
+			lock(colorLock)
+				Console.ForegroundColor = backup;
+		}
+		/// <summary>
+		/// Prints a server event line with the specified format string with arguments to the console.
+		/// </summary>
+		/// <param name='format'>
+		/// The <see cref="string"/> to print.
+		/// </param>
+		/// <param name='args'>
+		/// The arguments for the format string.
+		/// </param>
+		public static void ServerEvent(string format, params object[] args)
+		{
+			ConsoleColor backup;
+			lock(colorLock)
+			{
+				backup = Console.ForegroundColor;
+				Console.ForegroundColor = eventColor;
+			}
+			Console.Write("Server event: ");
+			Console.WriteLine(format, args);
+			lock(colorLock)
+				Console.ForegroundColor = backup;
+		}
+		/// <summary>
 		/// Prints a session event line with the specified text string to the console.
 		/// </summary>
 		/// <param name='text'>
@@ -851,7 +892,7 @@ namespace Bang.ConsoleUtils
 				foreach(CharacterType type in player.AdditionalCharacters)
 					PrintLine(type);
 			});
-			command["role"] = new FinalCommand<IPublicPlayerView>((player, cmd) => { PrintLine(player.IsAlive); });
+			command["role"] = new FinalCommand<IPublicPlayerView>((player, cmd) => { PrintLine(player.Role); });
 		}
 		/// <summary>
 		/// Makes the command template a private player view command.
@@ -876,7 +917,7 @@ namespace Bang.ConsoleUtils
 			tableCommand.MakeCardCollectionCommand();
 			command["table"] = tableCommand;
 			command["character"] = new FinalCommand<IPrivatePlayerView>((player, cmd) => { PrintLine(player.CharacterType); });
-			command["role"] = new FinalCommand<IPrivatePlayerView>((player, cmd) => { PrintLine(player.IsAlive); });
+			command["role"] = new FinalCommand<IPrivatePlayerView>((player, cmd) => { PrintLine(player.Role); });
 			command["requesttype"] = new FinalCommand<IPrivatePlayerView>((player, cmd) => { PrintLine(player.RequestType); });
 			NestedCommand<IPrivatePlayerView, ReadOnlyCollection<ICard>> selectionCommand = new NestedCommand<IPrivatePlayerView, ReadOnlyCollection<ICard>>((player, cmd) => player.Selection);
 			selectionCommand.MakeCardCollectionCommand();

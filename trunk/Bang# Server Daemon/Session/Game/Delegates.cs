@@ -23,8 +23,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server
+namespace BangSharp.Server
 {
-	public delegate bool CheckDeckMethod(Card card);
-	public delegate void CardResultMethod(Card causedBy, bool result);
+	public delegate bool CheckDeckCallback(Card card);
+	public delegate void ResultCallback(bool result);
+	public delegate void CardCallback(Card card);
+	public delegate void CardResultCallback(Card causedBy, bool result);
 }

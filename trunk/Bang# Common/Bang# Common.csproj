@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5BD1DDB4-B3DB-4F58-BF80-5D2E8EE54204}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Bang</RootNamespace>
+    <RootNamespace>BangSharp</RootNamespace>
     <AssemblyName>BangSharpCommon</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <Description>Common library for Bang#</Description>
@@ -55,9 +55,6 @@
     <Compile Include="Interfaces\IPrivatePlayerView.cs" />
     <Compile Include="Interfaces\ISpectatorControl.cs" />
     <Compile Include="Interfaces\IPlayerControl.cs" />
-    <Compile Include="Interfaces\IEventListener.cs" />
-    <Compile Include="Interfaces\ISpectatorEventListener.cs" />
-    <Compile Include="Interfaces\IPlayerEventListener.cs" />
     <Compile Include="Interfaces\ISpectator.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Interfaces\ISpectatorSessionControl.cs" />
@@ -93,6 +90,12 @@
     <Compile Include="MethodRestrictionServerSink.cs" />
     <Compile Include="MethodRestrictionServerSinkProvider.cs" />
     <Compile Include="Exceptions\BadCharacterTypeException.cs" />
+    <Compile Include="RemotingUtils.cs" />
+    <Compile Include="Exceptions\CannotReplacePlayerException.cs" />
+    <Compile Include="Interfaces\ISessionEventListener.cs" />
+    <Compile Include="Interfaces\IPlayerSessionEventListener.cs" />
+    <Compile Include="Interfaces\ISpectatorSessionEventListener.cs" />
+    <Compile Include="Interfaces\IServerEventListener.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

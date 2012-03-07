@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Collections.Generic;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class ShotResponseHandler : ResponseHandler
 	{

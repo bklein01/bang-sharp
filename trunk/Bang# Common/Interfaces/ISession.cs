@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Collections.ObjectModel;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Provides information about a session.
@@ -108,12 +108,12 @@ namespace Bang
 		/// The session password.
 		/// </param>
 		/// <param name="data">
-		/// The <see cref="Bang.CreatePlayerData"/> contatining the information about the player.
+		/// The <see cref="BangSharp.CreatePlayerData"/> contatining the information about the player.
 		/// </param>
 		/// <param name="listener">
-		/// The <see cref="Bang.IPlayerEventListener"/> of the player.
+		/// The <see cref="BangSharp.IPlayerSessionEventListener"/> of the player.
 		/// </param>
-		void Join(Password password, CreatePlayerData data, IPlayerEventListener listener);
+		void Join(Password password, CreatePlayerData data, IPlayerSessionEventListener listener);
 		/// <summary>
 		/// Replaces an existing player with a new one. Only players without controller or AI players can be replaced.
 		/// </summary>
@@ -124,12 +124,12 @@ namespace Bang
 		/// The session password.
 		/// </param>
 		/// <param name="data">
-		/// The <see cref="Bang.CreatePlayerData"/> contatining the information about the new player.
+		/// The <see cref="BangSharp.CreatePlayerData"/> contatining the information about the new player.
 		/// </param>
 		/// <param name="listener">
-		/// The <see cref="Bang.PlayerEventListener"/> of the new player.
+		/// The <see cref="BangSharp.PlayerEventListener"/> of the new player.
 		/// </param>
-		void Replace(int id, Password password, CreatePlayerData data, IPlayerEventListener listener);
+		void Replace(int id, Password password, CreatePlayerData data, IPlayerSessionEventListener listener);
 		/// <summary>
 		/// Joins a new spectator to the session.
 		/// </summary>
@@ -137,12 +137,12 @@ namespace Bang
 		/// The session password.
 		/// </param>
 		/// <param name="data">
-		/// The <see cref="Bang.CreateSpectatorData"/> contatining the information about the spectator.
+		/// The <see cref="BangSharp.CreateSpectatorData"/> contatining the information about the spectator.
 		/// </param>
 		/// <param name="listener">
-		/// The <see cref="Bang.ISpectatorEventListener"/> of the spectator.
+		/// The <see cref="BangSharp.ISpectatorSessionEventListener"/> of the spectator.
 		/// </param>
-		void Spectate(Password password, CreateSpectatorData data, ISpectatorEventListener listener);
+		void Spectate(Password password, CreateSpectatorData data, ISpectatorSessionEventListener listener);
 		/// <summary>
 		/// Gets the player with the specified ID.
 		/// </summary>
@@ -150,7 +150,7 @@ namespace Bang
 		/// The ID of the player.
 		/// </param>
 		/// <returns>
-		/// The <see cref="Bang.IPlayer"/> instance representing the player.
+		/// The <see cref="BangSharp.IPlayer"/> instance representing the player.
 		/// </returns>
 		IPlayer GetPlayer(int id);
 		/// <summary>
@@ -160,7 +160,7 @@ namespace Bang
 		/// The ID of the spectator.
 		/// </param>
 		/// <returns>
-		/// The <see cref="Bang.ISpectator"/> instance representing the spectator.
+		/// The <see cref="BangSharp.ISpectator"/> instance representing the spectator.
 		/// </returns>
 		ISpectator GetSpectator(int id);
 	}

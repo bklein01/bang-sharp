@@ -23,7 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Represents the type of a request.
@@ -38,196 +38,268 @@ namespace Bang
 		#region Main Requests
 		/// <summary>
 		/// Player is requested to draw cards.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondDraw - player draws normally
 		/// 	RespondUseAbility - player draws using character's ability
-		/// </summary>
+		/// </remarks>
 		Draw,
 		/// <summary>
 		/// Player is requested to play a card (or end his turn)
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player plays the specified card
 		/// 	RespondUseAbility - player uses his character's ability
 		/// 	RespondNoAction - player decides to end his turn
-		/// </summary>
+		/// </remarks>
 		Play,
 		/// <summary>
 		/// Player is requested to discard one of the cards in his hand.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player discards the specified card
-		/// </summary>
+		/// </remarks>
 		DiscardCard,
 		/// <summary>
 		/// Player lost his last life and is requested to play a beer to save himself (or give up).
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player plays the specified beer card
 		/// 	[RespondUseAbility - player uses his character's ability to save himself]
 		/// 	RespondNoAction - player gives up and dies
-		/// </summary>
+		/// </remarks>
 		BeerRescue,
 		/// <summary>
 		/// Player is being shot at.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player uses the card to avoid the shot
 		/// 	RespondUseAbility - player uses his character's ability to avoid the shot
 		/// 	RespondNoAction - player gives up and looses 1 life point
-		/// </summary>
+		/// </remarks>
 		Shot,
 		/// <summary>
 		/// Player is requested to throw Bang! or loose 1 life point.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player throws the Bang! card
 		/// 	RespondNoAction - player gives up and looses 1 life point
-		/// </summary>
+		/// </remarks>
 		ThrowBang,
 		/// <summary>
 		/// Player is requested to choose a player to shoot at.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondPlayer - player chooses the specified player
 		/// 	RespondNoAction - player cancels the action
-		/// </summary>
+		/// </remarks>
 		ShotTarget,
 		/// <summary>
 		/// Player is requested to choose an opponent for duel.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondPlayer - player chooses the specified player
 		/// 	RespondNoAction - player cancels the action
-		/// </summary>
+		/// </remarks>
 		DuelTarget,
 		/// <summary>
 		/// Player is requested to choose a player to be put into jail.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondPlayer - player chooses the specified player
 		/// 	RespondNoAction - player cancels the action
-		/// </summary>
+		/// </remarks>
 		JailTarget,
 		/// <summary>
 		/// Player is requested to choose a player to be healed 1 life point.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondPlayer - player chooses the specified player
 		/// 	RespondNoAction - player cancels the action
-		/// </summary>
+		/// </remarks>
 		HealTarget,
 		/// <summary>
 		/// Player is requested to choose a card to steal from another player.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player chooses the specified card
 		/// 	RespondNoAction - player cancels the action
-		/// </summary>
+		/// </remarks>
 		StealCard,
 		/// <summary>
 		/// Player is requested to choose a card to cancel from another player.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player chooses the specified card
 		/// 	RespondNoAction - player cancels the action
-		/// </summary>
+		/// </remarks>
 		CancelCard,
 		/// <summary>
 		/// Player is requested to choose a card to discard in order to play a golden card.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player chooses the specified card
 		/// 	RespondNoAction - player cancels the action
-		/// </summary>
+		/// </remarks>
 		GoldenCard,
 		/// <summary>
 		/// Player is requested to choose a card from the recently dead player to take in hand.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player chooses the specified card
-		/// </summary>
+		/// </remarks>
 		TakeDeadPlayersCard,
 		/// <summary>
 		/// Player is requested to choose which of his addiditonal characters is to be used for drawing cards.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCharacter - player chooses the specified character
 		/// 	RespondNoAction - the default behavior is used
-		/// </summary>
+		/// </remarks>
 		ChooseCharacterForDraw,
 		/// <summary>
-		/// Player is requested to choose which of his addiditonal characters is to be used for playing a card.
+		/// Player is requested to choose which of his addiditonal characters is to be used for drawing the first card.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCharacter - player chooses the specified character
 		/// 	RespondNoAction - the default behavior is used
+		/// </remarks>
+		ChooseCharacterForDrawFirstCard,
+		/// <summary>
+		/// Player is requested to choose which of his addiditonal characters is to be used for drawing the second card.
 		/// </summary>
+		/// <remarks>
+		/// Acceptable responses:
+		/// 	RespondCharacter - player chooses the specified character
+		/// 	RespondNoAction - the default behavior is used
+		/// </remarks>
+		ChooseCharacterForDrawSecondCard,
+		/// <summary>
+		/// Player is requested to choose which of his addiditonal characters is to be used for playing a card.
+		/// </summary>
+		/// <remarks>
+		/// Acceptable responses:
+		/// 	RespondCharacter - player chooses the specified character
+		/// 	RespondNoAction - the default behavior is used
+		/// </remarks>
 		ChooseCharacterForPlayCard,
 		/// <summary>
 		/// Player is requested to choose which of his addiditonal characters is to be used for voluntary abilty use.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCharacter - player chooses the specified character
 		/// 	RespondNoAction - the default behavior is used
-		/// </summary>
+		/// </remarks>
 		ChooseCharacterForUseAbility,
 		/// <summary>
 		/// Player is requested to choose which of his addiditonal characters is to be used for 'deck checking'.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCharacter - player chooses the specified character
 		/// 	RespondNoAction - the default behavior is used
-		/// </summary>
+		/// </remarks>
 		ChooseCharacterForCheckDeck,
 		/// <summary>
 		/// Player is requested to choose which of his addiditonal characters is to be used for avoiding the shot.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCharacter - player chooses the specified character
 		/// 	RespondNoAction - the default behavior is used
-		/// </summary>
+		/// </remarks>
 		ChooseCharacterForAvoidShot,
 		#endregion
 		#region Card Requests
 		/// <summary>
 		/// Player is requested to choose a card from the General Store (selection).
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player chooses the specified card
-		/// </summary>
+		/// </remarks>
 		GeneralStore,
 		#endregion
 		#region Character Requests
 		/// <summary>
 		/// Player is requested to choose 2 cards to discard  in order to shoot on a player.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player adds the specified card to those to be discarded
 		/// 	RespondNoAction - player cancels the action
-		/// </summary>
+		/// </remarks>
 		DocHolyday,
 		/// <summary>
 		/// Player is requested to choose a blue card to discard in order to draw 2 cards.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player chooses the specified card
 		/// 	RespondNoAction - player cancels the action
-		/// </summary>
+		/// </remarks>
 		JoseDelgado,
 		/// <summary>
 		/// Player is requested to choose a card from the table to steal instead of standard draw.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player chooses the specified card
 		/// 	RespondNoAction - fallback to normal draw
-		/// </summary>
+		/// </remarks>
 		PatBrennan,
 		/// <summary>
 		/// Player is requested to choose a player whose character's abilities he gains for the following round.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondPlayer - player chooses the specified player's character
 		/// 	RespondNoAction - player chooses no character
-		/// </summary>
+		/// </remarks>
 		VeraCuster,
 		/// <summary>
 		/// Player is requested to choose a card from the selection to draw.
 		/// See  the Kit Carlson's ability for details.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player chooses the specified card
-		/// </summary>
+		/// </remarks>
 		KitCarlson,
 		/// <summary>
 		/// Player is requested to choose a card from the selection to be used for 'deck checking'.
 		/// See the Lucky Duke's ability for details.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player chooses the specified card
-		/// </summary>
+		/// </remarks>
 		LuckyDuke,
 		/// <summary>
 		/// Player is requested to choose 2 cards to discard in order to gain 1 life point.
+		/// </summary>
+		/// <remarks>
 		/// Acceptable responses:
 		/// 	RespondCard - player adds the specified card to those to be discarded
 		/// 	RespondNoAction - player cancels the action
-		/// </summary>
+		/// </remarks>
 		SidKetchum,
 		#endregion
 	}

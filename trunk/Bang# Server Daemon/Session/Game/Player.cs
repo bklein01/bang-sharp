@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class Player : ImmortalMarshalByRefObject, IPublicPlayerView
 	{
@@ -174,10 +174,10 @@ namespace Bang.Server
 		{
 			get
 			{
-				if(game.Players.Count <= 3)
+				if(game.Players.Count <= 3 || role == Role.Sheriff || !isAlive || game.Ended)
 					return role;
 				else
-					return role == Role.Sheriff ? Role.Sheriff : isAlive ? Role.Unknown : role;
+					return Role.Unknown;
 			}
 		}
 		public bool IsSheriff
@@ -247,6 +247,15 @@ namespace Bang.Server
 			get { return skipTurn; }
 			set { skipTurn = skipTurn || value; }
 		}
+		public bool RevealFirstDrawnCard
+		{
+			get { return character.RevealFirstDrawnCard; }
+		}
+		public bool RevealSecondDrawnCard
+		{
+			get { return character.RevealSecondDrawnCard; }
+		}
+
 		public IPrivatePlayerView PrivatePlayerView
 		{
 			get { return privateView; }
@@ -282,14 +291,25 @@ namespace Bang.Server
 			control.Disconnect();
 			control = new PlayerControl(this);
 		}
-		
+
+		public void Draw(bool useAbility)
+		{
+			if(!useAbility)
+			{
+				ReadOnlyCollection<Card> cards = Game.GameTable.PlayerDrawFromDeck(this, 2);
+				OnDrewFirstCard(cards[0]);
+				OnDrewSecondCard(cards[1]);
+			}
+			else
+				character.Draw();
+		}
 		public void PlayCard(Card card)
 		{
 			character.PlayCard(card);
 		}
-		public void CheckDeck(Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
+		public void CheckDeck(Card causedBy, CheckDeckCallback checkCallback, CardResultCallback resultCallback)
 		{
-			character.CheckDeck(causedBy, checkMethod, resultMethod);
+			character.CheckDeck(causedBy, checkCallback, resultCallback);
 		}
 		public int GetDistanceIn(Player origin)
 		{
@@ -313,9 +333,9 @@ namespace Bang.Server
 		{
 			return character.HasCardEffect(card);
 		}
-		public void CheckMissed(Card card, CardResultMethod resultMethod)
+		public void CheckMissed(Card card, CardResultCallback resultCallback)
 		{
-			card.CheckMissed((causedBy, result) => resultMethod(causedBy, result || character.IsMissed(card)));
+			card.CheckMissed((causedBy, result) => resultCallback(causedBy, result || character.IsMissed(card)));
 		}
 		public bool IsBang(Card card)
 		{
@@ -457,6 +477,18 @@ namespace Bang.Server
 			character.OnTurnEnded();
 			foreach(TableCard card in table)
 				card.OnTurnEnded();
+		}
+		public void OnDrewFirstCard(Card card)
+		{
+			character.OnDrewFirstCard(card);
+		}
+		public void OnDrewSecondCard(Card card)
+		{
+			character.OnDrewSecondCard(card);
+		}
+		public void OnAfterDraw()
+		{
+			character.OnAfterDraw();
 		}
 		public void OnPlayedBang()
 		{

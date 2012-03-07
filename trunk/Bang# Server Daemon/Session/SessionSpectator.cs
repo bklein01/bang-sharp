@@ -26,7 +26,7 @@
 using System;
 using System.Runtime.Remoting;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class SessionSpectator : ImmortalMarshalByRefObject, ISpectator
 	{
@@ -34,7 +34,7 @@ namespace Bang.Server
 		private Session session;
 		private CreateSpectatorData data;
 		private SessionSpectatorControl control;
-		private ISpectatorEventListener listener;
+		private ISpectatorSessionEventListener listener;
 		
 		public int ID
 		{
@@ -57,7 +57,7 @@ namespace Bang.Server
 		{
 			get { return control; }
 		}
-		public ISpectatorEventListener Listener
+		public ISpectatorSessionEventListener Listener
 		{
 			get { return listener; }
 		}
@@ -97,7 +97,7 @@ namespace Bang.Server
 			control.Disconnect();
 		}
 
-		public void RegisterListener(ISpectatorEventListener listener)
+		public void RegisterListener(ISpectatorSessionEventListener listener)
 		{
 			this.listener = listener;
 		}

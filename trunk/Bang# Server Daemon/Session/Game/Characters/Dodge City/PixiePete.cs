@@ -23,7 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server.Characters
+namespace BangSharp.Server.Characters
 {
 	public sealed class PixiePete : Character
 	{
@@ -37,10 +37,10 @@ namespace Bang.Server.Characters
 		{
 		}
 		
-		public override void Draw()
+		public override void OnAfterDraw()
 		{
 			OnUsedAbility();
-			Game.GameTable.PlayerDrawFromDeck(Player, 3);
+			Game.GameTable.PlayerDrawFromDeck(Player, 1);
 		}
 	}
 }

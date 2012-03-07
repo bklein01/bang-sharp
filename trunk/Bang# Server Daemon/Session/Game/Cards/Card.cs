@@ -24,9 +24,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Bang.Server.Cards;
+using BangSharp.Server.Cards;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public class Card : ImmortalMarshalByRefObject, ICard
 	{
@@ -177,7 +177,7 @@ namespace Bang.Server
 				throw new BadCardException();
 		}
 
-		public virtual void CheckMissed(CardResultMethod resultMethod)
+		public virtual void CheckMissed(CardResultCallback resultCallback)
 		{
 			throw new BadCardException();
 		}

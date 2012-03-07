@@ -23,7 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server.Characters
+namespace BangSharp.Server.Characters
 {
 	public sealed class BillNoface : Character
 	{
@@ -31,11 +31,10 @@ namespace Bang.Server.Characters
 			: base(player, CharacterType.BillNoface)
 		{
 		}
-		
-		public override void Draw()
+
+		public override int DrawCardCount
 		{
-			OnUsedAbility();
-			Game.GameTable.PlayerDrawFromDeck(Player, Player.MaxLifePoints - Player.LifePoints + 1);
+			get { return Player.MaxLifePoints - Player.LifePoints + 1; }
 		}
 	}
 }

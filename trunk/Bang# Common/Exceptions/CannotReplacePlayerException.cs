@@ -1,4 +1,4 @@
-// IPlayerEventListener.cs
+// CannotReplacePlayerException.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,41 +23,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang
+using System;
+using System.Runtime.Serialization;
+
+namespace BangSharp
 {
 	/// <summary>
-	/// Represents the event listener for a player.
+	/// Thrown when player tries to replace a player with listener that is not an AI.
 	/// </summary>
-	public interface IPlayerEventListener : IEventListener
+	[Serializable]
+	public class CannotReplacePlayerException : GameException
 	{
-		/// <summary>
-		/// Gets a value indicating wheter this listener implementation is an AI.
-		/// </summary>
-		bool IsAI { get; }
-		/// <summary>
-		/// Called when the player successfully joins a session.
-		/// </summary>
-		/// <param name="control">
-		/// The <see cref="Bang.IPlayerSessionControl"/> instance for this player.
-		/// </param>
-		void OnJoinedSession(IPlayerSessionControl control);
-		/// <summary>
-		/// Called when the player successfully joins a game.
-		/// </summary>
-		/// <param name="control">
-		/// The <see cref="Bang.IPlayerControl"/> instance for this player.
-		/// </param>
-		void OnJoinedGame(IPlayerControl control);
-
-		/// <summary>
-		/// Fired when the player is requested for an action.
-		/// </summary>
-		/// <param name="requestType">
-		/// The new <see cref="Bang.RequestType"/>.
-		/// </param>
-		/// <param name="causedBy">
-		/// The <see cref="Bang.IPublicPlayerView"/> of the player that caused the request.
-		/// </param>
-		void OnNewRequest(RequestType requestType, IPublicPlayerView causedBy);
+		public CannotReplacePlayerException()
+		{
+		}
+		protected CannotReplacePlayerException(SerializationInfo info, StreamingContext context)
+		{
+		}
 	}
 }
+

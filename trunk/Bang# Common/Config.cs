@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// This class provides access to a simple configuration file.

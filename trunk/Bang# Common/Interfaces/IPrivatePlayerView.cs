@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Collections.ObjectModel;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Provides player's properties as seen by himself.

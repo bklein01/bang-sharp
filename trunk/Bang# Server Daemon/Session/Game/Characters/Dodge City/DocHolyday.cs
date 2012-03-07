@@ -26,7 +26,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bang.Server.Characters
+namespace BangSharp.Server.Characters
 {
 	public sealed class DocHolyday : Character
 	{

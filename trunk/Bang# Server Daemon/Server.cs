@@ -29,7 +29,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class Server : ImmortalMarshalByRefObject, IServerBase
 	{
@@ -54,6 +54,7 @@ namespace Bang.Server
 		}
 		private static Server instance = null;
 		private ServerAdmin admin;
+		private ServerEventManager eventMgr;
 		private Dictionary<int, Session> sessions;
 
 		public readonly object Lock = new object();
@@ -95,6 +96,10 @@ namespace Bang.Server
 		{
 			get { return ServerUtils.InterfaceVersionMinor; }
 		}
+		public ServerEventManager EventManager
+		{
+			get { return eventMgr; }
+		}
 		ReadOnlyCollection<ISession> IServer.Sessions
 		{
 			get { return new ReadOnlyCollection<ISession>(new List<Session>(sessions.Values).ConvertAll<ISession>(s => s)); }
@@ -107,6 +112,7 @@ namespace Bang.Server
 		public Server()
 		{
 			admin = new ServerAdmin(this);
+			eventMgr = new ServerEventManager(this);
 			if(!LoadState())
 				sessions = new Dictionary<int, Session>();
 			instance = this;
@@ -183,7 +189,16 @@ namespace Bang.Server
 			}
 		}
 
-		public void CreateSession(CreateSessionData sessionData, CreatePlayerData playerData, IPlayerEventListener listener)
+		public void RegisterListener(IServerEventListener listener)
+		{
+			eventMgr.RegisterListener(listener);
+		}
+		public void UnregisterListener(IServerEventListener listener)
+		{
+			eventMgr.UnregisterListener(listener);
+		}
+
+		public void CreateSession(CreateSessionData sessionData, CreatePlayerData playerData, IPlayerSessionEventListener listener)
 		{
 			lock(Lock)
 			{
@@ -196,6 +211,7 @@ namespace Bang.Server
 				Console.Error.WriteLine("INFO: Created session #{0}.", id);
 
 				session.Join(sessionData.PlayerPassword, playerData, listener);
+				eventMgr.OnSessionCreated(session);
 				SaveState();
 			}
 		}
@@ -228,7 +244,7 @@ namespace Bang.Server
 			}
 			if(!serverPassword.CheckPassword(password))
 				throw new BadServerPasswordException();
-			Config.Instance.SetIntegerList("Server.AdminPassword", newPassword.Hash.ToList());
+			Config.Instance.SetIntegerList("Server.AdminPassword", newPassword.LongHash.ToList());
 		}
 
 		public void ResetSessions()
@@ -242,7 +258,6 @@ namespace Bang.Server
 				List<Session> sessionList = new List<Session>(sessions.Values);
 				foreach(Session s in sessionList)
 					s.End();
-				SaveState();
 			}
 		}
 		public void RemoveSession(Session session)
@@ -251,6 +266,7 @@ namespace Bang.Server
 			{
 				Console.Error.WriteLine("INFO: Removing session #{0}...", session.ID);
 				sessions.Remove(session.ID);
+				eventMgr.OnSessionEnded(session);
 				session.Disconnect();
 				SaveState();
 			}

@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 
 // TODO: [global] Write the documentation
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Represents the rim color of a card;

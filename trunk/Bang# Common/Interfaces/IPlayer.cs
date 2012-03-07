@@ -23,7 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Provides information about a player.
@@ -77,7 +77,7 @@ namespace Bang
 		/// Gets the number of the this player's victories with the specified role.
 		/// </summary>
 		/// <param name="role">
-		/// The <see cref="Bang.Role"/> to get the result for.
+		/// The <see cref="BangSharp.Role"/> to get the result for.
 		/// </param>
 		/// <returns>
 		/// The number of the this player's victories with the specified role.
@@ -87,7 +87,7 @@ namespace Bang
 		/// Gets the number of the this player's victories with the specified character.
 		/// </summary>
 		/// <param name="role">
-		/// The <see cref="Bang.CharacterType"/> to get the result for.
+		/// The <see cref="BangSharp.CharacterType"/> to get the result for.
 		/// </param>
 		/// <returns>
 		/// The number of the this player's victories with the specified character.
