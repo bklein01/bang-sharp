@@ -31,7 +31,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class Session : ImmortalMarshalByRefObject, ISession
 	{
@@ -65,6 +65,11 @@ namespace Bang.Server
 		private int gamesPlayed;
 		private IEnumerator<SessionPlayer> sheriffEnumerator;
 		private List<CharacterType> remainingCharacters;
+
+		public Server Server
+		{
+			get { return server; }
+		}
 
 		public readonly object Lock = new object();
 		private bool locked;
@@ -308,7 +313,7 @@ namespace Bang.Server
 				s.Disconnect();
 		}
 
-		public void Join(Password password, CreatePlayerData data, IPlayerEventListener listener)
+		public void Join(Password password, CreatePlayerData data, IPlayerSessionEventListener listener)
 		{
 			if(state == SessionState.Ended)
 				throw new BadSessionStateException();
@@ -337,7 +342,7 @@ namespace Bang.Server
 			}
 		}
 
-		public void Replace(int id, Password password, CreatePlayerData data, IPlayerEventListener listener)
+		public void Replace(int id, Password password, CreatePlayerData data, IPlayerSessionEventListener listener)
 		{
 			if(state == SessionState.Ended)
 				throw new BadSessionStateException();
@@ -351,7 +356,7 @@ namespace Bang.Server
 
 				SessionPlayer player = GetPlayer(id);
 				if(player.HasListener && !player.IsAI)
-					throw new InvalidOperationException();
+					throw new CannotReplacePlayerException();
 				player.Update(data);
 				player.RegisterListener(listener);
 				eventMgr.SendController(player);
@@ -362,7 +367,7 @@ namespace Bang.Server
 			}
 		}
 
-		public void Spectate(Password password, CreateSpectatorData data, ISpectatorEventListener listener)
+		public void Spectate(Password password, CreateSpectatorData data, ISpectatorSessionEventListener listener)
 		{
 			if(state == SessionState.Ended)
 				throw new BadSessionStateException();
@@ -496,6 +501,7 @@ namespace Bang.Server
 				game = new Game(this, sheriffEnumerator.Current.ID);
 				game.Start();
 				state = SessionState.Playing;
+				eventMgr.OnGameStarted();
 				server.SaveState();
 			}
 		}
@@ -524,12 +530,18 @@ namespace Bang.Server
 					throw new MethodAccessException();
 
 				player.UnregisterListener();
-				if(state != SessionState.WaitingForPlayers || player.IsCreator)
-					return;
 				player.Control.Disconnect();
+
+				if(state != SessionState.WaitingForPlayers || player.IsCreator)
+				{
+					player.ResetControl();
+					eventMgr.OnPlayerLeftSession(player);
+					return;
+				}
 				players.Remove(player.ID);
 				playerList.Remove(player);
 				eventMgr.OnPlayerLeftSession(player);
+				player.Disconnect();
 				server.SaveState();
 			}
 		}
@@ -545,6 +557,7 @@ namespace Bang.Server
 				spectators.Remove(spectator.ID);
 				spectatorList.Remove(spectator);
 				eventMgr.OnSpectatorLeftSession(spectator);
+				spectator.Disconnect();
 				server.SaveState();
 			}
 		}

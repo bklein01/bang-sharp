@@ -29,12 +29,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 
-namespace Bang.AI
+namespace BangSharp.AI
 {
 	/// <summary>
 	/// This class provides the AI player functionality.
 	/// </summary>
-	public sealed class AIPlayer : ImmortalMarshalByRefObject, IPlayerEventListener
+	public sealed class AIPlayer : ImmortalMarshalByRefObject, IPlayerSessionEventListener
 	{
 		private static readonly IEnumerator<string> names = new List<string>() { "John", "Mike", "George", "Kelly", "Susan", "Greg", "Andy", "Simon" }.GetEnumerator();
 
@@ -58,7 +58,7 @@ namespace Bang.AI
 		private List<CharacterType> triedAbilities;
 
 		/// <summary>
-		/// Gets this AI player's <see cref="Bang.CreatePlayerData"/>. Can be ignored.
+		/// Gets this AI player's <see cref="BangSharp.CreatePlayerData"/>. Can be ignored.
 		/// </summary>
 		public CreatePlayerData CreateData
 		{
@@ -73,17 +73,17 @@ namespace Bang.AI
 			data = new CreatePlayerData(NextName(), null, "");
 		}
 		
-		bool IPlayerEventListener.IsAI
+		bool IPlayerSessionEventListener.IsAI
 		{
 			get { return true; }
 		}
 		
 		#region IPlayerEventListener implementation
-		void IPlayerEventListener.OnJoinedSession(IPlayerSessionControl control)
+		void IPlayerSessionEventListener.OnJoinedSession(IPlayerSessionControl control)
 		{
 			sessionControl = control;
 		}
-		void IPlayerEventListener.OnJoinedGame(IPlayerControl control)
+		void IPlayerSessionEventListener.OnJoinedGame(IPlayerControl control)
 		{
 			this.control = control;
 			cardHelper = new CardHelper(control);
@@ -234,13 +234,13 @@ namespace Bang.AI
 			case RequestType.Play:
 				// First, play cards that let us gain cards:
 				if(cardHelper.HasAbility(CharacterType.ChuckWengam) &&
-					player.LifePoints > 2 &&
-					TryRespondUseAbilityRemember(CharacterType.ChuckWengam))
-					return;
+					player.LifePoints > 2)
+					if(TryRespondUseAbilityRemember(CharacterType.ChuckWengam))
+						return;
 				if(cardHelper.HasAbility(CharacterType.JoseDelgado) &&
-					player.Hand.Any(c => c.Color == CardColor.Blue && !cardHelper.IsTableCardWorth(c.Type)) &&
-					TryRespondUseAbilityRemember(CharacterType.JoseDelgado))
-					return;
+					player.Hand.Any(c => c.Color == CardColor.Blue && !cardHelper.IsTableCardWorth(c.Type)))
+					if(TryRespondUseAbilityRemember(CharacterType.JoseDelgado))
+						return;
 				foreach(ICard c in player.Hand)
 					switch(c.Type)
 					{
@@ -251,9 +251,9 @@ namespace Bang.AI
 						break;
 					}
 				foreach(ICard c in player.Table)
-					if(c.Type == CardType.PonyExpress &&
-						TryRespondCard(c.ID))
-						return;
+					if(c.Type == CardType.PonyExpress)
+						if(TryRespondCard(c.ID))
+							return;
 				// Now get all the blue & green cards on table:
 				foreach(ICard card in player.Hand)
 					switch(card.Color)
@@ -270,96 +270,96 @@ namespace Bang.AI
 								return;
 							break;
 						case CardType.Dynamite:
-							if(cardHelper.HasAbility(CharacterType.LuckyDuke) &&
-								TryRespondCard(card.ID))
-								return;
+							if(cardHelper.HasAbility(CharacterType.LuckyDuke))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						case CardType.Appaloosa:
-							if(!player.Table.Any(c => c.Type == CardType.Appaloosa) &&
-								TryRespondCard(card.ID))
-								return;
+							if(!player.Table.Any(c => c.Type == CardType.Appaloosa))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						case CardType.Silver:
-							if(!player.Table.Any(c => c.Type == CardType.Silver) &&
-								TryRespondCard(card.ID))
-								return;
+							if(!player.Table.Any(c => c.Type == CardType.Silver))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						case CardType.Mustang:
-							if(!player.Table.Any(c => c.Type == CardType.Mustang) &&
-								TryRespondCard(card.ID))
-								return;
+							if(!player.Table.Any(c => c.Type == CardType.Mustang))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						case CardType.Hideout:
-							if(!player.Table.Any(c => c.Type == CardType.Hideout) &&
-								TryRespondCard(card.ID))
-								return;
+							if(!player.Table.Any(c => c.Type == CardType.Hideout))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						case CardType.Barrel:
-							if(!player.Table.Any(c => c.Type == CardType.Barrel) &&
-								TryRespondCard(card.ID))
-								return;
+							if(!player.Table.Any(c => c.Type == CardType.Barrel))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						case CardType.Volcanic:
 							if(!cardHelper.HasAbility(CharacterType.WillyTheKid) &&
 								!player.Table.Any(c => c.Type == CardType.Volcanic ||
 									c.Type == CardType.Carabine ||
-									c.Type == CardType.Winchester) &&
-								TryRespondCard(card.ID))
-								return;
+									c.Type == CardType.Winchester))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						case CardType.Schofield:
 							if(player.Table.Any(c => c.Type == CardType.Volcanic))
 							{
-								if(cardHelper.HasAbility(CharacterType.WillyTheKid) &&
-									TryRespondCard(card.ID))
-									return;
+								if(cardHelper.HasAbility(CharacterType.WillyTheKid))
+									if(TryRespondCard(card.ID))
+										return;
 							}
 							else
 							if(!player.Table.Any(c => c.Type == CardType.Schofield ||
 									c.Type == CardType.Remington ||
 									c.Type == CardType.Carabine ||
-									c.Type == CardType.Winchester) &&
-								TryRespondCard(card.ID))
-								return;
+									c.Type == CardType.Winchester))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						case CardType.Remington:
 							if(player.Table.Any(c => c.Type == CardType.Volcanic))
 							{
-								if(cardHelper.HasAbility(CharacterType.WillyTheKid) &&
-									TryRespondCard(card.ID))
-									return;
+								if(cardHelper.HasAbility(CharacterType.WillyTheKid))
+									if(TryRespondCard(card.ID))
+										return;
 							}
 							else
 							if(!player.Table.Any(c => c.Type == CardType.Remington ||
-									c.Type == CardType.Carabine ||
-									c.Type == CardType.Winchester) &&
-								TryRespondCard(card.ID))
-								return;
+								c.Type == CardType.Carabine ||
+								c.Type == CardType.Winchester))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						case CardType.Carabine:
 							if(player.Table.Any(c => c.Type == CardType.Volcanic))
 							{
-								if(cardHelper.HasAbility(CharacterType.WillyTheKid) &&
-									TryRespondCard(card.ID))
-									return;
+								if(cardHelper.HasAbility(CharacterType.WillyTheKid))
+									if(TryRespondCard(card.ID))
+										return;
 							}
 							else
 							if(!player.Table.Any(c => c.Type == CardType.Carabine ||
-									c.Type == CardType.Winchester) &&
-								TryRespondCard(card.ID))
-								return;
+									c.Type == CardType.Winchester))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						case CardType.Winchester:
 							if(player.Table.Any(c => c.Type == CardType.Volcanic))
 							{
-								if(cardHelper.HasAbility(CharacterType.WillyTheKid) &&
-									TryRespondCard(card.ID))
-									return;
+								if(cardHelper.HasAbility(CharacterType.WillyTheKid))
+									if(TryRespondCard(card.ID))
+										return;
 							}
 							else
-							if(!player.Table.Any(c => c.Type == CardType.Winchester) &&
-								TryRespondCard(card.ID))
-								return;
+							if(!player.Table.Any(c => c.Type == CardType.Winchester))
+								if(TryRespondCard(card.ID))
+									return;
 							break;
 						}
 						break;
@@ -369,13 +369,13 @@ namespace Bang.AI
 				{
 					// First, try playing canteen and beers:
 					foreach(ICard c in player.Table)
-						if(c.Type == CardType.Canteen &&
-							TryRespondCardRemember(c.ID))
-							return;
+						if(c.Type == CardType.Canteen)
+							if(TryRespondCardRemember(c.ID))
+								return;
 					foreach(ICard c in player.Hand)
-						if(c.Type == CardType.Beer &&
-							TryRespondCardRemember(c.ID))
-							return;
+						if(c.Type == CardType.Beer)
+							if(TryRespondCardRemember(c.ID))
+								return;
 					// If we have the Sid Ketchum character, try to use his ability:
 					if(TryRespondUseAbilityRemember(CharacterType.SidKetchum))
 						return;
@@ -385,26 +385,26 @@ namespace Bang.AI
 						// First, play whisky only if the life deficit is at least 2:
 						if(player.MaxLifePoints - player.LifePoints >= 2)
 							foreach(ICard c in player.Hand)
-								if(c.Type == CardType.Whisky &&
-									TryRespondCardRemember(c.ID))
-									return;
+								if(c.Type == CardType.Whisky)
+									if(TryRespondCardRemember(c.ID))
+										return;
 						// Then try to play tequila on self:
 						foreach(ICard c in player.Hand)
-							if(c.Type == CardType.Tequila &&
-								TryRespondCardRemember(c.ID))
-								return;
+							if(c.Type == CardType.Tequila)
+								if(TryRespondCardRemember(c.ID))
+									return;
 						// Finally play whisky regardless the life deficit:
 						foreach(ICard c in player.Hand)
-							if(c.Type == CardType.Whisky &&
-								TryRespondCardRemember(c.ID))
-								return;
+							if(c.Type == CardType.Whisky)
+								if(TryRespondCardRemember(c.ID))
+									return;
 					}
 					// If we have only 1 life remaining, try also saloon:
 					if(player.LifePoints == 1)
 						foreach(ICard c in player.Hand)
-							if(c.Type == CardType.Saloon &&
-								TryRespondCard(c.ID))
-								return;
+							if(c.Type == CardType.Saloon)
+								if(TryRespondCard(c.ID))
+									return;
 				}
 				// And now we try to heal our allies' lives:
 				int alliesCount = playerHelper.Allies.Count(p => p.LifePoints < p.MaxLifePoints);
@@ -412,15 +412,15 @@ namespace Bang.AI
 				// Try saloon if it doesn't make more harm than good:
 				if(alliesCount > enemiesCount)
 					foreach(ICard c in player.Hand)
-						if(c.Type == CardType.Saloon &&
-							TryRespondCard(c.ID))
-							return;
+						if(c.Type == CardType.Saloon)
+							if(TryRespondCard(c.ID))
+								return;
 				// Try tequila:
 				if(alliesCount >= 1 && cardHelper.DiscardableCards >= 1)
 					foreach(ICard c in player.Hand)
-						if(c.Type == CardType.Tequila &&
-							TryRespondCardRemember(c.ID))
-							return;
+						if(c.Type == CardType.Tequila)
+							if(TryRespondCardRemember(c.ID))
+								return;
 				// Then steal and cancel cards:
 				foreach(ICard c in player.Hand)
 					switch(c.Type)
@@ -432,9 +432,9 @@ namespace Bang.AI
 						break;
 					case CardType.Brawl:
 					case CardType.RagTime:
-						if(cardHelper.DiscardableCards >= 1 &&
-							TryRespondCardRemember(c.ID))
-							return;
+						if(cardHelper.DiscardableCards >= 1)
+							if(TryRespondCardRemember(c.ID))
+								return;
 						break;
 					}
 				foreach(ICard c in player.Table)
@@ -461,9 +461,9 @@ namespace Bang.AI
 						break;
 					case CardType.Missed:
 						if(cardHelper.HasAbility(CharacterType.CalamityJanet) &&
-							player.Hand.Count(c => c.Type == CardType.Missed) >= 2 &&
-							TryRespondCardRemember(card.ID))
-							return;
+							player.Hand.Count(c => c.Type == CardType.Missed) >= 2)
+							if(TryRespondCardRemember(card.ID))
+								return;
 						break;
 					}
 				foreach(ICard c in player.Table)
@@ -483,9 +483,9 @@ namespace Bang.AI
 
 				// Oh, and play General Store, if you have one:
 				foreach(ICard card in player.Hand)
-					if(card.Type == CardType.GeneralStore &&
-						TryRespondCard(card.ID))
-						return;
+					if(card.Type == CardType.GeneralStore)
+						if(TryRespondCard(card.ID))
+							return;
 
 				// End the play stage:
 				control.RespondNoAction();
@@ -548,21 +548,21 @@ namespace Bang.AI
 
 				// Then try barrels:
 				foreach(ICard c in player.Table)
-					if(c.Type == CardType.Barrel &&
-						TryRespondCard(c.ID))
-						return;
+					if(c.Type == CardType.Barrel)
+						if(TryRespondCard(c.ID))
+							return;
 
 				// Then seek for a Bible:
 				foreach(ICard c in player.Table)
-					if(c.Type == CardType.Bible &&
-						TryRespondCard(c.ID))
-						return;
+					if(c.Type == CardType.Bible)
+						if(TryRespondCard(c.ID))
+							return;
 
 				// Then seek for a Dodge:
 				foreach(ICard c in player.Hand)
-					if(c.Type == CardType.Dodge &&
-						TryRespondCard(c.ID))
-						return;
+					if(c.Type == CardType.Dodge)
+						if(TryRespondCard(c.ID))
+							return;
 
 				// Then try other table cards:
 				foreach(ICard c in player.Table)
@@ -571,9 +571,9 @@ namespace Bang.AI
 
 				// Then try Missed:
 				foreach(ICard c in player.Hand)
-					if(c.Type == CardType.Missed &&
-						TryRespondCard(c.ID))
-						return;
+					if(c.Type == CardType.Missed)
+						if(TryRespondCard(c.ID))
+							return;
 
 				// Eventually try other hand cards (Elena Fuente):
 				availableCards = new List<ICard>(player.Hand);
@@ -626,9 +626,9 @@ namespace Bang.AI
 						maxDeficit = deficit;
 					}
 				}
-				if(poorestAlly != null &&
-					TryRespondPlayer(poorestAlly.ID))
-					return;
+				if(poorestAlly != null)
+					if(TryRespondPlayer(poorestAlly.ID))
+						return;
 				control.RespondNoAction();
 				return;
 				#endregion
@@ -683,6 +683,8 @@ namespace Bang.AI
 					try
 					{
 						if(TryRespondCard(p.Hand.GetRandom().ID))
+							return;
+						if(TryRespondCard(p.Table.GetRandom().ID))
 							return;
 					}
 					catch(InvalidOperationException)
@@ -756,44 +758,44 @@ namespace Bang.AI
 				return;
 				#endregion
 			}
-			Console.Error.WriteLine("ERROR: Reached the end of Bang.AI.AIPlayer.ProcessRequest()!");
+			Console.Error.WriteLine("ERROR: Reached the end of BangSharp.AI.AIPlayer.ProcessRequest()!");
 		}
 		#endregion
 
 		#region IEventListener implementation
-		void IEventListener.Ping()
+		void ISessionEventListener.Ping()
 		{
 		}
 
-		void IEventListener.OnSessionEnded()
+		void ISessionEventListener.OnSessionEnded()
 		{
 			sessionControl = null;
 			control = null;
 			playerHelper = null;
 			cardHelper = null;
 		}
-		void IEventListener.OnGameEnded()
+		void ISessionEventListener.OnGameEnded()
 		{
 			control = null;
 			playerHelper = null;
 			cardHelper = null;
 		}
 
-		void IEventListener.OnPlayerJoinedSession(IPlayer player) { }
-		void IEventListener.OnSpectatorJoinedSession(ISpectator spectator) { }
-		void IEventListener.OnPlayerLeftSession(IPlayer player) { }
-		void IEventListener.OnSpectatorLeftSession(ISpectator spectator) { }
-		void IEventListener.OnPlayerUpdated(IPlayer player) { }
+		void ISessionEventListener.OnPlayerJoinedSession(IPlayer player) { }
+		void ISessionEventListener.OnSpectatorJoinedSession(ISpectator spectator) { }
+		void ISessionEventListener.OnPlayerLeftSession(IPlayer player) { }
+		void ISessionEventListener.OnSpectatorLeftSession(ISpectator spectator) { }
+		void ISessionEventListener.OnPlayerUpdated(IPlayer player) { }
 
-		void IEventListener.OnChatMessage(IPlayer player, string message) { }
-		void IEventListener.OnChatMessage(ISpectator spectator, string message) { }
+		void ISessionEventListener.OnChatMessage(IPlayer player, string message) { }
+		void ISessionEventListener.OnChatMessage(ISpectator spectator, string message) { }
 
-		void IPlayerEventListener.OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
+		void IPlayerSessionEventListener.OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
 		{
 			ThreadPool.QueueUserWorkItem(ProcessRequest);
 		}
 
-		void IEventListener.OnPlayerDrewFromDeck(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
+		void ISessionEventListener.OnPlayerDrewFromDeck(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
 		{
 			if(control == null)
 				return;
@@ -804,7 +806,7 @@ namespace Bang.AI
 				triedAbilities.Clear();
 			}
 		}
-		void IEventListener.OnPlayerDrewFromGraveyard(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
+		void ISessionEventListener.OnPlayerDrewFromGraveyard(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
 		{
 			if(control == null)
 				return;
@@ -815,9 +817,9 @@ namespace Bang.AI
 				triedAbilities.Clear();
 			}
 		}
-		void IEventListener.OnPlayerDiscardedCard(IPublicPlayerView player, ICard card) { }
-		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card) { }
-		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
+		void ISessionEventListener.OnPlayerDiscardedCard(IPublicPlayerView player, ICard card) { }
+		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card) { }
+		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
 		{
 			switch(card.Type)
 			{
@@ -832,7 +834,7 @@ namespace Bang.AI
 				break;
 			}
 		}
-		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer, ICard targetCard)
+		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			switch(card.Type)
 			{
@@ -848,10 +850,10 @@ namespace Bang.AI
 				break;
 			}
 		}
-		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard)
+		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard)
 		{
 		}
-		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer)
+		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer)
 		{
 			switch(asCard)
 			{
@@ -866,7 +868,7 @@ namespace Bang.AI
 				break;
 			}
 		}
-		void IEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer, ICard targetCard)
+		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			switch(asCard)
 			{
@@ -882,8 +884,8 @@ namespace Bang.AI
 				break;
 			}
 		}
-		void IEventListener.OnPlayerPlayedCardOnTable(IPublicPlayerView player, ICard card) { }
-		void IEventListener.OnPassedTableCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
+		void ISessionEventListener.OnPlayerPlayedCardOnTable(IPublicPlayerView player, ICard card) { }
+		void ISessionEventListener.OnPassedTableCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
 		{
 			if(control == null)
 				return;
@@ -891,13 +893,13 @@ namespace Bang.AI
 			if(card.Type == CardType.Jail)
 				playerHelper.RegisterAttack(targetPlayer, player);
 		}
-		void IEventListener.OnPlayerPassed(IPublicPlayerView player) { }
-		void IEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card) { }
-		void IEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card, CardType asCard) { }
-		void IEventListener.OnDrawnIntoSelection(ReadOnlyCollection<ICard> drawnCards) { }
-		void IEventListener.OnPlayerPickedFromSelection(IPublicPlayerView player, ICard card) { }
-		void IEventListener.OnUndrawnFromSelection(ICard card) { }
-		void IEventListener.OnPlayerStoleCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
+		void ISessionEventListener.OnPlayerPassed(IPublicPlayerView player) { }
+		void ISessionEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card) { }
+		void ISessionEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card, CardType asCard) { }
+		void ISessionEventListener.OnDrawnIntoSelection(ReadOnlyCollection<ICard> drawnCards) { }
+		void ISessionEventListener.OnPlayerPickedFromSelection(IPublicPlayerView player, ICard card) { }
+		void ISessionEventListener.OnUndrawnFromSelection(ICard card) { }
+		void ISessionEventListener.OnPlayerStoleCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			if(control == null)
 				return;
@@ -914,7 +916,7 @@ namespace Bang.AI
 				else
 					playerHelper.RegisterAttack(targetPlayer, player);
 		}
-		void IEventListener.OnPlayerCancelledCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
+		void ISessionEventListener.OnPlayerCancelledCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			if(control == null)
 				return;
@@ -925,10 +927,10 @@ namespace Bang.AI
 				else
 					playerHelper.RegisterAttack(targetPlayer, player);
 		}
-		void IEventListener.OnDeckChecked(ICard card) { }
-		void IEventListener.OnCardCancelled(ICard card) { }
-		void IEventListener.OnPlayerCheckedDeck(IPublicPlayerView player, ICard checkedCard, CardType causedBy, bool result) { }
-		void IEventListener.OnLifePointsChanged(IPublicPlayerView player, int delta, IPublicPlayerView causedBy)
+		void ISessionEventListener.OnDeckChecked(ICard card) { }
+		void ISessionEventListener.OnCardCancelled(ICard card) { }
+		void ISessionEventListener.OnPlayerCheckedDeck(IPublicPlayerView player, ICard checkedCard, CardType causedBy, bool result) { }
+		void ISessionEventListener.OnLifePointsChanged(IPublicPlayerView player, int delta, IPublicPlayerView causedBy)
 		{
 			if(control == null)
 				return;
@@ -936,22 +938,22 @@ namespace Bang.AI
 			if(causedBy != null && delta > 0)
 				playerHelper.RegisterHelp(player, causedBy);
 		}
-		void IEventListener.OnPlayerDied(IPublicPlayerView player, IPublicPlayerView causedBy)
+		void ISessionEventListener.OnPlayerDied(IPublicPlayerView player, IPublicPlayerView causedBy)
 		{
 			if(control == null)
 				return;
 
 			playerHelper.OnRoleRevealed(player);
 		}
-		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character) { }
-		void IEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character, IPublicPlayerView targetPlayer)
+		void ISessionEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character) { }
+		void ISessionEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character, IPublicPlayerView targetPlayer)
 		{
 			if(character == CharacterType.DocHolyday || character == CharacterType.JesseJones)
 				playerHelper.RegisterAttack(player, targetPlayer);
 		}
-		void IEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player) { }
-		void IEventListener.OnPlayerLostAdditionalCharacters(IPublicPlayerView player) { }
-		void IEventListener.OnDeckRegenerated() { }
+		void ISessionEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player) { }
+		void ISessionEventListener.OnPlayerLostAdditionalCharacters(IPublicPlayerView player) { }
+		void ISessionEventListener.OnDeckRegenerated() { }
 		#endregion
 	}
 }

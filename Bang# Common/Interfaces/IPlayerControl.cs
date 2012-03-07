@@ -23,7 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Provides methods and properties available to the player to interact with the game.
@@ -31,12 +31,12 @@ namespace Bang
 	public interface IPlayerControl
 	{
 		/// <summary>
-		/// Gets the current <see cref="Bang.IGame"/>.
+		/// Gets the current <see cref="BangSharp.IGame"/>.
 		/// </summary>
 		IGame Game { get; }
 
 		/// <summary>
-		/// Gets the <see cref="Bang.IPrivatePlayerView"/> of the player.
+		/// Gets the <see cref="BangSharp.IPrivatePlayerView"/> of the player.
 		/// </summary>
 		IPrivatePlayerView PrivatePlayerView { get; }
 		
@@ -62,7 +62,7 @@ namespace Bang
 		/// Responds to the game with the specified character.
 		/// </summary>
 		/// <param name="type">
-		/// A <see cref="Bang.CharacterType"/>
+		/// A <see cref="BangSharp.CharacterType"/>
 		/// </param>
 		void RespondCharacter(CharacterType type);
 		/// <summary>

@@ -23,7 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server.Characters
+namespace BangSharp.Server.Characters
 {
 	public sealed class KitCarlson : Character
 	{
@@ -47,9 +47,15 @@ namespace Bang.Server.Characters
 				if(!Game.GameTable.Selection.Contains(card))
 					throw new BadCardException();
 				
-				Game.GameTable.PlayerPickFromSelection(RequestedPlayer, card);
-				if(Game.GameTable.Selection.Count == 1)
+				if(Game.GameTable.Selection.Count == 3)
 				{
+					Game.GameTable.PlayerPickFromSelection(RequestedPlayer, card, RequestedPlayer.RevealFirstDrawnCard);
+					RequestedPlayer.OnDrewFirstCard(card);
+				}
+				else if(Game.GameTable.Selection.Count == 2)
+				{
+					Game.GameTable.PlayerPickFromSelection(RequestedPlayer, card, RequestedPlayer.RevealSecondDrawnCard);
+					RequestedPlayer.OnDrewSecondCard(card);
 					Game.GameTable.UndrawFromSelection(Game.GameTable.Selection[0]);
 					End();
 				}

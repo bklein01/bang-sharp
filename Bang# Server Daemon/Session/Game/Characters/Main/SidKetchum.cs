@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Collections.Generic;
 
-namespace Bang.Server.Characters
+namespace BangSharp.Server.Characters
 {
 	public sealed class SidKetchum : Character
 	{

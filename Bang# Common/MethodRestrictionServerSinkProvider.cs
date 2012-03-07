@@ -27,7 +27,7 @@ using System;
 using System.Reflection;
 using System.Runtime.Remoting.Channels;
 
-namespace Bang
+namespace BangSharp
 {
 	internal class MethodRestrictionServerSinkProvider : IServerChannelSinkProvider
 	{

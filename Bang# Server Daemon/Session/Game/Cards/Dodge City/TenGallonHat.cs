@@ -23,7 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server.Cards
+namespace BangSharp.Server.Cards
 {
 	public sealed class TenGallonHat : TableCard
 	{
@@ -32,9 +32,9 @@ namespace Bang.Server.Cards
 		{
 		}
 
-		protected override void OnCheckMissed(CardResultMethod resultMethod)
+		protected override void OnCheckMissed(CardResultCallback resultCallback)
 		{
-			resultMethod(this, true);
+			resultCallback(this, true);
 		}
 	}
 }

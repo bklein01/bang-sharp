@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Bang.AI
+namespace BangSharp.AI
 {
 	internal sealed class StandardPlayerHelper : PlayerHelper
 	{
@@ -212,14 +212,31 @@ namespace Bang.AI
 			
 			entries = new Dictionary<int, PlayerEntry>(playerCount);
 			foreach(IPublicPlayerView p in Game.Players)
+			{
 				entries.Add(p.ID, new PlayerEntry(this, p));
+				unknownRoles.Remove(entries[p.ID].EstimatedRole);
+			}
 			IPrivatePlayerView thisPlayer = ThisPlayer;
-			entries[thisPlayer.ID].EstimatedRole = thisPlayer.Role;
+			if(entries[thisPlayer.ID].EstimatedRole == Role.Unknown)
+				unknownRoles.Remove(entries[thisPlayer.ID].EstimatedRole = thisPlayer.Role);
 		}
 
 		public void EstimateRoles()
 		{
+			if(unknownRoles.Count == 0)
+				return;
+
 			List<PlayerEntry> incognitoPlayers = new List<PlayerEntry>(entries.Values.Where(entry => entry.Player.Role == Role.Unknown && entry.ID != ThisPlayer.ID));
+			if(unknownRoles.Count != incognitoPlayers.Count)
+				Console.Error.WriteLine("WARNING: AI: unknownRoles.Count != incognitoPlayers.Count");
+			Role first = unknownRoles.First();
+			if(unknownRoles.All(r => r == first))
+			{
+				foreach(PlayerEntry e in incognitoPlayers)
+					e.EstimatedRole = first;
+				unknownRoles.Clear();
+				return;
+			}
 
 			Dictionary<int, Dictionary<Role, int>> stats = new Dictionary<int, Dictionary<Role, int>>();
 			foreach(PlayerEntry e in incognitoPlayers)
@@ -234,17 +251,18 @@ namespace Bang.AI
 			Dictionary<int, Role> roleDistribution = new Dictionary<int, Role>();
 			bool changed;
 			int iteration = 0;
-			Console.Error.WriteLine("INFO: AI: P#{0}: Starting estimation...", ThisPlayer.ID);
+			List<Role> remainingRoles;
+			// Console.Error.WriteLine("INFO: AI: P#{0}: Starting estimation...", ThisPlayer.ID);
 			do
 			{
-				Console.Error.WriteLine("INFO: AI: P#{0}: Iteration #{1}...", ThisPlayer.ID, iteration);
+				// Console.Error.WriteLine("INFO: AI:     P#{0}: Iteration #{1}...", ThisPlayer.ID, iteration);
 				foreach(PlayerEntry e in incognitoPlayers)
 				{
 					roleDistribution[e.ID] = Role.Unknown;
 					e.UpdatePoints();
 				}
 
-				List<Role> remainingRoles = new List<Role>(unknownRoles);
+				remainingRoles = new List<Role>(unknownRoles);
 				foreach(Role role in unknownRoles)
 				{
 					int maxPoints = 0;
@@ -268,10 +286,11 @@ namespace Bang.AI
 				}
 				if(remainingRoles.Count > 0)
 				{
-					Role first = remainingRoles.First();
-					if(remainingRoles.All(r => r == first))
+					first = remainingRoles.First();
+					if(remainingRoles.All(r => r == first) &&
+						incognitoPlayers.Count(e => roleDistribution[e.ID] == Role.Unknown) == remainingRoles.Count)
 						foreach(PlayerEntry e in incognitoPlayers)
-							if(e.EstimatedRole == Role.Unknown)
+							if(roleDistribution[e.ID] == Role.Unknown)
 								roleDistribution[e.ID] = first;
 				}
 
@@ -280,28 +299,43 @@ namespace Bang.AI
 				{
 					Role newRole = roleDistribution[e.ID];
 					stats[e.ID][newRole]++;
-					Console.Error.WriteLine("INFO: AI: P#{0} - {1} => {2}", e.ID, e.EstimatedRole, newRole);
+					// Console.Error.WriteLine("INFO: AI:         P#{0} - {1} => {2}", e.ID, e.EstimatedRole, newRole);
 					if(e.EstimatedRole != newRole)
 					{
 						e.EstimatedRole = newRole;
 						changed = true;
 					}
 				}
-				if(iteration++ >= 15)
-					break;
 			}
-			while(changed);
+			while(changed && iteration++ < 15);
+			remainingRoles = new List<Role>(unknownRoles);
 			if(changed)
 				foreach(PlayerEntry e in incognitoPlayers)
 				{
-					Console.Error.WriteLine("INFO: AI: Stats P#{0}:", e.ID);
+					// Console.Error.WriteLine("INFO: AI:     Stats P#{0}:", e.ID);
 					Dictionary<Role, int> iterations = stats[e.ID];
-					foreach(KeyValuePair<Role, int> it in iterations)
-						Console.Error.WriteLine("INFO: AI: {0}: {1}", it.Key, it.Value);
+					// foreach(KeyValuePair<Role, int> it in iterations)
+						// Console.Error.WriteLine("INFO: AI:         {0}: {1}", it.Key, it.Value);
 					int max = iterations.Values.Max();
 					if(iterations.Values.Count(i => i == max) > 1)
 						e.EstimatedRole = Role.Unknown;
+					remainingRoles.Remove(e.EstimatedRole);
 				}
+			else
+				foreach(PlayerEntry e in incognitoPlayers)
+					remainingRoles.Remove(e.EstimatedRole);
+			if(remainingRoles.Count > 0)
+			{
+				first = remainingRoles.First();
+				if(remainingRoles.All(r => r == first) &&
+					incognitoPlayers.Count(e => e.EstimatedRole == Role.Unknown) == remainingRoles.Count)
+					foreach(PlayerEntry e in incognitoPlayers)
+						if(e.EstimatedRole == Role.Unknown)
+							e.EstimatedRole = first;
+			}
+			Console.Error.WriteLine("INFO: AI: P#{0} FINAL ESTIMATION:", ThisPlayer.ID);
+			foreach(PlayerEntry e in incognitoPlayers)
+				Console.Error.WriteLine("INFO: AI:     P#{0}: {1}", e.ID, e.EstimatedRole);
 		}
 
 		public override IEnumerable<IPublicPlayerView> Allies
@@ -445,6 +479,8 @@ namespace Bang.AI
 
 		public override void OnRoleRevealed(IPublicPlayerView player)
 		{
+			if(player.ID == ThisPlayer.ID)
+				return;
 			PlayerEntry entry = entries[player.ID];
 			unknownRoles.Remove(entry.EstimatedRole = player.Role);
 			EstimateRoles();

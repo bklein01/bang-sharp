@@ -23,7 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Provides methods and properties available to the spectator to interact with the game.
@@ -31,7 +31,7 @@ namespace Bang
 	public interface ISpectatorControl
 	{
 		/// <summary>
-		/// Gets the current <see cref="Bang.IGame"/>.
+		/// Gets the current <see cref="BangSharp.IGame"/>.
 		/// </summary>
 		IGame Game { get; }
 	}

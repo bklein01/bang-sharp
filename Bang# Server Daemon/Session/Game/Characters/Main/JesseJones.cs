@@ -23,18 +23,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server.Characters
+namespace BangSharp.Server.Characters
 {
 	public sealed class JesseJones : Character
 	{
 		private sealed class JesseJonesResponseHandler : ResponseHandler
 		{
 			private JesseJones parent;
+			private CardCallback callback;
+			private bool reveal;
 
-			public JesseJonesResponseHandler(JesseJones parent)
+			public JesseJonesResponseHandler(JesseJones parent, CardCallback callback, bool reveal)
 				: base(RequestType.StealCard, parent.Player)
 			{
 				this.parent = parent;
+				this.callback = callback;
+				this.reveal = reveal;
 			}
 
 			protected override void OnRespondCard(Card targetCard)
@@ -53,13 +57,13 @@ namespace Bang.Server.Characters
 					throw new BadTargetCardException();
 
 				parent.OnUsedAbility(targetPlayer);
-				Game.GameTable.PlayerStealCard(RequestedPlayer, targetCard);
-				Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 1);
+				Game.GameTable.PlayerStealCard(RequestedPlayer, targetCard, RequestedPlayer.RevealFirstDrawnCard);
+				callback(targetCard);
 				End();
 			}
 			protected override void OnRespondNoAction()
 			{
-				Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 2);
+				callback(null);
 				End();
 			}
 		}
@@ -68,9 +72,9 @@ namespace Bang.Server.Characters
 		{
 		}
 		
-		public override void Draw()
+		public override void DrawFirstCard(CardCallback callback, bool reveal)
 		{
-			Game.GameCycle.PushTempHandler(new JesseJonesResponseHandler(this));
+			Game.GameCycle.PushTempHandler(new JesseJonesResponseHandler(this, callback, reveal));
 		}
 	}
 }

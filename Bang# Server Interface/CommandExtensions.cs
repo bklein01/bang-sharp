@@ -1,4 +1,4 @@
-// Brawl.cs
+// CommandExtensions.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,18 +23,43 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace BangSharp.Server.Cards
+using System;
+using BangSharp.ConsoleUtils;
+
+namespace BangSharp.Server
 {
-	public sealed class Brawl : AllPlayersCardGoldenCard
+	public static class CommandExtensions
 	{
-		public Brawl(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Brawl, suit, rank, RequestType.CancelCard)
+		public static void MakeSessionAdminCommand<In>(this NestedCommand<In, ISessionAdmin> command)
 		{
+			command["end"] = new FinalCommand<ISessionAdmin>((sessionAdmin, cmd) => {
+				sessionAdmin.End();
+				ConsoleHelper.SuccessLine("Session ended!");
+			});
 		}
-		
-		protected override void OnPlay(Player owner, Card targetCard)
+		public static void MakeServerAdminCommand<In>(this NestedCommand<In, IServerAdmin> command)
 		{
-			Game.GameTable.PlayerCancelCard(owner, targetCard);
+			command["resetsessions"] = new FinalCommand<IServerAdmin>((serverAdmin, cmd) =>
+			{
+				serverAdmin.ResetSessions();
+				ConsoleHelper.SuccessLine("All sessions ended!");
+			});
+			NestedCommand<IServerAdmin, ISessionAdmin > sessionCommand = new NestedCommand<IServerAdmin, ISessionAdmin>((serverAdmin, cmd) =>
+			{
+				try
+				{
+					int id = int.Parse(cmd.Dequeue());
+					return serverAdmin.GetSessionAdmin(id);
+				}
+				catch(FormatException)
+				{
+					ConsoleHelper.ErrorLine("Bad number format!");
+				}
+				return null;
+			});
+			sessionCommand.MakeSessionAdminCommand();
+			command["session"] = sessionCommand;
 		}
 	}
 }
+

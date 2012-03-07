@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bang.ConsoleUtils
+namespace BangSharp.ConsoleUtils
 {
 	/// <summary>
 	/// The delegate for the final command template.

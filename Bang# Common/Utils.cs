@@ -30,12 +30,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Reflection;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.TwoWayTcp;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Contains commonly used methods and constants.
@@ -45,20 +41,20 @@ namespace Bang
 		/// <summary>
 		/// The major interface version.
 		/// </summary>
-		public const int InterfaceVersionMajor = 6;
+		public const int InterfaceVersionMajor = 7;
 		/// <summary>
 		/// The minor interface version.
 		/// </summary>
-		public const int InterfaceVersionMinor = 2;
+		public const int InterfaceVersionMinor = 0;
 
 		/// <summary>
 		/// Checks the interface version compatibility for the specified server.
 		/// </summary>
 		/// <param name="server">
-		/// The <see cref="Bang.IServer"/> to check.
+		/// The <see cref="BangSharp.IServer"/> to check.
 		/// </param>
 		/// <returns>
-		/// <c>true</c>. if the server is compatible, otherwise <c>false</c>.
+		/// <c>true</c> if the server is compatible, otherwise <c>false</c>.
 		/// </returns>
 		public static bool IsServerCompatible(IServer server)
 		{
@@ -166,7 +162,7 @@ namespace Bang
 		/// The list of all available card types for the specified session.
 		/// </returns>
 		/// <param name='session'>
-		/// The <see cref="Bang.ISession"/> to get the card types for.
+		/// The <see cref="BangSharp.ISession"/> to get the card types for.
 		/// </param>
 		public static List<CardType> GetCardTypes(ISession session)
 		{
@@ -179,10 +175,10 @@ namespace Bang
 		/// The list of all available card types for the specified session.
 		/// </returns>
 		/// <param name='session'>
-		/// The <see cref="Bang.ISession"/> to get the card types for.
+		/// The <see cref="BangSharp.ISession"/> to get the card types for.
 		/// </param>
 		/// <param name='includeDefault'>
-		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="Bang.CardType.Unknown"/>).
+		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="BangSharp.CardType.Unknown"/>).
 		/// </param>
 		public static List<CardType> GetCardTypes(ISession session, bool includeDefault)
 		{
@@ -235,7 +231,7 @@ namespace Bang
 		/// The list of all roles.
 		/// </returns>
 		/// <param name='includeDefault'>
-		/// A <see cref="bool"/> indicating wheter to include also the default role (<see cref="Bang.Role.Unknown"/>).
+		/// A <see cref="bool"/> indicating wheter to include also the default role (<see cref="BangSharp.Role.Unknown"/>).
 		/// </param>
 		public static List<Role> GetRoles(bool includeDefault)
 		{
@@ -306,7 +302,7 @@ namespace Bang
 		/// The list of all available character types for the specified session.
 		/// </returns>
 		/// <param name='includeDefault'>
-		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="Bang.CharacterType.Unknown"/>).
+		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="BangSharp.CharacterType.Unknown"/>).
 		/// </param>
 		public static List<CharacterType> GetCharacterTypes(bool includeDefault)
 		{
@@ -319,7 +315,7 @@ namespace Bang
 		/// The list of all available character types for the specified session.
 		/// </returns>
 		/// <param name='session'>
-		/// The <see cref="Bang.ISession"/> to get the character types for.
+		/// The <see cref="BangSharp.ISession"/> to get the character types for.
 		/// </param>
 		public static List<CharacterType> GetCharacterTypes(ISession session)
 		{
@@ -332,10 +328,10 @@ namespace Bang
 		/// The list of all available character types for the specified session.
 		/// </returns>
 		/// <param name='session'>
-		/// The <see cref="Bang.ISession"/> to get the character types for.
+		/// The <see cref="BangSharp.ISession"/> to get the character types for.
 		/// </param>
 		/// <param name='includeDefault'>
-		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="Bang.CharacterType.Unknown"/>).
+		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="BangSharp.CharacterType.Unknown"/>).
 		/// </param>
 		public static List<CharacterType> GetCharacterTypes(ISession session, bool includeDefault)
 		{
@@ -420,58 +416,12 @@ namespace Bang
 			return list[Random.Next(list.Count)];
 		}
 
-		private static IServerChannelSinkProvider GetServerProvider(IEnumerable<Type> allowedTypes)
-		{
-			MethodRestrictionServerSinkProvider restrictionProvider = new MethodRestrictionServerSinkProvider();
-			restrictionProvider.Filter = m =>
-			{
-				Type decl = m.DeclaringType;
-				if(decl.Equals(typeof(object)))
-					return true;
-				foreach(Type t in allowedTypes)
-					if(t.Equals(decl))
-						return true;
-					else if(t.IsAssignableFrom(decl) && !decl.IsInterface)
-						foreach(MethodInfo mi in decl.GetInterfaceMap(t).TargetMethods)
-							if(mi.MethodHandle == m.MethodHandle)
-								return true;
-				return false;
-			};
-			BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
-			serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
-			serverProvider.Next = restrictionProvider;
-			return serverProvider;
-		}
-		private static IClientChannelSinkProvider GetClientProvider()
-		{
-			return new BinaryClientFormatterSinkProvider();
-		}
-
-		public static T Connect<T>(string uri, string address, int port, IEnumerable<Type> allowedTypes)
-		{
-			ChannelServices.RegisterChannel(new TcpClientChannel("client", GetClientProvider(), GetServerProvider(allowedTypes)), false);
-			return (T)RemotingServices.Connect(typeof(T), "tcp://" + address + ":" + port + "/" + uri);
-		}
-		public static void Serve<T>(string uri)
-			where T : MarshalByRefObject, new()
-		{
-			RemotingConfiguration.RegisterWellKnownServiceType(typeof(T), uri, WellKnownObjectMode.Singleton);
-		}
-		public static void OpenChannel(int port, IEnumerable<Type> allowedTypes, IPAddress bindTo)
-		{
-			Dictionary<string, object> properties = new Dictionary<string, object>();
-			properties.Add("name", "server:" + port);
-			properties.Add("port", port);
-			properties.Add("bindTo", bindTo.ToString());
-			TcpServerChannel channel = new TcpServerChannel(properties, GetClientProvider(), GetServerProvider(allowedTypes));
-			ChannelServices.RegisterChannel(channel, false);
-		}
-
 		public static readonly Type[] ClientSharedTypes = new Type[]
 		{
-			typeof(IEventListener),
-			typeof(IPlayerEventListener),
-			typeof(ISpectatorEventListener),
+			typeof(IServerEventListener),
+			typeof(ISessionEventListener),
+			typeof(IPlayerSessionEventListener),
+			typeof(ISpectatorSessionEventListener),
 		};
 		public static readonly Type[] ServerSharedTypes = new Type[]
 		{
@@ -491,6 +441,24 @@ namespace Bang
 		};
 
 		/// <summary>
+		/// Opens the client channel.
+		/// </summary>
+		public static void OpenClientChannel()
+		{
+			RemotingUtils.OpenClientChannel(ClientSharedTypes);
+		}
+		/// <summary>
+		/// Opens the server channel.
+		/// </summary>
+		/// <param name="port">
+		/// The port on which to listen.
+		/// </param>
+		public static void OpenServerChannel(int port)
+		{
+			RemotingUtils.OpenServerChannel(port, ServerSharedTypes, IPAddress.Any);
+		}
+
+		/// <summary>
 		/// Connects to the Bang# server with the specified address and port.
 		/// </summary>
 		/// <param name="address">
@@ -500,26 +468,22 @@ namespace Bang
 		/// The port for the Bang# service.
 		/// </param>
 		/// <returns>
-		/// The <see cref="Bang.IServer"/> object from the server.
+		/// The <see cref="BangSharp.IServer"/> object from the server.
 		/// </returns>
 		public static IServer Connect(string address, int port)
 		{
-			return Connect<IServer>("BangSharp.rem", address, port, ClientSharedTypes);
+			return RemotingUtils.Connect<IServer>("BangSharp.rem", address, port);
 		}
 		/// <summary>
 		/// Starts serving the Bang# service at the specified port.
 		/// </summary>
-		/// <param name="port">
-		/// The port on which to listen.
-		/// </param>
 		/// <typeparam name="T">
-		/// The service type (must implement the <see cref="Bang.IServer"/> interface).
+		/// The service type (must implement the <see cref="BangSharp.IServer"/> interface).
 		/// </typeparam>
-		public static void Serve<T>(int port)
+		public static void Serve<T>()
 			where T : MarshalByRefObject, IServer, new()
 		{
-			Serve<T>("BangSharp.rem");
-			OpenChannel(port, ServerSharedTypes, IPAddress.Any);
+			RemotingUtils.Serve<T>("BangSharp.rem");
 		}
 	}
 }

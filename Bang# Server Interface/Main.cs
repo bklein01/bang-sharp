@@ -23,16 +23,17 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Bang.ConsoleUtils;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Remoting;
 using System.Runtime.Serialization;
+using BangSharp.ConsoleUtils;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
-	static class MainClass
+	public sealed class ServerInterface : ImmortalMarshalByRefObject, IServerEventListener
 	{
+		private static readonly ServerInterface Instance = new ServerInterface();
+
 		public static void Main(string[] cmdArgs)
 		{
 			ConsoleHelper.PrintLine("Bang# Server Interface");
@@ -69,6 +70,7 @@ namespace Bang.Server
 			try
 			{
 				ConsoleHelper.PrintLine("Connecting to {0} on port {1}...", address, port);
+				ServerUtils.OpenClientAdminChannel();
 				IServerBase server = ServerUtils.ConnectAdmin(address, port);
 
 				ConsoleHelper.PrintLine();
@@ -89,6 +91,7 @@ namespace Bang.Server
 				}
 				ConsoleHelper.PrintLine("Server name: {0}", server.Name);
 				ConsoleHelper.PrintLine("Server description: {0}", server.Description);
+				server.RegisterListener(Instance);
 				ConsoleHelper.SuccessLine("Connection estabilished!");
 				ConsoleHelper.PrintLine();
 
@@ -137,7 +140,11 @@ namespace Bang.Server
 					}
 					ConsoleHelper.SuccessLine("Server password changed successfully!");
 				});
-				rootCmd["exit"] = new FinalCommand(cmd => Environment.Exit(0));
+				rootCmd["exit"] = new FinalCommand(cmd =>
+				{
+					server.UnregisterListener(Instance);
+					Environment.Exit(0);
+				});
 				while(true) // command-line loop
 				{
 					try
@@ -146,7 +153,7 @@ namespace Bang.Server
 					}
 					catch(InvalidOperationException)
 					{
-						ConsoleHelper.ErrorLine("Too few arguments!");
+						ConsoleHelper.ErrorLine("Invalid command!");
 					}
 				}
 			}
@@ -168,35 +175,49 @@ namespace Bang.Server
 			}
 		}
 
-		public static void MakeSessionAdminCommand<In>(this NestedCommand<In, ISessionAdmin> command)
+		#region IServerEventListener implementation
+		void IServerEventListener.Ping()
 		{
-			command["end"] = new FinalCommand<ISessionAdmin>((sessionAdmin, cmd) => {
-				sessionAdmin.End();
-				ConsoleHelper.SuccessLine("Session ended!");
-			});
 		}
-		public static void MakeServerAdminCommand<In>(this NestedCommand<In, IServerAdmin> command)
+
+		void IServerEventListener.OnSessionCreated(ISession session)
 		{
-			command["resetsessions"] = new FinalCommand<IServerAdmin>((serverAdmin, cmd) =>
-			{
-				serverAdmin.ResetSessions();
-				ConsoleHelper.SuccessLine("All sessions ended!");
-			});
-			NestedCommand<IServerAdmin, ISessionAdmin> sessionCommand = new NestedCommand<IServerAdmin, ISessionAdmin>((serverAdmin, cmd) =>
-			{
-				try
-				{
-					int id = int.Parse(cmd.Dequeue());
-					return serverAdmin.GetSessionAdmin(id);
-				}
-				catch(FormatException)
-				{
-					ConsoleHelper.ErrorLine("Bad number format!");
-				}
-				return null;
-			});
-			sessionCommand.MakeSessionAdminCommand();
-			command["session"] = sessionCommand;
+			ConsoleHelper.ServerEvent("Session #{0} '{1}' has been created.", session.ID, session.Name);
 		}
+		void IServerEventListener.OnSessionEnded(ISession session)
+		{
+			ConsoleHelper.ServerEvent("Session #{0} '{1}' has ended.", session.ID, session.Name);
+		}
+
+		void IServerEventListener.OnGameStarted(ISession session)
+		{
+			ConsoleHelper.ServerEvent("The game has started in session #{0}.", session.ID, session.Name);
+		}
+		void IServerEventListener.OnGameEnded(ISession session)
+		{
+			ConsoleHelper.ServerEvent("The game has ended in session #{0}.", session.ID, session.Name);
+		}
+
+		void IServerEventListener.OnPlayerJoinedSession(ISession session, IPlayer player)
+		{
+			ConsoleHelper.ServerEvent("Player #{0} '{1}' joined session #{2}.", player.ID, player.Name, session.ID);
+		}
+		void IServerEventListener.OnSpectatorJoinedSession(ISession session, ISpectator spectator)
+		{
+			ConsoleHelper.ServerEvent("Spectator #{0} '{1}' joined session #{2}.", spectator.ID, spectator.Name, session.ID);
+		}
+		void IServerEventListener.OnPlayerLeftSession(ISession session, IPlayer player)
+		{
+			ConsoleHelper.ServerEvent("Player #{0} '{1}' left session #{2}.", player.ID, player.Name, session.ID);
+		}
+		void IServerEventListener.OnSpectatorLeftSession(ISession session, ISpectator spectator)
+		{
+			ConsoleHelper.ServerEvent("Spectator #{0} '{1}' left session #{2}.", spectator.ID, spectator.Name, session.ID);
+		}
+		void IServerEventListener.OnPlayerUpdated(ISession session, IPlayer player)
+		{
+			ConsoleHelper.ServerEvent("Player #{0} '{1}' was updated in session #{2}.", player.ID, player.Name, session.ID);
+		}
+		#endregion
 	}
 }

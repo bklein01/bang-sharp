@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public interface IServerBase : IServer
 	{

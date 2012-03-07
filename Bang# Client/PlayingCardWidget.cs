@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 using Pango;
-namespace Bang.Client
+namespace BangSharp.Client
 {
 	public class PlayingCardWidget : CardWidget
 	{

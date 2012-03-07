@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D4CA4E0D-A687-4866-B031-116C5B5DD731}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Bang.AI</RootNamespace>
+    <RootNamespace>BangSharp.AI</RootNamespace>
     <AssemblyName>BangSharpAI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>

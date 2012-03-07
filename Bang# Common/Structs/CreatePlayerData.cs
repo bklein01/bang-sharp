@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// A struct used to pass the information needed for creating a player from a client to a server.

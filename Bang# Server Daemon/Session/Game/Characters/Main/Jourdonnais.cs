@@ -23,7 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server.Characters
+namespace BangSharp.Server.Characters
 {
 	public sealed class Jourdonnais : Character
 	{
@@ -36,10 +36,10 @@ namespace Bang.Server.Characters
 			//barrel.Owner = Player;
 		}
 
-		public override void CheckMissed(CardResultMethod resultMethod)
+		public override void CheckMissed(CardResultCallback resultCallback)
 		{
 			OnUsedAbility();
-			Player.CheckDeck(barrel, c => c.Suit == CardSuit.Hearts, resultMethod);
+			Player.CheckDeck(barrel, c => c.Suit == CardSuit.Hearts, resultCallback);
 		}
 	}
 }

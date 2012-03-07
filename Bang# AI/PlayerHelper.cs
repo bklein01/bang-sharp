@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Collections.Generic;
 
-namespace Bang.AI
+namespace BangSharp.AI
 {
 	internal abstract class PlayerHelper
 	{

@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public class ProxyCharacter : Character
 	{
@@ -145,8 +145,75 @@ namespace Bang.Server
 				{
 					if(c != null)
 						c.Draw();
+					else
+						base.Draw();
 				}));
 		}
+		public override int DrawCardCount
+		{
+			get { return characters.Count == 0 ? base.DrawCardCount : characters.Max(c => c.DrawCardCount); }
+		}
+		public override bool RevealFirstDrawnCard
+		{
+			get { return characters.Count == 0 ? base.RevealFirstDrawnCard : characters.Any(c => c.RevealFirstDrawnCard); }
+		}
+		public override bool RevealSecondDrawnCard
+		{
+			get { return characters.Count == 0 ? base.RevealFirstDrawnCard : characters.Any(c => c.RevealSecondDrawnCard); }
+		}
+		public override void DrawFirstCard(CardCallback callback, bool reveal)
+		{
+			if(characters.Count == 0)
+				base.DrawFirstCard(callback, reveal);
+			else if(characters.Count == 1)
+				characters.First().DrawFirstCard(callback, reveal);
+			else
+				Game.GameCycle.PushTempHandler(new ChooseCharacterResponseHandler(this, RequestType.ChooseCharacterForDrawFirstCard, c =>
+				{
+					if(c != null)
+						c.DrawFirstCard(callback, reveal);
+					else
+						base.DrawFirstCard(callback, reveal);
+				}));
+
+		}
+		public override void DrawSecondCard(CardCallback callback, bool reveal)
+		{
+			if(characters.Count == 0)
+				base.DrawSecondCard(callback, reveal);
+			else if(characters.Count == 1)
+				characters.First().DrawSecondCard(callback, reveal);
+			else
+				Game.GameCycle.PushTempHandler(new ChooseCharacterResponseHandler(this, RequestType.ChooseCharacterForDrawSecondCard, c =>
+				{
+					if(c != null)
+						c.DrawSecondCard(callback, reveal);
+					else
+						base.DrawSecondCard(callback, reveal);
+				}));
+		}
+		public override void OnDrewFirstCard(Card card)
+		{
+			if(characters.Count == 0)
+				base.OnDrewFirstCard(card);
+			else
+				characters.ForEach(c => c.OnDrewFirstCard(card));
+		}
+		public override void OnDrewSecondCard(Card card)
+		{
+			if(characters.Count == 0)
+				base.OnDrewSecondCard(card);
+			else
+				characters.ForEach(c => c.OnDrewSecondCard(card));
+		}
+		public override void OnAfterDraw()
+		{
+			if(characters.Count == 0)
+				base.OnAfterDraw();
+			else
+				characters.ForEach(c => c.OnAfterDraw());
+		}
+
 		public override void PlayCard(Card card)
 		{
 			if(characters.Count == 0)
@@ -175,33 +242,33 @@ namespace Bang.Server
 						c.UseAbility();
 				}));
 		}
-		public override void CheckDeck(Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
+		public override void CheckDeck(Card causedBy, CheckDeckCallback checkCallback, CardResultCallback resultCallback)
 		{
 			if(characters.Count == 0)
-				base.CheckDeck(causedBy, checkMethod, resultMethod);
+				base.CheckDeck(causedBy, checkCallback, resultCallback);
 			else if(characters.Count == 1)
-				characters.First().CheckDeck(causedBy, checkMethod, resultMethod);
+				characters.First().CheckDeck(causedBy, checkCallback, resultCallback);
 			else
 				Game.GameCycle.PushTempHandler(new ChooseCharacterResponseHandler(this, RequestType.ChooseCharacterForCheckDeck, c =>
 				{
 					if(c != null)
-						c.CheckDeck(causedBy, checkMethod, resultMethod);
+						c.CheckDeck(causedBy, checkCallback, resultCallback);
 					else
-						base.CheckDeck(causedBy, checkMethod, resultMethod);
+						base.CheckDeck(causedBy, checkCallback, resultCallback);
 				}));
 		}
-		public override void CheckMissed(CardResultMethod resultMethod)
+		public override void CheckMissed(CardResultCallback resultCallback)
 		{
 			if(characters.Count == 0)
-				base.CheckMissed(resultMethod);
+				base.CheckMissed(resultCallback);
 			else if(characters.Count == 1)
-				characters.First().CheckMissed(resultMethod);
+				characters.First().CheckMissed(resultCallback);
 			else
 				Game.GameCycle.PushTempHandler(new ChooseCharacterResponseHandler(this, RequestType.ChooseCharacterForAvoidShot, c => {
 					if(c != null)
-						c.CheckMissed(resultMethod);
+						c.CheckMissed(resultCallback);
 					else
-						base.CheckMissed(resultMethod);
+						base.CheckMissed(resultCallback);
 				}));
 		}
 		public override void OnHit(int hitPoints, Player causedBy)

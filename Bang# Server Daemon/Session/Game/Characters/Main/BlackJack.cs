@@ -23,22 +23,33 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server.Characters
+namespace BangSharp.Server.Characters
 {
 	public sealed class BlackJack : Character
 	{
+		private bool drawExtraCard;
+
 		public BlackJack(Player player)
 			: base(player, CharacterType.BlackJack)
 		{
 		}
-		
-		public override void Draw()
+
+		public override bool RevealSecondDrawnCard
 		{
-			OnUsedAbility();
-			Game.GameTable.PlayerDrawFromDeck(Player, 1);
-			CardSuit suit = Game.GameTable.PlayerDrawFromDeck(Player, 1, true)[0].Suit;
-			if(suit == CardSuit.Hearts || suit == CardSuit.Diamonds)
+			get { return true; }
+		}
+		public override void OnDrewSecondCard(Card card)
+		{
+			if(card.Suit == CardSuit.Hearts || card.Suit == CardSuit.Diamonds)
+				drawExtraCard = true;
+		}
+		public override void OnAfterDraw()
+		{
+			if(drawExtraCard)
+			{
 				Game.GameTable.PlayerDrawFromDeck(Player, 1);
+				drawExtraCard = false;
+			}
 		}
 	}
 }

@@ -25,8 +25,10 @@
 // THE SOFTWARE.
 using System;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Represents a text password using a hash.
@@ -34,29 +36,53 @@ namespace Bang
 	[Serializable]
 	public struct Password
 	{
-		private static readonly int[] hashBase = new int[] { 0x0ab629fe, 0x3684e89a };
-		private int hash0;
-		private int hash1;
+		private static readonly SHA256 sha = SHA256.Create();
+		private byte[] hash;
 
-		private static int[] CreateHash(string password)
+		private static byte[] CreateHash(string password)
 		{
 			if(string.IsNullOrEmpty(password))
-				return new int[] { 0, 0 };
+				return null;
 
-			int[] temp = hashBase.ToArray();
-			for(int k = 0; k < password.Length; k++)
-				for(int i = 0; i < hashBase.Length; i++)
-					temp[i] ^= password[k] << (k + i);
-			return temp;
+			byte[] key = Encoding.UTF8.GetBytes(password);
+			return sha.ComputeHash(key);
 		}
 
-		public int[] Hash
+		public int[] LongHash
 		{
-			get { return new int[] { hash0, hash1 }; }
-			set
+			get
 			{
-				hash0 = value[0];
-				hash1 = value[1];
+				if(hash == null)
+					return new int[0];
+				int[] res = new int[8];
+				for(int i = 0, k = 0; i < 8; i++, k += 4)
+				{
+					res[i] |= hash[k];
+					res[i] |= (int)hash[k + 1] << 8;
+					res[i] |= (int)hash[k + 2] << 16;
+					res[i] |= (int)hash[k + 3] << 24;
+				}
+				return res;
+			}
+			private set
+			{
+				if(value.Length == 0)
+				{
+					hash = null;
+					return;
+				}
+				hash = new byte[32];
+				for(int i = 0, k = 0; i < 8; i++, k += 4)
+				{
+					int n = value[i];
+					hash[k] = (byte)(n & 0xff);
+					n >>= 8;
+					hash[k + 1] = (byte)(n & 0xff);
+					n >>= 8;
+					hash[k + 2] = (byte)(n & 0xff);
+					n >>= 8;
+					hash[k + 3] = (byte)(n & 0xff);
+				}
 			}
 		}
 		
@@ -65,7 +91,7 @@ namespace Bang
 		/// </summary>
 		public bool IsEmpty
 		{
-			get { return hash0 == 0 && hash1 == 0; }
+			get { return hash == null; }
 		}
 		
 		/// <summary>
@@ -76,7 +102,7 @@ namespace Bang
 		/// </param>
 		public Password(string password) : this()
 		{
-			Hash = CreateHash(password);
+			hash = CreateHash(password);
 		}
 		/// <summary>
 		/// Copies the password hash from an existing array.
@@ -89,9 +115,9 @@ namespace Bang
 		/// </exception>
 		public Password(int[] hash) : this()
 		{
-			if(hash.Length != hashBase.Length)
+			if(hash.Length != 8 && hash.Length != 0)
 				throw new ArgumentOutOfRangeException("Hash length is incorrect!");
-			Hash = hash;
+			LongHash = hash;
 		}
 
 		/// <summary>
@@ -101,11 +127,15 @@ namespace Bang
 		/// The password to be checked.
 		/// </param>
 		/// <returns>
-		/// <c>true</c>. if the passwords match, otherwise <c>false</c>.
+		/// <c>true</c> if the passwords match, otherwise <c>false</c>.
 		/// </returns>
 		public bool CheckPassword(string password)
 		{
-			return Hash.SequenceEqual(CreateHash(password));
+			if(IsEmpty)
+				return string.IsNullOrEmpty(password);
+			if(string.IsNullOrEmpty(password))
+				return false;
+			return hash.SequenceEqual(CreateHash(password));
 		}
 		/// <summary>
 		/// Checks if the specified password hash matches this hash.
@@ -114,11 +144,15 @@ namespace Bang
 		/// The password hash to be checked.
 		/// </param>
 		/// <returns>
-		/// <c>true</c>. if the password hashes match, otherwise <c>false</c>.
+		/// <c>true</c> if the password hashes match, otherwise <c>false</c>.
 		/// </returns>
 		public bool CheckPassword(Password password)
 		{
-			return Hash.SequenceEqual(password.Hash);
+			if(IsEmpty)
+				return password.IsEmpty;
+			if(password.IsEmpty)
+				return false;
+			return hash.SequenceEqual(password.hash);
 		}
 	}
 }

@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class SessionEventManager
 	{
@@ -111,6 +111,10 @@ namespace Bang.Server
 			}
 			session.Locked = false;
 		}
+		public void OnGameStarted()
+		{
+			session.Server.EventManager.OnGameStarted(session);
+		}
 
 		public void OnSessionEnded()
 		{
@@ -174,6 +178,7 @@ namespace Bang.Server
 						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Server.EventManager.OnGameEnded(session);
 			session.Locked = false;
 		}
 
@@ -207,6 +212,7 @@ namespace Bang.Server
 						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Server.EventManager.OnPlayerJoinedSession(session, player);
 			session.Locked = false;
 		}
 		public void OnSpectatorJoinedSession(SessionSpectator spectator)
@@ -239,6 +245,7 @@ namespace Bang.Server
 						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Server.EventManager.OnSpectatorJoinedSession(session, spectator);
 			session.Locked = false;
 		}
 		public void OnPlayerLeftSession(SessionPlayer player)
@@ -271,6 +278,7 @@ namespace Bang.Server
 						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Server.EventManager.OnPlayerLeftSession(session, player);
 			session.Locked = false;
 		}
 		public void OnSpectatorLeftSession(SessionSpectator spectator)
@@ -303,6 +311,7 @@ namespace Bang.Server
 						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Server.EventManager.OnSpectatorLeftSession(session, spectator);
 			session.Locked = false;
 		}
 		public void OnPlayerUpdated(SessionPlayer player)
@@ -335,6 +344,7 @@ namespace Bang.Server
 						Console.Error.WriteLine(e);
 						session.RemoveSpectator(s);
 					}
+			session.Server.EventManager.OnPlayerUpdated(session, player);
 			session.Locked = false;
 		}
 
@@ -1010,7 +1020,7 @@ namespace Bang.Server
 					}
 			session.Locked = false;
 		}
-		public void OnPlayerStoleCard(Player player, Player targetPlayer, Card targetCard)
+		public void OnPlayerStoleCard(Player player, Player targetPlayer, Card targetCard, bool revealCard)
 		{
 			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
@@ -1018,7 +1028,7 @@ namespace Bang.Server
 				if(p.HasListener)
 					try
 					{
-						if(p == player.Parent || p == targetPlayer.Parent || targetCard.IsOnTable)
+						if(p == player.Parent || p == targetPlayer.Parent || targetCard.IsOnTable || revealCard)
 							p.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard);
 						else
 							p.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
@@ -1035,7 +1045,7 @@ namespace Bang.Server
 				if(s.HasListener)
 					try
 					{
-						if(targetCard.IsOnTable)
+						if(targetCard.IsOnTable || revealCard)
 							s.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard);
 						else
 							s.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);

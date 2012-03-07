@@ -24,9 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using Bang.Server.Characters;
+using System.Collections.ObjectModel;
+using BangSharp.Server.Characters;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public class Character
 	{
@@ -110,6 +111,7 @@ namespace Bang.Server
 		{
 			return card.Type == CardType.Bang;
 		}
+
 		public virtual bool CanPlayCard(CardType card)
 		{
 			return true;
@@ -117,8 +119,53 @@ namespace Bang.Server
 		
 		public virtual void Draw()
 		{
-			throw new BadUsageException();
+			DrawFirstCard(first => {
+				if(first == null)
+					first = Game.GameTable.PlayerDrawFromDeck(player, 1)[0];
+				player.OnDrewFirstCard(first);
+				if(DrawCardCount >= 2)
+					DrawSecondCard(second => {
+						if(second == null)
+							second = Game.GameTable.PlayerDrawFromDeck(player, 1)[0];
+						player.OnDrewSecondCard(second);
+						if(DrawCardCount > 2)
+							Game.GameTable.PlayerDrawFromDeck(player, DrawCardCount - 2);
+						player.OnAfterDraw();
+					}, player.RevealSecondDrawnCard);
+				else
+					player.OnAfterDraw();
+			}, player.RevealFirstDrawnCard);
 		}
+		public virtual int DrawCardCount
+		{
+			get { return 2; }
+		}
+		public virtual bool RevealFirstDrawnCard
+		{
+			get { return false; }
+		}
+		public virtual bool RevealSecondDrawnCard
+		{
+			get { return false; }
+		}
+		public virtual void DrawFirstCard(CardCallback callback, bool reveal)
+		{
+			callback(null);
+		}
+		public virtual void DrawSecondCard(CardCallback callback, bool reveal)
+		{
+			callback(null);
+		}
+		public virtual void OnDrewFirstCard(Card card)
+		{
+		}
+		public virtual void OnDrewSecondCard(Card card)
+		{
+		}
+		public virtual void OnAfterDraw()
+		{
+		}
+
 		public virtual void PlayCard(Card card)
 		{
 			card.Play();
@@ -126,14 +173,14 @@ namespace Bang.Server
 		public virtual void UseAbility()
 		{
 		}
-		public virtual void CheckDeck(Card causedBy, CheckDeckMethod checkMethod, CardResultMethod resultMethod)
+		public virtual void CheckDeck(Card causedBy, CheckDeckCallback checkCallback, CardResultCallback resultCallback)
 		{
 			Card checkedCard = player.Game.GameTable.CheckDeck();
-			bool result = checkMethod(checkedCard);
+			bool result = checkCallback(checkedCard);
 			Game.Session.EventManager.OnPlayerCheckedDeck(player, checkedCard, causedBy, result);
-			resultMethod(causedBy, result);
+			resultCallback(causedBy, result);
 		}
-		public virtual void CheckMissed(CardResultMethod resultMethod)
+		public virtual void CheckMissed(CardResultCallback resultCallback)
 		{
 			throw new BadUsageException();
 		}

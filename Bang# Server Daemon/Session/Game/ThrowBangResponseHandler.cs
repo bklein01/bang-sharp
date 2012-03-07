@@ -23,15 +23,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class ThrowBangResponseHandler : ResponseHandler
 	{
-		IResultHandler handler;
+		ResultCallback callback;
 
-		public ThrowBangResponseHandler(Player requested, Player causedBy, IResultHandler handler) : base(RequestType.ThrowBang, requested, causedBy)
+		public ThrowBangResponseHandler(Player requested, Player causedBy, ResultCallback callback) : base(RequestType.ThrowBang, requested, causedBy)
 		{
-			this.handler = handler;
+			this.callback = callback;
 		}
 		public ThrowBangResponseHandler(Player requested, Player causedBy) : this(requested, causedBy, null)
 		{
@@ -50,15 +50,15 @@ namespace Bang.Server
 			else
 				Game.GameTable.PlayerRespondWithCard(card);
 
-			if(handler != null)
-				handler.OnResult(true);
+			if(callback != null)
+				callback(true);
 			End();
 		}
 		protected override void OnRespondNoAction()
 		{
 			RequestedPlayer.ModifyLifePoints(-1, CausedBy);
-			if(handler != null)
-				handler.OnResult(false);
+			if(callback != null)
+				callback(false);
 			End();
 		}
 	}

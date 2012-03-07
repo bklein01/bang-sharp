@@ -26,7 +26,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Thrown when a player or spectator attempts to connect to the session with a wrong password.

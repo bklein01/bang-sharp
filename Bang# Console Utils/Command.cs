@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Collections.Generic;
 
-namespace Bang.ConsoleUtils
+namespace BangSharp.ConsoleUtils
 {
 	/// <summary>
 	/// Represents a command template.

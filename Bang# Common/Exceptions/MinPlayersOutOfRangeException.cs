@@ -26,7 +26,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Thrown when a client passes invalid minimal player count to the server.

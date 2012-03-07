@@ -30,7 +30,7 @@ using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class SessionPlayer : ImmortalMarshalByRefObject, IPlayer
 	{
@@ -38,7 +38,7 @@ namespace Bang.Server
 		private Session session;
 		private CreatePlayerData data;
 		private SessionPlayerControl control;
-		private IPlayerEventListener listener;
+		private IPlayerSessionEventListener listener;
 
 		private int score;
 		private int turnsPlayed;
@@ -115,7 +115,7 @@ namespace Bang.Server
 		{
 			get { return control; }
 		}
-		public IPlayerEventListener Listener
+		public IPlayerSessionEventListener Listener
 		{
 			get { return listener; }
 		}
@@ -255,7 +255,7 @@ namespace Bang.Server
 				throw new BadPlayerPasswordException();
 			this.data = data;
 		}
-		public void RegisterListener(IPlayerEventListener listener)
+		public void RegisterListener(IPlayerSessionEventListener listener)
 		{
 			this.listener = listener;
 		}

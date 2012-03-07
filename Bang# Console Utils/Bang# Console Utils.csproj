@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{152B44A4-9B36-4042-8E36-1E83DB09FEEB}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Bang.ConsoleUtils</RootNamespace>
+    <RootNamespace>BangSharp.ConsoleUtils</RootNamespace>
     <AssemblyName>BangSharpConsoleUtils</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ReleaseVersion>1.0</ReleaseVersion>

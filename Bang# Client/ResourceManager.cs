@@ -26,7 +26,7 @@
 using System;
 using Gdk;
 using System.Collections.Generic;
-namespace Bang.Client
+namespace BangSharp.Client
 {
 	public static class ResourceManager
 	{

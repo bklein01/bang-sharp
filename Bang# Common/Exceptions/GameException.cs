@@ -26,7 +26,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// The base class for all Bang# exceptions.

@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Linq;
 
-namespace Bang.Server.Characters
+namespace BangSharp.Server.Characters
 {
 	public sealed class PatBrennan : Character
 	{
@@ -44,12 +44,14 @@ namespace Bang.Server.Characters
 				card.AssertOnTable();
 				
 				parent.OnUsedAbility();
-				Game.GameTable.PlayerStealCard(RequestedPlayer, card);
+				Game.GameTable.PlayerStealCard(RequestedPlayer, card, RequestedPlayer.RevealFirstDrawnCard);
+				RequestedPlayer.OnDrewFirstCard(card);
+				RequestedPlayer.OnAfterDraw();
 				End();
 			}
 			protected override void OnRespondNoAction()
 			{
-				Game.GameTable.PlayerDrawFromDeck(RequestedPlayer, 2);
+				parent.Draw();
 				End();
 			}
 		}
@@ -62,7 +64,7 @@ namespace Bang.Server.Characters
 		{
 			if(Game.Players.All(p => !p.IsAlive || p.Table.Count == 0))
 				throw new BadGameStateException();
-			
+		
 			Game.GameCycle.PushTempHandler(new PatBrennanResponseHandler(this));
 		}
 	}

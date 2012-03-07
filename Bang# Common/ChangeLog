@@ -1,3 +1,88 @@
+2012-03-07  WOnder93  <omosnacek@gmail.com>
+
+	* Utils.cs:
+	* Config.cs:
+	* Role.cs:
+	* AssemblyInfo.cs:
+	* RemotingUtils.cs:
+	* CardRank.cs:
+	* CardSuit.cs:
+	* CardType.cs:
+	* CardColor.cs:
+	* IGame.cs:
+	* Bang# Common.csproj:
+	* Password.cs:
+	* ICard.cs:
+	* RequestType.cs:
+	* IServer.cs:
+	* IPlayer.cs:
+	* SessionState.cs:
+	* ISession.cs:
+	* CharacterType.cs:
+	* ISpectator.cs:
+	* CreatePlayerData.cs:
+	* GameException.cs:
+	* IPlayerControl.cs:
+	* CreateSessionData.cs:
+	* IEventListener.cs:
+	* IIdentificable.cs:
+	* ImmortalMarshalByRefObject.cs:
+	* BadCardException.cs:
+	* CreateSpectatorData.cs:
+	* MethodRestrictionServerSink.cs:
+	* BadUsageException.cs:
+	* IPublicPlayerView.cs:
+	* ISpectatorControl.cs:
+	* InvalidIdException.cs:
+	* BadPlayerException.cs:
+	* IPrivatePlayerView.cs:
+	* IPlayerEventListener.cs:
+	* IServerEventListener.cs:
+	* ISessionEventListener.cs:
+	* BadGameStateException.cs:
+	* IPlayerSessionControl.cs:
+	* BadTargetCardException.cs:
+	* MustBeCreatorException.cs:
+	* ISpectatorEventListener.cs:
+	* CannotPlayBangException.cs:
+	* CannotPlayBeerException.cs:
+	* TooManyPlayersException.cs:
+	* MethodRestrictionServerSinkProvider.cs:
+	* BadSessionStateException.cs:
+	* BadTargetPlayerException.cs:
+	* ISpectatorSessionControl.cs:
+	* BadCharacterTypeException.cs:
+	* TooManySpectatorsException.cs:
+	* BadPlayerPasswordException.cs:
+	* BadServerPasswordException.cs:
+	* IPlayerSessionEventListener.cs:
+	* BadSessionPasswordException.cs:
+	* CannotReplacePlayerException.cs:
+	* MaxPlayersOutOfRangeException.cs:
+	* MinPlayersOutOfRangeException.cs:
+	* ISpectatorSessionEventListener.cs:
+	* MaxSpectatorsOutOfRangeException.cs:
+	  Changed the root namespace to BangSharp.
+	Improved password hashing.
+	Improved the draw system.
+	Renamed CardResultHandler to CardResultCallback.
+	IResultHandler replaced by the ResultCallback delegate.
+	Fixed printing IsAlive instead of Role in Console Utils.
+	Fixed AI role estimation.
+	Fixed remoting channels management.
+	Fixed revealing role publicly after the game has ended.
+	Fixed useless server state saving when resetting sessions.
+	Fixed discarding cards after death.
+	Fixed replacing with AI player in TestClient - when being
+	  requested it ignored the event.
+	Fixed AI not reacting on Brawl choosing when non-allies had
+	  empty hands.
+	When a player cannot be replaced,
+	  BangSharp.CannotReplacePlayerException is now thrown instead
+	  of InvalidOperationException.
+	Introduced server events.
+	Several minor tweaks.
+
 2012-01-19  WOnder93  <omosnacek@gmail.com>
 
 	* Utils.cs:

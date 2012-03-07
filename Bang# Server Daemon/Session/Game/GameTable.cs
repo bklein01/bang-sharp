@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	public sealed class GameTable
 	{
@@ -301,14 +301,18 @@ namespace Bang.Server
 			selectionOwner = owner;
 			game.Session.EventManager.OnDrawnIntoSelection(drawn, owner);
 		}
-		public void PlayerPickFromSelection(Player player, Card card)
+		public void PlayerPickFromSelection(Player player, Card card, bool revealCard)
 		{
 			if(selectionOwner != null && selectionOwner != player)
 				throw new InvalidOperationException();
 			if(!selection.Remove(card))
 				throw new InvalidOperationException();
 			player.AddCardToHand(card);
-			game.Session.EventManager.OnPlayerPickedFromSelection(player, card, selectionOwner == null);
+			game.Session.EventManager.OnPlayerPickedFromSelection(player, card, selectionOwner == null || revealCard);
+		}
+		public void PlayerPickFromSelection(Player player, Card card)
+		{
+			PlayerPickFromSelection(player, card, false);
 		}
 		public void UndrawFromSelection(Card card)
 		{
@@ -323,7 +327,7 @@ namespace Bang.Server
 			foreach(Card c in selectionCopy)
 				CancelCard(c);
 		}
-		public void PlayerStealCard(Player player, Card card)
+		public void PlayerStealCard(Player player, Card card, bool revealCard)
 		{
 			Player owner = card.Owner;
 			if(owner == null)
@@ -333,8 +337,12 @@ namespace Bang.Server
 					throw new InvalidOperationException();
 			
 			player.AddCardToHand(card);
-			game.Session.EventManager.OnPlayerStoleCard(player, owner, card);
+			game.Session.EventManager.OnPlayerStoleCard(player, owner, card, revealCard);
 			owner.CheckEmptyHand();
+		}
+		public void PlayerStealCard(Player player, Card card)
+		{
+			PlayerStealCard(player, card, false);
 		}
 		public void PlayerCancelCard(Player player, Card card)
 		{

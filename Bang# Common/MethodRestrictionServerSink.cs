@@ -29,7 +29,7 @@ using System.IO;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Messaging;
 
-namespace Bang
+namespace BangSharp
 {
 	internal class MethodRestrictionServerSink : IServerChannelSink
 	{

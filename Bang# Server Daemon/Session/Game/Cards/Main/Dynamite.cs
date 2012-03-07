@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Linq;
 
-namespace Bang.Server.Cards
+namespace BangSharp.Server.Cards
 {
 	public sealed class Dynamite : TableCard
 	{

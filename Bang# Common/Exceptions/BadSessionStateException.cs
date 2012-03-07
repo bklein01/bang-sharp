@@ -26,7 +26,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Thrown when the current session state doesn't allow the attempted operation.

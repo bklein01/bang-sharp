@@ -26,7 +26,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Bang.ConsoleUtils
+namespace BangSharp.ConsoleUtils
 {
 	/// <summary>
 	/// Represents a text command template.

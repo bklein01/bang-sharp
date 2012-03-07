@@ -27,7 +27,7 @@ using System;
 using System.Linq;
 using System.Net;
 
-namespace Bang.Server
+namespace BangSharp.Server
 {
 	/// <summary>
 	/// Conatins commonly used server-administration-related methods and constants.
@@ -37,7 +37,7 @@ namespace Bang.Server
 		/// <summary>
 		/// The major server interface version.
 		/// </summary>
-		public const int InterfaceVersionMajor = 2;
+		public const int InterfaceVersionMajor = 3;
 		/// <summary>
 		/// The minor server interface version.
 		/// </summary>
@@ -50,7 +50,7 @@ namespace Bang.Server
 		/// <c>true</c> if the server is compatible, otherwise <c>false</c>.
 		/// </returns>
 		/// <param name='server'>
-		/// The <see cref="Bang.Server.IServerBase"/> to check.
+		/// The <see cref="BangSharp.Server.IServerBase"/> to check.
 		/// </param>
 		public static bool IsServerCompatible(IServerBase server)
 		{
@@ -63,6 +63,7 @@ namespace Bang.Server
 
 		public static Type[] ClientSharedTypes = new Type[]
 		{
+			typeof(IServerEventListener),
 		};
 		public static Type[] ServerSharedTypes = new Type[]
 		{
@@ -72,20 +73,15 @@ namespace Bang.Server
 		};
 
 		/// <summary>
-		/// Connects to the Bang# server with the specified address and port.
+		/// Opens the client channel for administration.
 		/// </summary>
-		/// <param name="address">
-		/// The address of the server.
-		/// </param>
-		/// <param name="port">
-		/// The port for the Bang# service.
-		/// </param>
-		/// <returns>
-		/// The <see cref="Bang.Server.IServerBase"/> object from the server.
-		/// </returns>
-		public static IServerBase ConnectAdmin(string address, int port)
+		/// <remarks>
+		/// Note that you should call this method instead of <c>BangSharp.Utils.OpenClientChannel()<c/>
+		/// if you want to use administration client. Otherwise administration may not work properly.
+		/// </remarks>
+		public static void OpenClientAdminChannel()
 		{
-			return Utils.Connect<IServerBase>("BangSharp.rem", address, port, Utils.ClientSharedTypes.Concat(ClientSharedTypes));
+			RemotingUtils.OpenClientChannel(Utils.ClientSharedTypes.Concat(ClientSharedTypes));
 		}
 		/// <summary>
 		/// Starts serving the Bang# server administration service at the specified port.
@@ -97,11 +93,28 @@ namespace Bang.Server
 		/// The adress to bind to (usually <c>System.Net.IPAddress.Any</c> or <c>System.Net.IPAddress.Loopback</c>).
 		/// </param>
 		/// <remarks>
-		/// Note that you must also call <c>Bang.Utils.Serve&lt;T&gt;</c> to start serving both services.
+		/// Note that you must also call <c>BangSharp.Utils.Serve&lt;T&gt;()</c> to start serving both services.
 		/// </remarks>
-		public static void ServeAdmin(int port, IPAddress bindTo)
+		public static void OpenServerAdminChannel(int port, IPAddress bindTo)
 		{
-			Utils.OpenChannel(port, Utils.ServerSharedTypes.Concat(ServerSharedTypes), bindTo);
+			RemotingUtils.OpenServerChannel(port, Utils.ServerSharedTypes.Concat(ServerSharedTypes), bindTo);
+		}
+
+		/// <summary>
+		/// Connects to the Bang# server with the specified address and port.
+		/// </summary>
+		/// <param name="address">
+		/// The address of the server.
+		/// </param>
+		/// <param name="port">
+		/// The port for the Bang# service.
+		/// </param>
+		/// <returns>
+		/// The <see cref="BangSharp.Server.IServerBase"/> object from the server.
+		/// </returns>
+		public static IServerBase ConnectAdmin(string address, int port)
+		{
+			return RemotingUtils.Connect<IServerBase>("BangSharp.rem", address, port);
 		}
 	}
 }

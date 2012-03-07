@@ -26,7 +26,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Bang
+namespace BangSharp
 {
 	/// <summary>
 	/// Thrown when player that is not the creator attempts to perform an operation that requires him to be the creator.
