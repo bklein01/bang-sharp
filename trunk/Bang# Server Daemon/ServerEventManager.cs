@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public sealed class ServerEventManager
 	{

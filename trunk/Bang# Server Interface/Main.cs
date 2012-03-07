@@ -28,7 +28,7 @@ using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 using BangSharp.ConsoleUtils;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Interface
 {
 	public sealed class ServerInterface : ImmortalMarshalByRefObject, IServerEventListener
 	{

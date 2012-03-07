@@ -25,9 +25,9 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.ObjectModel;
-using BangSharp.Server.Characters;
+using BangSharp.Server.Daemon.Characters;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public class Character
 	{

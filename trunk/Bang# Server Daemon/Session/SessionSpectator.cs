@@ -26,7 +26,7 @@
 using System;
 using System.Runtime.Remoting;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public sealed class SessionSpectator : ImmortalMarshalByRefObject, ISpectator
 	{

@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public sealed class Player : ImmortalMarshalByRefObject, IPublicPlayerView
 	{

@@ -31,7 +31,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public sealed class Session : ImmortalMarshalByRefObject, ISession
 	{

@@ -32,7 +32,7 @@ using System.Runtime.Serialization;
 using System.Threading;
 using BangSharp.ConsoleUtils;
 
-namespace BangSharp.Client
+namespace BangSharp.TestClient
 {
 	public sealed class TestClient : ImmortalMarshalByRefObject, IServerEventListener, IPlayerSessionEventListener
 	{

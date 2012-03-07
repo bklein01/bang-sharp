@@ -26,7 +26,7 @@
 using System.Threading;
 using System;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public sealed class ServerMain
 	{

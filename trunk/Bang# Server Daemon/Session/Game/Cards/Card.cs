@@ -24,9 +24,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
-using BangSharp.Server.Cards;
+using BangSharp.Server.Daemon.Cards;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public class Card : ImmortalMarshalByRefObject, ICard
 	{

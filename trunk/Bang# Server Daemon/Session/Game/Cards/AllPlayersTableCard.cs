@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Collections.Generic;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public abstract class AllPlayersTableCard : PlayableTableCard
 	{

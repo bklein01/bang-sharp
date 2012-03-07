@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public sealed class SessionSpectatorControl : ImmortalMarshalByRefObject, ISpectatorSessionControl
 	{

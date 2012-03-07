@@ -3,6 +3,13 @@
 	* Main.cs:
 	* AssemblyInfo.cs:
 	* Bang# Test Client.csproj:
+	  Changed some namespaces.
+
+2012-03-07  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* AssemblyInfo.cs:
+	* Bang# Test Client.csproj:
 	  Changed the root namespace to BangSharp.
 	Improved password hashing.
 	Improved the draw system.

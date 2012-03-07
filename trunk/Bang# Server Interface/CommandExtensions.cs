@@ -26,7 +26,7 @@
 using System;
 using BangSharp.ConsoleUtils;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Interface
 {
 	public static class CommandExtensions
 	{
