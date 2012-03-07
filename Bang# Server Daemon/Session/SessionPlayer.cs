@@ -30,7 +30,7 @@ using System.Runtime.Remoting;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public sealed class SessionPlayer : ImmortalMarshalByRefObject, IPlayer
 	{

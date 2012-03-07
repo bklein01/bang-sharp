@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Linq;
 
-namespace BangSharp.Server.Characters
+namespace BangSharp.Server.Daemon.Characters
 {
 	public sealed class PatBrennan : Character
 	{

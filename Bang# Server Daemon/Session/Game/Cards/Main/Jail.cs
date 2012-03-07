@@ -25,7 +25,7 @@
 // THE SOFTWARE.
 using System.Linq;
 
-namespace BangSharp.Server.Cards
+namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Jail : TableCard
 	{

@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1D906372-10A0-43F9-ADC4-F88FCA46D59F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BangSharp.Server</RootNamespace>
+    <RootNamespace>BangSharp.Server.Interface</RootNamespace>
     <AssemblyName>BangSharpServerInterface</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>

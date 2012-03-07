@@ -26,7 +26,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BangSharp.Server
+namespace BangSharp.Server.Daemon
 {
 	public class QueueResponseHandler : ResponseHandler
 	{
