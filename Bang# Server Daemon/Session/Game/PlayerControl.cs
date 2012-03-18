@@ -64,15 +64,12 @@ namespace BangSharp.Server.Daemon
 
 		void IPlayerControl.RespondDraw()
 		{
-			if(!player.Parent.HasListener)
+			if(!player.Parent.CheckListener())
 				throw new InvalidOperationException();
 
 			Game game = Game;
 			lock(game.Session.Lock)
 			{
-				if(game.Session.Locked)
-					throw new MethodAccessException();
-
 				game.GameCycle.PlayerRespondDraw(player);
 				if(game.Session.State == SessionState.Playing)
 					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
@@ -81,15 +78,12 @@ namespace BangSharp.Server.Daemon
 
 		void IPlayerControl.RespondCard(int id)
 		{
-			if(!player.Parent.HasListener)
+			if(!player.Parent.CheckListener())
 				throw new InvalidOperationException();
 
 			Game game = Game;
 			lock(game.Session.Lock)
 			{
-				if(game.Session.Locked)
-					throw new MethodAccessException();
-
 				game.GameCycle.PlayerRespondCard(player, game.GameTable.GetCard(id));
 				if(game.Session.State == SessionState.Playing)
 					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
@@ -98,15 +92,12 @@ namespace BangSharp.Server.Daemon
 
 		void IPlayerControl.RespondPlayer(int id)
 		{
-			if(!player.Parent.HasListener)
+			if(!player.Parent.CheckListener())
 				throw new InvalidOperationException();
 
 			Game game = Game;
 			lock(game.Session.Lock)
 			{
-				if(game.Session.Locked)
-					throw new MethodAccessException();
-
 				game.GameCycle.PlayerRespondPlayer(player, game.GetPlayer(id));
 				if(game.Session.State == SessionState.Playing)
 					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
@@ -115,15 +106,12 @@ namespace BangSharp.Server.Daemon
 
 		void IPlayerControl.RespondCharacter(CharacterType character)
 		{
-			if(!player.Parent.HasListener)
+			if(!player.Parent.CheckListener())
 				throw new InvalidOperationException();
 			
 			Game game = Game;
 			lock(game.Session.Lock)
 			{
-				if(game.Session.Locked)
-					throw new MethodAccessException();
-
 				game.GameCycle.PlayerRespondCharacter(player, character);
 				if(game.Session.State == SessionState.Playing)
 					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
@@ -132,15 +120,12 @@ namespace BangSharp.Server.Daemon
 
 		void IPlayerControl.RespondNoAction()
 		{
-			if(!player.Parent.HasListener)
+			if(!player.Parent.CheckListener())
 				throw new InvalidOperationException();
 
 			Game game = Game;
 			lock(game.Session.Lock)
 			{
-				if(game.Session.Locked)
-					throw new MethodAccessException();
-
 				game.GameCycle.PlayerRespondNoAction(player);
 				if(game.Session.State == SessionState.Playing)
 					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);
@@ -149,15 +134,12 @@ namespace BangSharp.Server.Daemon
 
 		void IPlayerControl.RespondUseAbility()
 		{
-			if(!player.Parent.HasListener)
+			if(!player.Parent.CheckListener())
 				throw new InvalidOperationException();
 
 			Game game = Game;
 			lock(game.Session.Lock)
 			{
-				if(game.Session.Locked)
-					throw new MethodAccessException();
-
 				game.GameCycle.PlayerRespondUseAbility(player);
 				if(game.Session.State == SessionState.Playing)
 					game.Session.EventManager.OnNewRequest(game.GameCycle.RequestType, game.GameCycle.RequestedPlayer, game.GameCycle.CausedBy);

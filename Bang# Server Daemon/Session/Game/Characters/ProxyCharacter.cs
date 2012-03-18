@@ -161,35 +161,35 @@ namespace BangSharp.Server.Daemon
 		{
 			get { return characters.Count == 0 ? base.RevealFirstDrawnCard : characters.Any(c => c.RevealSecondDrawnCard); }
 		}
-		public override void DrawFirstCard(CardCallback callback, bool reveal)
+		public override void DrawFirstCard(CardCallback callback)
 		{
 			if(characters.Count == 0)
-				base.DrawFirstCard(callback, reveal);
+				base.DrawFirstCard(callback);
 			else if(characters.Count == 1)
-				characters.First().DrawFirstCard(callback, reveal);
+				characters.First().DrawFirstCard(callback);
 			else
 				Game.GameCycle.PushTempHandler(new ChooseCharacterResponseHandler(this, RequestType.ChooseCharacterForDrawFirstCard, c =>
 				{
 					if(c != null)
-						c.DrawFirstCard(callback, reveal);
+						c.DrawFirstCard(callback);
 					else
-						base.DrawFirstCard(callback, reveal);
+						base.DrawFirstCard(callback);
 				}));
 
 		}
-		public override void DrawSecondCard(CardCallback callback, bool reveal)
+		public override void DrawSecondCard(CardCallback callback)
 		{
 			if(characters.Count == 0)
-				base.DrawSecondCard(callback, reveal);
+				base.DrawSecondCard(callback);
 			else if(characters.Count == 1)
-				characters.First().DrawSecondCard(callback, reveal);
+				characters.First().DrawSecondCard(callback);
 			else
 				Game.GameCycle.PushTempHandler(new ChooseCharacterResponseHandler(this, RequestType.ChooseCharacterForDrawSecondCard, c =>
 				{
 					if(c != null)
-						c.DrawSecondCard(callback, reveal);
+						c.DrawSecondCard(callback);
 					else
-						base.DrawSecondCard(callback, reveal);
+						base.DrawSecondCard(callback);
 				}));
 		}
 		public override void OnDrewFirstCard(Card card)

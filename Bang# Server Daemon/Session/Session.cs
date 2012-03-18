@@ -72,12 +72,6 @@ namespace BangSharp.Server.Daemon
 		}
 
 		public readonly object Lock = new object();
-		private bool locked;
-		public bool Locked
-		{
-			get { return locked; }
-			set { server.Locked = locked = value; }
-		}
 		public ISessionAdmin Admin
 		{
 			get { return admin; }
@@ -199,6 +193,7 @@ namespace BangSharp.Server.Daemon
 			creatorId = 0;
 			gamesPlayed = 0;
 			remainingCharacters = Utils.GetCharacterTypes(this);
+			eventMgr.StartPolling();
 		}
 		public Session(Server server, BinaryReader reader)
 		{
@@ -267,6 +262,7 @@ namespace BangSharp.Server.Daemon
 			remainingCharacters = new List<CharacterType>(remCharCount);
 			for(int i = 0; i < remCharCount; i++)
 				remainingCharacters.Add((CharacterType)reader.ReadInt32());
+			eventMgr.StartPolling();
 		}
 
 		public void Write(BinaryWriter writer)
@@ -319,9 +315,6 @@ namespace BangSharp.Server.Daemon
 				throw new BadSessionStateException();
 			lock(Lock)
 			{
-				if(Locked)
-					throw new MethodAccessException();
-
 				if(state != SessionState.WaitingForPlayers)
 					throw new BadSessionStateException();
 				if(players.Count >= this.data.MaxPlayers)
@@ -348,14 +341,11 @@ namespace BangSharp.Server.Daemon
 				throw new BadSessionStateException();
 			lock(Lock)
 			{
-				if(Locked)
-					throw new MethodAccessException();
-
 				if(!this.data.PlayerPassword.CheckPassword(password))
 					throw new BadSessionPasswordException();
 
 				SessionPlayer player = GetPlayer(id);
-				if(player.HasListener && !player.IsAI)
+				if(player.CheckListener() && !player.IsAI)
 					throw new CannotReplacePlayerException();
 				player.Update(data);
 				player.RegisterListener(listener);
@@ -373,9 +363,6 @@ namespace BangSharp.Server.Daemon
 				throw new BadSessionStateException();
 			lock(Lock)
 			{
-				if(Locked)
-					throw new MethodAccessException();
-
 				if(!this.data.SpectatorPassword.CheckPassword(password))
 					throw new BadSessionPasswordException();
 				if(spectators.Count >= this.data.MaxSpectators)
@@ -480,9 +467,6 @@ namespace BangSharp.Server.Daemon
 
 			lock(Lock)
 			{
-				if(Locked)
-					throw new MethodAccessException();
-
 				if(state == SessionState.WaitingForPlayers)
 				{
 					int count = data.MinPlayers - players.Count;
@@ -510,9 +494,6 @@ namespace BangSharp.Server.Daemon
 		{
 			lock(Lock)
 			{
-				if(Locked)
-					throw new MethodAccessException();
-
 				state = SessionState.Ended;
 				eventMgr.OnSessionEnded();
 				if(game != null)
@@ -526,16 +507,13 @@ namespace BangSharp.Server.Daemon
 		{
 			lock(Lock)
 			{
-				if(Locked)
-					throw new MethodAccessException();
-
 				player.UnregisterListener();
 				player.Control.Disconnect();
 
 				if(state != SessionState.WaitingForPlayers || player.IsCreator)
 				{
 					player.ResetControl();
-					eventMgr.OnPlayerLeftSession(player);
+					eventMgr.OnPlayerDisconnected(player);
 					return;
 				}
 				players.Remove(player.ID);
@@ -549,9 +527,6 @@ namespace BangSharp.Server.Daemon
 		{
 			lock(Lock)
 			{
-				if(Locked)
-					throw new MethodAccessException();
-
 				spectator.UnregisterListener();
 				spectator.Control.Disconnect();
 				spectators.Remove(spectator.ID);

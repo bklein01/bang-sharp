@@ -1,3 +1,11 @@
+2012-03-18  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* AIPlayer.cs:
+	  Adapted to the new iterface.
+
 2012-03-07  WOnder93  <omosnacek@gmail.com>
 
 	* CardHelper.cs:

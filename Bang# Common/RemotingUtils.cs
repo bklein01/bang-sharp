@@ -62,9 +62,12 @@ namespace BangSharp
 			return new BinaryClientFormatterSinkProvider();
 		}
 
-		public static void OpenClientChannel(IEnumerable<Type> allowedTypes)
+		public static void OpenClientChannel(IEnumerable<Type> allowedTypes, int requestTimeout)
 		{
-			ChannelServices.RegisterChannel(new TcpClientChannel("client", GetClientProvider(), GetServerProvider(allowedTypes)), false);
+			Dictionary<string, object> properties = new Dictionary<string, object>();
+			properties.Add("name", "client");
+			properties.Add("requestTimeout", requestTimeout);
+			ChannelServices.RegisterChannel(new TcpClientChannel(properties, GetClientProvider(), GetServerProvider(allowedTypes)), false);
 		}
 		public static T Connect<T>(string uri, string address, int port)
 		{
@@ -75,11 +78,12 @@ namespace BangSharp
 		{
 			RemotingConfiguration.RegisterWellKnownServiceType(typeof(T), uri, WellKnownObjectMode.Singleton);
 		}
-		public static void OpenServerChannel(int port, IEnumerable<Type> allowedTypes, IPAddress bindTo)
+		public static void OpenServerChannel(int port, IEnumerable<Type> allowedTypes, int requestTimeout, IPAddress bindTo)
 		{
 			Dictionary<string, object> properties = new Dictionary<string, object>();
 			properties.Add("name", "server:" + port);
 			properties.Add("port", port);
+			properties.Add("requestTimeout", requestTimeout);
 			properties.Add("bindTo", bindTo.ToString());
 			TcpServerChannel channel = new TcpServerChannel(properties, GetClientProvider(), GetServerProvider(allowedTypes));
 			ChannelServices.RegisterChannel(channel, false);

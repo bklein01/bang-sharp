@@ -58,11 +58,6 @@ namespace BangSharp.Server.Daemon
 		private Dictionary<int, Session> sessions;
 
 		public readonly object Lock = new object();
-		public bool Locked
-		{
-			get;
-			set;
-		}
 		public IServerAdmin Admin
 		{
 			get { return admin; }
@@ -202,9 +197,6 @@ namespace BangSharp.Server.Daemon
 		{
 			lock(Lock)
 			{
-				if(Locked)
-					throw new MethodAccessException();
-
 				int id = sessions.GenerateID();
 				Session session = new Session(this, id, sessionData);
 				sessions.Add(id, session);
@@ -251,9 +243,6 @@ namespace BangSharp.Server.Daemon
 		{
 			lock(Lock)
 			{
-				if(Locked)
-					throw new MethodAccessException();
-
 				Console.Error.WriteLine("INFO: Resetting sessions...");
 				List<Session> sessionList = new List<Session>(sessions.Values);
 				foreach(Session s in sessionList)

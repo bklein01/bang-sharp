@@ -55,7 +55,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			}
 			if(conn != null && !conn.IsAlive)
 			{
-				connections.Remove(conn);
+				conn.Kill();
 				conn = null;
 			}
 
@@ -95,8 +95,14 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		{
 			conn.OnRequestRecieved += delegate(Message message)
 			{
-				if(OnRequestRecieved != null)
-					OnRequestRecieved(message);
+				try
+				{
+					if(OnRequestRecieved != null)
+						OnRequestRecieved(message);
+				}
+				catch
+				{
+				}
 			};
 			connections.Add(conn);
 			conn.StartListening();

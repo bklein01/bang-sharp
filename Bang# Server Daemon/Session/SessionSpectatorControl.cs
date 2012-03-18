@@ -55,22 +55,17 @@ namespace BangSharp.Server.Daemon
 
 		void ISpectatorSessionControl.SendChatMessage(string message)
 		{
-			if(!spectator.HasListener)
+			if(!spectator.CheckListener())
 				throw new InvalidOperationException();
 
 			Session session = Session;
 			lock(session)
-			{
-				if(session.Locked)
-					throw new MethodAccessException();
-
 				session.EventManager.SendChatMessage(spectator, message);
-			}
 		}
 		
 		void ISpectatorSessionControl.Disconnect()
 		{
-			if(!spectator.HasListener)
+			if(!spectator.CheckListener())
 				throw new InvalidOperationException();
 			Session.RemoveSpectator(spectator);
 		}

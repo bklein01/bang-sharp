@@ -41,7 +41,7 @@ namespace BangSharp
 		/// <summary>
 		/// The major interface version.
 		/// </summary>
-		public const int InterfaceVersionMajor = 7;
+		public const int InterfaceVersionMajor = 8;
 		/// <summary>
 		/// The minor interface version.
 		/// </summary>
@@ -416,14 +416,14 @@ namespace BangSharp
 			return list[Random.Next(list.Count)];
 		}
 
-		public static readonly Type[] ClientSharedTypes = new Type[]
+		public static readonly IEnumerable<Type> ClientSharedTypes = new Type[]
 		{
 			typeof(IServerEventListener),
 			typeof(ISessionEventListener),
 			typeof(IPlayerSessionEventListener),
 			typeof(ISpectatorSessionEventListener),
 		};
-		public static readonly Type[] ServerSharedTypes = new Type[]
+		public static readonly IEnumerable<Type> ServerSharedTypes = new Type[]
 		{
 			typeof(IServer),
 			typeof(ISession),
@@ -445,7 +445,17 @@ namespace BangSharp
 		/// </summary>
 		public static void OpenClientChannel()
 		{
-			RemotingUtils.OpenClientChannel(ClientSharedTypes);
+			RemotingUtils.OpenClientChannel(ClientSharedTypes, Config.Instance.GetInteger("Client.RequestTimeout", 30000));
+		}
+		/// <summary>
+		/// Opens the client channel with a custom request timeout.
+		/// </summary>
+		/// <param name="requestTimeout">
+		/// The request timeout to use.
+		/// </param>
+		public static void OpenClientChannel(int requestTimeout)
+		{
+			RemotingUtils.OpenClientChannel(ClientSharedTypes, requestTimeout);
 		}
 		/// <summary>
 		/// Opens the server channel.
@@ -455,7 +465,20 @@ namespace BangSharp
 		/// </param>
 		public static void OpenServerChannel(int port)
 		{
-			RemotingUtils.OpenServerChannel(port, ServerSharedTypes, IPAddress.Any);
+			RemotingUtils.OpenServerChannel(port, ServerSharedTypes, Config.Instance.GetInteger("Server.RequestTimeout", 30000), IPAddress.Any);
+		}
+		/// <summary>
+		/// Opens the server channel with a custom request timeout.
+		/// </summary>
+		/// <param name="port">
+		/// The port on which to listen.
+		/// </param>
+		/// <param name="requestTimeout">
+		/// The request timeout to use.
+		/// </param>
+		public static void OpenServerChannel(int port, int requestTimeout)
+		{
+			RemotingUtils.OpenServerChannel(port, ServerSharedTypes, requestTimeout, IPAddress.Any);
 		}
 
 		/// <summary>

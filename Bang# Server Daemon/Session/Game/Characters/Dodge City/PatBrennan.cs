@@ -51,7 +51,7 @@ namespace BangSharp.Server.Daemon.Characters
 			}
 			protected override void OnRespondNoAction()
 			{
-				parent.Draw();
+				RequestedPlayer.Draw(false);
 				End();
 			}
 		}
