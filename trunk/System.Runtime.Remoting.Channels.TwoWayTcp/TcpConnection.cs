@@ -100,12 +100,12 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				}
 				catch(IOException e)
 				{
-					conn.StopListening();
+					conn.Kill();
 					throw new RemotingException("TCP error!", e);
 				}
 				if(chunkLength < 0)
 				{
-					conn.StopListening();
+					conn.Kill();
 					throw new RemotingException("TCP error: Invalid chunk length!");
 				}
 				chunkIndex = 0;
@@ -124,7 +124,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				}
 				catch(IOException e)
 				{
-					conn.StopListening();
+					conn.Kill();
 					throw new RemotingException("TCP error!", e);
 				}
 				chunkIndex++;
@@ -143,7 +143,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 					int read = conn.reader.Read(buffer, offset, segment);
 					if(read != segment)
 					{
-						conn.StopListening();
+						conn.Kill();
 						throw new RemotingException("TCP error!");
 					}
 					totalRead += segment;
@@ -219,7 +219,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				}
 				catch(IOException e)
 				{
-					conn.StopListening();
+					conn.Kill();
 					throw new RemotingException("TCP error!", e);
 				}
 				ms.Position = 0L;
@@ -245,7 +245,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				}
 				catch(IOException e)
 				{
-					conn.StopListening();
+					conn.Kill();
 					throw new RemotingException("TCP error!", e);
 				}
 				Unlock();
@@ -278,15 +278,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				int segment = Math.Min((int)ms.Length, count);
 				do
 				{
-					try
-					{
-						ms.Write(buffer, offset, segment);
-					}
-					catch(IOException e)
-					{
-						conn.StopListening();
-						throw new RemotingException("TCP error!", e);
-					}
+					ms.Write(buffer, offset, segment);
 					offset += segment;
 					count -= segment;
 					if(ms.Position >= ms.Length)
@@ -353,7 +345,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		}
 		public bool IsAlive
 		{
-			get { return networkStream == null || !socket.Poll(0, SelectMode.SelectRead); }
+			get { return networkStream != null; }
 		}
 		public IPAddress RemoteAddress
 		{
@@ -375,6 +367,20 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			networkStream = new NetworkStream(socket);
 			reader = new BinaryReader(networkStream);
 			writer = new BinaryWriter(networkStream);
+		}
+
+		public void Kill()
+		{
+			if(networkStream == null)
+				return;
+			writer.Close();
+			reader.Close();
+
+			networkStream.Close();
+			networkStream = null;
+
+			pool.RemoveConnection(this);
+			StopListening();
 		}
 
 		private void FireMessage(object state)
@@ -411,17 +417,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			}
 			finally
 			{
-				lock(sendLock)
-				{
-					writer.Close();
-					writer = null;
-					reader.Close();
-					reader = null;
-				}
-				networkStream.Close();
-				networkStream = null;
-
-				pool.RemoveConnection(this);
+				Kill();
 			}
 		}
 
@@ -443,7 +439,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 		public Stream SendMessage(Message message)
 		{
-			if(networkStream == null)
+			if(!IsAlive)
 				throw new RemotingException("TCP connection closed!");
 
 			if(message.Stream != null && message.Stream is OutputStream)
@@ -456,7 +452,15 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				while(sendLocked)
 					Monitor.Wait(sendLock);
 				sendLocked = true;
-				return InternalSendMessage(message);
+				try
+				{
+					return InternalSendMessage(message);
+				}
+				catch(IOException e)
+				{
+					Kill();
+					throw new RemotingException("TCP error!", e);
+				}
 			}
 		}
 
@@ -466,6 +470,9 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		}
 		private Message InternalRecieveMessage()
 		{
+			if(!IsAlive)
+				throw new RemotingException("TCP error: Connection closed!");
+
 			Message message = new Message();
 			message.Connection = this;
 
@@ -502,7 +509,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		}
 		private Stream InternalSendMessage(Message message)
 		{
-			if(writer == null)
+			if(!IsAlive)
 				throw new RemotingException("TCP error: Connection closed!");
 
 			writer.Write(magic);

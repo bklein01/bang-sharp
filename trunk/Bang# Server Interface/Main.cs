@@ -218,6 +218,10 @@ namespace BangSharp.Server.Interface
 		{
 			ConsoleHelper.ServerEvent("Player #{0} '{1}' was updated in session #{2}.", player.ID, player.Name, session.ID);
 		}
+		void IServerEventListener.OnPlayerDisconnected(ISession session, IPlayer player)
+		{
+			ConsoleHelper.ServerEvent("Player #{0} '{1}' disconnected from session #{2}.", player.ID, player.Name, session.ID);
+		}
 		#endregion
 	}
 }

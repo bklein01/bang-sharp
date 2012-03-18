@@ -36,6 +36,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		private int priority = 1;
 
 		private bool supressChannelData = false;
+		private int timeout = -1;
 		private TcpServerSink serverSink;
 		private IClientChannelSinkProvider clientSinkProvider;
 		private ChannelDataStore channelData;
@@ -54,7 +55,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			if(clientSinkProvider == null)
 			{
 				this.clientSinkProvider = new BinaryClientFormatterSinkProvider();
-				this.clientSinkProvider.Next = new TcpClientSinkProvider(pool);
+				this.clientSinkProvider.Next = new TcpClientSinkProvider(pool, timeout);
 			}
 
 			else
@@ -63,7 +64,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				IClientChannelSinkProvider provider = clientSinkProvider;
 				while(provider.Next != null)
 					provider = provider.Next;
-				provider.Next = new TcpClientSinkProvider(pool);
+				provider.Next = new TcpClientSinkProvider(pool, timeout);
 			}
 			
 			if(serverSinkProvider == null)
@@ -102,6 +103,9 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 					break;
 				case "supressChannelData":
 					supressChannelData = Convert.ToBoolean(e.Value);
+					break;
+				case "requestTimeout":
+					timeout = Convert.ToInt32(e.Value);
 					break;
 				}
 			Init(clientSinkProvider, serverSinkProvider);

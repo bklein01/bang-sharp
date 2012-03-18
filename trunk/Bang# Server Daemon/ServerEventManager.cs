@@ -26,194 +26,172 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting;
 
 namespace BangSharp.Server.Daemon
 {
 	public sealed class ServerEventManager
 	{
+		private sealed class EventSender
+		{
+			public delegate void Event(IServerEventListener s);
+
+			private ServerEventManager eventMgr;
+
+			public ServerEventManager EventMgr
+			{
+				get { return eventMgr; }
+			}
+
+			public EventSender(ServerEventManager eventMgr)
+			{
+				this.eventMgr = eventMgr;
+			}
+
+			public void SendEvent(Event ev, IServerEventListener s)
+			{
+				try
+				{
+					ev(s);
+				}
+				catch(RemotingTimeoutException)
+				{
+					OnTimeout(s);
+				}
+				catch(Exception e)
+				{
+					OnError(s, e);
+				}
+			}
+
+			private void OnError(IServerEventListener s, Exception e)
+			{
+				Console.Error.WriteLine("INFO: Exception thrown by client:");
+				Console.Error.WriteLine(e);
+				eventMgr.UnregisterListener(s);
+			}
+			private void OnTimeout(IServerEventListener s)
+			{
+				Console.Error.WriteLine("INFO: Client event timed out!");
+				eventMgr.UnregisterListener(s);
+			}
+		}
 		private Server server;
+		private EventSender sender;
 		private List<IServerEventListener> listeners;
 
 		public ServerEventManager(Server server)
 		{
 			this.server = server;
+			sender = new EventSender(this);
 			listeners = new List<IServerEventListener>();
 		}
 
 		public void RegisterListener(IServerEventListener listener)
 		{
-			if(!listeners.Any(l => l == listener))
-				listeners.Add(listener);
+			lock(server.Lock)
+				if(!listeners.Any(l => l == listener))
+					listeners.Add(listener);
 		}
 		public void UnregisterListener(IServerEventListener listener)
 		{
-			int index = -1;
-			for(int i = 0; i < listeners.Count; i++)
-				if(listeners[i] == listener)
-				{
-					index = i;
-					break;
-				}
-			if(index >= 0)
-				listeners.RemoveAt(index);
+			lock(server.Lock)
+			{
+				int index = -1;
+				for(int i = 0; i < listeners.Count; i++)
+					if(listeners[i] == listener)
+					{
+						index = i;
+						break;
+					}
+				if(index >= 0)
+					listeners.RemoveAt(index);
+			}
 		}
 
 		public void OnSessionCreated(Session session)
 		{
-			session.Locked = true;
-			List<IServerEventListener > listeners = new List<IServerEventListener>(this.listeners);
+			List<IServerEventListener> listeners = new List<IServerEventListener>(this.listeners);
 			foreach(IServerEventListener l in listeners)
-				try
-				{
-					l.OnSessionCreated(session);
-				}
-				catch(Exception e)
-				{
-					Console.Error.WriteLine("INFO: Exception thrown by client:");
-					Console.Error.WriteLine(e);
-					UnregisterListener(l);
-				}
-			session.Locked = false;
+				sender.SendEvent(li => {
+					li.OnSessionCreated(session);
+				}, l);
 		}
 		public void OnSessionEnded(Session session)
 		{
-			session.Locked = true;
-			List<IServerEventListener > listeners = new List<IServerEventListener>(this.listeners);
+			List<IServerEventListener> listeners = new List<IServerEventListener>(this.listeners);
 			foreach(IServerEventListener l in listeners)
-				try
-				{
-					l.OnSessionEnded(session);
-				}
-				catch(Exception e)
-				{
-					Console.Error.WriteLine("INFO: Exception thrown by client:");
-					Console.Error.WriteLine(e);
-					UnregisterListener(l);
-				}
-			session.Locked = false;
+				sender.SendEvent(li => {
+					li.OnSessionEnded(session);
+				}, l);
 		}
 
 		public void OnGameStarted(Session session)
 		{
-			session.Locked = true;
-			List<IServerEventListener > listeners = new List<IServerEventListener>(this.listeners);
+			List<IServerEventListener> listeners = new List<IServerEventListener>(this.listeners);
 			foreach(IServerEventListener l in listeners)
-				try
-				{
-					l.OnGameStarted(session);
-				}
-				catch(Exception e)
-				{
-					Console.Error.WriteLine("INFO: Exception thrown by client:");
-					Console.Error.WriteLine(e);
-					UnregisterListener(l);
-				}
-			session.Locked = false;
+				sender.SendEvent(li => {
+					li.OnGameStarted(session);
+				}, l);
 		}
 		public void OnGameEnded(Session session)
 		{
-			session.Locked = true;
-			List<IServerEventListener > listeners = new List<IServerEventListener>(this.listeners);
+			List<IServerEventListener> listeners = new List<IServerEventListener>(this.listeners);
 			foreach(IServerEventListener l in listeners)
-				try
-				{
-					l.OnGameEnded(session);
-				}
-				catch(Exception e)
-				{
-					Console.Error.WriteLine("INFO: Exception thrown by client:");
-					Console.Error.WriteLine(e);
-					UnregisterListener(l);
-				}
-			session.Locked = false;
+				sender.SendEvent(li => {
+					li.OnGameEnded(session);
+				}, l);
 		}
 
 		public void OnPlayerJoinedSession(Session session, SessionPlayer player)
 		{
-			session.Locked = true;
 			List<IServerEventListener> listeners = new List<IServerEventListener>(this.listeners);
 			foreach(IServerEventListener l in listeners)
-				try
-				{
-					l.OnPlayerJoinedSession(session, player);
-				}
-				catch(Exception e)
-				{
-					Console.Error.WriteLine("INFO: Exception thrown by client:");
-					Console.Error.WriteLine(e);
-					UnregisterListener(l);
-				}
-			session.Locked = false;
+				sender.SendEvent(li => {
+					li.OnPlayerJoinedSession(session, player);
+				}, l);
 		}
 		public void OnSpectatorJoinedSession(Session session, SessionSpectator spectator)
 		{
-			session.Locked = true;
-			List<IServerEventListener > listeners = new List<IServerEventListener>(this.listeners);
+			List<IServerEventListener> listeners = new List<IServerEventListener>(this.listeners);
 			foreach(IServerEventListener l in listeners)
-				try
-				{
-					l.OnSpectatorJoinedSession(session, spectator);
-				}
-				catch(Exception e)
-				{
-					Console.Error.WriteLine("INFO: Exception thrown by client:");
-					Console.Error.WriteLine(e);
-					UnregisterListener(l);
-				}
-			session.Locked = false;
+				sender.SendEvent(li => {
+					li.OnSpectatorJoinedSession(session, spectator);
+				}, l);
 		}
 
 		public void OnPlayerLeftSession(Session session, SessionPlayer player)
 		{
-			session.Locked = true;
-			List<IServerEventListener > listeners = new List<IServerEventListener>(this.listeners);
+			List<IServerEventListener> listeners = new List<IServerEventListener>(this.listeners);
 			foreach(IServerEventListener l in listeners)
-				try
-				{
-					l.OnPlayerLeftSession(session, player);
-				}
-				catch(Exception e)
-				{
-					Console.Error.WriteLine("INFO: Exception thrown by client:");
-					Console.Error.WriteLine(e);
-					UnregisterListener(l);
-				}
-			session.Locked = false;
+				sender.SendEvent(li => {
+					li.OnPlayerLeftSession(session, player);
+				}, l);
 		}
 		public void OnSpectatorLeftSession(Session session, SessionSpectator spectator)
 		{
-			session.Locked = true;
-			List<IServerEventListener > listeners = new List<IServerEventListener>(this.listeners);
+			List<IServerEventListener> listeners = new List<IServerEventListener>(this.listeners);
 			foreach(IServerEventListener l in listeners)
-				try
-				{
-					l.OnSpectatorLeftSession(session, spectator);
-				}
-				catch(Exception e)
-				{
-					Console.Error.WriteLine("INFO: Exception thrown by client:");
-					Console.Error.WriteLine(e);
-					UnregisterListener(l);
-				}
-			session.Locked = false;
+				sender.SendEvent(li => {
+					li.OnSpectatorLeftSession(session, spectator);
+				}, l);
 		}
 
 		public void OnPlayerUpdated(Session session, SessionPlayer player)
 		{
-			session.Locked = true;
-			List<IServerEventListener > listeners = new List<IServerEventListener>(this.listeners);
+			List<IServerEventListener> listeners = new List<IServerEventListener>(this.listeners);
 			foreach(IServerEventListener l in listeners)
-				try
-				{
-					l.OnPlayerUpdated(session, player);
-				}
-				catch(Exception e)
-				{
-					Console.Error.WriteLine("INFO: Exception thrown by client:");
-					Console.Error.WriteLine(e);
-					UnregisterListener(l);
-				}
-			session.Locked = false;
+				sender.SendEvent(li => {
+					li.OnPlayerUpdated(session, player);
+				}, l);
+		}
+		public void OnPlayerDisconnected(Session session, SessionPlayer player)
+		{
+			List<IServerEventListener> listeners = new List<IServerEventListener>(this.listeners);
+			foreach(IServerEventListener l in listeners)
+				sender.SendEvent(li => {
+					li.OnPlayerDisconnected(session, player);
+				}, l);
 		}
 	}
 }

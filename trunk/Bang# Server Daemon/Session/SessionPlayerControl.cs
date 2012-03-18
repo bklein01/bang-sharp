@@ -55,22 +55,17 @@ namespace BangSharp.Server.Daemon
 		
 		void IPlayerSessionControl.SendChatMessage(string message)
 		{
-			if(!player.HasListener)
+			if(!player.CheckListener())
 				throw new InvalidOperationException();
 
 			Session session = Session;
 			lock(session.Lock)
-			{
-				if(session.Locked)
-					throw new MethodAccessException();
-
 				session.EventManager.SendChatMessage(player, message);
-			}
 		}
 		
 		void IPlayerSessionControl.Disconnect()
 		{
-			if(!player.HasListener)
+			if(!player.CheckListener())
 				throw new InvalidOperationException();
 
 			Session.RemovePlayer(player);
@@ -78,7 +73,7 @@ namespace BangSharp.Server.Daemon
 
 		void IPlayerSessionControl.StartGame()
 		{
-			if(!player.HasListener)
+			if(!player.CheckListener())
 				throw new InvalidOperationException();
 			if(!player.IsCreator)
 				throw new MustBeCreatorException();
@@ -88,7 +83,7 @@ namespace BangSharp.Server.Daemon
 
 		void IPlayerSessionControl.EndSession()
 		{
-			if(!player.HasListener)
+			if(!player.CheckListener())
 				throw new InvalidOperationException();
 			if(!player.IsCreator)
 				throw new MustBeCreatorException();

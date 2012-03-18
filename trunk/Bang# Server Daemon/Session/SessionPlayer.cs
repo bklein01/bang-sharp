@@ -72,25 +72,7 @@ namespace BangSharp.Server.Daemon
 		}
 		public bool HasListener
 		{
-			get
-			{
-				if(listener == null)
-					return false;
-				try
-				{
-					session.Locked = true;
-					listener.Ping();
-					session.Locked = false;
-					return true;
-				}
-				catch(RemotingException)
-				{
-					Console.Error.WriteLine("INFO: Ping failed, removing player...");
-					session.Locked = false;
-					session.RemovePlayer(this);
-					return false;
-				}
-			}
+			get { return listener != null; }
 		}
 		
 		public int Score
@@ -274,6 +256,14 @@ namespace BangSharp.Server.Daemon
 				Player p = game.GetPlayer(id);
 				p.ResetControl();
 			}
+		}
+		public bool CheckListener()
+		{
+			if(listener == null)
+				return false;
+			lock(session.Lock)
+				session.EventManager.SendPing(this);
+			return listener != null;
 		}
 
 		public void UpdateScore(int score)

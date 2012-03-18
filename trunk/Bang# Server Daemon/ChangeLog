@@ -1,3 +1,40 @@
+2012-03-18  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Server.cs:
+	* Session.cs:
+	* ServerEventManager.cs:
+	* SessionPlayer.cs:
+	* SessionSpectator.cs:
+	* PlayerControl.cs:
+	* SessionEventManager.cs:
+	* SessionPlayerControl.cs:
+	* SessionSpectatorControl.cs:
+	  Dropped the manual non-reentrant locks as they are not
+	  really necessary.
+	"Event senders" are now used to send events (less lines of
+	  code needed).
+	The listener ping-checking moved to server-only
+	  CheckListener() methods, HasListener now only checks if
+	  Listener != null.
+	The new OnPlayerDisconnected event is now fired when a player
+	  only disconnects and is not actually removed.
+	Added a per-session thread that regularly pings all clients to
+	  check if they are still online.
+
+	* Character.cs:
+	* ProxyCharacter.cs:
+	* JesseJones.cs:
+	* PedroRamirez.cs:
+	  Removed the reveal parameter from DrawFirstCard and
+	  DrawSecondCard as it is obsolete.
+
+	* PatBrennan.cs:
+	  Fixed wrong behaviour when NoAction is responded to the
+	  PatBrennan request.
+
 2012-03-07  WOnder93  <omosnacek@gmail.com>
 
 	* Main.cs:

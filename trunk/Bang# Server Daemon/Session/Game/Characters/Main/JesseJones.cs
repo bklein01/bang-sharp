@@ -31,14 +31,12 @@ namespace BangSharp.Server.Daemon.Characters
 		{
 			private JesseJones parent;
 			private CardCallback callback;
-			private bool reveal;
 
-			public JesseJonesResponseHandler(JesseJones parent, CardCallback callback, bool reveal)
+			public JesseJonesResponseHandler(JesseJones parent, CardCallback callback)
 				: base(RequestType.StealCard, parent.Player)
 			{
 				this.parent = parent;
 				this.callback = callback;
-				this.reveal = reveal;
 			}
 
 			protected override void OnRespondCard(Card targetCard)
@@ -72,9 +70,9 @@ namespace BangSharp.Server.Daemon.Characters
 		{
 		}
 		
-		public override void DrawFirstCard(CardCallback callback, bool reveal)
+		public override void DrawFirstCard(CardCallback callback)
 		{
-			Game.GameCycle.PushTempHandler(new JesseJonesResponseHandler(this, callback, reveal));
+			Game.GameCycle.PushTempHandler(new JesseJonesResponseHandler(this, callback));
 		}
 	}
 }

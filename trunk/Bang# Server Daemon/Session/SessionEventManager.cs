@@ -26,90 +26,168 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.Remoting;
+using System.Threading;
 
 namespace BangSharp.Server.Daemon
 {
 	public sealed class SessionEventManager
 	{
+		private abstract class EventSender<Subject>
+		{
+			public delegate void Event(Subject s);
+
+			private SessionEventManager eventMgr;
+
+			public SessionEventManager EventMgr
+			{
+				get { return eventMgr; }
+			}
+
+			protected EventSender(SessionEventManager eventMgr)
+			{
+				this.eventMgr = eventMgr;
+			}
+
+			public void SendEvent(Event ev, Subject s)
+			{
+				try
+				{
+					ev(s);
+				}
+				catch(RemotingTimeoutException)
+				{
+					OnTimeout(s);
+				}
+				catch(Exception e)
+				{
+					OnError(s, e);
+				}
+			}
+
+			protected abstract void OnError(Subject s, Exception e);
+			protected abstract void OnTimeout(Subject s);
+		}
+		private sealed class PlayerEventSender : EventSender<SessionPlayer>
+		{
+			public PlayerEventSender(SessionEventManager eventMgr)
+				: base(eventMgr)
+			{
+			}
+			protected override void OnError(SessionPlayer s, Exception e)
+			{
+				Console.Error.WriteLine("INFO: Exception thrown by client:");
+				Console.Error.WriteLine(e);
+				EventMgr.session.RemovePlayer(s);
+			}
+			protected override void OnTimeout(SessionPlayer s)
+			{
+				Console.Error.WriteLine("INFO: Client event timed out!");
+				EventMgr.session.RemovePlayer(s);
+			}
+		}
+		private sealed class SpectatorEventSender : EventSender<SessionSpectator>
+		{
+			public SpectatorEventSender(SessionEventManager eventMgr)
+				: base(eventMgr)
+			{
+			}
+			protected override void OnError(SessionSpectator s, Exception e)
+			{
+				Console.Error.WriteLine("INFO: Exception thrown by client:");
+				Console.Error.WriteLine(e);
+				EventMgr.session.RemoveSpectator(s);
+			}
+			protected override void OnTimeout(SessionSpectator s)
+			{
+				Console.Error.WriteLine("INFO: Client event timed out!");
+				EventMgr.session.RemoveSpectator(s);
+			}
+		}
 		private Session session;
-		
+		private PlayerEventSender playerSender;
+		private SpectatorEventSender spectatorSender;
+		private Thread pingThread;
+
 		public SessionEventManager(Session session)
 		{
 			this.session = session;
+			playerSender = new PlayerEventSender(this);
+			spectatorSender = new SpectatorEventSender(this);
+			pingThread = new Thread(ProcessPings);
+			pingThread.IsBackground = true;
+		}
+
+		private void ProcessPings()
+		{
+			while(true)
+			{
+				int interval = Config.Instance.GetInteger("Server.PollInterval", 15000);
+				lock(session.Lock)
+				{
+					if(session.State == SessionState.Ended)
+						break;
+
+					List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
+					foreach(SessionPlayer p in players)
+						SendPing(p);
+
+					List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
+					foreach(SessionSpectator s in spectators)
+						SendPing(s);
+				}
+				Thread.Sleep(interval);
+			}
+		}
+
+		public void StartPolling()
+		{
+			pingThread.Start();
+		}
+
+		public void SendPing(SessionPlayer player)
+		{
+			playerSender.SendEvent(pl => {
+				if(pl.HasListener)
+					pl.Listener.Ping();
+			}, player);
+		}
+		public void SendPing(SessionSpectator spectator)
+		{
+			spectatorSender.SendEvent(sp => {
+				if(sp.HasListener)
+					sp.Listener.Ping();
+			}, spectator);
 		}
 
 		public void SendController(SessionPlayer player)
 		{
-			if(!player.HasListener)
-				return;
-
-			session.Locked = true;
-			try
-			{
-				player.Listener.OnJoinedSession(player.Control);
-			}
-			catch(Exception e)
-			{
-				Console.Error.WriteLine("INFO: Exception thrown by client:");
-				Console.Error.WriteLine(e);
-				session.RemovePlayer(player);
-			}
-			session.Locked = false;
+			playerSender.SendEvent(pl => {
+				if(pl.HasListener)
+					pl.Listener.OnJoinedSession(player.Control);
+			}, player);
 		}
 		public void SendController(SessionSpectator spectator)
 		{
-			if(!spectator.HasListener)
-				return;
-
-			session.Locked = true;
-			try
-			{
-				spectator.Listener.OnJoinedSession(spectator.Control);
-			}
-			catch(Exception e)
-			{
-				Console.Error.WriteLine("INFO: Exception thrown by client:");
-				Console.Error.WriteLine(e);
-				session.RemoveSpectator(spectator);
-			}
-			session.Locked = false;
+			spectatorSender.SendEvent(sp => {
+				if(sp.HasListener)
+					sp.Listener.OnJoinedSession(spectator.Control);
+			}, spectator);
 		}
 
 		public void SendGameController(SessionPlayer player, IPlayerControl control)
 		{
-			if(!player.HasListener)
-				return;
-
-			session.Locked = true;
-			try
-			{
-				player.Listener.OnJoinedGame(control);
-			}
-			catch(Exception e)
-			{
-				Console.Error.WriteLine("INFO: Exception thrown by client:");
-				Console.Error.WriteLine(e);
-				session.RemovePlayer(player);
-			}
-			session.Locked = false;
+			playerSender.SendEvent(pl => {
+				if(pl.HasListener)
+					pl.Listener.OnJoinedGame(control);
+			}, player);
 		}
 		public void SendGameController(SessionSpectator spectator, ISpectatorControl control)
 		{
-			if(!spectator.HasListener)
-				return;
-
-			session.Locked = true;
-			try
-			{
-				spectator.Listener.OnJoinedGame(control);
-			}
-			catch(Exception e)
-			{
-				Console.Error.WriteLine("INFO: Exception thrown by client:");
-				Console.Error.WriteLine(e);
-				session.RemoveSpectator(spectator);
-			}
-			session.Locked = false;
+			spectatorSender.SendEvent(sp => {
+				if(sp.HasListener)
+					sp.Listener.OnJoinedGame(control);
+			}, spectator);
 		}
 		public void OnGameStarted()
 		{
@@ -118,1299 +196,702 @@ namespace BangSharp.Server.Daemon
 
 		public void OnSessionEnded()
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnSessionEnded();
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnSessionEnded();
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnSessionEnded();
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnSessionEnded();
+				}, s);
+
+			pingThread.Abort();
 		}
 		public void OnGameEnded()
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnGameEnded();
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnGameEnded();
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnGameEnded();
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnGameEnded();
+				}, s);
 			session.Server.EventManager.OnGameEnded(session);
-			session.Locked = false;
 		}
 
 		public void OnPlayerJoinedSession(SessionPlayer player)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerJoinedSession(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerJoinedSession(player);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerJoinedSession(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerJoinedSession(player);
+				}, s);
 			session.Server.EventManager.OnPlayerJoinedSession(session, player);
-			session.Locked = false;
 		}
 		public void OnSpectatorJoinedSession(SessionSpectator spectator)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnSpectatorJoinedSession(spectator);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnSpectatorJoinedSession(spectator);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnSpectatorJoinedSession(spectator);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnSpectatorJoinedSession(spectator);
+				}, s);
 			session.Server.EventManager.OnSpectatorJoinedSession(session, spectator);
-			session.Locked = false;
 		}
 		public void OnPlayerLeftSession(SessionPlayer player)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerLeftSession(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerLeftSession(player);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerLeftSession(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerLeftSession(player);
+				}, s);
 			session.Server.EventManager.OnPlayerLeftSession(session, player);
-			session.Locked = false;
 		}
 		public void OnSpectatorLeftSession(SessionSpectator spectator)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnSpectatorLeftSession(spectator);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnSpectatorLeftSession(spectator);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnSpectatorLeftSession(spectator);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnSpectatorLeftSession(spectator);
+				}, s);
 			session.Server.EventManager.OnSpectatorLeftSession(session, spectator);
-			session.Locked = false;
 		}
 		public void OnPlayerUpdated(SessionPlayer player)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerUpdated(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerUpdated(player);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerUpdated(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerUpdated(player);
+				}, s);
 			session.Server.EventManager.OnPlayerUpdated(session, player);
-			session.Locked = false;
+		}
+		public void OnPlayerDisconnected(SessionPlayer player)
+		{
+			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
+			foreach(SessionPlayer p in players)
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerDisconnected(player);
+				}, p);
+
+			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
+			foreach(SessionSpectator s in spectators)
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerDisconnected(player);
+				}, s);
+			session.Server.EventManager.OnPlayerDisconnected(session, player);
 		}
 
 		public void SendChatMessage(SessionPlayer player, string message)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnChatMessage(player, message);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnChatMessage(player, message);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnChatMessage(player, message);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnChatMessage(player, message);
+				}, s);
 		}
 		public void SendChatMessage(SessionSpectator spectator, string message)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnChatMessage(spectator, message);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnChatMessage(spectator, message);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnChatMessage(spectator, message);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnChatMessage(spectator, message);
+				}, s);
 		}
 
 		public void OnNewRequest(RequestType requestType, IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener && p.ID == requestedPlayer.ID)
-					try
-					{
-						p.Listener.OnNewRequest(requestType, causedBy);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
-			session.Locked = false;
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener && pl.ID == requestedPlayer.ID)
+						pl.Listener.OnNewRequest(requestType, causedBy);
+				}, p);
 		}
 
 		public void OnPlayerDrewFromDeck(Player player, List<Card> drawnCards, bool revealCards)
 		{
-			session.Locked = true;
 			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c));
 			ReadOnlyCollection<ICard> emptyCards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c.Empty));
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						if(p == player.Parent || revealCards)
-							p.Listener.OnPlayerDrewFromDeck(player, cards);
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						if(pl.ID == player.ID || revealCards)
+							pl.Listener.OnPlayerDrewFromDeck(player, cards);
 						else
-							p.Listener.OnPlayerDrewFromDeck(player, emptyCards);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+							pl.Listener.OnPlayerDrewFromDeck(player, emptyCards);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
 						if(revealCards)
-							s.Listener.OnPlayerDrewFromDeck(player, cards);
+							sp.Listener.OnPlayerDrewFromDeck(player, cards);
 						else
-							s.Listener.OnPlayerDrewFromDeck(player, emptyCards);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
+							sp.Listener.OnPlayerDrewFromDeck(player, emptyCards);
+				}, s);
 		}
 		public void OnPlayerDrewFromGraveyard(Player player, List<Card> drawnCards)
 		{
-			session.Locked = true;
 			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c));
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerDrewFromGraveyard(player, cards);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerDrewFromGraveyard(player, cards);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerDrewFromGraveyard(player, cards);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerDrewFromGraveyard(player, cards);
+				}, s);
 		}
 		public void OnPlayerDiscardedCard(Player player, Card card)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerDiscardedCard(player, card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerDiscardedCard(player, card);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerDiscardedCard(player, card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerDiscardedCard(player, card);
+				}, s);
 		}
 		public void OnPlayerPlayedCard(Player player, Card card)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerPlayedCard(player, card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerPlayedCard(player, card);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerPlayedCard(player, card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerPlayedCard(player, card);
+				}, s);
 		}
 		public void OnPlayerPlayedCard(Player player, Card card, Player targetPlayer)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerPlayedCard(player, card, targetPlayer);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerPlayedCard(player, card, targetPlayer);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerPlayedCard(player, card, targetPlayer);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerPlayedCard(player, card, targetPlayer);
+				}, s);
 		}
 		public void OnPlayerPlayedCard(Player player, Card card, Player targetPlayer, Card targetCard)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						if(p == targetPlayer.Parent || targetCard.IsOnTable)
-							p.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						if(pl.ID == targetPlayer.ID || targetCard.IsOnTable)
+							pl.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
 						else
-							p.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+							pl.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
 						if(targetCard.IsOnTable)
-							s.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
+							sp.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
 						else
-							s.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+							sp.Listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard.Empty);
+				}, s);
 		}
 		public void OnPlayerPlayedCard(Player player, Card card, CardType asCard)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerPlayedCard(player, card, asCard);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerPlayedCard(player, card, asCard);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerPlayedCard(player, card, asCard);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerPlayedCard(player, card, asCard);
+				}, s);
 		}
 		public void OnPlayerPlayedCard(Player player, Card card, CardType asCard, Player targetPlayer)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
+				}, s);
 		}
 		public void OnPlayerPlayedCard(Player player, Card card, CardType asCard, Player targetPlayer, Card targetCard)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						if(p == targetPlayer.Parent || targetCard.IsOnTable)
-							p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						if(pl.ID == targetPlayer.ID || targetCard.IsOnTable)
+							pl.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
 						else
-							p.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+							pl.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
 						if(targetCard.IsOnTable)
-							s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
+							sp.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
 						else
-							s.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+							sp.Listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard.Empty);
+				}, s);
 		}
 		public void OnPlayerPlayedCardOnTable(Player player, Card card)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerPlayedCardOnTable(player, card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerPlayedCardOnTable(player, card);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerPlayedCardOnTable(player, card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerPlayedCardOnTable(player, card);
+				}, s);
 		}
 		public void OnPassedTableCard(Player player, Card card, Player targetPlayer)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPassedTableCard(player, card, targetPlayer);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPassedTableCard(player, card, targetPlayer);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPassedTableCard(player, card, targetPlayer);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPassedTableCard(player, card, targetPlayer);
+				}, s);
 		}
 		public void OnPlayerPassed(Player player)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerPassed(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerPassed(player);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerPassed(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerPassed(player);
+				}, s);
 		}
 		public void OnPlayerRespondedWithCard(Player player, Card card)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerRespondedWithCard(player, card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerRespondedWithCard(player, card);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerRespondedWithCard(player, card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerRespondedWithCard(player, card);
+				}, s);
 		}
 		public void OnPlayerRespondedWithCard(Player player, Card card, CardType asCard)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerRespondedWithCard(player, card, asCard);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerRespondedWithCard(player, card, asCard);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerRespondedWithCard(player, card, asCard);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerRespondedWithCard(player, card, asCard);
+				}, s);
 		}
 		public void OnDrawnIntoSelection(List<Card> drawnCards, Player selectionOwner)
 		{
-			session.Locked = true;
 			ReadOnlyCollection<ICard> cards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c));
 			ReadOnlyCollection<ICard> emptyCards = new ReadOnlyCollection<ICard>(drawnCards.ConvertAll<ICard>(c => c.Empty));
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
 						if(selectionOwner == null)
-							p.Listener.OnDrawnIntoSelection(cards);
-						else if(p == selectionOwner.Parent)
-							p.Listener.OnDrawnIntoSelection(cards);
+							pl.Listener.OnDrawnIntoSelection(cards);
+						else if(pl.ID == selectionOwner.ID)
+							pl.Listener.OnDrawnIntoSelection(cards);
 						else
-							p.Listener.OnDrawnIntoSelection(emptyCards);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+							pl.Listener.OnDrawnIntoSelection(emptyCards);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
 						if(selectionOwner == null)
-							s.Listener.OnDrawnIntoSelection(cards);
+							sp.Listener.OnDrawnIntoSelection(cards);
 						else
-							s.Listener.OnDrawnIntoSelection(emptyCards);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+							sp.Listener.OnDrawnIntoSelection(emptyCards);
+				}, s);
 		}
 		public void OnPlayerPickedFromSelection(Player player, Card card, bool revealCard)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						if(p == player.Parent || revealCard)
-							p.Listener.OnPlayerPickedFromSelection(player, card);
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						if(pl.ID == player.ID || revealCard)
+							pl.Listener.OnPlayerPickedFromSelection(player, card);
 						else
-							p.Listener.OnPlayerPickedFromSelection(player, card.Empty);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+							pl.Listener.OnPlayerPickedFromSelection(player, card.Empty);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
 						if(revealCard)
-							s.Listener.OnPlayerPickedFromSelection(player, card);
+							sp.Listener.OnPlayerPickedFromSelection(player, card);
 						else
-							s.Listener.OnPlayerPickedFromSelection(player, card.Empty);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+							sp.Listener.OnPlayerPickedFromSelection(player, card.Empty);
+				}, s);
 		}
 		public void OnUndrawnFromSelection(Card card, Player selectionOwner)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
 						if(selectionOwner == null)
-							p.Listener.OnUndrawnFromSelection(card);
-						else if(p == selectionOwner.Parent)
-							p.Listener.OnUndrawnFromSelection(card);
+							pl.Listener.OnUndrawnFromSelection(card);
+						else if(pl.ID == selectionOwner.ID)
+							pl.Listener.OnUndrawnFromSelection(card);
 						else
-							p.Listener.OnUndrawnFromSelection(card.Empty);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+							pl.Listener.OnUndrawnFromSelection(card.Empty);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
 						if(selectionOwner == null)
-							s.Listener.OnUndrawnFromSelection(card);
+							sp.Listener.OnUndrawnFromSelection(card);
 						else
-							s.Listener.OnUndrawnFromSelection(card.Empty);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+							sp.Listener.OnUndrawnFromSelection(card.Empty);
+				}, s);
 		}
 		public void OnPlayerStoleCard(Player player, Player targetPlayer, Card targetCard, bool revealCard)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						if(p == player.Parent || p == targetPlayer.Parent || targetCard.IsOnTable || revealCard)
-							p.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard);
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						if(pl.ID == player.ID || pl.ID == targetPlayer.ID || targetCard.IsOnTable || revealCard)
+							pl.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard);
 						else
-							p.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+							pl.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
 						if(targetCard.IsOnTable || revealCard)
-							s.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard);
+							sp.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard);
 						else
-							s.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+							sp.Listener.OnPlayerStoleCard(player, targetPlayer, targetCard.Empty);
+				}, s);
 		}
 		public void OnPlayerCancelledCard(Player player, Player targetPlayer, Card targetCard)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
+				}, s);
 		}
 		public void OnDeckChecked(Card card)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnDeckChecked(card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnDeckChecked(card);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnDeckChecked(card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnDeckChecked(card);
+				}, s);
 		}
 		public void OnCardCancelled(Card card)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnCardCancelled(card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnCardCancelled(card);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnCardCancelled(card);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnCardCancelled(card);
+				}, s);
 		}
 
 		public void OnPlayerCheckedDeck(Player player, Card checkedCard, Card causedBy, bool result)
 		{
-			session.Locked = true;
 			CardType causedByType = causedBy == null ? CardType.Unknown : causedBy.Type;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerCheckedDeck(player, checkedCard, causedByType, result);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerCheckedDeck(player, checkedCard, causedByType, result);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerCheckedDeck(player, checkedCard, causedByType, result);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerCheckedDeck(player, checkedCard, causedByType, result);
+				}, s);
 		}
 		public void OnLifePointsChanged(Player player, int delta, Player causedBy)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnLifePointsChanged(player, delta, causedBy);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnLifePointsChanged(player, delta, causedBy);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnLifePointsChanged(player, delta, causedBy);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnLifePointsChanged(player, delta, causedBy);
+				}, s);
 		}
 		public void OnPlayerDied(Player player, Player causedBy)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerDied(player, causedBy);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerDied(player, causedBy);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerDied(player, causedBy);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerDied(player, causedBy);
+				}, s);
 		}
 		public void OnPlayerUsedAbility(Player player, CharacterType character)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerUsedAbility(player, character);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerUsedAbility(player, character);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerUsedAbility(player, character);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerUsedAbility(player, character);
+				}, s);
 		}
 		public void OnPlayerUsedAbility(Player player, CharacterType character, Player targetPlayer)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerUsedAbility(player, character, targetPlayer);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerUsedAbility(player, character, targetPlayer);
+				}, p);
 			
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerUsedAbility(player, character, targetPlayer);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerUsedAbility(player, character, targetPlayer);
+				}, s);
 		}
 		public void OnPlayerGainedAdditionalCharacters(Player player)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerGainedAdditionalCharacters(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerGainedAdditionalCharacters(player);
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerGainedAdditionalCharacters(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerGainedAdditionalCharacters(player);
+				}, s);
 		}
 		public void OnPlayerLostAdditionalCharacters(Player player)
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnPlayerLostAdditionalCharacters(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnPlayerLostAdditionalCharacters(player);
+				}, p);
 			
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnPlayerLostAdditionalCharacters(player);
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnPlayerLostAdditionalCharacters(player);
+				}, s);
 		}
 		public void OnDeckRegenerated()
 		{
-			session.Locked = true;
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
-				if(p.HasListener)
-					try
-					{
-						p.Listener.OnDeckRegenerated();
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemovePlayer(p);
-					}
+				playerSender.SendEvent(pl => {
+					if(pl.HasListener)
+						pl.Listener.OnDeckRegenerated();
+				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
-				if(s.HasListener)
-					try
-					{
-						s.Listener.OnDeckRegenerated();
-					}
-					catch(Exception e)
-					{
-						Console.Error.WriteLine("INFO: Exception thrown by client:");
-						Console.Error.WriteLine(e);
-						session.RemoveSpectator(s);
-					}
-			session.Locked = false;
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnDeckRegenerated();
+				}, s);
 		}
 	}
 }

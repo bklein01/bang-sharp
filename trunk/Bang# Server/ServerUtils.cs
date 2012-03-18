@@ -24,6 +24,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -61,11 +62,10 @@ namespace BangSharp.Server
 			return true;
 		}
 
-		public static Type[] ClientSharedTypes = new Type[]
+		public static IEnumerable<Type> ClientSharedTypes = new Type[]
 		{
-			typeof(IServerEventListener),
 		};
-		public static Type[] ServerSharedTypes = new Type[]
+		public static IEnumerable<Type> ServerSharedTypes = new Type[]
 		{
 			typeof(IServerBase),
 			typeof(IServerAdmin),
@@ -81,7 +81,21 @@ namespace BangSharp.Server
 		/// </remarks>
 		public static void OpenClientAdminChannel()
 		{
-			RemotingUtils.OpenClientChannel(Utils.ClientSharedTypes.Concat(ClientSharedTypes));
+			RemotingUtils.OpenClientChannel(Utils.ClientSharedTypes.Concat(ClientSharedTypes), Config.Instance.GetInteger("Client.RequestTimeout", 30000));
+		}
+		/// <summary>
+		/// Opens the client channel for administration with a custom request timeout.
+		/// </summary>
+		/// <param name="requestTimeout">
+		/// The request timeout to use.
+		/// </param>
+		/// <remarks>
+		/// Note that you should call this method instead of <c>BangSharp.Utils.OpenClientChannel(int requestTimeout)<c/>
+		/// if you want to use administration client. Otherwise administration may not work properly.
+		/// </remarks>
+		public static void OpenClientAdminChannel(int requestTimeout)
+		{
+			RemotingUtils.OpenClientChannel(Utils.ClientSharedTypes.Concat(ClientSharedTypes), requestTimeout);
 		}
 		/// <summary>
 		/// Starts serving the Bang# server administration service at the specified port.
@@ -97,7 +111,26 @@ namespace BangSharp.Server
 		/// </remarks>
 		public static void OpenServerAdminChannel(int port, IPAddress bindTo)
 		{
-			RemotingUtils.OpenServerChannel(port, Utils.ServerSharedTypes.Concat(ServerSharedTypes), bindTo);
+			RemotingUtils.OpenServerChannel(port, Utils.ServerSharedTypes.Concat(ServerSharedTypes), Config.Instance.GetInteger("Server.RequestTimeout", 30000), bindTo);
+		}
+		/// <summary>
+		/// Starts serving the Bang# server administration service at the specified port with a custom request timeout.
+		/// </summary>
+		/// <param name="port">
+		/// The port on which to listen.
+		/// </param>
+		/// <param name="requestTimeout">
+		/// The request timeout to use.
+		/// </param>
+		/// <param name="bindTo">
+		/// The adress to bind to (usually <c>System.Net.IPAddress.Any</c> or <c>System.Net.IPAddress.Loopback</c>).
+		/// </param>
+		/// <remarks>
+		/// Note that you must also call <c>BangSharp.Utils.Serve&lt;T&gt;()</c> to start serving both services.
+		/// </remarks>
+		public static void OpenServerAdminChannel(int port, int requestTimeout, IPAddress bindTo)
+		{
+			RemotingUtils.OpenServerChannel(port, Utils.ServerSharedTypes.Concat(ServerSharedTypes), requestTimeout, bindTo);
 		}
 
 		/// <summary>

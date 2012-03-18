@@ -31,6 +31,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 	internal class TcpClientSinkProvider : IClientChannelSinkProvider
 	{
 		private TcpConnectionPool pool;
+		private int timeout;
 		private Dictionary<TcpConnection, TcpClientSink> sinkCache;
 
 		IClientChannelSinkProvider IClientChannelSinkProvider.Next
@@ -39,9 +40,10 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			set { }
 		}
 
-		public TcpClientSinkProvider(TcpConnectionPool pool)
+		public TcpClientSinkProvider(TcpConnectionPool pool, int timeout)
 		{
 			this.pool = pool;
+			this.timeout = timeout;
 			sinkCache = new Dictionary<TcpConnection, TcpClientSink>();
 		}
 
@@ -53,7 +55,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			}
 			catch(KeyNotFoundException)
 			{
-				return sinkCache[connection] = new TcpClientSink(connection);
+				return sinkCache[connection] = new TcpClientSink(connection, timeout);
 			}
 		}
 

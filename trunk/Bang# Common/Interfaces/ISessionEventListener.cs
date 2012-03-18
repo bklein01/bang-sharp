@@ -80,6 +80,13 @@ namespace BangSharp
 		/// The <see cref="BangSharp.IPlayer"/> that has updated.
 		/// </param>
 		void OnPlayerUpdated(IPlayer player);
+		/// <summary>
+		/// Fired when a player has disconnected.
+		/// </summary>
+		/// <param name="player">
+		/// The <see cref="BangSharp.IPlayer"/> that has disconnected.
+		/// </param>
+		void OnPlayerDisconnected(IPlayer player);
 
 		/// <summary>
 		/// Fired when a player has sent a chat message.

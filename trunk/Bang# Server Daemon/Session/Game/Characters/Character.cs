@@ -131,10 +131,10 @@ namespace BangSharp.Server.Daemon
 						if(DrawCardCount > 2)
 							Game.GameTable.PlayerDrawFromDeck(player, DrawCardCount - 2);
 						player.OnAfterDraw();
-					}, player.RevealSecondDrawnCard);
+					});
 				else
 					player.OnAfterDraw();
-			}, player.RevealFirstDrawnCard);
+			});
 		}
 		public virtual int DrawCardCount
 		{
@@ -148,11 +148,11 @@ namespace BangSharp.Server.Daemon
 		{
 			get { return false; }
 		}
-		public virtual void DrawFirstCard(CardCallback callback, bool reveal)
+		public virtual void DrawFirstCard(CardCallback callback)
 		{
 			callback(null);
 		}
-		public virtual void DrawSecondCard(CardCallback callback, bool reveal)
+		public virtual void DrawSecondCard(CardCallback callback)
 		{
 			callback(null);
 		}

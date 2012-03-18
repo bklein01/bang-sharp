@@ -63,24 +63,7 @@ namespace BangSharp.Server.Daemon
 		}
 		public bool HasListener
 		{
-			get
-			{
-				if(listener == null)
-					return false;
-				try
-				{
-					session.Locked = true;
-					listener.Ping();
-					session.Locked = false;
-					return true;
-				}
-				catch(RemotingException)
-				{
-					Console.Error.WriteLine("INFO: Ping failed, removing player...");
-					session.RemoveSpectator(this);
-					return false;
-				}
-			}
+			get { return listener != null; }
 		}
 		
 		public SessionSpectator(int id, Session session, CreateSpectatorData data)
@@ -104,6 +87,14 @@ namespace BangSharp.Server.Daemon
 		public void UnregisterListener()
 		{
 			listener = null;
+		}
+		public bool CheckListener()
+		{
+			if(listener == null)
+				return false;
+			lock(session.Lock)
+				session.EventManager.SendPing(this);
+			return listener != null;
 		}
 	}
 }

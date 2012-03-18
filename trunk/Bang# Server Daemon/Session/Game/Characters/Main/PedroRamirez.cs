@@ -32,7 +32,7 @@ namespace BangSharp.Server.Daemon.Characters
 		{
 		}
 		
-		public override void DrawFirstCard(CardCallback callback, bool reveal)
+		public override void DrawFirstCard(CardCallback callback)
 		{
 			OnUsedAbility();
 			callback(Game.GameTable.PlayerDrawFromGraveyard(Player, 1)[0]);

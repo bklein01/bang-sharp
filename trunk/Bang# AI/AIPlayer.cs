@@ -762,7 +762,7 @@ namespace BangSharp.AI
 		}
 		#endregion
 
-		#region IEventListener implementation
+		#region ISessionEventListener implementation
 		void ISessionEventListener.Ping()
 		{
 		}
@@ -786,6 +786,7 @@ namespace BangSharp.AI
 		void ISessionEventListener.OnPlayerLeftSession(IPlayer player) { }
 		void ISessionEventListener.OnSpectatorLeftSession(ISpectator spectator) { }
 		void ISessionEventListener.OnPlayerUpdated(IPlayer player) { }
+		void ISessionEventListener.OnPlayerDisconnected(IPlayer player) { }
 
 		void ISessionEventListener.OnChatMessage(IPlayer player, string message) { }
 		void ISessionEventListener.OnChatMessage(ISpectator spectator, string message) { }

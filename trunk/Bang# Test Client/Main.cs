@@ -590,6 +590,10 @@ namespace BangSharp.TestClient
 		{
 			ConsoleHelper.ServerEvent("Player #{0} '{1}' was updated in session #{2}.", player.ID, player.Name, session.ID);
 		}
+		void IServerEventListener.OnPlayerDisconnected(ISession session, IPlayer player)
+		{
+			ConsoleHelper.ServerEvent("Player #{0} '{1}' disconnected from session #{2}.", player.ID, player.Name, session.ID);
+		}
 		#endregion
 
 		#region IPlayerEventListener implementation
@@ -620,7 +624,7 @@ namespace BangSharp.TestClient
 		}
 		#endregion
 
-		#region IEventListener implementation
+		#region ISessionEventListener implementation
 		void ISessionEventListener.Ping()
 		{
 		}
@@ -731,6 +735,12 @@ namespace BangSharp.TestClient
 			ConsoleHelper.SessionEvent("Player #{0} '{1}' was updated.", player.ID, player.Name);
 			if(aiPlayer != null)
 				aiPlayer.OnPlayerUpdated(player);
+		}
+		void ISessionEventListener.OnPlayerDisconnected(IPlayer player)
+		{
+			ConsoleHelper.SessionEvent("Player #{0} '{1}' disconnected.", player.ID, player.Name);
+			if(aiPlayer != null)
+				aiPlayer.OnPlayerDisconnected(player);
 		}
 
 		void ISessionEventListener.OnChatMessage(IPlayer player, string message)

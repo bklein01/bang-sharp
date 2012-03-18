@@ -115,6 +115,16 @@ namespace BangSharp
 		/// The <see cref="BangSharp.IPlayer"/> that has updated.
 		/// </param>
 		void OnPlayerUpdated(ISession session, IPlayer player);
+		/// <summary>
+		/// Fired when a player has disconnected from a session.
+		/// </summary>
+		/// <param name="session">
+		/// The <see cref="BangSharp.ISession"/> that has changed.
+		/// </param>
+		/// <param name="player">
+		/// The <see cref="BangSharp.IPlayer"/> that has disconnected.
+		/// </param>
+		void OnPlayerDisconnected(ISession session, IPlayer player);
 	}
 }
 
