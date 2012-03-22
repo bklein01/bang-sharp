@@ -37,6 +37,7 @@ namespace BangSharp.Server.Daemon.Characters
 			public LuckyDukeResponseHandler(LuckyDuke parent, Card causedBy, CheckDeckCallback checkCallback, CardResultCallback resultCallback)
 				: base(RequestType.LuckyDuke, parent.Player)
 			{
+				this.parent = parent;
 				this.causedBy = causedBy;
 				this.checkCallback = checkCallback;
 				this.resultCallback = resultCallback;
@@ -44,6 +45,7 @@ namespace BangSharp.Server.Daemon.Characters
 			
 			protected override void OnStart()
 			{
+				parent.OnUsedAbility();
 				Game.GameTable.DrawIntoSelection(2, null);
 			}
 			
@@ -55,20 +57,38 @@ namespace BangSharp.Server.Daemon.Characters
 				bool result = checkCallback(card);
 				Game.Session.EventManager.OnPlayerCheckedDeck(RequestedPlayer, card, causedBy, result);
 				Game.GameTable.CancelSelection();
-				End();
 				resultCallback(causedBy, result);
+				End();
 			}
 		}
+		private sealed class LuckyDukeQueueResponseHandler : QueueResponseHandler
+		{
+			private LuckyDuke parent;
+
+			public LuckyDukeQueueResponseHandler(LuckyDuke parent)
+				: base(parent.Player)
+			{
+				this.parent = parent;
+			}
+
+			public void AddHandler(Card causedBy, CheckDeckCallback checkCallback, CardResultCallback resultCallback)
+			{
+				AddHandler(new LuckyDukeResponseHandler(parent, causedBy, checkCallback, resultCallback));
+			}
+		}
+		private LuckyDukeQueueResponseHandler queue;
 		
 		public LuckyDuke(Player player)
 			: base(player, CharacterType.LuckyDuke)
 		{
+			queue = new LuckyDukeQueueResponseHandler(this);
 		}
 		
 		public override void CheckDeck(Card causedBy, CheckDeckCallback checkCallback, CardResultCallback resultCallback)
 		{
-			OnUsedAbility();
-			Game.GameCycle.PushTempHandler(new LuckyDukeResponseHandler(this, causedBy, checkCallback, resultCallback));
+			queue.AddHandler(causedBy, checkCallback, resultCallback);
+			if(!queue.Active)
+				Game.GameCycle.PushTempHandler(queue);
 		}
 	}
 }

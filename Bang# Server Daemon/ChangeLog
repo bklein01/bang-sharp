@@ -1,3 +1,21 @@
+2012-03-22  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* LuckyDuke.cs:
+	  Fixed Lucky Duke drawing cards after Jail check has failed.
+	Fixed chaos when Lucky Duke has both Dynamite and Jail on the
+	  table.
+
+	* Player.cs:
+	  When checking if a card causes 'missed' effect, first call
+	  'character.IsMissed(card)' as 'card.CheckMissed(...)' throws
+	  an exception by default.
+
+	* GameCycle.cs:
+	  Do not skip Discard phase when in Jail.
+
 2012-03-18  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
