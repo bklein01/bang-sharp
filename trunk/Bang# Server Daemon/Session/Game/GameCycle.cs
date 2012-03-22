@@ -118,7 +118,7 @@ namespace BangSharp.Server.Daemon
 
 		protected override void OnStart()
 		{
-			if(RequestedPlayer.SkipTurn || !RequestedPlayer.IsAlive || RequestedPlayer.Hand.Count <= RequestedPlayer.MaxCardCount)
+			if(!RequestedPlayer.IsAlive || RequestedPlayer.Hand.Count <= RequestedPlayer.MaxCardCount)
 				End();
 		}
 

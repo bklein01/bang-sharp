@@ -335,7 +335,12 @@ namespace BangSharp.Server.Daemon
 		}
 		public void CheckMissed(Card card, CardResultCallback resultCallback)
 		{
-			card.CheckMissed((causedBy, result) => resultCallback(causedBy, result || character.IsMissed(card)));
+			if(character.IsMissed(card))
+			{
+				resultCallback(card, true);
+				return;
+			}
+			card.CheckMissed(resultCallback);
 		}
 		public bool IsBang(Card card)
 		{
