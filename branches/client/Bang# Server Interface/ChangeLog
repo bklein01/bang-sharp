@@ -1,0 +1,111 @@
+2012-03-18  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Main.cs:
+	  Adapted to the new iterface.
+
+2012-03-07  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* AssemblyInfo.cs:
+	* CommandExtensions.cs:
+	* Bang# Server Interface.csproj:
+	  Changed some namespaces.
+
+2012-03-07  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* AssemblyInfo.cs:
+	* CommandExtensions.cs:
+	* Bang# Server Interface.csproj:
+	  Changed the root namespace to BangSharp.
+	Improved password hashing.
+	Improved the draw system.
+	Renamed CardResultHandler to CardResultCallback.
+	IResultHandler replaced by the ResultCallback delegate.
+	Fixed printing IsAlive instead of Role in Console Utils.
+	Fixed AI role estimation.
+	Fixed remoting channels management.
+	Fixed revealing role publicly after the game has ended.
+	Fixed useless server state saving when resetting sessions.
+	Fixed discarding cards after death.
+	Fixed replacing with AI player in TestClient - when being
+	  requested it ignored the event.
+	Fixed AI not reacting on Brawl choosing when non-allies had
+	  empty hands.
+	When a player cannot be replaced,
+	  BangSharp.CannotReplacePlayerException is now thrown instead
+	  of InvalidOperationException.
+	Introduced server events.
+	Several minor tweaks.
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* AssemblyInfo.cs:
+	  Global code reformatting.
+	Updated copyright year.
+	Various small fixes.
+	Added some documentation.
+
+2012-01-03  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Main.cs:
+	  Moved connecting under the main 'try' block to handle
+	  remoting exceptions.
+
+2011-12-30  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Main.cs:
+	  Added interface version and operation system information
+	  printing on startup.
+
+2011-10-28  WOnder93  <omosnacek@gmail.com>
+
+	* Bang# Server Interface.csproj:
+	  Migrated to Mono/.NET 4.0
+	Updated to comply with the new C# standard.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	  Added a command to change server password.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Server Interface.csproj:
+	  
+
+	* Main.cs:
+	  Edited to comply with the changes in Bang# Console Utils and
+	  in server administration.
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	  Use Bang.ConsoleUtils.ReadPassword() instead of
+	  Bang.ConsoleUtils.ReadLine() when reading passwords from the
+	  console.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* AssemblyInfo.cs:
+	* Bang# Server Interface.csproj:
+	  Server is now divided to daemon and interface.
+

@@ -1,0 +1,1011 @@
+2012-03-22  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* LuckyDuke.cs:
+	  Fixed Lucky Duke drawing cards after Jail check has failed.
+	Fixed chaos when Lucky Duke has both Dynamite and Jail on the
+	  table.
+
+	* Player.cs:
+	  When checking if a card causes 'missed' effect, first call
+	  'character.IsMissed(card)' as 'card.CheckMissed(...)' throws
+	  an exception by default.
+
+	* GameCycle.cs:
+	  Do not skip Discard phase when in Jail.
+
+2012-03-18  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Server.cs:
+	* Session.cs:
+	* ServerEventManager.cs:
+	* SessionPlayer.cs:
+	* SessionSpectator.cs:
+	* PlayerControl.cs:
+	* SessionEventManager.cs:
+	* SessionPlayerControl.cs:
+	* SessionSpectatorControl.cs:
+	  Dropped the manual non-reentrant locks as they are not
+	  really necessary.
+	"Event senders" are now used to send events (less lines of
+	  code needed).
+	The listener ping-checking moved to server-only
+	  CheckListener() methods, HasListener now only checks if
+	  Listener != null.
+	The new OnPlayerDisconnected event is now fired when a player
+	  only disconnects and is not actually removed.
+	Added a per-session thread that regularly pings all clients to
+	  check if they are still online.
+
+	* Character.cs:
+	* ProxyCharacter.cs:
+	* JesseJones.cs:
+	* PedroRamirez.cs:
+	  Removed the reveal parameter from DrawFirstCard and
+	  DrawSecondCard as it is obsolete.
+
+	* PatBrennan.cs:
+	  Fixed wrong behaviour when NoAction is responded to the
+	  PatBrennan request.
+
+2012-03-07  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* Server.cs:
+	* AssemblyInfo.cs:
+	* Session.cs:
+	* Game.cs:
+	* ServerEventManager.cs:
+	* Player.cs:
+	* SessionPlayer.cs:
+	* GameCycle.cs:
+	* GameTable.cs:
+	* Delegates.cs:
+	* Card.cs:
+	* Bang# Server Daemon.csproj:
+	* SessionSpectator.cs:
+	* PlayerControl.cs:
+	* SessionEventManager.cs:
+	* Jail.cs:
+	* Duel.cs:
+	* Beer.cs:
+	* ResponseHandler.cs:
+	* SessionPlayerControl.cs:
+	* Bang.cs:
+	* TableCard.cs:
+	* GoldenCard.cs:
+	* Panic.cs:
+	* GeneralCard.cs:
+	* Barrel.cs:
+	* Missed.cs:
+	* Saloon.cs:
+	* Gatling.cs:
+	* Indians.cs:
+	* SessionSpectatorControl.cs:
+	* PlayableCard.cs:
+	* Mustang.cs:
+	* CatBalou.cs:
+	* Dynamite.cs:
+	* Carabine.cs:
+	* Volcanic.cs:
+	* ShotResponseHandler.cs:
+	* TargetCardCard.cs:
+	* Appaloosa.cs:
+	* Character.cs:
+	* Diligenza.cs:
+	* Schofield.cs:
+	* Remington.cs:
+	* AllPlayersCard.cs:
+	* QueueResponseHandler.cs:
+	* WellsFargo.cs:
+	* Winchester.cs:
+	* Punch.cs:
+	* Brawl.cs:
+	* TargetPlayerCard.cs:
+	* Bible.cs:
+	* Knife.cs:
+	* GeneralTableCard.cs:
+	* Dodge.cs:
+	* Whisky.cs:
+	* GeneralGoldenCard.cs:
+	* PlayableTableCard.cs:
+	* CanCan.cs:
+	* Silver.cs:
+	* GeneralStore.cs:
+	* ElGringo.cs:
+	* Canteen.cs:
+	* Hideout.cs:
+	* ThrowBangResponseHandler.cs:
+	* RagTime.cs:
+	* Tequila.cs:
+	* Howitzer.cs:
+	* LuckyDuke.cs:
+	* AllPlayersTableCard.cs:
+	* BlackJack.cs:
+	* ProxyCharacter.cs:
+	* TargetCardTableCard.cs:
+	* Sombrero.cs:
+	* IronPlate.cs:
+	* Pepperbox.cs:
+	* Conestoga.cs:
+	* Derringer.cs:
+	* SidKetchum.cs:
+	* VultureSam.cs:
+	* RoseDoolan.cs:
+	* JesseJones.cs:
+	* PaulRegret.cs:
+	* KitCarlson.cs:
+	* AllPlayersGoldenCard.cs:
+	* TargetCardGoldenCard.cs:
+	* TargetPlayerTableCard.cs:
+	* WillyTheKid.cs:
+	* Jourdonnais.cs:
+	* BartCassidy.cs:
+	* PonyExpress.cs:
+	* PedroRamirez.cs:
+	* Springfield.cs:
+	* TargetPlayerGoldenCard.cs:
+	* CalamityJanet.cs:
+	* TenGallonHat.cs:
+	* SlabTheKiller.cs:
+	* SuzyLafayette.cs:
+	* BuffaloRifle.cs:
+	* AllPlayersCardGoldenCard.cs:
+	* ApacheKid.cs:
+	* BelleStar.cs:
+	* PixiePete.cs:
+	* MollyStark.cs:
+	* BillNoface.cs:
+	* DocHolyday.cs:
+	* PatBrennan.cs:
+	* VeraCuster.cs:
+	* HerbHunter.cs:
+	* TequilaJoe.cs:
+	* GregDigger.cs:
+	* ChuckWengam.cs:
+	* JoseDelgado.cs:
+	* ElenaFuente.cs:
+	* SeanMallory.cs:
+	  Changed some namespaces.
+
+2012-03-07  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* Server.cs:
+	* AssemblyInfo.cs:
+	* Session.cs:
+	* Game.cs:
+	* ServerEventManager.cs:
+	* Player.cs:
+	* SessionPlayer.cs:
+	* Delegates.cs:
+	* GameTable.cs:
+	* GameCycle.cs:
+	* Bang# Server Daemon.csproj:
+	* Card.cs:
+	* SessionSpectator.cs:
+	* PlayerControl.cs:
+	* IResultHandler.cs:
+	* SessionEventManager.cs:
+	* Duel.cs:
+	* Beer.cs:
+	* Jail.cs:
+	* SessionPlayerControl.cs:
+	* ResponseHandler.cs:
+	* Bang.cs:
+	* TableCard.cs:
+	* GoldenCard.cs:
+	* Panic.cs:
+	* GeneralCard.cs:
+	* Barrel.cs:
+	* Missed.cs:
+	* Saloon.cs:
+	* Gatling.cs:
+	* Indians.cs:
+	* SessionSpectatorControl.cs:
+	* PlayableCard.cs:
+	* Mustang.cs:
+	* CatBalou.cs:
+	* Dynamite.cs:
+	* Carabine.cs:
+	* Volcanic.cs:
+	* ShotResponseHandler.cs:
+	* TargetCardCard.cs:
+	* Appaloosa.cs:
+	* Character.cs:
+	* Diligenza.cs:
+	* Schofield.cs:
+	* Remington.cs:
+	* AllPlayersCard.cs:
+	* QueueResponseHandler.cs:
+	* WellsFargo.cs:
+	* Winchester.cs:
+	* Punch.cs:
+	* Brawl.cs:
+	* TargetPlayerCard.cs:
+	* Bible.cs:
+	* Knife.cs:
+	* GeneralTableCard.cs:
+	* Dodge.cs:
+	* Whisky.cs:
+	* GeneralGoldenCard.cs:
+	* PlayableTableCard.cs:
+	* CanCan.cs:
+	* Silver.cs:
+	* GeneralStore.cs:
+	* ElGringo.cs:
+	* Canteen.cs:
+	* Hideout.cs:
+	* ThrowBangResponseHandler.cs:
+	* RagTime.cs:
+	* Tequila.cs:
+	* Howitzer.cs:
+	* LuckyDuke.cs:
+	* AllPlayersTableCard.cs:
+	* BlackJack.cs:
+	* ProxyCharacter.cs:
+	* TargetCardTableCard.cs:
+	* Sombrero.cs:
+	* IronPlate.cs:
+	* Pepperbox.cs:
+	* Conestoga.cs:
+	* Derringer.cs:
+	* SidKetchum.cs:
+	* VultureSam.cs:
+	* RoseDoolan.cs:
+	* JesseJones.cs:
+	* PaulRegret.cs:
+	* KitCarlson.cs:
+	* AllPlayersGoldenCard.cs:
+	* TargetCardGoldenCard.cs:
+	* TargetPlayerTableCard.cs:
+	* WillyTheKid.cs:
+	* Jourdonnais.cs:
+	* BartCassidy.cs:
+	* Springfield.cs:
+	* PonyExpress.cs:
+	* PedroRamirez.cs:
+	* TargetPlayerGoldenCard.cs:
+	* SlabTheKiller.cs:
+	* CalamityJanet.cs:
+	* TenGallonHat.cs:
+	* SuzyLafayette.cs:
+	* BuffaloRifle.cs:
+	* AllPlayersCardGoldenCard.cs:
+	* ApacheKid.cs:
+	* PixiePete.cs:
+	* BelleStar.cs:
+	* DocHolyday.cs:
+	* MollyStark.cs:
+	* BillNoface.cs:
+	* TequilaJoe.cs:
+	* PatBrennan.cs:
+	* VeraCuster.cs:
+	* GregDigger.cs:
+	* HerbHunter.cs:
+	* JoseDelgado.cs:
+	* SeanMallory.cs:
+	* ChuckWengam.cs:
+	* ElenaFuente.cs:
+	  Changed the root namespace to BangSharp.
+	Improved password hashing.
+	Improved the draw system.
+	Renamed CardResultHandler to CardResultCallback.
+	IResultHandler replaced by the ResultCallback delegate.
+	Fixed printing IsAlive instead of Role in Console Utils.
+	Fixed AI role estimation.
+	Fixed remoting channels management.
+	Fixed revealing role publicly after the game has ended.
+	Fixed useless server state saving when resetting sessions.
+	Fixed discarding cards after death.
+	Fixed replacing with AI player in TestClient - when being
+	  requested it ignored the event.
+	Fixed AI not reacting on Brawl choosing when non-allies had
+	  empty hands.
+	When a player cannot be replaced,
+	  BangSharp.CannotReplacePlayerException is now thrown instead
+	  of InvalidOperationException.
+	Introduced server events.
+	Several minor tweaks.
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
+	* Session.cs:
+	* Dynamite.cs:
+	  Added back missing usings.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-19  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* Server.cs:
+	* AssemblyInfo.cs:
+	* Session.cs:
+	* Game.cs:
+	* Player.cs:
+	* SessionPlayer.cs:
+	* GameCycle.cs:
+	* Delegates.cs:
+	* GameTable.cs:
+	* Card.cs:
+	* SessionSpectator.cs:
+	* PlayerControl.cs:
+	* IResultHandler.cs:
+	* SessionEventManager.cs:
+	* Jail.cs:
+	* Beer.cs:
+	* SessionPlayerControl.cs:
+	* TableCard.cs:
+	* Duel.cs:
+	* ResponseHandler.cs:
+	* Bang.cs:
+	* Panic.cs:
+	* GoldenCard.cs:
+	* Barrel.cs:
+	* GeneralCard.cs:
+	* Missed.cs:
+	* Saloon.cs:
+	* Indians.cs:
+	* Mustang.cs:
+	* Gatling.cs:
+	* SessionSpectatorControl.cs:
+	* PlayableCard.cs:
+	* Carabine.cs:
+	* ShotResponseHandler.cs:
+	* CatBalou.cs:
+	* Volcanic.cs:
+	* Dynamite.cs:
+	* QueueResponseHandler.cs:
+	* Appaloosa.cs:
+	* TargetCardCard.cs:
+	* Remington.cs:
+	* Diligenza.cs:
+	* Character.cs:
+	* AllPlayersCard.cs:
+	* Schofield.cs:
+	* Winchester.cs:
+	* WellsFargo.cs:
+	* Knife.cs:
+	* Brawl.cs:
+	* GeneralTableCard.cs:
+	* Punch.cs:
+	* Bible.cs:
+	* TargetPlayerCard.cs:
+	* Dodge.cs:
+	* PlayableTableCard.cs:
+	* GeneralGoldenCard.cs:
+	* CanCan.cs:
+	* Silver.cs:
+	* Whisky.cs:
+	* GeneralStore.cs:
+	* Tequila.cs:
+	* ElGringo.cs:
+	* Hideout.cs:
+	* Canteen.cs:
+	* RagTime.cs:
+	* ThrowBangResponseHandler.cs:
+	* ProxyCharacter.cs:
+	* LuckyDuke.cs:
+	* Sombrero.cs:
+	* Howitzer.cs:
+	* AllPlayersTableCard.cs:
+	* BlackJack.cs:
+	* TargetCardTableCard.cs:
+	* Conestoga.cs:
+	* KitCarlson.cs:
+	* Derringer.cs:
+	* JesseJones.cs:
+	* Pepperbox.cs:
+	* RoseDoolan.cs:
+	* VultureSam.cs:
+	* IronPlate.cs:
+	* SidKetchum.cs:
+	* PaulRegret.cs:
+	* TargetCardGoldenCard.cs:
+	* AllPlayersGoldenCard.cs:
+	* WillyTheKid.cs:
+	* BartCassidy.cs:
+	* Jourdonnais.cs:
+	* TargetPlayerTableCard.cs:
+	* PedroRamirez.cs:
+	* PonyExpress.cs:
+	* TargetPlayerGoldenCard.cs:
+	* Springfield.cs:
+	* BuffaloRifle.cs:
+	* TenGallonHat.cs:
+	* SlabTheKiller.cs:
+	* CalamityJanet.cs:
+	* SuzyLafayette.cs:
+	* AllPlayersCardGoldenCard.cs:
+	* BelleStar.cs:
+	* ApacheKid.cs:
+	* PixiePete.cs:
+	* HerbHunter.cs:
+	* TequilaJoe.cs:
+	* VeraCuster.cs:
+	* GregDigger.cs:
+	* DocHolyday.cs:
+	* BillNoface.cs:
+	* PatBrennan.cs:
+	* MollyStark.cs:
+	* ChuckWengam.cs:
+	* ElenaFuente.cs:
+	* SeanMallory.cs:
+	* JoseDelgado.cs:
+	  Global code reformatting.
+	Updated copyright year.
+	Various small fixes.
+	Added some documentation.
+
+2012-01-17  WOnder93  <omosnacek@gmail.com>
+
+	* JoseDelgado.cs:
+	  Discard not cancel the blue cards.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-17  WOnder93  <omosnacek@gmail.com>
+
+	* SessionPlayer.cs:
+	  Fixed session deadlock.
+
+	* JesseJones.cs:
+	  (Revert revision 66)
+	Bang.Server.Character.Draw() throws Bang.BadUsageException,
+	  draw the cards manually instead.
+
+	* PatBrennan.cs:
+	  Added missing OnRespondNoAction() method.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-17  WOnder93  <omosnacek@gmail.com>
+
+	* DocHolyday.cs:
+	  Changed the Doc Holyday request to only ask for the cards to
+	  discard, the target player is then requested in a ShotTarget
+	  request.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-16  WOnder93  <omosnacek@gmail.com>
+
+	* Server.cs:
+	  The Bang.Server.Server type actually has to be derived from
+	  ImmortalMarshalByRefObject (all the time I had thought it
+	  doesn't have to). This should actually fix the
+	  'administration port isolation' problem I thought to have
+	  fixed recently.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Main.cs:
+	  Adapted to the new server interface.
+
+2012-01-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Server.cs:
+	* Session.cs:
+	* SessionPlayer.cs:
+	* SessionSpectator.cs:
+	* PlayerControl.cs:
+	* SessionEventManager.cs:
+	* SessionPlayerControl.cs:
+	* SessionSpectatorControl.cs:
+	  Changed the manual non-reentrant session/server locks.
+	Added some diagnostic message printing to stderr.
+
+2012-01-13  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* JesseJones.cs:
+	  Fixed RespondNoAction() on character Jesse Jones causing
+	  skip of the draw completely.
+
+2012-01-13  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* AllPlayersCard.cs:
+	* TargetCardCard.cs:
+	* TargetPlayerCard.cs:
+	* Tequila.cs:
+	* AllPlayersTableCard.cs:
+	* TargetCardTableCard.cs:
+	* AllPlayersGoldenCard.cs:
+	* TargetCardGoldenCard.cs:
+	* TargetPlayerTableCard.cs:
+	* TargetPlayerGoldenCard.cs:
+	  Fixed the CheckPlay() methods.
+	When playing a card on self, don't check if the card has
+	  effect on the target player (because it is myself, so the
+	  card has always effect).
+
+2012-01-12  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* GameCycle.cs:
+	  Fixed the predraw check priority.
+
+2012-01-12  WOnder93  <omosnacek@gmail.com>
+
+	* Player.cs:
+	* Beer.cs:
+	* Saloon.cs:
+	* PlayableCard.cs:
+	* Whisky.cs:
+	* PlayableTableCard.cs:
+	* Canteen.cs:
+	  Added Bang.Server.PlayableCard.CheckPlay() and
+	  Bang.Server.PlayableTableCard.CheckPlayFromTable() methods
+	  to enable the final card implementations to refuse the card
+	  to be played.
+	Removed the check for full life points when playing beer in
+	  Bang.Server.Player.CheckPlayCard() as this is now covered
+	  with the new methods. 
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-05  WOnder93  <omosnacek@gmail.com>
+
+	* ProxyCharacter.cs:
+	  Fixed the ProxyCharacter's HasCardEffect() method finally.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-01-04  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Player.cs:
+	* Beer.cs:
+	  Fixed handling of Beer being played with maximum lifepoints
+	  already.
+
+2012-01-03  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* ProxyCharacter.cs:
+	  Fixed the Bang.Server.ProxyCharacter.HasCardEffect() method.
+
+	* Player.cs:
+	* CalamityJanet.cs:
+	* ApacheKid.cs:
+	* BelleStar.cs:
+	* VeraCuster.cs:
+	* ElenaFuente.cs:
+	  Fixed OnUsedAbility reporting.
+
+	* GameCycle.cs:
+	* TableCard.cs:
+	* Jail.cs:
+	* Dynamite.cs:
+	  Fixed predraw checks priority.
+
+2012-01-01  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* SessionPlayer.cs:
+	  Fixed synchronization error when replacing a player.
+
+2011-10-28  WOnder93  <omosnacek@gmail.com>
+
+	* Bang# Server Daemon.csproj:
+	  Migrated to Mono/.NET 4.0
+	Updated to comply with the new C# standard.
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/Game/PlayerControl.cs:
+	  Fixed bad parameter passing when firing the OnNewRequest
+	  event.
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/Game/Cards/TargetCardCard.cs:
+	* Session/Game/Cards/TargetPlayerCard.cs:
+	* Session/Game/Cards/TargetCardTableCard.cs:
+	* Session/Game/Cards/TargetCardGoldenCard.cs:
+	* Session/Game/Cards/TargetPlayerTableCard.cs:
+	* Session/Game/Cards/TargetPlayerGoldenCard.cs:
+	  Added check for HasCardEffect() so that for example you
+	  can't play a Diamond Bang on Apache Kid.
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/Session.cs:
+	* Session/Game/Game.cs:
+	  Changed the algorithm for generating characters for game in
+	  order to avoid duplicate characters in the game.
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/Game/Player.cs:
+	  Changed the way that the 'missed' effect of a card is
+	  evaluated so that Elena Fuente can respond with Dodge and
+	  still draw 1 card.
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Server.cs:
+	  Unlock server if an exception is thrown in
+	  Bang.Server.Server.CreateSession().
+
+2011-09-29  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/Game/Game.cs:
+	* Session/Game/Player.cs:
+	  Adapt to the changes in the interface.
+
+2011-09-28  WOnder93  <omosnacek@gmail.com>
+
+	* Session/Game/GameCycle.cs:
+	  Added some missing OnPlayContinue calls.
+
+	* AssemblyInfo.cs:
+	  
+
+2011-09-28  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/Session.cs:
+	  Create the SessionAdmin object also when constructing the
+	  Session from stream.
+
+2011-09-28  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Server Daemon.csproj:
+	  
+
+	* Session/SessionEventManager.cs:
+	  The OnNewRequest event moved to IPlayerEventListener and is
+	  now fired only for the requested player.
+	Added a new OnPlayerUsedAbility event with target player.
+	The OnPlayerUsedAbility events now also inform about the
+	  character whose ability was used.
+
+	* Session/Game/Characters/Character.cs:
+	* Session/Game/Characters/Main/ElGringo.cs:
+	* Session/Game/Characters/Main/LuckyDuke.cs:
+	* Session/Game/Characters/Main/BlackJack.cs:
+	* Session/Game/Characters/Main/KitCarlson.cs:
+	* Session/Game/Characters/Main/JesseJones.cs:
+	* Session/Game/Characters/Main/VultureSam.cs:
+	* Session/Game/Characters/Main/SidKetchum.cs:
+	* Session/Game/Characters/Main/Jourdonnais.cs:
+	* Session/Game/Characters/Main/BartCassidy.cs:
+	* Session/Game/Characters/Main/PedroRamirez.cs:
+	* Session/Game/Characters/Main/SuzyLafayette.cs:
+	* Session/Game/Characters/Main/CalamityJanet.cs:
+	* Session/Game/Characters/Dodge City/PixiePete.cs:
+	* Session/Game/Characters/Dodge City/DocHolyday.cs:
+	* Session/Game/Characters/Dodge City/MollyStark.cs:
+	* Session/Game/Characters/Dodge City/HerbHunter.cs:
+	* Session/Game/Characters/Dodge City/GregDigger.cs:
+	* Session/Game/Characters/Dodge City/PatBrennan.cs:
+	* Session/Game/Characters/Dodge City/BillNoface.cs:
+	* Session/Game/Characters/Dodge City/JoseDelgado.cs:
+	* Session/Game/Characters/Dodge City/ChuckWengam.cs:
+	  Added protected methods for convenient sending of the
+	  OnPlayerUsedAbility events.
+
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/Game/Characters/ProxyCharacter.cs:
+	  Fixed Bang.Server.ProxyCharacter's additional character
+	  buildup when the additional characters are not cleared
+	  before setting new ones.
+
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/SessionEventManager.cs:
+	  Handle all exceptions in the event manager.
+
+2011-09-20  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/SessionPlayer.cs:
+	* Session/SessionSpectator.cs:
+	* Session/SessionEventManager.cs:
+	  All network shared types now derive from
+	  Bang.ImmortalMarshalByRefObject and their disconnection from
+	  RemotingServices is managed manually.
+	Use Bang.Server.Session.[RemovePlayer|RemoveSpectator] instead
+	  of UnregisterListener on some places.
+
+	* Server.cs:
+	* Session/Session.cs:
+	* Session/Game/Game.cs:
+	* Session/Game/Player.cs:
+	* Session/Game/GameTable.cs:
+	* Session/Game/Cards/Card.cs:
+	  All network shared types now derive from
+	  Bang.ImmortalMarshalByRefObject and their disconnection from
+	  RemotingServices is managed manually.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Session/Game/Player.cs:
+	* Session/Game/PlayerControl.cs:
+	  Bang.IPrivatePlayerView implementation now goes through a
+	  proxy for security reasons.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* Server.cs:
+	  Tiny IO improvements.
+
+2011-09-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Server Daemon.csproj:
+	  
+
+	* Session/Game/Game.cs:
+	* Session/Game/Player.cs:
+	* Session/SessionPlayer.cs:
+	* Session/Game/GameCycle.cs:
+	* Session/Game/PlayerControl.cs:
+	* Session/SessionEventManager.cs:
+	* Session/Game/ResponseHandler.cs:
+	* Session/Game/Characters/ProxyCharacter.cs:
+	* Session/Game/Characters/Dodge City/VeraCuster.cs:
+	  Added new base for "proxy characters" (like Vera Custer,
+	  Greygory Deck).
+	Added new response method.
+	Added new RequestType values.
+	Added new PublicPlayerView property - AdditionalCharacters
+	  (the abilities gained by proxy characters).
+	New way of getting player victory stats.
+
+	* Session/Session.cs:
+	  Added unified methods for getting the list of Role,
+	  CharacterType or CardType enumeration values.
+	New server state format.
+
+	* Session/Game/Characters/Character.cs:
+	  Added unified methods for getting the list of Role,
+	  CharacterType or CardType enumeration values.
+	The Bang.Server.CardResultHandler interface replaced by a
+	  delegate.
+
+	* Session/Game/Delegates.cs:
+	* Session/Game/Cards/Card.cs:
+	* Session/Game/Cards/Main/Jail.cs:
+	* Session/Game/Cards/TableCard.cs:
+	* Session/Game/Cards/Main/Missed.cs:
+	* Session/Game/Cards/Main/Barrel.cs:
+	* Session/Game/ICardResultHandler.cs:
+	* Session/Game/ShotResponseHandler.cs:
+	* Session/Game/Cards/Main/Dynamite.cs:
+	* Session/Game/Cards/Dodge City/Dodge.cs:
+	* Session/Game/Cards/Dodge City/Bible.cs:
+	* Session/Game/Characters/Main/LuckyDuke.cs:
+	* Session/Game/Cards/Dodge City/Sombrero.cs:
+	* Session/Game/Cards/Dodge City/IronPlate.cs:
+	* Session/Game/Characters/Main/Jourdonnais.cs:
+	* Session/Game/Cards/Dodge City/TenGallonHat.cs:
+	  The Bang.Server.CardResultHandler interface replaced by a
+	  delegate.
+
+	* Server.cs:
+	  New server state format.
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* Server.cs:
+	* Session/Session.cs:
+	* Session/Game/PlayerControl.cs:
+	* Session/SessionPlayerControl.cs:
+	* Session/SessionSpectatorControl.cs:
+	  The lockout exception changed to MethodAccessException.
+
+2011-09-15  WOnder93  <omosnacek@gmail.com>
+
+	* Session:
+	* Session/Game:
+	* AssemblyInfo.cs:
+	* Session/Game/Cards:
+	* Session/Game/Cards/Main:
+	* Session/Game/Characters:
+	* Bang# Server Daemon.csproj:
+	* Session/Game/Characters/Main:
+	* Session/Game/Cards/Dodge City:
+	* Session/Game/Characters/Dodge City:
+	  
+
+	* Session/Game/Game.cs:
+	* Session/Game/Player.cs:
+	* Session/SessionPlayer.cs:
+	* Session/Game/GameCycle.cs:
+	* Session/Game/GameTable.cs:
+	* Session/Game/Cards/Card.cs:
+	* Session/SessionSpectator.cs:
+	* Session/Game/PlayerControl.cs:
+	* Session/Game/IResultHandler.cs:
+	* Session/SessionEventManager.cs:
+	* Session/Game/Cards/Main/Beer.cs:
+	* Session/Game/ResponseHandler.cs:
+	* Session/Game/Cards/Main/Jail.cs:
+	* Session/Game/Cards/TableCard.cs:
+	* Session/SessionPlayerControl.cs:
+	* Session/Game/Cards/Main/Bang.cs:
+	* Session/Game/Cards/Main/Duel.cs:
+	* Session/Game/Cards/GoldenCard.cs:
+	* Session/Game/Cards/Main/Panic.cs:
+	* Session/Game/Cards/Main/Missed.cs:
+	* Session/Game/Cards/Main/Barrel.cs:
+	* Session/Game/Cards/GeneralCard.cs:
+	* Session/Game/Cards/Main/Saloon.cs:
+	* Session/Game/Cards/Main/Gatling.cs:
+	* Session/Game/Cards/Main/Indians.cs:
+	* Session/Game/ICardResultHandler.cs:
+	* Session/SessionSpectatorControl.cs:
+	* Session/Game/Cards/Main/Mustang.cs:
+	* Session/Game/Cards/PlayableCard.cs:
+	* Session/Game/Cards/Main/Dynamite.cs:
+	* Session/Game/ShotResponseHandler.cs:
+	* Session/Game/Cards/Main/Carabine.cs:
+	* Session/Game/Cards/Main/CatBalou.cs:
+	* Session/Game/Cards/Main/Volcanic.cs:
+	* Session/Game/Cards/Main/Remington.cs:
+	* Session/Game/QueueResponseHandler.cs:
+	* Session/Game/Cards/Main/Appaloosa.cs:
+	* Session/Game/Cards/AllPlayersCard.cs:
+	* Session/Game/Cards/Main/Diligenza.cs:
+	* Session/Game/Cards/TargetCardCard.cs:
+	* Session/Game/Characters/Character.cs:
+	* Session/Game/Cards/Main/Schofield.cs:
+	* Session/Game/Cards/Main/WellsFargo.cs:
+	* Session/Game/Cards/Main/Winchester.cs:
+	* Session/Game/Cards/Dodge City/Bible.cs:
+	* Session/Game/Cards/TargetPlayerCard.cs:
+	* Session/Game/Cards/Dodge City/Knife.cs:
+	* Session/Game/Cards/Dodge City/Brawl.cs:
+	* Session/Game/Cards/Dodge City/Dodge.cs:
+	* Session/Game/Cards/Dodge City/Punch.cs:
+	* Session/Game/Cards/GeneralTableCard.cs:
+	* Session/Game/Cards/PlayableTableCard.cs:
+	* Session/Game/Cards/Dodge City/CanCan.cs:
+	* Session/Game/Cards/Dodge City/Silver.cs:
+	* Session/Game/Cards/GeneralGoldenCard.cs:
+	* Session/Game/Cards/Dodge City/Whisky.cs:
+	* Session/Game/Cards/Main/GeneralStore.cs:
+	* Session/Game/Characters/Main/ElGringo.cs:
+	* Session/Game/Cards/Dodge City/Canteen.cs:
+	* Session/Game/Cards/Dodge City/RagTime.cs:
+	* Session/Game/ThrowBangResponseHandler.cs:
+	* Session/Game/Cards/Dodge City/Tequila.cs:
+	* Session/Game/Cards/Dodge City/Hideout.cs:
+	* Session/Game/Cards/TargetCardTableCard.cs:
+	* Session/Game/Characters/Main/LuckyDuke.cs:
+	* Session/Game/Cards/Dodge City/Sombrero.cs:
+	* Session/Game/Cards/Dodge City/Howitzer.cs:
+	* Session/Game/Cards/AllPlayersTableCard.cs:
+	* Session/Game/Characters/Main/BlackJack.cs:
+	* Session/Game/Characters/Main/VultureSam.cs:
+	* Session/Game/Cards/Dodge City/Derringer.cs:
+	* Session/Game/Cards/Dodge City/Conestoga.cs:
+	* Session/Game/Characters/Main/KitCarlson.cs:
+	* Session/Game/Characters/Main/PaulRegret.cs:
+	* Session/Game/Cards/Dodge City/Pepperbox.cs:
+	* Session/Game/Cards/Dodge City/IronPlate.cs:
+	* Session/Game/Characters/Main/JesseJones.cs:
+	* Session/Game/Characters/Main/SidKetchum.cs:
+	* Session/Game/Cards/AllPlayersGoldenCard.cs:
+	* Session/Game/Cards/TargetCardGoldenCard.cs:
+	* Session/Game/Characters/Main/RoseDoolan.cs:
+	* Session/Game/Characters/Main/BartCassidy.cs:
+	* Session/Game/Characters/Main/Jourdonnais.cs:
+	* Session/Game/Characters/Main/WillyTheKid.cs:
+	* Session/Game/Cards/TargetPlayerTableCard.cs:
+	* Session/Game/Cards/Dodge City/Springfield.cs:
+	* Session/Game/Characters/Main/PedroRamirez.cs:
+	* Session/Game/Cards/Dodge City/PonyExpress.cs:
+	* Session/Game/Cards/TargetPlayerGoldenCard.cs:
+	* Session/Game/Cards/Dodge City/BuffaloRifle.cs:
+	* Session/Game/Cards/Dodge City/TenGallonHat.cs:
+	* Session/Game/Characters/Main/SuzyLafayette.cs:
+	* Session/Game/Characters/Main/CalamityJanet.cs:
+	* Session/Game/Characters/Main/SlabTheKiller.cs:
+	* Session/Game/Cards/AllPlayersCardGoldenCard.cs:
+	* Session/Game/Characters/Dodge City/PixiePete.cs:
+	* Session/Game/Characters/Dodge City/BelleStar.cs:
+	* Session/Game/Characters/Dodge City/ApacheKid.cs:
+	* Session/Game/Characters/Dodge City/TequilaJoe.cs:
+	* Session/Game/Characters/Dodge City/PatBrennan.cs:
+	* Session/Game/Characters/Dodge City/HerbHunter.cs:
+	* Session/Game/Characters/Dodge City/BillNoface.cs:
+	* Session/Game/Characters/Dodge City/MollyStark.cs:
+	* Session/Game/Characters/Dodge City/DocHolyday.cs:
+	* Session/Game/Characters/Dodge City/GregDigger.cs:
+	* Session/Game/Characters/Dodge City/VeraCuster.cs:
+	* Session/Game/Characters/Dodge City/ElenaFuente.cs:
+	* Session/Game/Characters/Dodge City/JoseDelgado.cs:
+	* Session/Game/Characters/Dodge City/SeanMallory.cs:
+	* Session/Game/Characters/Dodge City/ChuckWengam.cs:
+	  Internal server functionality moved to daemon.
+
+	* Server.cs:
+	* Session/Session.cs:
+	  Internal server functionality moved to daemon.
+	Improved locking.
+	Added support for server administration.
+
+	* Main.cs:
+	  Server administration services are now served on a separate
+	  port so that they can be restricted to local access only.
+
+2011-09-10  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* AssemblyInfo.cs:
+	* Bang# Server Daemon.csproj:
+	  Server is now divided to daemon and interface.
+
