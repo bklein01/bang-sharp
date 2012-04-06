@@ -25,7 +25,6 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace BangSharp.AI
@@ -385,7 +384,8 @@ namespace BangSharp.AI
 					}
 					break;
 				}
-				return new ReadOnlyCollection<IPublicPlayerView>(allies);
+				allies.Shuffle();
+				return allies;
 			}
 		}
 		public override IEnumerable<IPublicPlayerView> Enemies
@@ -456,7 +456,8 @@ namespace BangSharp.AI
 						}
 					break;
 				}
-				return new ReadOnlyCollection<IPublicPlayerView>(enemies);
+				enemies.Shuffle();
+				return enemies;
 			}
 		}
 

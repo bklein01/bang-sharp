@@ -38,6 +38,15 @@ namespace BangSharp.Server.Daemon.Cards
 			{
 				this.card = card;
 			}
+
+			protected override void OnStart()
+			{
+				if(Game.GameTable.Selection.Count == 1)
+				{
+					Game.GameTable.PlayerPickFromSelection(RequestedPlayer, Game.GameTable.Selection[0]);
+					End();
+				}
+			}
 			
 			protected override void OnRespondCard(Card card)
 			{

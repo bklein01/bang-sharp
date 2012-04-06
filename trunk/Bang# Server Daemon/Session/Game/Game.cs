@@ -260,10 +260,6 @@ namespace BangSharp.Server.Daemon
 		}
 		private void BuryPlayer(Player player)
 		{
-			foreach(Player p in playerList)
-				if(p.IsAlive)
-					p.Character.OnPlayerDied(player);
-
 			List<Player> takers = new List<Player>();
 			Player firstAfter = NextPlayer(player);
 			Player temp = firstAfter;
@@ -369,8 +365,6 @@ namespace BangSharp.Server.Daemon
 						victoriousRole = Role.Outlaw;
 				else if(outlaws == 0 && renegades == 0)
 					victoriousRole = Role.Sheriff;
-				else if(player.Role == Role.Outlaw && causedBy != null && causedBy != player)
-					table.PlayerDrawFromDeck(causedBy, 3);
 			}
 			if(victoriousRole != Role.Unknown)
 			{
@@ -456,6 +450,11 @@ namespace BangSharp.Server.Daemon
 					foreach(Card c in tableCopy)
 						table.CancelCard(c);
 				}
+				if(player.Role == Role.Outlaw && causedBy != null && causedBy != player)
+					table.PlayerDrawFromDeck(causedBy, 3);
+				foreach(Player p in playerList)
+					if(p.IsAlive)
+						p.Character.OnPlayerDied(player);
 			}
 		}
 		

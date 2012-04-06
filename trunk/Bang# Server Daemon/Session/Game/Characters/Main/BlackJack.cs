@@ -36,7 +36,11 @@ namespace BangSharp.Server.Daemon.Characters
 
 		public override bool RevealSecondDrawnCard
 		{
-			get { return true; }
+			get
+			{
+				OnUsedAbility();
+				return true;
+			}
 		}
 		public override void OnDrewSecondCard(Card card)
 		{
