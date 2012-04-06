@@ -1,3 +1,13 @@
+2012-04-06  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* StandardPlayerHelper.cs:
+	  Shuffle the allies and enemies collections before returning.
+	Do not wrap allies and enemies collections into
+	  ReadOnlyCollection<T> as it useless.
+
 2012-03-18  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

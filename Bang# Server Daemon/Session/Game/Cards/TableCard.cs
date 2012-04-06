@@ -36,7 +36,8 @@ namespace BangSharp.Server.Daemon
 			get { return 0; }
 		}
 
-		protected TableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank) : base(game, id, type, suit, rank)
+		protected TableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank)
+			: base(game, id, type, suit, rank)
 		{
 			playBlocked = false;
 		}
@@ -54,7 +55,7 @@ namespace BangSharp.Server.Daemon
 				List<TableCard> tableCopy = new List<TableCard>(Owner.Table);
 				foreach(TableCard c in tableCopy)
 					if(c.Type == Type)
-						Game.GameTable.PlayerDiscardCard(c);
+						throw new BadUsageException();
 					else if(c.IsWeapon && IsWeapon)
 						Game.GameTable.PlayerDiscardCard(c);
 				Game.GameTable.PlayerPlayCardOnTable(this);

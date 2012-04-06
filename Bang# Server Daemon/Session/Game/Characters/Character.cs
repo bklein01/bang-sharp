@@ -121,12 +121,12 @@ namespace BangSharp.Server.Daemon
 		{
 			DrawFirstCard(first => {
 				if(first == null)
-					first = Game.GameTable.PlayerDrawFromDeck(player, 1)[0];
+					first = Game.GameTable.PlayerDrawFromDeck(player, 1, RevealFirstDrawnCard)[0];
 				player.OnDrewFirstCard(first);
 				if(DrawCardCount >= 2)
 					DrawSecondCard(second => {
 						if(second == null)
-							second = Game.GameTable.PlayerDrawFromDeck(player, 1)[0];
+							second = Game.GameTable.PlayerDrawFromDeck(player, 1, RevealSecondDrawnCard)[0];
 						player.OnDrewSecondCard(second);
 						if(DrawCardCount > 2)
 							Game.GameTable.PlayerDrawFromDeck(player, DrawCardCount - 2);

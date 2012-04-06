@@ -1,3 +1,31 @@
+2012-04-06  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* BlackJack.cs:
+	  Notify of ability use in Black Jack.
+
+	* GeneralStore.cs:
+	  Do not ask the last player to choose a card from General
+	  Store, since has no choice.
+
+	* TableCard.cs:
+	  Do not allow replacing other than weapon cards on table.
+	Formatting fix.
+
+	* ThrowBangResponseHandler.cs:
+	  Formatting fix.
+
+	* Game.cs:
+	  Notify characters that a player has died no sooner than his
+	  cards had been cancelled.
+	Also put off drawing 3 cards for Outlaw.
+
+	* Character.cs:
+	  Check RevealFirstCard and RevealSecondCard when drawing from
+	  BangSharp.Server.Daemon.Character.Draw().
+
 2012-03-22  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
