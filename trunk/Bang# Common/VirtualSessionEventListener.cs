@@ -23,12 +23,19 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System;
 
-namespace BangSharp.Client
+namespace BangSharp
 {
+	/// <summary>
+	/// Virtual session event listener.
+	/// </summary>
+	/// <remarks>
+	/// A base class for session event listeners with all memebers (except for the <see cref='BangSharp.IEventListener.Ping()'/> method) implemented as virtual.
+	/// </remarks>
 	public class VirtualSessionEventListener : ISpectatorSessionEventListener, IPlayerSessionEventListener
 	{
-		public VirtualSessionEventListener()
+		protected VirtualSessionEventListener()
 		{
 		}
 
@@ -62,7 +69,7 @@ namespace BangSharp.Client
 		#endregion
 
 		#region ISessionEventListener implementation
-		public virtual void Ping()
+		public void Ping()
 		{
 		}
 

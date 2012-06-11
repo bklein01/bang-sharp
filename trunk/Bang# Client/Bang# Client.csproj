@@ -99,9 +99,7 @@
     <Compile Include="GameBoard\States\RoleCardState.cs" />
     <Compile Include="GameBoard\Animators\RoleCardAnimator.cs" />
     <Compile Include="GameBoard\Animators\CharacterCardAnimator.cs" />
-    <Compile Include="ProxySessionEventListener.cs" />
     <Compile Include="ConnectionManager.cs" />
-    <Compile Include="ProxyServerEventListener.cs" />
     <Compile Include="GameBoard\Widgets\Basic\Label.cs" />
     <Compile Include="GameBoard\Widgets\Basic\Alignment.cs" />
     <Compile Include="GameBoard\Widgets\Basic\SolidColor.cs" />
@@ -114,7 +112,6 @@
     <Compile Include="PictureManager.cs" />
     <Compile Include="GameBoard\Widgets\Special\MainTableWidget.cs" />
     <Compile Include="GameBoard\Widgets\Special\MainTableWidget.Layout.cs" />
-    <Compile Include="VirtualSessionEventListener.cs" />
     <Compile Include="ResourceManager.cs" />
     <Compile Include="GameBoard\Widgets\Basic\Direction.cs" />
     <Compile Include="MainWindow.cs" />

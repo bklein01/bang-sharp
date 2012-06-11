@@ -1,3 +1,8 @@
+2012-06-11  WOnder93  <omosnacek@gmail.com>
+
+	* Bang# Console Utils.csproj:
+	  An automatic project file fix.
+
 2012-03-07  WOnder93  <omosnacek@gmail.com>
 
 	* Command.cs:

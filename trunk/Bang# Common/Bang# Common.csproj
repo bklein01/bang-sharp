@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>BangSharp</RootNamespace>
     <AssemblyName>BangSharpCommon</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <Description>Common library for Bang#</Description>
     <ReleaseVersion>1.1</ReleaseVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
@@ -96,6 +95,12 @@
     <Compile Include="Interfaces\IPlayerSessionEventListener.cs" />
     <Compile Include="Interfaces\ISpectatorSessionEventListener.cs" />
     <Compile Include="Interfaces\IServerEventListener.cs" />
+    <Compile Include="ProxyServerEventListener.cs" />
+    <Compile Include="ProxySessionEventListener.cs" />
+    <Compile Include="VirtualServerEventListener.cs" />
+    <Compile Include="VirtualSessionEventListener.cs" />
+    <Compile Include="MBRVirtualSessionEventListener.cs" />
+    <Compile Include="MBRVirtualServerEventListener.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

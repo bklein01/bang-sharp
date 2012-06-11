@@ -1,3 +1,8 @@
+2012-06-11  WOnder93  <omosnacek@gmail.com>
+
+	* Bang# Server Interface.csproj:
+	  An automatic project file fix.
+
 2012-03-18  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
