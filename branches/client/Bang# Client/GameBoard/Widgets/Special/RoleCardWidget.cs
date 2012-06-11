@@ -1,8 +1,8 @@
-// Main.cs
+// RoleCardWidget.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2012 Ondrej Mosnáček
+// Copyright (c) 2011 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,23 +23,47 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
+using Cairo;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	class MainClass
+	public class RoleCardWidget : CardWidget
 	{
-		public static void Main(string[] args)
+		private Role role;
+
+		public Role Role
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			get { return role; }
+			set
+			{
+				role = value;
+				Card = CardManager.GetCard(role);
+			}
+		}
+
+		public RoleCardWidget()
+			: this(Role.Unknown)
+		{
+		}
+		public RoleCardWidget(Role role)
+		{
+			Role = role;
+		}
+
+		protected override bool OnExposed(Context cr, Rectangle area)
+		{
+			cr.Save();
+			if(!base.OnExposed(cr, area))
+			{
+				cr.Color = new Color(1.0, 0.0, 0.0);
+				cr.SetFontSize(100.0);
+				cr.SelectFontFace("Librarian", FontSlant.Normal, FontWeight.Bold);
+				cr.ShowText(role.ToString());
+				cr.Restore();
+				return true;
+			}
+			cr.Restore();
+			return true;
 		}
 	}
 }

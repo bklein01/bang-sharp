@@ -9,7 +9,6 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>BangSharp.Client</RootNamespace>
     <AssemblyName>BangSharpClient</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -67,14 +66,59 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="MainWindow.cs" />
-    <Compile Include="gtk-gui\MainWindow.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ImageUtils.cs" />
-    <Compile Include="CardWidget.cs" />
-    <Compile Include="PlayingCardWidget.cs" />
+    <Compile Include="GameBoard\Card.cs" />
+    <Compile Include="GameBoard\CardManager.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Bin.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Box.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Padding.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Widget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\CardPlaceholderWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\CardWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\CharacterCardWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\GeneralPlaceholderWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\PlayingCardListWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\PlayingCardWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\RoleCardWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\PlaceholderWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Overlay.cs" />
+    <Compile Include="GameBoard\Widgets\Special\AnimationLayer.cs" />
+    <Compile Include="GameBoard\Animation.cs" />
+    <Compile Include="GameBoard\GameBoardWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\RootWidget.cs" />
+    <Compile Include="GameBoard\States\CardState.cs" />
+    <Compile Include="GameBoard\States\PlayingCardState.cs" />
+    <Compile Include="GameBoard\Animators\CardAnimator.cs" />
+    <Compile Include="GameBoard\Animators\PlayingCardAnimator.cs" />
+    <Compile Include="GameBoard\StateType.cs" />
+    <Compile Include="GameBoard\AllocationManager.cs" />
+    <Compile Include="GameBoard\Widgets\Special\RootWidget.Layout.cs" />
+    <Compile Include="GameBoard\Animators\IAnimator.cs" />
+    <Compile Include="GameBoard\States\CharacterCardState.cs" />
+    <Compile Include="GameBoard\States\RoleCardState.cs" />
+    <Compile Include="GameBoard\Animators\RoleCardAnimator.cs" />
+    <Compile Include="GameBoard\Animators\CharacterCardAnimator.cs" />
+    <Compile Include="ProxySessionEventListener.cs" />
+    <Compile Include="ConnectionManager.cs" />
+    <Compile Include="ProxyServerEventListener.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Label.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Alignment.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\SolidColor.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Button.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Picture.cs" />
+    <Compile Include="GameBoard\Widgets\Special\PlayerSlotWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\PlayerSlotWidget.Layout.cs" />
+    <Compile Include="GameBoard\Widgets\Special\NoActionButtonWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\NoActionButtonWidget.Layout.cs" />
+    <Compile Include="PictureManager.cs" />
+    <Compile Include="GameBoard\Widgets\Special\MainTableWidget.cs" />
+    <Compile Include="GameBoard\Widgets\Special\MainTableWidget.Layout.cs" />
+    <Compile Include="VirtualSessionEventListener.cs" />
     <Compile Include="ResourceManager.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Direction.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.MainWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bang# Common\Bang# Common.csproj">
@@ -86,14 +130,16 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Resources\Icon\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\" />
     <Folder Include="Resources\Cards\" />
     <Folder Include="Resources\Cards\Playing\" />
     <Folder Include="Resources\Cards\Roles\" />
     <Folder Include="Resources\Cards\Characters\" />
+    <Folder Include="GameBoard\" />
+    <Folder Include="GameBoard\Widgets\" />
+    <Folder Include="GameBoard\Widgets\Basic\" />
+    <Folder Include="GameBoard\Widgets\Special\" />
+    <Folder Include="GameBoard\States\" />
+    <Folder Include="GameBoard\Animators\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Icon\16x16x32.png" />

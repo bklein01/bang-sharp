@@ -1,8 +1,8 @@
-// Main.cs
+// PlayingCardListWidget.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2012 Ondrej Mosnáček
+// Copyright (c) 2011 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,23 +23,42 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
+using Cairo;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	class MainClass
+	public class PlayingCardListWidget : Widget
 	{
-		public static void Main(string[] args)
+		public PlayingCardListWidget()
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+		}
+
+		protected override void OnResized()
+		{
+			double width = Allocation.Width;
+			double height = Allocation.Height;
+
+			int count = Children.Count;
+			if(count == 0)
+				return;
+			double cardWidth = height * Card.Ratio;
+			double allCardsWidth = cardWidth * count;
+
+			if(allCardsWidth < width || count == 1)
+			{
+				double startX = (width - allCardsWidth) / 2;
+				for(int i = 0; i < count; i++)
+					Children[i].Reallocate(new Rectangle(startX + i * cardWidth, 0, cardWidth, height));
+			}
+			else
+			{
+				double extra = width - cardWidth;
+				if(extra < 0)
+					extra = 0;
+				double offset = extra / (count - 1);
+				for(int i = 0; i < count; i++)
+					Children[i].Reallocate(new Rectangle(i * offset, 0, cardWidth, height));
+			}
 		}
 	}
 }

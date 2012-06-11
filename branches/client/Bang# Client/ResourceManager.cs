@@ -2,7 +2,7 @@
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,49 +23,34 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using Gdk;
 using System.Collections.Generic;
+using System.IO;
+using Gdk;
+
 namespace BangSharp.Client
 {
 	public static class ResourceManager
 	{
-		private static Dictionary<CardType, Pixbuf> playingCards;
-		private static Dictionary<CharacterType, Pixbuf> characterCards;
-		private static Dictionary<Role, Pixbuf> roleCards;
+		private static Dictionary<string, Pixbuf> pixbufCache = new Dictionary<string, Pixbuf>();
 
-		public static Pixbuf GetPixmap(CardType type)
+		public static Pixbuf GetPixbuf(params string[] path)
 		{
+			string fname = Path.Combine(path);
 			try
 			{
-				return playingCards[type];
+				return pixbufCache[fname];
 			}
 			catch(KeyNotFoundException)
 			{
-				return null;
 			}
-		}
-		public static Pixbuf GetPixmap(CharacterType character)
-		{
 			try
 			{
-				return characterCards[character];
+				return pixbufCache[fname] = new Gdk.Pixbuf(fname);
 			}
-			catch(KeyNotFoundException)
+			catch
 			{
-				return null;
 			}
-		}
-		public static Pixbuf GetPixmap(Role role)
-		{
-			try
-			{
-				return roleCards[role];
-			}
-			catch(KeyNotFoundException)
-			{
-				return null;
-			}
+			return pixbufCache[fname] = null;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-// Main.cs
+// PictureManager.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
+using Gdk;
 
 namespace BangSharp.Client
 {
-	class MainClass
+	public static class PictureManager
 	{
-		public static void Main(string[] args)
+		public static Pixbuf GetPixbuf(byte[] data)
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			try
+			{
+				return new Pixbuf(data);
+			}
+			catch
+			{
+				return null;
+			}
+		}
+		public static byte[] GetBytes(Pixbuf pixbuf)
+		{
+			return pixbuf.SaveToBuffer("png");
 		}
 	}
 }

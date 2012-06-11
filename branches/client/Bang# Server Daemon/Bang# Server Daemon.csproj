@@ -171,8 +171,6 @@
     <Folder Include="Session\Game\" />
     <Folder Include="Session\Game\Cards\" />
     <Folder Include="Session\Game\Characters\" />
-    <Folder Include="Session\Game\" />
-    <Folder Include="Session\Game\" />
     <Folder Include="Session\Game\Cards\Main\" />
     <Folder Include="Session\Game\Cards\Dodge City\" />
     <Folder Include="Session\Game\Characters\Main\" />
