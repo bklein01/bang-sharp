@@ -1,3 +1,14 @@
+2012-06-11  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	  Use BangSharp.ProxySessionEventListener in Test Client.
+
+	* Bang# Test Client.csproj:
+	  An automatic project file fix.
+
+	* AssemblyInfo.cs:
+	  
+
 2012-03-18  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

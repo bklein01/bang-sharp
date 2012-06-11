@@ -261,7 +261,7 @@ namespace BangSharp.Client
 			lock(Lock)
 			{
 				serverListener = new ProxyServerEventListener();
-				sessionListener = new ProxySessionEventListener(false);
+				sessionListener = new ProxySessionEventListener();
 				EventListener l = new EventListener();
 				sessionListener.AddListener((IPlayerSessionEventListener)l);
 				sessionListener.AddListener((ISpectatorSessionEventListener)l);

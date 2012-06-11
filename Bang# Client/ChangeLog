@@ -1,5 +1,19 @@
 2012-06-11  WOnder93  <omosnacek@gmail.com>
 
+	* ConnectionManager.cs:
+	* ProxyServerEventListener.cs:
+	* ProxySessionEventListener.cs:
+	* VirtualSessionEventListener.cs:
+	  "Proxy" and "Virtual" listeners moved to the common library.
+
+	* Bang# Client.csproj:
+	  An automatic project file fix.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-06-11  WOnder93  <omosnacek@gmail.com>
+
 	* Main.cs:
 	* GameBoard:
 	* CardWidget.cs:

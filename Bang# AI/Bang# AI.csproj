@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>BangSharp.AI</RootNamespace>
     <AssemblyName>BangSharpAI</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

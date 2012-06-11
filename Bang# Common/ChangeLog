@@ -1,3 +1,20 @@
+2012-06-11  WOnder93  <omosnacek@gmail.com>
+
+	* ProxyServerEventListener.cs:
+	* ProxySessionEventListener.cs:
+	* VirtualServerEventListener.cs:
+	* VirtualSessionEventListener.cs:
+	* MBRVirtualServerEventListener.cs:
+	* MBRVirtualSessionEventListener.cs:
+	  "Proxy" and "Virtual" listeners moved to the common library.
+
+	* Bang# Common.csproj:
+	  An automatic project file fix.
+	"Proxy" and "Virtual" listeners moved to the common library.
+
+	* AssemblyInfo.cs:
+	  
+
 2012-03-18  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

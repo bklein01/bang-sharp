@@ -38,8 +38,32 @@ namespace BangSharp.TestClient
 	{
 		private IPlayerControl gameControl;
 		private IPlayerSessionControl sessionControl;
-		private IPlayerSessionEventListener aiPlayer;
+		private AI.AIPlayer aiPlayer;
+		private ProxySessionEventListener mainSessionListener;
 		private bool aiTest = false;
+
+		private TestClient()
+		{
+			mainSessionListener = new ProxySessionEventListener();
+			mainSessionListener.AddListener(this);
+		}
+
+		private void SetAI(AI.AIPlayer ai)
+		{
+			UnsetAI();
+			mainSessionListener.IsAI = true;
+			mainSessionListener.AddListener(ai);
+			aiPlayer = ai;
+		}
+		private void UnsetAI()
+		{
+			if(aiPlayer == null)
+				return;
+			mainSessionListener.IsAI = false;
+			mainSessionListener.RemoveListener(aiPlayer);
+			aiPlayer.Disconnect();
+			aiPlayer = null;
+		}
 
 		private static readonly TestClient Instance = new TestClient();
 
@@ -123,7 +147,7 @@ namespace BangSharp.TestClient
 					
 					try
 					{
-						session.Join(password, cpd, Instance);
+						session.Join(password, cpd, Instance.mainSessionListener);
 						ConsoleHelper.SuccessLine("Joined session!");
 					}
 					catch(GameException e)
@@ -150,13 +174,13 @@ namespace BangSharp.TestClient
 
 					try
 					{
-						Instance.aiPlayer = ai;
-						session.Join(password, cpd, Instance);
+						Instance.SetAI(ai);
+						session.Join(password, cpd, Instance.mainSessionListener);
 						ConsoleHelper.SuccessLine("Joined session!");
 					}
 					catch(GameException e)
 					{
-						Instance.aiPlayer = null;
+						Instance.UnsetAI();
 						ConsoleHelper.ErrorLine("Cannot join session: {0}", e.GetType());
 					}
 				});
@@ -194,7 +218,7 @@ namespace BangSharp.TestClient
 
 					try
 					{
-						session.Replace(id, password, cpd, Instance);
+						session.Replace(id, password, cpd, Instance.mainSessionListener);
 						ConsoleHelper.SuccessLine("Joined session!");
 					}
 					catch(GameException e)
@@ -236,13 +260,13 @@ namespace BangSharp.TestClient
 
 					try
 					{
-						Instance.aiPlayer = ai;
-						session.Replace(id, password, cpd, Instance);
+						Instance.SetAI(ai);
+						session.Replace(id, password, cpd, Instance.mainSessionListener);
 						ConsoleHelper.SuccessLine("Joined session!");
 					}
 					catch(GameException e)
 					{
-						Instance.aiPlayer = null;
+						Instance.UnsetAI();
 						ConsoleHelper.ErrorLine("Cannot join session: {0}", e.GetType());
 					}
 				});
@@ -276,9 +300,9 @@ namespace BangSharp.TestClient
 
 					try
 					{
-						Instance.aiPlayer = ai;
+						Instance.SetAI(ai);
 						Instance.aiTest = true;
-						session.Replace(id, password, cpd, Instance);
+						session.Replace(id, password, cpd, Instance.mainSessionListener);
 						if(Instance.sessionControl.Session.State != SessionState.Playing)
 							Instance.sessionControl.StartGame();
 						ConsoleHelper.SuccessLine("Joined AI Test session!");
@@ -292,7 +316,7 @@ namespace BangSharp.TestClient
 					{
 						ConsoleHelper.ErrorLine("Cannot join session: {0}", e.GetType());
 					}
-					Instance.aiPlayer = null;
+					Instance.UnsetAI();
 					Instance.aiTest = false;
 				});
 				serverCmd["session"] = sessionCmd;
@@ -321,7 +345,7 @@ namespace BangSharp.TestClient
 					CreatePlayerData cpd = new CreatePlayerData { Name = "Human" };
 					try
 					{
-						server.CreateSession(csd, cpd, Instance);
+						server.CreateSession(csd, cpd, Instance.mainSessionListener);
 						ConsoleHelper.SuccessLine("Test session created!");
 					}
 					catch(GameException e)
@@ -356,8 +380,8 @@ namespace BangSharp.TestClient
 					cpd.Name = "TestAI";
 					try
 					{
-						server.CreateSession(csd, cpd, Instance);
-						Instance.aiPlayer = ai;
+						server.CreateSession(csd, cpd, Instance.mainSessionListener);
+						Instance.SetAI(ai);
 						ConsoleHelper.SuccessLine("Test AI session created!");
 					}
 					catch(GameException e)
@@ -402,8 +426,8 @@ namespace BangSharp.TestClient
 					cpd.Password = new Password("_aitest");
 					try
 					{
-						server.CreateSession(csd, cpd, Instance);
-						Instance.aiPlayer = ai;
+						server.CreateSession(csd, cpd, Instance.mainSessionListener);
+						Instance.SetAI(ai);
 						Instance.aiTest = true;
 						Instance.sessionControl.StartGame();
 						ConsoleHelper.SuccessLine("AI test session created!");
@@ -411,7 +435,7 @@ namespace BangSharp.TestClient
 						Instance.sessionControl.Disconnect();
 						Instance.sessionControl = null;
 						Instance.gameControl = null;
-						Instance.aiPlayer = null;
+						Instance.UnsetAI();
 						Instance.aiTest = false;
 						ConsoleHelper.SuccessLine("AI test session disconnected!");
 					}
@@ -475,7 +499,7 @@ namespace BangSharp.TestClient
 					
 					try
 					{
-						server.CreateSession(csd, cpd, Instance);
+						server.CreateSession(csd, cpd, Instance.mainSessionListener);
 						ConsoleHelper.SuccessLine("Session created!");
 					}
 					catch(GameException e)
@@ -601,21 +625,15 @@ namespace BangSharp.TestClient
 		{
 			sessionControl = control;
 			ConsoleHelper.SessionEvent("Acquired session controller!");
-			if(aiPlayer != null)
-				aiPlayer.OnJoinedSession(control);
 		}
 		void IPlayerSessionEventListener.OnJoinedGame(IPlayerControl control)
 		{
 			this.gameControl = control;
 			ConsoleHelper.GameEvent("Acquired game controller!");
-			if(aiPlayer != null)
-				aiPlayer.OnJoinedGame(control);
 		}
 		void IPlayerSessionEventListener.OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
 		{
 			ConsoleHelper.GameEvent("New request: {0}{1}.", requestType, causedBy == null ? "" : ", caused by player #" + causedBy.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnNewRequest(requestType, causedBy);
 		}
 
 		bool IPlayerSessionEventListener.IsAI
@@ -633,11 +651,7 @@ namespace BangSharp.TestClient
 			ConsoleHelper.SessionEvent("Session ended!");
 			gameControl = null;
 			sessionControl = null;
-			if(aiPlayer != null)
-			{
-				aiPlayer.OnSessionEnded();
-				aiPlayer = null;
-			}
+			UnsetAI();
 			if(aiTest)
 				aiTest = false;
 		}
@@ -665,7 +679,7 @@ namespace BangSharp.TestClient
 		}
 		private static IEnumerable<IEnumerable> GetRolePlayerLines(ISession session)
 		{
-			List<Role > roles = Utils.GetRoles(true);
+			List<Role> roles = Utils.GetRoles(true);
 			yield return GetRoleHeaders(roles);
 			foreach(IPlayer player in session.Players)
 				yield return GetRolePlayerLine(roles, player);
@@ -681,8 +695,6 @@ namespace BangSharp.TestClient
 		{
 			ConsoleHelper.GameEvent("Game ended! You {0}", gameControl.PrivatePlayerView.IsWinner ? "won!" : "lost.");
 
-			if(aiPlayer != null)
-				aiPlayer.OnGameEnded();
 			if(aiTest)
 			{
 				ISession session = sessionControl.Session;
@@ -698,7 +710,7 @@ namespace BangSharp.TestClient
 				PrintTable(9, GetScorePlayerLines(session));
 
 				//ConsoleHelper.PrintLine("CHARACTER TABLE");
-				//List<CharacterType > characters = Utils.GetCharacterTypes(session, true);
+				//List<CharacterType> characters = Utils.GetCharacterTypes(session, true);
 				
 				ThreadPool.QueueUserWorkItem(state => {
 					this.sessionControl.StartGame();
@@ -709,226 +721,152 @@ namespace BangSharp.TestClient
 		void ISessionEventListener.OnPlayerJoinedSession(IPlayer player)
 		{
 			ConsoleHelper.SessionEvent("Player #{0} '{1}' joined the session.", player.ID, player.Name);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerJoinedSession(player);
 		}
 		void ISessionEventListener.OnSpectatorJoinedSession(ISpectator spectator)
 		{
 			ConsoleHelper.SessionEvent("Spectator #{0} '{1}' joined the session.", spectator.ID, spectator.Name);
-			if(aiPlayer != null)
-				aiPlayer.OnSpectatorJoinedSession(spectator);
 		}
 		void ISessionEventListener.OnPlayerLeftSession(IPlayer player)
 		{
 			ConsoleHelper.SessionEvent("Player #{0} '{1}' left the session.", player.ID, player.Name);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerLeftSession(player);
 		}
 		void ISessionEventListener.OnSpectatorLeftSession(ISpectator spectator)
 		{
 			ConsoleHelper.SessionEvent("Spectator #{0} '{1}' left the session.", spectator.ID, spectator.Name);
-			if(aiPlayer != null)
-				aiPlayer.OnSpectatorLeftSession(spectator);
 		}
 		void ISessionEventListener.OnPlayerUpdated(IPlayer player)
 		{
 			ConsoleHelper.SessionEvent("Player #{0} '{1}' was updated.", player.ID, player.Name);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerUpdated(player);
 		}
 		void ISessionEventListener.OnPlayerDisconnected(IPlayer player)
 		{
 			ConsoleHelper.SessionEvent("Player #{0} '{1}' disconnected.", player.ID, player.Name);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerDisconnected(player);
 		}
 
 		void ISessionEventListener.OnChatMessage(IPlayer player, string message)
 		{
 			ConsoleHelper.SessionEvent("Chat: {0}: {1}", player.Name, message);
-			if(aiPlayer != null)
-				aiPlayer.OnChatMessage(player, message);
 		}
 		void ISessionEventListener.OnChatMessage(ISpectator spectator, string message)
 		{
 			ConsoleHelper.SessionEvent("Chat: {0}: {1}", spectator.Name, message);
-			if(aiPlayer != null)
-				aiPlayer.OnChatMessage(spectator, message);
 		}
 
 		void ISessionEventListener.OnPlayerDrewFromDeck(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
 		{
 			ConsoleHelper.GameEvent("Player #{0} drew {1} cards from the deck.", player.ID, drawnCards.Count);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerDrewFromDeck(player, drawnCards);
 		}
 		void ISessionEventListener.OnPlayerDrewFromGraveyard(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
 		{
 			ConsoleHelper.GameEvent("Player #{0} drew {1} cards from the graveyard.", player.ID, drawnCards.Count);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerDrewFromGraveyard(player, drawnCards);
 		}
 		void ISessionEventListener.OnPlayerDiscardedCard(IPublicPlayerView player, ICard card)
 		{
 			ConsoleHelper.GameEvent("Player #{0} discarded card {1} #{2}.", player.ID, card.Type, card.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerDiscardedCard(player, card);
 		}
 		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card)
 		{
 			ConsoleHelper.GameEvent("Player #{0} played card {1} #{2}.", player.ID, card.Type, card.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerPlayedCard(player, card);
 		}
 		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
 		{
 			ConsoleHelper.GameEvent("Player #{0} played card {1} #{2} on player #{3}.", player.ID, card.Type, card.ID, targetPlayer.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerPlayedCard(player, card, targetPlayer);
 		}
 		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			ConsoleHelper.GameEvent("Player #{0} played card {1} #{2} on player #{3}'s card {4} #{5}.", player.ID, card.Type, card.ID, targetPlayer.ID, targetCard.Type, targetCard.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
 		}
 		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard)
 		{
 			ConsoleHelper.GameEvent("Player #{0} played card {1} #{2} as card {3}.", player.ID, card.Type, card.ID, asCard);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerPlayedCard(player, card, asCard);
 		}
 		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer)
 		{
 			ConsoleHelper.GameEvent("Player #{0} played card {1} #{2} as card {3} on player #{4}.", player.ID, card.Type, card.ID, asCard, targetPlayer.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
 		}
 		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			ConsoleHelper.GameEvent("Player #{0} played card {1} #{2} as card {3} on player #{4}'s card {5} #{6}.", player.ID, card.Type, card.ID, asCard, targetPlayer.ID, targetCard.Type, targetCard.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
 		}
 		void ISessionEventListener.OnPlayerPlayedCardOnTable(IPublicPlayerView player, ICard card)
 		{
 			ConsoleHelper.GameEvent("Player #{0} played card {1} #{2} on table.", player.ID, card.Type, card.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerPlayedCardOnTable(player, card);
 		}
 		void ISessionEventListener.OnPassedTableCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
 		{
 			ConsoleHelper.GameEvent("Player #{0} passed card {1} #{2} to player #{3}.", player.ID, card.Type, card.ID, targetPlayer.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPassedTableCard(player, card, targetPlayer);
 		}
 		void ISessionEventListener.OnPlayerPassed(IPublicPlayerView player)
 		{
 			ConsoleHelper.GameEvent("Player #{0} passed.", player.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerPassed(player);
 		}
 		void ISessionEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card)
 		{
 			ConsoleHelper.GameEvent("Player #{0} responded with card {1} #{2}.", player.ID, card.Type, card.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerRespondedWithCard(player, card);
 		}
 		void ISessionEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card, CardType asCard)
 		{
 			ConsoleHelper.GameEvent("Player #{0} responded with card {1} #{2} as card {3}.", player.ID, card.Type, card.ID, asCard);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerRespondedWithCard(player, card, asCard);
 		}
 		void ISessionEventListener.OnDrawnIntoSelection(ReadOnlyCollection<ICard> drawnCards)
 		{
 			ConsoleHelper.GameEvent("{0} cards were drawn into the selection.", drawnCards.Count);
-			if(aiPlayer != null)
-				aiPlayer.OnDrawnIntoSelection(drawnCards);
 		}
 		void ISessionEventListener.OnPlayerPickedFromSelection(IPublicPlayerView player, ICard card)
 		{
 			ConsoleHelper.GameEvent("Player #{0} picked card {1} #{2} from selection.", player.ID, card.Type, card.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerPickedFromSelection(player, card);
 		}
 		void ISessionEventListener.OnUndrawnFromSelection(ICard card)
 		{
 			ConsoleHelper.GameEvent("Card {0} #{1} was undrawn from the selection.", card.Type, card.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnUndrawnFromSelection(card);
 		}
 		void ISessionEventListener.OnPlayerStoleCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			ConsoleHelper.GameEvent("Player #{0} stole card {1} #{2} from player #{3}.", player.ID, targetCard.Type, targetCard.ID, targetPlayer.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerStoleCard(player, targetPlayer, targetCard);
 		}
 		void ISessionEventListener.OnPlayerCancelledCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			ConsoleHelper.GameEvent("Player #{0} cancelled card {1} #{2} of player #{3}.", player.ID, targetCard.Type, targetCard.ID, targetPlayer.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerCancelledCard(player, targetPlayer, targetCard);
 		}
 		void ISessionEventListener.OnDeckChecked(ICard card)
 		{
 			ConsoleHelper.GameEvent("Card {0} #{1} was checked from the deck.", card.Type, card.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnDeckChecked(card);
 		}
 		void ISessionEventListener.OnCardCancelled(ICard card)
 		{
 			ConsoleHelper.GameEvent("Card {0} #{1} was cancelled.", card.Type, card.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnCardCancelled(card);
 		}
 		void ISessionEventListener.OnPlayerCheckedDeck(IPublicPlayerView player, ICard checkedCard, CardType causedBy, bool result)
 		{
 			ConsoleHelper.GameEvent("Player #{0} checked card {1} #{2} from deck because of card {3} and {4}.", player.ID, checkedCard.Type, checkedCard.ID, causedBy, result ? "succeeded" : "failed");
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerCheckedDeck(player, checkedCard, causedBy, result);
 		}
 		void ISessionEventListener.OnLifePointsChanged(IPublicPlayerView player, int delta, IPublicPlayerView causedBy)
 		{
 			ConsoleHelper.GameEvent("Player #{0} {1} {2} lives{3}.", player.ID, delta > 0 ? "gained" : "lost", Math.Abs(delta), causedBy == null ? "" : " because of player #" + causedBy.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnLifePointsChanged(player, delta, causedBy);
 		}
 		void ISessionEventListener.OnPlayerDied(IPublicPlayerView player, IPublicPlayerView causedBy)
 		{
 			ConsoleHelper.GameEvent("Player #{0} died{1}, he was {2}.", player.ID, causedBy == null ? "" : " because of player #" + causedBy.ID, player.Role);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerDied(player, causedBy);
 		}
 		void ISessionEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character)
 		{
 			ConsoleHelper.GameEvent("Player #{0} used ability of character {1}.", player.ID, character);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerUsedAbility(player, character);
 		}
 		void ISessionEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character, IPublicPlayerView targetPlayer)
 		{
 			ConsoleHelper.GameEvent("Player #{0} used ability of character {1} on player #{2}.", player.ID, character, targetPlayer.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerUsedAbility(player, character, targetPlayer);
 		}
 		void ISessionEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player)
 		{
 			ConsoleHelper.GameEvent("Player #{0} gained additional abilities.", player.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerGainedAdditionalCharacters(player);
 		}
 		void ISessionEventListener.OnPlayerLostAdditionalCharacters(IPublicPlayerView player)
 		{
 			ConsoleHelper.GameEvent("Player #{0} lost his additional abilities.", player.ID);
-			if(aiPlayer != null)
-				aiPlayer.OnPlayerLostAdditionalCharacters(player);
 		}
 		void ISessionEventListener.OnDeckRegenerated()
 		{
 			ConsoleHelper.GameEvent("The deck was regenerated.");
-			if(aiPlayer != null)
-				aiPlayer.OnDeckRegenerated();
 		}
 		#endregion
 	}

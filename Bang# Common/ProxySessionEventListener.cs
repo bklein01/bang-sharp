@@ -26,29 +26,60 @@
 using System;
 using System.Collections.Generic;
 
-namespace BangSharp.Client
+namespace BangSharp
 {
+	/// <summary>
+	/// Proxy session event listener.
+	/// </summary>
+	/// <remarks>
+	/// This class can be used to connect multiple session event listeners through one listener.
+	/// </remarks>
 	public class ProxySessionEventListener : ImmortalMarshalByRefObject, ISpectatorSessionEventListener, IPlayerSessionEventListener
 	{
 		private object syncLock = new object();
-		private bool isAI;
 		private List<ISessionEventListener> mainListeners;
 		private List<IPlayerSessionEventListener> playerListeners;
 		private List<ISpectatorSessionEventListener> spectatorListeners;
 
+		/// <summary>
+		/// Gets or sets a value to return as the <see cref='BangSharp.IPlayerSessionEventListener.IsAI'/> property.
+		/// </summary>
+		/// <value>
+		/// The value to use.
+		/// </value>
+		public bool IsAI
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Gets the synchronization lock.
+		/// </summary>
+		/// <value>
+		/// The object that is locked while calling the member listeners' methods.
+		/// </value>
 		public object SyncLock
 		{
 			get { return syncLock; }
 		}
 
-		public ProxySessionEventListener(bool isAI = false)
+		/// <summary>
+		/// Initializes a new instance of the <see cref='BangSharp.ProxySessionEventListener'/> class.
+		/// </summary>
+		public ProxySessionEventListener()
 		{
-			this.isAI = isAI;
 			mainListeners = new List<ISessionEventListener>();
 			playerListeners = new List<IPlayerSessionEventListener>();
 			spectatorListeners = new List<ISpectatorSessionEventListener>();
 		}
 
+		/// <summary>
+		/// Adds the listener to the list of member listeners.
+		/// </summary>
+		/// <param name='listener'>
+		/// The listener to add.
+		/// </param>
 		public void AddListener(ISessionEventListener listener)
 		{
 			lock(syncLock)
@@ -57,6 +88,13 @@ namespace BangSharp.Client
 					mainListeners.Add(listener);
 			}
 		}
+
+		/// <summary>
+		/// Adds the listener to the list of member listeners.
+		/// </summary>
+		/// <param name='listener'>
+		/// The listener to add.
+		/// </param>
 		public void AddListener(IPlayerSessionEventListener listener)
 		{
 			lock(syncLock)
@@ -68,6 +106,12 @@ namespace BangSharp.Client
 			}
 		}
 
+		/// <summary>
+		/// Adds the listener to the list of member listeners.
+		/// </summary>
+		/// <param name='listener'>
+		/// The listener to add.
+		/// </param>
 		public void AddListener(ISpectatorSessionEventListener listener)
 		{
 			lock(syncLock)
@@ -78,6 +122,13 @@ namespace BangSharp.Client
 					spectatorListeners.Add(listener);
 			}
 		}
+
+		/// <summary>
+		/// Removes the listener from the list of member listeners.
+		/// </summary>
+		/// <param name='listener'>
+		/// The listener to remove.
+		/// </param>
 		public void RemoveListener(ISessionEventListener listener)
 		{
 			lock(syncLock)
@@ -93,8 +144,8 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(IPlayerSessionEventListener listener in playerListeners)
-						listener.OnJoinedSession(control);
+				foreach(IPlayerSessionEventListener listener  in playerListeners.ToArray())
+					listener.OnJoinedSession(control);
 			}
 		}
 
@@ -102,7 +153,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(IPlayerSessionEventListener listener in playerListeners)
+				foreach(IPlayerSessionEventListener listener  in playerListeners.ToArray())
 					listener.OnJoinedGame(control);
 			}
 		}
@@ -111,14 +162,14 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(IPlayerSessionEventListener listener in playerListeners)
+				foreach(IPlayerSessionEventListener listener  in playerListeners.ToArray())
 					listener.OnNewRequest(requestType, causedBy);
 			}
 		}
 
 		bool IPlayerSessionEventListener.IsAI
 		{
-			get { return isAI; }
+			get { return IsAI; }
 		}
 		#endregion
 
@@ -127,7 +178,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISpectatorSessionEventListener listener in spectatorListeners)
+				foreach(ISpectatorSessionEventListener listener  in spectatorListeners.ToArray())
 					listener.OnJoinedSession(control);
 			}
 		}
@@ -136,7 +187,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISpectatorSessionEventListener listener in spectatorListeners)
+				foreach(ISpectatorSessionEventListener listener  in spectatorListeners.ToArray())
 					listener.OnJoinedGame(control);
 			}
 		}
@@ -151,7 +202,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnSessionEnded();
 			}
 		}
@@ -160,7 +211,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnGameEnded();
 			}
 		}
@@ -169,7 +220,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerJoinedSession(player);
 			}
 		}
@@ -178,7 +229,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnSpectatorJoinedSession(spectator);
 			}
 		}
@@ -187,7 +238,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerLeftSession(player);
 			}
 		}
@@ -196,7 +247,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnSpectatorLeftSession(spectator);
 			}
 		}
@@ -205,7 +256,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerUpdated(player);
 			}
 		}
@@ -214,7 +265,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerDisconnected(player);
 			}
 		}
@@ -223,7 +274,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnChatMessage(player, message);
 			}
 		}
@@ -232,7 +283,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnChatMessage(spectator, message);
 			}
 		}
@@ -241,7 +292,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerDrewFromDeck(player, drawnCards);
 			}
 		}
@@ -250,7 +301,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerDrewFromGraveyard(player, drawnCards);
 			}
 		}
@@ -259,7 +310,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerDiscardedCard(player, card);
 			}
 		}
@@ -268,7 +319,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerPlayedCard(player, card);
 			}
 		}
@@ -277,7 +328,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerPlayedCard(player, card, targetPlayer);
 			}
 		}
@@ -286,7 +337,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerPlayedCard(player, card, targetPlayer, targetCard);
 			}
 		}
@@ -295,7 +346,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerPlayedCard(player, card, asCard);
 			}
 		}
@@ -304,7 +355,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer);
 			}
 		}
@@ -313,7 +364,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerPlayedCard(player, card, asCard, targetPlayer, targetCard);
 			}
 		}
@@ -322,7 +373,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerPlayedCardOnTable(player, card);
 			}
 		}
@@ -331,7 +382,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPassedTableCard(player, card, targetPlayer);
 			}
 		}
@@ -340,7 +391,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerPassed(player);
 			}
 		}
@@ -349,7 +400,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerRespondedWithCard(player, card);
 			}
 		}
@@ -358,7 +409,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerRespondedWithCard(player, card, asCard);
 			}
 		}
@@ -367,7 +418,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnDrawnIntoSelection(drawnCards);
 			}
 		}
@@ -376,7 +427,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerPickedFromSelection(player, card);
 			}
 		}
@@ -385,7 +436,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnUndrawnFromSelection(card);
 			}
 		}
@@ -394,7 +445,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerStoleCard(player, targetPlayer, targetCard);
 			}
 		}
@@ -403,7 +454,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerCancelledCard(player, targetPlayer, targetCard);
 			}
 		}
@@ -412,7 +463,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnDeckChecked(card);
 			}
 		}
@@ -421,7 +472,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnCardCancelled(card);
 			}
 		}
@@ -430,7 +481,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerCheckedDeck(player, checkedCard, causedBy, result);
 			}
 		}
@@ -439,7 +490,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnLifePointsChanged(player, delta, causedBy);
 			}
 		}
@@ -448,7 +499,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerDied(player, causedBy);
 			}
 		}
@@ -457,7 +508,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerUsedAbility(player, character);
 			}
 		}
@@ -466,7 +517,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerUsedAbility(player, character, targetPlayer);
 			}
 		}
@@ -475,7 +526,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerGainedAdditionalCharacters(player);
 			}
 		}
@@ -484,7 +535,7 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnPlayerLostAdditionalCharacters(player);
 			}
 		}
@@ -493,10 +544,11 @@ namespace BangSharp.Client
 		{
 			lock(syncLock)
 			{
-				foreach(ISessionEventListener listener in mainListeners)
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnDeckRegenerated();
 			}
 		}
 		#endregion
 	}
 }
+
