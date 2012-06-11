@@ -40,7 +40,8 @@ namespace BangSharp.Server.Daemon.Characters
 		public override bool HasCardEffect(Card card)
 		{
 			// Ignore blue cards since the ability works only on PLAYED cards.
-			if(card.Owner == Player || card.Color == CardColor.Blue || card.Suit != CardSuit.Diamonds)
+			if(card.Owner == Player || Player == Game.GameCycle.CurrentPlayer
+				|| card.Color == CardColor.Blue || card.Suit != CardSuit.Diamonds)
 				return true;
 			else
 			{

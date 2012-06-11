@@ -1,3 +1,34 @@
+2012-06-11  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	* Bang# Server Daemon.csproj:
+	  
+
+	* Beer.cs:
+	* Bang.cs:
+	* PlayableCard.cs:
+	  Improved checking of playability of cards (such as Bang or
+	  Beer).
+	Fixed always allowing to play multiple Bangs against Apache
+	  Kid when some of them did not affect him.
+
+	* ShotResponseHandler.cs:
+	* ApacheKid.cs:
+	  Check for HasCardEffect() also when responding with card, so
+	  that e. g. Iron Plate has no effect on Belle Star.
+
+	* Character.cs:
+	* ProxyCharacter.cs:
+	  Removed the unused Character.CanPlayCard() method.
+
+	* Player.cs:
+	  Improved checking of playability of cards (such as Bang or
+	  Beer).
+	Fixed always allowing to play multiple Bangs against Apache
+	  Kid when some of them did not affect him.
+	Fixed a bug where Elena Fuente would respond even with Dodge
+	  as Missed, therefore not drawing any card.
+
 2012-04-06  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

@@ -1,4 +1,4 @@
-// Bangs.cs
+// Bang.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -36,10 +36,16 @@ namespace BangSharp.Server.Daemon.Cards
 		{
 		}
 
+		protected override void CheckPlay()
+		{
+			Owner.CheckPlayBang();
+		}
+		protected override void CheckPlay(Player targetPlayer)
+		{
+			Owner.OnPlayedBang();
+		}
 		protected override void OnPlay(Player owner, Player targetPlayer)
 		{
-			owner.OnPlayedBang();
-			
 			Game.GameCycle.PushTempHandler(new ShotResponseHandler(targetPlayer, owner, owner.BangPower));
 		}
 	}
