@@ -1,8 +1,8 @@
-// Main.cs
+// BoxType.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2012 Ondrej Mosnáček
+// Copyright (c) 2011 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,24 +23,13 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	class MainClass
+	public enum Direction
 	{
-		public static void Main(string[] args)
-		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
-		}
+		Horizontal,
+		Vertical
 	}
 }
 

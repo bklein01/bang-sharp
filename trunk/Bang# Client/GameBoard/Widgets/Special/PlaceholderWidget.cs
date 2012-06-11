@@ -1,4 +1,4 @@
-// Main.cs
+// PlaceholderWidget.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,39 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
+using System;
+using Cairo;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	class MainClass
+	public class PlaceholderWidget : Widget
 	{
-		public static void Main(string[] args)
+		public Action OnSizeChanged;
+
+		protected PlaceholderWidget()
+			: base(0)
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+		}
+
+		public Rectangle GetArea(Widget relativeTo)
+		{
+			Widget parent = this;
+			Rectangle alloc = this.Allocation;
+			while(parent != relativeTo)
+			{
+				parent = parent.Parent;
+				if(parent == null)
+					throw new InvalidOperationException();
+				alloc = new Rectangle(parent.Allocation.X + alloc.X, parent.Allocation.Y + alloc.Y,
+					alloc.Width, alloc.Height);
+			}
+			return alloc;
+		}
+
+		protected override void OnResized()
+		{
+			if(OnSizeChanged != null)
+				OnSizeChanged();
 		}
 	}
 }

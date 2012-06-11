@@ -1,4 +1,4 @@
-// Main.cs
+// PlayingCardState.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,37 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.States
 {
-	class MainClass
+	public class PlayingCardState : CardState
 	{
-		public static void Main(string[] args)
+		public CardType Type
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			get;
+			set;
+		}
+		public CardRank Rank
+		{
+			get;
+			set;
+		}
+		public CardSuit Suit
+		{
+			get;
+			set;
+		}
+
+		public PlayingCardState()
+		{
+		}
+
+		public void Update(PlayingCardState other)
+		{
+			base.Update(other);
+			this.Type = other.Type;
+			this.Rank = other.Rank;
+			this.Suit = other.Suit;
 		}
 	}
 }

@@ -1,8 +1,8 @@
-// ImageUtils.cs
+// CardPlaceholder.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,36 +23,28 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using Gdk;
-using System.IO;
-namespace BangSharp.Client
+
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	public static class ImageUtils
+	public class CardPlaceholderWidget : PlaceholderWidget
 	{
-		public static Pixbuf ToPixbuf(byte[] imageData)
+		public CardPlaceholderWidget()
 		{
-			return new Pixbuf(imageData);
 		}
-		public static byte[] ToBytes(this Pixbuf pixbuf)
+		
+		public override void SizeRequest(ref double width, ref double height, out double ratio)
 		{
-			return pixbuf.SaveToBuffer("image/png");
+			if(width < 0.0 && height < 0.0)
+			{
+				ratio = Card.Ratio;
+				return;
+			}
+			ratio = -1;
+			if(width < 0.0)
+				width = height * Card.Ratio;
+			if(height < 0.0)
+				height = width / Card.Ratio;
 		}
-		/*
-		public static Pixbuf ToPixbuf(this System.Drawing.Image image)
-		{
-			MemoryStream ms = new MemoryStream();
-			image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-			Pixbuf pixbuf = new Pixbuf(ms);
-			ms.Close();
-			return pixbuf;
-		}
-		public static System.Drawing.Image ToImage(this Pixbuf pixbuf)
-		{
-			MemoryStream ms = new MemoryStream(pixbuf.SaveToBuffer("image/png"), false);
-			return System.Drawing.Image.FromStream(ms);
-		}
-		*/
 	}
 }
 

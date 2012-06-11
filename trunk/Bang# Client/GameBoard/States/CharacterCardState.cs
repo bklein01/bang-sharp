@@ -1,4 +1,4 @@
-// Main.cs
+// CharacterCardState.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.States
 {
-	class MainClass
+	public class CharacterCardState : CardState
 	{
-		public static void Main(string[] args)
+		public CharacterType Type
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			get;
+			set;
+		}
+
+		public CharacterCardState()
+		{
+
+		}
+
+		public void Update(CharacterCardState other)
+		{
+			base.Update(other);
+			this.Type = other.Type;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-// Main.cs
+// NoActionButtonWidget.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
+using System;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	class MainClass
+	public partial class NoActionButtonWidget : Bin
 	{
-		public static void Main(string[] args)
+		public event Action OnClick
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			add { button.OnClick += value; }
+			remove { button.OnClick -= value; }
+		}
+		public NoActionButtonWidget()
+		{
+			InitLayout();
+			pic.Pixbuf = ResourceManager.GetPixbuf("Resources", "NoAction.png");
 		}
 	}
 }

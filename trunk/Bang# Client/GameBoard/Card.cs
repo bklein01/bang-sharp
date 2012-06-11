@@ -1,8 +1,8 @@
-// Main.cs
+// Card.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2012 Ondrej Mosnáček
+// Copyright (c) 2011 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,23 +23,46 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
+using System;
+using Gdk;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard
 {
-	class MainClass
+	public class Card : IDisposable
 	{
-		public static void Main(string[] args)
+		public const int DefaultWidth = 400;
+		public const int DefaultHeight = 620;
+		public const double Ratio = (double)DefaultWidth / DefaultHeight;
+		private Pixbuf original;
+		private Pixbuf resized;
+
+		public Card(Pixbuf pixbuf)
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			if((double)pixbuf.Width / pixbuf.Height != Ratio)
+				throw new InvalidOperationException();
+			original = pixbuf;
+		}
+
+		public Pixbuf GetPixbuf(int height)
+		{
+			if(original == null)
+				throw new ObjectDisposedException("Card");
+			if(original.Height == height)
+				return original;
+			if(resized != null && resized.Height == height)
+				return resized;
+			if(resized != null)
+				resized.Dispose();
+			return resized = original.ScaleSimple((int)(height * Ratio), height, InterpType.Bilinear);
+		}
+	
+		public void Dispose()
+		{
+			original.Dispose();
+			if(resized != null)
+				resized.Dispose();
+			original = null;
+			resized = null;
 		}
 	}
 }

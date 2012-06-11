@@ -1,8 +1,8 @@
-// Main.cs
+// Bin.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2012 Ondrej Mosnáček
+// Copyright (c) 2011 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,23 +23,42 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
+using Cairo;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	class MainClass
+	public class Bin : Widget
 	{
-		public static void Main(string[] args)
+		public Widget ChildWidget
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			get { return Children.Count >= 1 ? Children[0] : null; }
+			protected set
+			{
+				if(Children.Count >= 1)
+					Children[0] = value;
+				else
+					Children.Add(value);
+			}
+		}
+
+		protected Bin()
+			: base(1)
+		{
+		}
+
+		protected override void OnResized()
+		{
+			Widget child = ChildWidget;
+			if(child != null)
+				child.Reallocate(new Rectangle(0.0, 0.0, Allocation.Width, Allocation.Height));
+		}
+
+		public override void SizeRequest(ref double width, ref double height, out double ratio)
+		{
+			Widget child = ChildWidget;
+			if(child != null)
+				child.SizeRequest(ref width, ref height, out ratio);
+			else base.SizeRequest(ref width, ref height, out ratio);
 		}
 	}
 }
