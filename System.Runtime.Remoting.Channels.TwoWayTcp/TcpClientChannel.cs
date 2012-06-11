@@ -118,7 +118,6 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		public void StopListening(object data)
 		{
 			pool.OnRequestRecieved -= serverSink.OnRequestRecieved;
-			pool.PurgeConnections();
 		}
 
 		object IChannelReceiver.ChannelData

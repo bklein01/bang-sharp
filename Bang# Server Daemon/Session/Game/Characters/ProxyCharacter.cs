@@ -129,10 +129,6 @@ namespace BangSharp.Server.Daemon
 		{
 			return characters.Count == 0 ? base.IsBang(card) : characters.Any(c => c.IsBang(card));
 		}
-		public override bool CanPlayCard(CardType card)
-		{
-			return characters.Count == 0 ? base.CanPlayCard(card) : characters.Any(c => c.CanPlayCard(card));
-		}
 
 		public override void Draw()
 		{

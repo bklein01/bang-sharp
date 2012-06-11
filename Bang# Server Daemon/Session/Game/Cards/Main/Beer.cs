@@ -34,6 +34,9 @@ namespace BangSharp.Server.Daemon.Cards
 
 		protected override void CheckPlay()
 		{
+			if(Owner.LifePoints > 0 && Game.AlivePlayersCount == 2 && Game.Players.Count != 2)
+				throw new CannotPlayBeerException();
+
 			if(Owner.LifePoints == Owner.MaxLifePoints)
 				throw new BadUsageException();
 		}

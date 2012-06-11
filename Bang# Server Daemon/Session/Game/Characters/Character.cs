@@ -112,11 +112,6 @@ namespace BangSharp.Server.Daemon
 			return card.Type == CardType.Bang;
 		}
 
-		public virtual bool CanPlayCard(CardType card)
-		{
-			return true;
-		}
-		
 		public virtual void Draw()
 		{
 			DrawFirstCard(first => {

@@ -55,7 +55,12 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			}
 			catch(KeyNotFoundException)
 			{
-				return sinkCache[connection] = new TcpClientSink(connection, timeout);
+				TcpClientSink sink = new TcpClientSink(connection, timeout);
+				sinkCache[connection] = sink;
+				connection.OnDisconnected += conn => {
+					sinkCache.Remove(conn);
+				};
+				return sink;
 			}
 		}
 

@@ -193,7 +193,8 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			pool.OnRequestRecieved += serverSink.OnRequestRecieved;
 			try
 			{
-				listener = new TcpListener(bindTo, port);
+				if(listener == null)
+					listener = new TcpListener(bindTo, port);
 				listener.Start();
 			}
 			catch(SocketException e)
@@ -213,9 +214,15 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				return;
 
 			pool.OnRequestRecieved -= serverSink.OnRequestRecieved;
-			pool.PurgeConnections();
 			serverThread.Interrupt();
-			listener.Stop();
+			try
+			{
+				listener.Stop();
+			}
+			catch(SocketException e)
+			{
+				throw new RemotingException("TCP error: Unable to stop listening!", e);
+			}
 			serverThread.Join();
 			serverThread = null;
 		}

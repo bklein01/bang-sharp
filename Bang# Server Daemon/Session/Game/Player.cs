@@ -336,26 +336,25 @@ namespace BangSharp.Server.Daemon
 		public void CheckMissed(Card card, CardResultCallback resultCallback)
 		{
 			if(character.IsMissed(card))
-			{
-				resultCallback(card, true);
-				return;
-			}
-			card.CheckMissed(resultCallback);
+				try
+				{
+					card.CheckMissed(resultCallback);
+				}
+				catch(GameException)
+				{
+					resultCallback(card, true);
+				}
+			else
+				card.CheckMissed(resultCallback);
 		}
 		public bool IsBang(Card card)
 		{
 			return character.IsBang(card);
 		}
-		public void CheckPlayCard(CardType card)
+		public void CheckPlayBang()
 		{
-			if(card == CardType.Bang && !UnlimitedBangs && bangsPlayed >= game.MaxBangs)
+			if(!UnlimitedBangs && bangsPlayed >= game.MaxBangs)
 				throw new CannotPlayBangException();
-
-			if(card == CardType.Beer && hitPoints == 0 && game.AlivePlayersCount == 2 && game.Players.Count != 2)
-				throw new CannotPlayBeerException();
-
-			if(!character.CanPlayCard(card))
-				throw new BadCardException();
 		}
 		
 		private sealed class BeerRescue : ResponseHandler

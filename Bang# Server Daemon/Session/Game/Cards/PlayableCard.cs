@@ -36,7 +36,6 @@ namespace BangSharp.Server.Daemon
 		{
 			if(Owner == null)
 				throw new BadCardException();
-			Owner.CheckPlayCard(Type);
 
 			CheckPlay();
 			OnPlay();
@@ -45,7 +44,6 @@ namespace BangSharp.Server.Daemon
 		{
 			if(Owner == null)
 				throw new BadCardException();
-			Owner.CheckPlayCard(Type);
 
 			CheckPlay();
 			OnPlayVirtually(card);

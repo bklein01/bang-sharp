@@ -1,3 +1,31 @@
+2012-06-11  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  
+
+	* TcpClientChannel.cs:
+	  Removed the TcpConnectionPool.PurgeConnections() method.
+
+	* TcpConnectionPool.cs:
+	  Removed the TcpConnectionPool.PurgeConnections() method.
+	Renamed the delegate types.
+
+	* TcpClientSinkProvider.cs:
+	  Added an OnDisconnected event handler so that disconnected
+	  sinks can be removed from cache and finalized.
+
+	* TcpServerChannel.cs:
+	  Removed the TcpConnectionPool.PurgeConnections() method.
+	Improved the TcpServerChannel.StartListening() method so that
+	  it can be called again after calling StopListening().
+	Added handling of SocketExceptions during stopping the
+	  listener.
+
+	* TcpConnection.cs:
+	  Added an OnDisconnected event handler so that disconnected
+	  sinks can be removed from cache and finalized.
+	Renamed the delegate types.
+
 2012-03-18  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

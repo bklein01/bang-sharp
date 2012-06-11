@@ -58,6 +58,8 @@ namespace BangSharp.Server.Daemon
 					else
 						Game.GameTable.PlayerRespondWithCard(card);
 
+				if(card != null && CausedBy != null && !CausedBy.HasCardEffect(card))
+					return;
 				if(--power == 0)
 					End();
 				else

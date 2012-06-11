@@ -45,7 +45,8 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		public ITransportHeaders Headers;
 		public Stream Stream;
 	}
-	internal delegate void OnMessageRecieved(Message message);
+	internal delegate void MessageRecieved(Message message);
+	internal delegate void Disconnected(TcpConnection conn);
 
 	internal class TcpConnection
 	{
@@ -332,8 +333,10 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		private BinaryReader reader;
 		private BinaryWriter writer;
 
-		public OnMessageRecieved OnRequestRecieved;
-		public OnMessageRecieved OnResponseRecieved;
+		public Disconnected OnDisconnected;
+
+		public MessageRecieved OnRequestRecieved;
+		public MessageRecieved OnResponseRecieved;
 
 		public Guid MachineID
 		{
@@ -381,6 +384,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 			pool.RemoveConnection(this);
 			StopListening();
+			OnDisconnected(this);
 		}
 
 		private void FireMessage(object state)

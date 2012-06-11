@@ -34,7 +34,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		private Dictionary<string, TcpConnection> hostConnections;
 		private List<TcpConnection> connections;
 
-		public OnMessageRecieved OnRequestRecieved;
+		public MessageRecieved OnRequestRecieved;
 
 		public TcpConnectionPool()
 		{
@@ -110,12 +110,6 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		public void RemoveConnection(TcpConnection conn)
 		{
 			connections.Remove(conn);
-		}
-
-		public void PurgeConnections()
-		{
-			foreach(TcpConnection conn in new List<TcpConnection>(connections))
-				conn.StopListening();
 		}
 	}
 }
