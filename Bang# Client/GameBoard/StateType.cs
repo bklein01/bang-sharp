@@ -1,4 +1,4 @@
-// Main.cs
+// StateType.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,24 +23,13 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
 
 namespace BangSharp.Client
 {
-	class MainClass
+	public enum StateType
 	{
-		public static void Main(string[] args)
-		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
-		}
+		Start,
+		End
 	}
 }
 

@@ -1,4 +1,4 @@
-// Main.cs
+// PlayingCardAnimator.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,50 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
+using System;
+using BangSharp.Client.GameBoard.States;
+using BangSharp.Client.GameBoard.Widgets;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Animators
 {
-	class MainClass
+	public class PlayingCardAnimator : CardAnimator<PlayingCardWidget, PlayingCardState>
 	{
-		public static void Main(string[] args)
+		private int id;
+
+		public int ID
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			get { return id; }
+		}
+
+		public PlayingCardAnimator(Animation anim, PlayingCardWidget widget)
+			: base(anim, widget)
+		{
+			this.id = widget.ID;
+		}
+
+		public override void Animate(double progress)
+		{
+			base.Animate(progress);
+			if(StartState.Type != EndState.Type)
+				if(progress <= 0.5)
+					Widget.Constriction = Math.Cos(progress * Math.PI);
+				else
+					Widget.Constriction = Math.Sin((progress - 0.5) * Math.PI);
+			else
+				Widget.Constriction = 1.0;
+
+			if(progress <= 0.5)
+			{
+				Widget.Type = StartState.Type;
+				Widget.Rank = StartState.Rank;
+				Widget.Suit = StartState.Suit;
+			}
+			else
+			{
+				Widget.Type = EndState.Type;
+				Widget.Rank = EndState.Rank;
+				Widget.Suit = EndState.Suit;
+			}
 		}
 	}
 }

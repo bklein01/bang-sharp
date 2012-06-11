@@ -1,4 +1,4 @@
-// Main.cs
+// RoleCardAnimator.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,34 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
+using System;
+using BangSharp.Client.GameBoard.States;
+using BangSharp.Client.GameBoard.Widgets;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Animators
 {
-	class MainClass
+	public class RoleCardAnimator : CardAnimator<RoleCardWidget, RoleCardState>
 	{
-		public static void Main(string[] args)
+		public RoleCardAnimator(Animation anim, RoleCardWidget widget)
+			: base(anim, widget)
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+		}
+
+		public override void Animate(double progress)
+		{
+			base.Animate(progress);
+			if(StartState.Role != EndState.Role)
+				if(progress <= 0.5)
+					Widget.Constriction = Math.Cos(progress * Math.PI);
+				else
+					Widget.Constriction = Math.Sin((progress - 0.5) * Math.PI);
+			else
+				Widget.Constriction = 1.0;
+
+			if(progress <= 0.5)
+				Widget.Role = StartState.Role;
+			else
+				Widget.Role = EndState.Role;
 		}
 	}
 }

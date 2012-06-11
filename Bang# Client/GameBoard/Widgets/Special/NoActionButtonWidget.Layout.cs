@@ -1,4 +1,4 @@
-// Main.cs
+// NoActionButtonWidget.Layout.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	class MainClass
+	public partial class NoActionButtonWidget
 	{
-		public static void Main(string[] args)
+		private Picture pic;
+		private Button button;
+
+		private void InitLayout()
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			this.pic = new Picture();
+			this.Children.Add(this.pic);
+
+			this.button = new Button();
+			this.pic.Children.Add(this.button);
 		}
 	}
 }

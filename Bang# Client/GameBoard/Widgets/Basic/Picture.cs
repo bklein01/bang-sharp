@@ -1,4 +1,4 @@
-// Main.cs
+// Picture.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,48 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	class MainClass
+	public class Picture : Bin
 	{
-		public static void Main(string[] args)
+		public Gdk.Pixbuf Pixbuf
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			get;
+			set;
+		}
+		public Picture()
+		{
+		}
+
+		protected override bool OnExposed(Cairo.Context cr, Cairo.Rectangle area)
+		{
+			if(Pixbuf == null)
+				return false;
+			int w = Pixbuf.Width;
+			int h = Pixbuf.Height;
+			cr.Scale(Allocation.Width / w, Allocation.Height / h);
+			Gdk.CairoHelper.SetSourcePixbuf(cr, Pixbuf, 0.0, 0.0);
+			cr.Paint();
+			return true;
+		}
+		
+		public override void SizeRequest(ref double width, ref double height, out double ratio)
+		{
+			if(Pixbuf == null)
+			{
+				base.SizeRequest(ref width, ref height, out ratio);
+				return;
+			}
+			int w = Pixbuf.Width;
+			int h = Pixbuf.Height;
+			ratio = -1;
+			if(width < 0 && height < 0)
+				ratio = w / h;
+			else if(width < 0)
+				width = w * (height / h);
+			else if(height < 0)
+				height = h * (width / w);
 		}
 	}
 }

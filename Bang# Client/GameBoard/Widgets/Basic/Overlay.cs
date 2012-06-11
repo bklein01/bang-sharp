@@ -1,8 +1,8 @@
-// CardWidget.cs
+// Overlay.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,46 +23,58 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using Gdk;
-namespace BangSharp.Client
-{
-	public class CardWidget : Gtk.DrawingArea
-	{
-		private Pixbuf original;
-		private Pixbuf resized;
+using Cairo;
 
-		protected CardWidget(Pixbuf pixbuf)
+namespace BangSharp.Client.GameBoard.Widgets
+{
+	public class Overlay : Widget
+	{
+		public Overlay()
 		{
-			original = pixbuf;
-			resized = null;
 		}
-		protected override bool OnExposeEvent(Gdk.EventExpose ev)
+
+		protected override void OnResized()
 		{
-			base.OnExposeEvent(ev);
-			Rectangle area = ev.Area;
-			if(resized != null)
-				ev.Window.DrawPixbuf(Style.BaseGC(Gtk.StateType.Normal), resized, area.X, area.Y, area.X, area.Y, area.Width, area.Height, RgbDither.None, 0, 0);
-			else if(original != null)
-				ev.Window.DrawPixbuf(Style.BaseGC(Gtk.StateType.Normal), original, area.X, area.Y, area.X, area.Y, area.Width, area.Height, RgbDither.None, 0, 0);
-			else return false;
-			return true;
+			foreach(Widget w in Children)
+				w.Reallocate(new Rectangle(0.0, 0.0, Allocation.Width, Allocation.Height));
 		}
-		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
+
+		public override void SizeRequest(ref double width, ref double height, out double ratio)
 		{
-			base.OnSizeAllocated(allocation);
-			if(allocation.Width == original.Width && allocation.Height == original.Height)
-				resized = null;
-			else
+			if(Children.Count == 0)
 			{
-				resized.Dispose();
-				resized = original.ScaleSimple(allocation.Width, allocation.Height, InterpType.Bilinear);
+				base.SizeRequest(ref width, ref height, out ratio);
+				return;
 			}
-		}
-		protected override void OnSizeRequested(ref Gtk.Requisition requisition)
-		{
-			requisition.Height = 400;
-			requisition.Width = 620;
+			double maxWidth = -1.0;
+			double maxHeight = -1.0;
+			double rat = -1.0;
+			foreach(Widget widget in Children)
+			{
+				double w = width;
+				double h = height;
+				double r;
+				widget.SizeRequest(ref w, ref h, out r);
+				if(r < 0.0)
+				{
+					if(w > maxWidth)
+						maxWidth = w;
+					if(h > maxHeight)
+						maxHeight = h;
+				}
+				else
+				{
+					if(rat < 0.0)
+						rat = r;
+					else if(r != rat)
+						rat = 0.0;
+				}
+			}
+			width = maxWidth;
+			height = maxHeight;
+			ratio = -1.0;
+			if(rat > 0.0 && maxWidth < 0.0 && maxHeight < 0.0)
+				ratio = rat;
 		}
 	}
 }

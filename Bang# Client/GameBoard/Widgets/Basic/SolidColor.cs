@@ -1,4 +1,4 @@
-// Main.cs
+// SolidColor.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
+using Cairo;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	class MainClass
+	public class SolidColor : Bin
 	{
-		public static void Main(string[] args)
+		public Color Color
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			get;
+			set;
+		}
+
+		public SolidColor()
+			: base()
+		{
+		}
+
+		protected override bool OnExposed(Context cr, Rectangle area)
+		{
+			cr.Color = Color;
+			cr.Rectangle(area);
+			cr.Fill();
+			return true;
 		}
 	}
 }

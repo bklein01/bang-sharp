@@ -1,4 +1,4 @@
-// Main.cs
+// MainTableWidget.Layout.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,23 +23,37 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gtk;
 
-namespace BangSharp.Client
+namespace BangSharp.Client.GameBoard.Widgets
 {
-	class MainClass
+	public partial class MainTableWidget
 	{
-		public static void Main(string[] args)
+		private Box box1;
+		private Box box2;
+		private CardPlaceholderWidget graveyardPlaceholder;
+		private Overlay overlay1;
+		private CardPlaceholderWidget deckPlaceholder;
+		private GeneralPlaceholderWidget selectionPlaceholder;
+
+		private void InitLayout()
 		{
-			Application.Init();
-			MainWindow win = new MainWindow();
-			win.Show();
-			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			this.box1 = new Box(Direction.Vertical);
+			this.Children.Add(this.box1);
+
+			this.box2 = new Box(Direction.Horizontal);
+			this.box1.Children.Add(this.box2);
+
+			this.graveyardPlaceholder = new CardPlaceholderWidget();
+			this.box2.Children.Add(this.graveyardPlaceholder);
+
+			this.overlay1 = new Overlay();
+			this.box2.Children.Add(this.overlay1);
+
+			this.deckPlaceholder = new CardPlaceholderWidget();
+			this.overlay1.Children.Add(this.deckPlaceholder);
+
+			this.selectionPlaceholder = new GeneralPlaceholderWidget();
+			this.box1.Children.Add(this.selectionPlaceholder);
 		}
 	}
 }
