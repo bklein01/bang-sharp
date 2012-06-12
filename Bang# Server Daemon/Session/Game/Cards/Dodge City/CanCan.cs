@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class CanCan : TargetCardTableCard
 	{
-		public CanCan(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.CanCan, suit, rank, RequestType.CancelCard)
+		public CanCan(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.CanCan, suit, rank, RequestType.CancelCard)
 		{
 		}
 

@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class RagTime : TargetCardGoldenCard
 	{
-		public RagTime(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.RagTime, suit, rank, RequestType.StealCard)
+		public RagTime(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.RagTime, suit, rank, RequestType.StealCard)
 		{
 		}
 		

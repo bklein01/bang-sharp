@@ -53,7 +53,8 @@ namespace BangSharp.Client.GameBoard
 				return resized;
 			if(resized != null)
 				resized.Dispose();
-			return resized = original.ScaleSimple((int)(height * Ratio), height, InterpType.Bilinear);
+			//Console.Error.WriteLine("DEBUG: {1:x} Prescaling card image: {0}", height, GetHashCode());
+			return resized = original.ScaleSimple((int)(height * Ratio), height, InterpType.Tiles);
 		}
 	
 		public void Dispose()

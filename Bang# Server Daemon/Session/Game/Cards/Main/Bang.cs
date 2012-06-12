@@ -31,8 +31,8 @@ namespace BangSharp.Server.Daemon.Cards
 		{
 			get { return Owner.WeaponRange; }
 		}
-		public Bang(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Bang, suit, rank, RequestType.ShotTarget)
+		public Bang(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Bang, suit, rank, RequestType.ShotTarget)
 		{
 		}
 

@@ -70,8 +70,8 @@ namespace BangSharp.Server.Daemon
 		}
 		private sealed class PlayerEventSender : EventSender<SessionPlayer>
 		{
-			public PlayerEventSender(SessionEventManager eventMgr)
-				: base(eventMgr)
+			public PlayerEventSender(SessionEventManager eventMgr) :
+				base(eventMgr)
 			{
 			}
 			protected override void OnError(SessionPlayer s, Exception e)
@@ -88,8 +88,8 @@ namespace BangSharp.Server.Daemon
 		}
 		private sealed class SpectatorEventSender : EventSender<SessionSpectator>
 		{
-			public SpectatorEventSender(SessionEventManager eventMgr)
-				: base(eventMgr)
+			public SpectatorEventSender(SessionEventManager eventMgr) :
+				base(eventMgr)
 			{
 			}
 			protected override void OnError(SessionSpectator s, Exception e)

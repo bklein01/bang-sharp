@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Springfield : TargetPlayerGoldenCard
 	{
-		public Springfield(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Springfield, suit, rank, RequestType.ShotTarget)
+		public Springfield(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Springfield, suit, rank, RequestType.ShotTarget)
 		{
 		}
 		

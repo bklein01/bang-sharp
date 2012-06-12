@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Characters
 			private ElGringo parent;
 			private Player targetPlayer;
 
-			public ElGringoResponseHandler(ElGringo parent, Player targetPlayer)
-				: base(RequestType.StealCard, parent.Player)
+			public ElGringoResponseHandler(ElGringo parent, Player targetPlayer) :
+				base(RequestType.StealCard, parent.Player)
 			{
 				this.parent = parent;
 				this.targetPlayer = targetPlayer;
@@ -59,8 +59,8 @@ namespace BangSharp.Server.Daemon.Characters
 			get { return 3; }
 		}
 		
-		public ElGringo(Player player)
-			: base(player, CharacterType.ElGringo)
+		public ElGringo(Player player) :
+			base(player, CharacterType.ElGringo)
 		{
 		}
 		

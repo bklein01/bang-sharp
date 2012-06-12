@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon
 {
 	public abstract class GeneralTableCard : PlayableTableCard
 	{
-		protected GeneralTableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank)
-			: base(game, id, type, suit, rank)
+		protected GeneralTableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank) :
+			base(game, id, type, suit, rank)
 		{
 		}
 

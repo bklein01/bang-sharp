@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return 1; }
 		}
 
-		public Derringer(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Derringer, suit, rank, RequestType.ShotTarget)
+		public Derringer(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Derringer, suit, rank, RequestType.ShotTarget)
 		{
 		}
 

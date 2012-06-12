@@ -29,8 +29,8 @@ namespace BangSharp.Server.Daemon.Characters
 	{
 		private bool drawExtraCard;
 
-		public BlackJack(Player player)
-			: base(player, CharacterType.BlackJack)
+		public BlackJack(Player player) :
+			base(player, CharacterType.BlackJack)
 		{
 		}
 

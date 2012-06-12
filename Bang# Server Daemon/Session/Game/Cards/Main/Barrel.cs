@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Barrel : TableCard
 	{
-		public Barrel(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Barrel, suit, rank)
+		public Barrel(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Barrel, suit, rank)
 		{
 		}
 		

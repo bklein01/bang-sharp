@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Characters
 			get { return 3; }
 		}
 		
-		public ApacheKid(Player player)
-			: base(player, CharacterType.ApacheKid)
+		public ApacheKid(Player player) :
+			base(player, CharacterType.ApacheKid)
 		{
 		}
 		

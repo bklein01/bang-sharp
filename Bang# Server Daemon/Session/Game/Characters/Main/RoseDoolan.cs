@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Characters
 			get { return 1; }
 		}
 		
-		public RoseDoolan(Player player)
-			: base(player, CharacterType.RoseDoolan)
+		public RoseDoolan(Player player) :
+			base(player, CharacterType.RoseDoolan)
 		{
 		}
 	}

@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return 2; }
 		}
 
-		public Schofield(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Schofield, suit, rank)
+		public Schofield(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Schofield, suit, rank)
 		{
 		}
 	}

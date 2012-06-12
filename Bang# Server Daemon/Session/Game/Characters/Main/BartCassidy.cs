@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Characters
 {
 	public sealed class BartCassidy : Character
 	{
-		public BartCassidy(Player player)
-			: base(player, CharacterType.BartCassidy)
+		public BartCassidy(Player player) :
+			base(player, CharacterType.BartCassidy)
 		{
 		}
 

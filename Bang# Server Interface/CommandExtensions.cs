@@ -44,7 +44,7 @@ namespace BangSharp.Server.Interface
 				serverAdmin.ResetSessions();
 				ConsoleHelper.SuccessLine("All sessions ended!");
 			});
-			NestedCommand<IServerAdmin, ISessionAdmin > sessionCommand = new NestedCommand<IServerAdmin, ISessionAdmin>((serverAdmin, cmd) =>
+			NestedCommand<IServerAdmin, ISessionAdmin> sessionCommand = new NestedCommand<IServerAdmin, ISessionAdmin>((serverAdmin, cmd) =>
 			{
 				try
 				{

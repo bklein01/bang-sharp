@@ -34,14 +34,14 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return 1; }
 		}
 		
-		public Dynamite(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Dynamite, suit, rank)
+		public Dynamite(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Dynamite, suit, rank)
 		{
 		}
 		
 		protected override void OnPredrawCheck()
 		{
-			Owner.CheckDeck(this, c => c.Suit != CardSuit.Spades || c.Rank < CardRank.Two && c.Rank > CardRank.Nine, OnResult);
+			Owner.CheckDeck(this, c => c.Suit != CardSuit.Spades || c.Rank < CardRank.Two || c.Rank > CardRank.Nine, OnResult);
 		}
 		
 		private void OnResult(Card causedBy, bool result)

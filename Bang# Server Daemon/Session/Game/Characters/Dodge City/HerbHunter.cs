@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Characters
 {
 	public sealed class HerbHunter : Character
 	{
-		public HerbHunter(Player player)
-			: base(player, CharacterType.HerbHunter)
+		public HerbHunter(Player player) :
+			base(player, CharacterType.HerbHunter)
 		{
 		}
 		

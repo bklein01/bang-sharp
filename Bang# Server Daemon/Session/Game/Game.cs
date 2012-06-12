@@ -244,8 +244,8 @@ namespace BangSharp.Server.Daemon
 
 		private sealed class TakeDeadPlayersCardResponseHandler : ResponseHandler
 		{
-			public TakeDeadPlayersCardResponseHandler(Player dead, Player taker)
-				: base(RequestType.TakeDeadPlayersCard, taker, dead)
+			public TakeDeadPlayersCardResponseHandler(Player dead, Player taker) :
+				base(RequestType.TakeDeadPlayersCard, taker, dead)
 			{
 			}
 

@@ -33,8 +33,8 @@ namespace BangSharp.Server.Daemon.Cards
 		{
 			private Jail parent;
 
-			public JailResponseHandler(Jail parent)
-				: base(RequestType.JailTarget, parent.Owner)
+			public JailResponseHandler(Jail parent) :
+				base(RequestType.JailTarget, parent.Owner)
 			{
 				this.parent = parent;
 			}
@@ -65,8 +65,8 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return 2; }
 		}
 
-		public Jail(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Jail, suit, rank)
+		public Jail(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Jail, suit, rank)
 		{
 		}
 

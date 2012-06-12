@@ -398,10 +398,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Reads and executes a command for the nested command template.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template.
 		/// </param>
-		/// <typeparam name='Out'>
+		/// <typeparam name="Out">
 		/// The output type of the command template.
 		/// </typeparam>
 		public static void ReadAndExecute<Out>(this NestedCommand<Out> command)
@@ -411,13 +411,13 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Reads and executes a command for the command template.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template.
 		/// </param>
-		/// <param name='param'>
+		/// <param name="param">
 		/// The parameter to be passed to the command template.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The output type of the command template.
 		/// </typeparam>
 		public static void ReadAndExecute<In>(this Command<In> command, In param)
@@ -428,7 +428,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints the specified object to the console.
 		/// </summary>
-		/// <param name='value'>
+		/// <param name="value">
 		/// The <see cref="object"/> to print.
 		/// </param>
 		public static void Print(object value)
@@ -446,7 +446,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints the specified text string to the console.
 		/// </summary>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The <see cref="string"/> to print.
 		/// </param>
 		public static void Print(string text)
@@ -464,10 +464,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints the specified format string with arguments to the console.
 		/// </summary>
-		/// <param name='format'>
+		/// <param name="format">
 		/// The <see cref="string"/> to print.
 		/// </param>
-		/// <param name='args'>
+		/// <param name="args">
 		/// The arguments for the format string.
 		/// </param>
 		public static void Print(string format, params object[] args)
@@ -500,7 +500,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a line with the specified object to the console.
 		/// </summary>
-		/// <param name='value'>
+		/// <param name="value">
 		/// The <see cref="object"/> to print.
 		/// </param>
 		public static void PrintLine(object value)
@@ -518,7 +518,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a line with the specified text string to the console.
 		/// </summary>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The <see cref="string"/> to print.
 		/// </param>
 		public static void PrintLine(string text)
@@ -536,10 +536,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a line with the specified format string with arguments to the console.
 		/// </summary>
-		/// <param name='format'>
+		/// <param name="format">
 		/// The <see cref="string"/> to print.
 		/// </param>
-		/// <param name='args'>
+		/// <param name="args">
 		/// The arguments for the format string.
 		/// </param>
 		public static void PrintLine(string format, params object[] args)
@@ -557,7 +557,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a debug line with the specified object to the standard error stream.
 		/// </summary>
-		/// <param name='value'>
+		/// <param name="value">
 		/// The <see cref="object"/> to print.
 		/// </param>
 		public static void DebugLine(object value)
@@ -576,7 +576,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a debug line with the specified text string to the standard error stream.
 		/// </summary>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The <see cref="string"/> to print.
 		/// </param>
 		public static void DebugLine(string text)
@@ -595,10 +595,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a line with the specified format string with arguments to the console.
 		/// </summary>
-		/// <param name='format'>
+		/// <param name="format">
 		/// The <see cref="string"/> to print.
 		/// </param>
-		/// <param name='args'>
+		/// <param name="args">
 		/// The arguments for the format string.
 		/// </param>
 		public static void DebugLine(string format, params object[] args)
@@ -624,7 +624,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a line with the specified text string to the console.
 		/// </summary>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The <see cref="string"/> to print.
 		/// </param>
 		public static void SuccessLine(string text)
@@ -642,10 +642,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a line with the specified format string with arguments to the console.
 		/// </summary>
-		/// <param name='format'>
+		/// <param name="format">
 		/// The <see cref="string"/> to print.
 		/// </param>
-		/// <param name='args'>
+		/// <param name="args">
 		/// The arguments for the format string.
 		/// </param>
 		public static void SuccessLine(string format, params object[] args)
@@ -663,7 +663,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints an error line with the specified text string to the console.
 		/// </summary>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The <see cref="string"/> to print.
 		/// </param>
 		public static void ErrorLine(string text)
@@ -682,10 +682,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints an error line with the specified format string with arguments to the console.
 		/// </summary>
-		/// <param name='format'>
+		/// <param name="format">
 		/// The <see cref="string"/> to print.
 		/// </param>
-		/// <param name='args'>
+		/// <param name="args">
 		/// The arguments for the format string.
 		/// </param>
 		public static void ErrorLine(string format, params object[] args)
@@ -704,7 +704,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a server event line with the specified text string to the console.
 		/// </summary>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The <see cref="string"/> to print.
 		/// </param>
 		public static void ServerEvent(string message)
@@ -723,10 +723,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a server event line with the specified format string with arguments to the console.
 		/// </summary>
-		/// <param name='format'>
+		/// <param name="format">
 		/// The <see cref="string"/> to print.
 		/// </param>
-		/// <param name='args'>
+		/// <param name="args">
 		/// The arguments for the format string.
 		/// </param>
 		public static void ServerEvent(string format, params object[] args)
@@ -745,7 +745,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a session event line with the specified text string to the console.
 		/// </summary>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The <see cref="string"/> to print.
 		/// </param>
 		public static void SessionEvent(string message)
@@ -764,10 +764,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a session event line with the specified format string with arguments to the console.
 		/// </summary>
-		/// <param name='format'>
+		/// <param name="format">
 		/// The <see cref="string"/> to print.
 		/// </param>
-		/// <param name='args'>
+		/// <param name="args">
 		/// The arguments for the format string.
 		/// </param>
 		public static void SessionEvent(string format, params object[] args)
@@ -786,7 +786,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a game event line with the specified text string to the console.
 		/// </summary>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The <see cref="string"/> to print.
 		/// </param>
 		public static void GameEvent(string message)
@@ -805,7 +805,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Prints a game event line with the specified text string to the console.
 		/// </summary>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The <see cref="string"/> to print.
 		/// </param>
 		public static void GameEvent(string format, params object[] args)
@@ -825,10 +825,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a card collection command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a card collection command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeCardCollectionCommand<In>(this NestedCommand<In, ReadOnlyCollection<ICard>> command)
@@ -846,10 +846,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a player collection command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a player collection command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakePlayerCollectionCommand<In>(this NestedCommand<In, ReadOnlyCollection<IPublicPlayerView>> command)
@@ -867,10 +867,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a public player view command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a public player view command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakePublicPlayerViewCommand<In>(this NestedCommand<In, IPublicPlayerView> command)
@@ -897,10 +897,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a private player view command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a private player view command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakePrivatePlayerViewCommand<In>(this NestedCommand<In, IPrivatePlayerView> command)
@@ -926,10 +926,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a game command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a game command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeGameCommand<In>(this NestedCommand<In, IGame> command)
@@ -1026,10 +1026,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a session player command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a session player command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeSessionPlayerCommand<In>(this NestedCommand<In, IPlayer> command)
@@ -1052,10 +1052,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a session spectator command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a session spectator command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeSessionSpectatorCommand<In>(this NestedCommand<In, ISpectator> command)
@@ -1065,10 +1065,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a session player collection command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a session player collection command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeSessionPlayerCollectionCommand<In>(this NestedCommand<In, ReadOnlyCollection<IPlayer>> command)
@@ -1086,10 +1086,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a session spectator collection command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a session spectator collection command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeSessionSpectatorCollectionCommand<In>(this NestedCommand<In, ReadOnlyCollection<ISpectator>> command)
@@ -1107,10 +1107,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a session command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a session command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeSessionCommand<In>(this NestedCommand<In, ISession> command)
@@ -1182,10 +1182,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a session collection command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a session collection command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeSessionCollectionCommand<In>(this NestedCommand<In, ReadOnlyCollection<ISession>> command)
@@ -1203,10 +1203,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a server command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a server command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeServerCommand<In>(this NestedCommand<In, IServer> command)
@@ -1243,10 +1243,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a player game control command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a player game control command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakePlayerGameControlCommand<In>(this NestedCommand<In, IPlayerControl> command)
@@ -1326,10 +1326,10 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a spectator game control command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a spectator game control command.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeSpectatorGameControlCommand<In>(this NestedCommand<In, ISpectatorControl> command, OnDisconnected onDisconnected)
@@ -1346,13 +1346,13 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a player session control command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a player session control command.
 		/// </param>
-		/// <param name='onDisconnected'>
+		/// <param name="onDisconnected">
 		/// The delegate to be invoked when the session control is disconnected.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakePlayerSessionControlCommand<In>(this NestedCommand<In, IPlayerSessionControl> command, OnDisconnected onDisconnected)
@@ -1402,13 +1402,13 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Makes the command template a spectator session control command.
 		/// </summary>
-		/// <param name='command'>
+		/// <param name="command">
 		/// The command template to make a spectator session control command.
 		/// </param>
-		/// <param name='onDisconnected'>
+		/// <param name="onDisconnected">
 		/// The delegate to be invoked when the session control is disconnected.
 		/// </param>
-		/// <typeparam name='In'>
+		/// <typeparam name="In">
 		/// The type of the input parameter of the command.
 		/// </typeparam>
 		public static void MakeSpectatorSessionControlCommand<In>(this NestedCommand<In, ISpectatorSessionControl> command, OnDisconnected onDisconnected)

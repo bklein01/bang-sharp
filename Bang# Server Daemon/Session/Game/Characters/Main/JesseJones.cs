@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Characters
 			private JesseJones parent;
 			private CardCallback callback;
 
-			public JesseJonesResponseHandler(JesseJones parent, CardCallback callback)
-				: base(RequestType.StealCard, parent.Player)
+			public JesseJonesResponseHandler(JesseJones parent, CardCallback callback) :
+				base(RequestType.StealCard, parent.Player)
 			{
 				this.parent = parent;
 				this.callback = callback;
@@ -65,8 +65,8 @@ namespace BangSharp.Server.Daemon.Characters
 				End();
 			}
 		}
-		public JesseJones(Player player)
-			: base(player, CharacterType.JesseJones)
+		public JesseJones(Player player) :
+			base(player, CharacterType.JesseJones)
 		{
 		}
 		

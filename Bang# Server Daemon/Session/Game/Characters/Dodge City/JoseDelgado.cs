@@ -31,8 +31,8 @@ namespace BangSharp.Server.Daemon.Characters
 		{
 			private JoseDelgado parent;
 			
-			public JoseDelgadoResponseHandler(JoseDelgado parent)
-				: base(RequestType.JoseDelgado, parent.Player)
+			public JoseDelgadoResponseHandler(JoseDelgado parent) :
+				base(RequestType.JoseDelgado, parent.Player)
 			{
 				this.parent = parent;
 			}
@@ -60,8 +60,8 @@ namespace BangSharp.Server.Daemon.Characters
 		}
 		private int abilityUses;
 		
-		public JoseDelgado(Player player)
-			: base(player, CharacterType.JoseDelgado)
+		public JoseDelgado(Player player) :
+			base(player, CharacterType.JoseDelgado)
 		{
 		}
 		

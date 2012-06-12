@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Characters
 			get { return 2; }
 		}
 		
-		public SlabTheKiller(Player player)
-			: base(player, CharacterType.SlabTheKiller)
+		public SlabTheKiller(Player player) :
+			base(player, CharacterType.SlabTheKiller)
 		{
 		}
 	}

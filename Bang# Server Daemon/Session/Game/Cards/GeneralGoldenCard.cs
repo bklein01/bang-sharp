@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon
 {
 	public abstract class GeneralGoldenCard : GoldenCard
 	{
-		protected GeneralGoldenCard(Game game, int id, CardType type, CardSuit suit, CardRank rank)
-			: base(game, id, type, suit, rank)
+		protected GeneralGoldenCard(Game game, int id, CardType type, CardSuit suit, CardRank rank) :
+			base(game, id, type, suit, rank)
 		{
 		}
 

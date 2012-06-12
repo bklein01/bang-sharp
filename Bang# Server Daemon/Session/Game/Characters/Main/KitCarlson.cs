@@ -31,8 +31,8 @@ namespace BangSharp.Server.Daemon.Characters
 		{
 			private KitCarlson parent;
 			
-			public KitCarlsonResponseHandler(KitCarlson parent)
-				: base(RequestType.KitCarlson, parent.Player)
+			public KitCarlsonResponseHandler(KitCarlson parent) :
+				base(RequestType.KitCarlson, parent.Player)
 			{
 				this.parent = parent;
 			}
@@ -62,8 +62,8 @@ namespace BangSharp.Server.Daemon.Characters
 			}
 		}
 		
-		public KitCarlson(Player player)
-			: base(player, CharacterType.KitCarlson)
+		public KitCarlson(Player player) :
+			base(player, CharacterType.KitCarlson)
 		{
 		}
 		

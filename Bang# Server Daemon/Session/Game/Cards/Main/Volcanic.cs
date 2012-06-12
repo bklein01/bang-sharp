@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return true; }
 		}
 
-		public Volcanic(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Volcanic, suit, rank)
+		public Volcanic(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Volcanic, suit, rank)
 		{
 		}
 	}

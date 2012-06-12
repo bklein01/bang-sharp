@@ -35,10 +35,10 @@ namespace BangSharp.Client.GameBoard.Widgets
 	/// This widget is used to manage the animated part of the game board.
 	/// </summary>
 	/// <remarks>
-	/// Animation layer listens to session events and maintains a queue of <see cref='BangSharp.Clent.GameBoard.Events.Event'/>
+	/// Animation layer listens to session events and maintains a queue of <see cref="BangSharp.Clent.GameBoard.Events.Event"/>
 	/// objects ('event object'). When an event is recieved, a corresponding event object is created and added to the queue.
 	/// For each event an animation is played. Whenever there is no animation playing and a new event object is available, a new
-	/// <see cref='BangSharp.Client.GameBoard.Animation'/> object ('animation object') is created from that event object. The
+	/// <see cref="BangSharp.Client.GameBoard.Animation"/> object ('animation object') is created from that event object. The
 	/// animation object is then launched, that is, the animation starts playing. When the animation ends, it notifies animation
 	/// layer which starts another animation (if possible).
 	/// </remarks>
@@ -550,7 +550,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 		/// <returns>
 		/// The playing card widget with the specified ID.
 		/// </returns>
-		/// <param name='cardId'>
+		/// <param name="cardId">
 		/// The card ID.
 		/// </param>
 		public PlayingCardWidget GetPlayingCardWidget(int cardId)
@@ -567,7 +567,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 		/// <summary>
 		/// Removes the playing card widget with the specified ID.
 		/// </summary>
-		/// <param name='cardId'>
+		/// <param name="cardId">
 		/// The card ID.
 		/// </param>
 		public void RemovePlayingCardWidget(int cardId)
@@ -582,7 +582,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 		/// <returns>
 		/// The role widget for the player with specified ID.
 		/// </returns>
-		/// <param name='playerId'>
+		/// <param name="playerId">
 		/// The player ID.
 		/// </param>
 		public RoleCardWidget GetPlayerRoleWidget(int playerId)
@@ -595,7 +595,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 		/// <returns>
 		/// The character widget for the player with specified ID.
 		/// </returns>
-		/// <param name='playerId'>
+		/// <param name="playerId">
 		/// The player ID.
 		/// </param>
 		public CharacterCardWidget GetPlayerCharacterWidget(int playerId)
@@ -633,7 +633,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 				}
 				else
 					animQueue.Enqueue(anim);
-				System.Console.Error.WriteLine("DEBUG: AnimQueue count: {0}", animQueue.Count);
+				//System.Console.Error.WriteLine("DEBUG: AnimQueue count: {0}", animQueue.Count);
 			}
 		}
 	}

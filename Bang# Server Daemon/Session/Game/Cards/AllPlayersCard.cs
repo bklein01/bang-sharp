@@ -31,14 +31,10 @@ namespace BangSharp.Server.Daemon
 	{
 		private bool includeSelf;
 
-		protected AllPlayersCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, bool includeSelf)
-			: base(game, id, type, suit, rank)
+		protected AllPlayersCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, bool includeSelf = false) :
+			base(game, id, type, suit, rank)
 		{
 			this.includeSelf = includeSelf;
-		}
-		protected AllPlayersCard(Game game, int id, CardType type, CardSuit suit, CardRank rank)
-			: this(game, id, type, suit, rank, false)
-		{
 		}
 
 		protected override void OnPlay()

@@ -54,8 +54,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			set;
 		}
 
-		public Label()
-			: base()
+		public Label() : base()
 		{
 			layout = new Pango.Layout(Gdk.PangoHelper.ContextGet());
 		}

@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class PonyExpress : GeneralTableCard
 	{
-		public PonyExpress(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.PonyExpress, suit, rank)
+		public PonyExpress(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.PonyExpress, suit, rank)
 		{
 		}
 

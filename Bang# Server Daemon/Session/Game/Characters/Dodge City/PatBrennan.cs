@@ -33,8 +33,8 @@ namespace BangSharp.Server.Daemon.Characters
 		{
 			private PatBrennan parent;
 			
-			public PatBrennanResponseHandler(PatBrennan parent)
-				: base(RequestType.PatBrennan, parent.Player)
+			public PatBrennanResponseHandler(PatBrennan parent) :
+				base(RequestType.PatBrennan, parent.Player)
 			{
 				this.parent = parent;
 			}
@@ -55,8 +55,8 @@ namespace BangSharp.Server.Daemon.Characters
 				End();
 			}
 		}
-		public PatBrennan(Player player)
-			: base(player, CharacterType.PatBrennan)
+		public PatBrennan(Player player) :
+			base(player, CharacterType.PatBrennan)
 		{
 		}
 		

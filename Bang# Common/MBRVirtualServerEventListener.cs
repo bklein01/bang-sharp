@@ -31,8 +31,8 @@ namespace BangSharp
 	/// MBR virtual server event listener.
 	/// </summary>
 	/// <remarks>
-	/// A base class for server event listeners with all memebers (except for the <see cref='BangSharp.IEventListener.Ping()'/> method) implemented as virtual.
-	/// Derives from <see cref='BangSharp.ImmortalMarshalByRefObject'/>.
+	/// A base class for server event listeners with all memebers (except for the <see cref="BangSharp.IEventListener.Ping()"/> method) implemented as virtual.
+	/// Derives from <see cref="BangSharp.ImmortalMarshalByRefObject"/>.
 	/// </remarks>
 	public class MBRVirtualServerEventListener : ImmortalMarshalByRefObject, IServerEventListener
 	{

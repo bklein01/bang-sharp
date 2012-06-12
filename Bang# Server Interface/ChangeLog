@@ -1,3 +1,11 @@
+2012-06-12  WOnder93  <omosnacek@gmail.com>
+
+	* CommandExtensions.cs:
+	  Small formatting fix.
+
+	* AssemblyInfo.cs:
+	  Updated copyright years.
+
 2012-06-11  WOnder93  <omosnacek@gmail.com>
 
 	* Bang# Server Interface.csproj:

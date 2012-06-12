@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class CatBalou : TargetCardCard
 	{
-		public CatBalou(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.CatBalou, suit, rank, RequestType.CancelCard)
+		public CatBalou(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.CatBalou, suit, rank, RequestType.CancelCard)
 		{
 		}
 

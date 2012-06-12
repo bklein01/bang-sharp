@@ -1,3 +1,42 @@
+2012-06-12  WOnder93  <omosnacek@gmail.com>
+
+	* ConnectionManager.cs:
+	* AnimationLayer.cs:
+	  Use double quotes in documentation.
+
+	* AssemblyInfo.cs:
+	  Updated copyright years.
+
+	* AllocationManager.cs:
+	* Bin.cs:
+	* Label.cs:
+	* Button.cs:
+	* Padding.cs:
+	* SolidColor.cs:
+	* RoleCardAnimator.cs:
+	* RootWidget.cs:
+	* PlayingCardAnimator.cs:
+	* RoleCardWidget.cs:
+	* CharacterCardAnimator.cs:
+	* PlaceholderWidget.cs:
+	* PlayingCardWidget.cs:
+	  Reformatted ' : base()'/' : this()'.
+
+	* Card.cs:
+	  Changed scaling interpolation type.
+
+	* Animation.cs:
+	  Use double quotes in documentation.
+	Animation delay shortened.
+
+	* CardWidget.cs:
+	  Reformatted ' : base()'/' : this()'.
+	Apply pre-scaling on card images so that the game board
+	  renders faster.
+
+	* gui.stetic:
+	  Changed MainWindow's design size.
+
 2012-06-11  WOnder93  <omosnacek@gmail.com>
 
 	* ConnectionManager.cs:

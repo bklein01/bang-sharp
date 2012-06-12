@@ -63,8 +63,8 @@ namespace BangSharp.Client.GameBoard
 				get { return animators; }
 			}
 
-			public PlayingCardListAllocator(AllocationManager parent, PlaceholderWidget placeholder)
-				: base(parent, placeholder)
+			public PlayingCardListAllocator(AllocationManager parent, PlaceholderWidget placeholder) :
+				base(parent, placeholder)
 			{
 				animators = new List<PlayingCardAnimator>();
 			}
@@ -99,8 +99,8 @@ namespace BangSharp.Client.GameBoard
 				set;
 			}
 
-			public LifePointsCardAllocator(AllocationManager parent, PlaceholderWidget placeholder, CharacterCardAnimator animator)
-				: base(parent, placeholder)
+			public LifePointsCardAllocator(AllocationManager parent, PlaceholderWidget placeholder, CharacterCardAnimator animator) :
+				base(parent, placeholder)
 			{
 				this.animator = animator;
 			}
@@ -128,8 +128,8 @@ namespace BangSharp.Client.GameBoard
 				get { return animator; }
 			}
 
-			public RoleCardAllocator(AllocationManager parent, PlaceholderWidget placeholder, RoleCardAnimator animator)
-				: base(parent, placeholder)
+			public RoleCardAllocator(AllocationManager parent, PlaceholderWidget placeholder, RoleCardAnimator animator) :
+				base(parent, placeholder)
 			{
 				this.animator = animator;
 			}

@@ -36,8 +36,8 @@ namespace BangSharp.Server.Daemon
 			get { return 0; }
 		}
 
-		protected TableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank)
-			: base(game, id, type, suit, rank)
+		protected TableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank) :
+			base(game, id, type, suit, rank)
 		{
 			playBlocked = false;
 		}

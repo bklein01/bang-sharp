@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return 1; }
 		}
 
-		public Silver(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Silver, suit, rank)
+		public Silver(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Silver, suit, rank)
 		{
 		}
 	}

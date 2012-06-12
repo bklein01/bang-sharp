@@ -33,16 +33,12 @@ namespace BangSharp.Server.Daemon
 		private List<Card> barrelsChecked;
 		private bool abilityUsed;
 
-		public ShotResponseHandler(Player targetPlayer, Player causedBy, int power)
-			: base(RequestType.Shot, targetPlayer, causedBy)
+		public ShotResponseHandler(Player targetPlayer, Player causedBy, int power = 1) :
+			base(RequestType.Shot, targetPlayer, causedBy)
 		{
 			this.power = power;
 			barrelsChecked = new List<Card>();
 			abilityUsed = false;
-		}
-		public ShotResponseHandler(Player targetPlayer, Player causedBy)
-			: this(targetPlayer, causedBy, 1)
-		{
 		}
 
 		private void OnResult(Card card, bool result)

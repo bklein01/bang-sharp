@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Howitzer : AllPlayersTableCard
 	{
-		public Howitzer(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Howitzer, suit, rank)
+		public Howitzer(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Howitzer, suit, rank)
 		{
 		}
 

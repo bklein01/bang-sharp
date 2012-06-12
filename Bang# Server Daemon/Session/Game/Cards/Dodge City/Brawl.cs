@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Brawl : AllPlayersCardGoldenCard
 	{
-		public Brawl(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Brawl, suit, rank, RequestType.CancelCard)
+		public Brawl(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Brawl, suit, rank, RequestType.CancelCard)
 		{
 		}
 		

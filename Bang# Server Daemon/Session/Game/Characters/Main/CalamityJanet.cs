@@ -29,8 +29,8 @@ namespace BangSharp.Server.Daemon.Characters
 	{
 		private Card bang;
 
-		public CalamityJanet(Player player)
-			: base(player, CharacterType.CalamityJanet)
+		public CalamityJanet(Player player) :
+			base(player, CharacterType.CalamityJanet)
 		{
 			bang = Card.GetCard(Game, 0, CardType.Bang, CardSuit.Unknown, CardRank.Unknown);
 		}

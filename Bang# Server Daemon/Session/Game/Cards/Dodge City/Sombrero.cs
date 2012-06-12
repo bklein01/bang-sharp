@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Sombrero : TableCard
 	{
-		public Sombrero(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Sombrero, suit, rank)
+		public Sombrero(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Sombrero, suit, rank)
 		{
 		}
 

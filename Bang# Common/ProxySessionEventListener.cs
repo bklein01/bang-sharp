@@ -42,7 +42,7 @@ namespace BangSharp
 		private List<ISpectatorSessionEventListener> spectatorListeners;
 
 		/// <summary>
-		/// Gets or sets a value to return as the <see cref='BangSharp.IPlayerSessionEventListener.IsAI'/> property.
+		/// Gets or sets a value to return as the <see cref="BangSharp.IPlayerSessionEventListener.IsAI"/> property.
 		/// </summary>
 		/// <value>
 		/// The value to use.
@@ -65,7 +65,7 @@ namespace BangSharp
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref='BangSharp.ProxySessionEventListener'/> class.
+		/// Initializes a new instance of the <see cref="BangSharp.ProxySessionEventListener"/> class.
 		/// </summary>
 		public ProxySessionEventListener()
 		{
@@ -77,7 +77,7 @@ namespace BangSharp
 		/// <summary>
 		/// Adds the listener to the list of member listeners.
 		/// </summary>
-		/// <param name='listener'>
+		/// <param name="listener">
 		/// The listener to add.
 		/// </param>
 		public void AddListener(ISessionEventListener listener)
@@ -92,7 +92,7 @@ namespace BangSharp
 		/// <summary>
 		/// Adds the listener to the list of member listeners.
 		/// </summary>
-		/// <param name='listener'>
+		/// <param name="listener">
 		/// The listener to add.
 		/// </param>
 		public void AddListener(IPlayerSessionEventListener listener)
@@ -109,7 +109,7 @@ namespace BangSharp
 		/// <summary>
 		/// Adds the listener to the list of member listeners.
 		/// </summary>
-		/// <param name='listener'>
+		/// <param name="listener">
 		/// The listener to add.
 		/// </param>
 		public void AddListener(ISpectatorSessionEventListener listener)
@@ -126,7 +126,7 @@ namespace BangSharp
 		/// <summary>
 		/// Removes the listener from the list of member listeners.
 		/// </summary>
-		/// <param name='listener'>
+		/// <param name="listener">
 		/// The listener to remove.
 		/// </param>
 		public void RemoveListener(ISessionEventListener listener)

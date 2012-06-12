@@ -31,8 +31,8 @@ namespace BangSharp.Server.Daemon.Characters
 		{
 			get { return 2; }
 		}
-		public TequilaJoe(Player player)
-			: base(player, CharacterType.TequilaJoe)
+		public TequilaJoe(Player player) :
+			base(player, CharacterType.TequilaJoe)
 		{
 		}
 	}

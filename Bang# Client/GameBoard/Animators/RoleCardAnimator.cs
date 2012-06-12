@@ -31,8 +31,8 @@ namespace BangSharp.Client.GameBoard.Animators
 {
 	public class RoleCardAnimator : CardAnimator<RoleCardWidget, RoleCardState>
 	{
-		public RoleCardAnimator(Animation anim, RoleCardWidget widget)
-			: base(anim, widget)
+		public RoleCardAnimator(Animation anim, RoleCardWidget widget) :
+			base(anim, widget)
 		{
 		}
 

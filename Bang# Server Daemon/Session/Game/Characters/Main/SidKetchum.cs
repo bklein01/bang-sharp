@@ -34,8 +34,8 @@ namespace BangSharp.Server.Daemon.Characters
 			private SidKetchum parent;
 			private List<Card> selected;
 			
-			public SidKetchumResponseHandler(SidKetchum parent)
-				: base(RequestType.SidKetchum, parent.Player)
+			public SidKetchumResponseHandler(SidKetchum parent) :
+				base(RequestType.SidKetchum, parent.Player)
 			{
 				this.parent = parent;
 				this.selected = new List<Card>(2);
@@ -64,8 +64,8 @@ namespace BangSharp.Server.Daemon.Characters
 				End();
 			}
 		}
-		public SidKetchum(Player player)
-			: base(player, CharacterType.SidKetchum)
+		public SidKetchum(Player player) :
+			base(player, CharacterType.SidKetchum)
 		{
 		}
 		

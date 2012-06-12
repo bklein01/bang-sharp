@@ -30,7 +30,7 @@ namespace BangSharp.ConsoleUtils
 	/// <summary>
 	/// Represents a command template.
 	/// </summary>
-	/// <typeparam name='In'>
+	/// <typeparam name="In">
 	/// The type of the input parameter of the command template.
 	/// </typeparam>
 	public abstract class Command<In> : ICommand
@@ -48,17 +48,17 @@ namespace BangSharp.ConsoleUtils
 		/// <returns>
 		/// The subcommand template with the specified name.
 		/// </returns>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The name of the subcommand to get.
 		/// </param>
 		public abstract ICommand GetSubcommand(string text);
 		/// <summary>
 		/// Executes the command.
 		/// </summary>
-		/// <param name='param'>
+		/// <param name="param">
 		/// The input parameter of the command template.
 		/// </param>
-		/// <param name='cmd'>
+		/// <param name="cmd">
 		/// The command name queue.
 		/// </param>
 		public abstract void Execute(In param, Queue<string> cmd);

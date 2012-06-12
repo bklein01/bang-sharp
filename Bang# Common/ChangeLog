@@ -1,3 +1,21 @@
+2012-06-12  WOnder93  <omosnacek@gmail.com>
+
+	* ProxyServerEventListener.cs:
+	* ProxySessionEventListener.cs:
+	* VirtualServerEventListener.cs:
+	* VirtualSessionEventListener.cs:
+	* MBRVirtualServerEventListener.cs:
+	* MBRVirtualSessionEventListener.cs:
+	  Use double quotes in documentation.
+
+	* AssemblyInfo.cs:
+	  Updated copyright years.
+
+	* Utils.cs:
+	  Use double quotes in documentation.
+	Use default values instead of overloaded methods where
+	  possible.
+
 2012-06-11  WOnder93  <omosnacek@gmail.com>
 
 	* ProxyServerEventListener.cs:

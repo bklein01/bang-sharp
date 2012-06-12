@@ -35,8 +35,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			set;
 		}
 
-		public SolidColor()
-			: base()
+		public SolidColor() : base()
 		{
 		}
 

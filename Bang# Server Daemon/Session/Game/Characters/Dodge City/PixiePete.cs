@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Characters
 			get { return 3; }
 		}
 		
-		public PixiePete(Player player)
-			: base(player, CharacterType.PixiePete)
+		public PixiePete(Player player) :
+			base(player, CharacterType.PixiePete)
 		{
 		}
 		

@@ -51,7 +51,7 @@ namespace BangSharp
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref='BangSharp.ProxyServerEventListener'/> class.
+		/// Initializes a new instance of the <see cref="BangSharp.ProxyServerEventListener"/> class.
 		/// </summary>
 		public ProxyServerEventListener()
 		{
@@ -61,7 +61,7 @@ namespace BangSharp
 		/// <summary>
 		/// Adds the listener to the list of member listeners.
 		/// </summary>
-		/// <param name='listener'>
+		/// <param name="listener">
 		/// The listener to add.
 		/// </param>
 		public void AddListener(IServerEventListener listener)
@@ -76,7 +76,7 @@ namespace BangSharp
 		/// <summary>
 		/// Removes the listener from the list of member listeners.
 		/// </summary>
-		/// <param name='listener'>
+		/// <param name="listener">
 		/// The listener to remove.
 		/// </param>
 		public void RemoveListener(IServerEventListener listener)

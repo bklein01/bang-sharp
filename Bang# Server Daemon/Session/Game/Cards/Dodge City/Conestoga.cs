@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Conestoga : TargetCardTableCard
 	{
-		public Conestoga(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Conestoga, suit, rank, RequestType.StealCard)
+		public Conestoga(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Conestoga, suit, rank, RequestType.StealCard)
 		{
 		}
 

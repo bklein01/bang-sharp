@@ -133,54 +133,18 @@ namespace BangSharp
 			CardType.PonyExpress,
 		};
 		/// <summary>
-		/// Gets the list of all available card types without the default type.
-		/// </summary>
-		/// <returns>
-		/// The list of all available card types.
-		/// </returns>
-		public static List<CardType> GetCardTypes()
-		{
-			return GetCardTypes(null, false);
-		}
-		/// <summary>
-		/// Gets the list of all available card types.
-		/// </summary>
-		/// <returns>
-		/// The list of all available card types.
-		/// </returns>
-		/// <param name='includeDefault'>
-		/// A <see cref="bool"/> indicating wheter to include also the default type.
-		/// </param>
-		public static List<CardType> GetCardTypes(bool includeDefault)
-		{
-			return GetCardTypes(null, includeDefault);
-		}
-		/// <summary>
 		/// Gets the list of all available card types for the specified session.
 		/// </summary>
 		/// <returns>
 		/// The list of all available card types for the specified session.
 		/// </returns>
-		/// <param name='session'>
-		/// The <see cref="BangSharp.ISession"/> to get the card types for.
+		/// <param name="session">
+		/// The <see cref="BangSharp.ISession"/> to get the card types for. If <c>null</c>, returns all car types.
 		/// </param>
-		public static List<CardType> GetCardTypes(ISession session)
-		{
-			return GetCardTypes(session, false);
-		}
-		/// <summary>
-		/// Gets the list of all available card types for the specified session.
-		/// </summary>
-		/// <returns>
-		/// The list of all available card types for the specified session.
-		/// </returns>
-		/// <param name='session'>
-		/// The <see cref="BangSharp.ISession"/> to get the card types for.
-		/// </param>
-		/// <param name='includeDefault'>
+		/// <param name="includeDefault">
 		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="BangSharp.CardType.Unknown"/>).
 		/// </param>
-		public static List<CardType> GetCardTypes(ISession session, bool includeDefault)
+		public static List<CardType> GetCardTypes(ISession session = null, bool includeDefault = false)
 		{
 			int count = MainCards.Length;
 			if(includeDefault)
@@ -215,25 +179,15 @@ namespace BangSharp
 			Role.Renegade,
 		};
 		/// <summary>
-		/// Gets the list of all roles without the default type.
-		/// </summary>
-		/// <returns>
-		/// The list of all roles.
-		/// </returns>
-		public static List<Role> GetRoles()
-		{
-			return GetRoles(false);
-		}
-		/// <summary>
 		/// Gets the list of all roles.
 		/// </summary>
 		/// <returns>
 		/// The list of all roles.
 		/// </returns>
-		/// <param name='includeDefault'>
+		/// <param name="includeDefault">
 		/// A <see cref="bool"/> indicating wheter to include also the default role (<see cref="BangSharp.Role.Unknown"/>).
 		/// </param>
-		public static List<Role> GetRoles(bool includeDefault)
+		public static List<Role> GetRoles(bool includeDefault = false)
 		{
 			int count = Roles.Length;
 			if(includeDefault)
@@ -286,54 +240,18 @@ namespace BangSharp
 			//CharacterType.,
 		};
 		/// <summary>
-		/// Gets the list of all available character types for the specified session without the default type.
-		/// </summary>
-		/// <returns>
-		/// The list of all available character types for the specified session.
-		/// </returns>
-		public static List<CharacterType> GetCharacterTypes()
-		{
-			return GetCharacterTypes(null, false);
-		}
-		/// <summary>
 		/// Gets the list of all available character types for the specified session.
 		/// </summary>
 		/// <returns>
 		/// The list of all available character types for the specified session.
 		/// </returns>
-		/// <param name='includeDefault'>
+		/// <param name="session">
+		/// The <see cref="BangSharp.ISession"/> to get the character types for. If <c>null</c>, returns all character types.
+		/// </param>
+		/// <param name="includeDefault">
 		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="BangSharp.CharacterType.Unknown"/>).
 		/// </param>
-		public static List<CharacterType> GetCharacterTypes(bool includeDefault)
-		{
-			return GetCharacterTypes(null, includeDefault);
-		}
-		/// <summary>
-		/// Gets the list of all available character types for the specified session.
-		/// </summary>
-		/// <returns>
-		/// The list of all available character types for the specified session.
-		/// </returns>
-		/// <param name='session'>
-		/// The <see cref="BangSharp.ISession"/> to get the character types for.
-		/// </param>
-		public static List<CharacterType> GetCharacterTypes(ISession session)
-		{
-			return GetCharacterTypes(session, false);
-		}
-		/// <summary>
-		/// Gets the list of all available character types for the specified session.
-		/// </summary>
-		/// <returns>
-		/// The list of all available character types for the specified session.
-		/// </returns>
-		/// <param name='session'>
-		/// The <see cref="BangSharp.ISession"/> to get the character types for.
-		/// </param>
-		/// <param name='includeDefault'>
-		/// A <see cref="bool"/> indicating wheter to include also the default type (<see cref="BangSharp.CharacterType.Unknown"/>).
-		/// </param>
-		public static List<CharacterType> GetCharacterTypes(ISession session, bool includeDefault)
+		public static List<CharacterType> GetCharacterTypes(ISession session = null, bool includeDefault = false)
 		{
 			int count = MainCharacters.Length;
 			if(includeDefault)
@@ -451,7 +369,7 @@ namespace BangSharp
 		/// Opens the client channel with a custom request timeout.
 		/// </summary>
 		/// <param name="requestTimeout">
-		/// The request timeout to use.
+		/// The request timeout to use (in milliseconds).
 		/// </param>
 		public static void OpenClientChannel(int requestTimeout)
 		{
@@ -474,7 +392,7 @@ namespace BangSharp
 		/// The port on which to listen.
 		/// </param>
 		/// <param name="requestTimeout">
-		/// The request timeout to use.
+		/// The request timeout to use (in milliseconds).
 		/// </param>
 		public static void OpenServerChannel(int port, int requestTimeout)
 		{
@@ -498,7 +416,7 @@ namespace BangSharp
 			return RemotingUtils.Connect<IServer>("BangSharp.rem", address, port);
 		}
 		/// <summary>
-		/// Starts serving the Bang# service at the specified port.
+		/// Starts serving the Bang# service.
 		/// </summary>
 		/// <typeparam name="T">
 		/// The service type (must implement the <see cref="BangSharp.IServer"/> interface).

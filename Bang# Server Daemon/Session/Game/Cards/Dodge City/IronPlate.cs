@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class IronPlate : TableCard
 	{
-		public IronPlate(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.IronPlate, suit, rank)
+		public IronPlate(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.IronPlate, suit, rank)
 		{
 		}
 

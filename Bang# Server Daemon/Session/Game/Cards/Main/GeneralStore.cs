@@ -33,8 +33,8 @@ namespace BangSharp.Server.Daemon.Cards
 		{
 			private GeneralStore card;
 			
-			public GeneralStoreResponseHandler(GeneralStore card, Player requested)
-				: base(RequestType.GeneralStore, requested)
+			public GeneralStoreResponseHandler(GeneralStore card, Player requested) :
+				base(RequestType.GeneralStore, requested)
 			{
 				this.card = card;
 			}
@@ -57,8 +57,8 @@ namespace BangSharp.Server.Daemon.Cards
 				End();
 			}
 		}
-		public GeneralStore(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.GeneralStore, suit, rank, true)
+		public GeneralStore(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.GeneralStore, suit, rank, true)
 		{
 		}
 		
