@@ -39,6 +39,13 @@ namespace BangSharp.Client.GameBoard.Widgets
 			get { return markup; }
 			set { layout.SetMarkup(markup = value); }
 		}
+
+		public Pango.FontDescription Font
+		{
+			get { return layout.FontDescription; }
+			set { layout.FontDescription = value; }
+		}
+
 		public Alignment HorizAlignment
 		{
 			get { return horizAlignment; }
@@ -53,8 +60,30 @@ namespace BangSharp.Client.GameBoard.Widgets
 			get;
 			set;
 		}
+		public bool Justify
+		{
+			get { return layout.Justify; }
+			set { layout.Justify = value; }
+		}
 
-		public Label() : base()
+		public Pango.WrapMode WrapMode
+		{
+			get { return layout.Wrap; }
+			set { layout.Wrap = value; }
+		}
+		public Pango.EllipsizeMode EllipsizeMode
+		{
+			get { return layout.Ellipsize; }
+			set { layout.Ellipsize = value; }
+		}
+
+		public int Spacing
+		{
+			get { return layout.Spacing; }
+			set { layout.Spacing = value; }
+		}
+
+		public Label() : base(0)
 		{
 			layout = new Pango.Layout(Gdk.PangoHelper.ContextGet());
 		}

@@ -14,7 +14,7 @@
     <property name="WindowPosition">CenterOnParent</property>
     <property name="AllowShrink">True</property>
     <property name="DefaultWidth">600</property>
-    <property name="DefaultHeight">800</property>
+    <property name="DefaultHeight">600</property>
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <signal name="KeyPressEvent" handler="OnKeyPressEvent" />
     <child>

@@ -1,5 +1,41 @@
 2012-06-12  WOnder93  <omosnacek@gmail.com>
 
+	* Animation.cs:
+	  Decreased animation delay.
+
+	* PlayerSlotWidget.cs:
+	* RootWidget.Layout.cs:
+	* MainTableWidget.Layout.cs:
+	* PlayerSlotWidget.Layout.cs:
+	  Improved Game Board Layout.
+
+	* AnimationLayer.cs:
+	  Fixed occasional freezing.
+
+	* RootWidget.cs:
+	  Improved Game Board Layout.
+	Fixed RootWidget.RequestResize() to work properly again.
+
+	* Label.cs:
+	  Added useful properties to Label.
+	Disabled adding children to Label.
+
+	* Bang# Client.csproj:
+	* Adapter.cs:
+	  Added new Game Board widget - 'Adapter'.
+
+	* Box.cs:
+	  Fixed the SizeRequest of Box to cover unlikely cases.
+
+	* gui.stetic:
+	* BangSharp.Client.MainWindow.cs:
+	  Tweaked the default size of MainWindow.
+
+	* AssemblyInfo.cs:
+	  
+
+2012-06-12  WOnder93  <omosnacek@gmail.com>
+
 	* ConnectionManager.cs:
 	* AnimationLayer.cs:
 	  Use double quotes in documentation.

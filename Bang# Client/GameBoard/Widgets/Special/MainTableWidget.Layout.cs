@@ -28,32 +28,57 @@ namespace BangSharp.Client.GameBoard.Widgets
 {
 	public partial class MainTableWidget
 	{
+		private Padding padding1;
 		private Box box1;
+		private Adapter adapter1;
 		private Box box2;
+		private Padding padding2;
 		private CardPlaceholderWidget graveyardPlaceholder;
+		private Padding padding3;
 		private Overlay overlay1;
 		private CardPlaceholderWidget deckPlaceholder;
+		private Padding padding4;
+		private SolidColor solidColor1;
 		private GeneralPlaceholderWidget selectionPlaceholder;
 
 		private void InitLayout()
 		{
+			this.padding1 = new Padding(0.0, 1.0 / 6.0);
+			this.Children.Add(this.padding1);
+
 			this.box1 = new Box(Direction.Vertical);
-			this.Children.Add(this.box1);
+			this.padding1.Children.Add(this.box1);
+
+			this.adapter1 = new Adapter(Direction.Horizontal);
+			this.box1.Children.Add(this.adapter1);
 
 			this.box2 = new Box(Direction.Horizontal);
-			this.box1.Children.Add(this.box2);
+			this.adapter1.Children.Add(this.box2);
+
+			this.padding2 = new Padding(0.06, 0.04);
+			this.box2.Children.Add(this.padding2);
 
 			this.graveyardPlaceholder = new CardPlaceholderWidget();
-			this.box2.Children.Add(this.graveyardPlaceholder);
+			this.padding2.Children.Add(this.graveyardPlaceholder);
+
+			this.padding3 = new Padding(0.06, 0.04);
+			this.box2.Children.Add(this.padding3);
 
 			this.overlay1 = new Overlay();
-			this.box2.Children.Add(this.overlay1);
+			this.padding3.Children.Add(this.overlay1);
 
 			this.deckPlaceholder = new CardPlaceholderWidget();
 			this.overlay1.Children.Add(this.deckPlaceholder);
 
+			this.padding4 = new Padding(0.02, 0.04);
+			this.box1.Children.Add(this.padding4);
+
+			this.solidColor1 = new SolidColor();
+			this.solidColor1.Color = new Cairo.Color(0.25, 0.25, 0.25, 0.3);
+			this.padding4.Children.Add(this.solidColor1);
+
 			this.selectionPlaceholder = new GeneralPlaceholderWidget();
-			this.box1.Children.Add(this.selectionPlaceholder);
+			this.solidColor1.Children.Add(this.selectionPlaceholder);
 		}
 	}
 }

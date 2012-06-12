@@ -47,7 +47,7 @@ namespace BangSharp.Client.GameBoard
 	/// </remarks>
 	public class Animation
 	{
-		public static readonly TimeSpan AnimDelay = new TimeSpan(0, 0, 0, 0, 150);
+		public static readonly TimeSpan AnimDelay = new TimeSpan(0, 0, 0, 0, 100);
 
 		private TimeSpan animLength = new TimeSpan(0, 0, 1);
 
