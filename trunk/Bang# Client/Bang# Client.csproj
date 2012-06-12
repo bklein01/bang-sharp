@@ -116,6 +116,7 @@
     <Compile Include="GameBoard\Widgets\Basic\Direction.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="gtk-gui\BangSharp.Client.MainWindow.cs" />
+    <Compile Include="GameBoard\Widgets\Basic\Adapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bang# Common\Bang# Common.csproj">

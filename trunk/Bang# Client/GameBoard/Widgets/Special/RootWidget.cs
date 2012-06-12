@@ -186,9 +186,9 @@ namespace BangSharp.Client.GameBoard.Widgets
 			lock(ConnectionManager.SessionEventLock)
 			{
 				if(type == RequestType.None)
-					requestLabel.Markup = "<span font='sans serif' color='orange'><b>No Request</b></span>";
+					requestLabel.Markup = "<span color='orange'><b>No Request</b></span>";
 				else
-					requestLabel.Markup = "<span font='sans serif' color='orange'><b>" + type.ToString() + "</b></span>";
+					requestLabel.Markup = "<span color='orange'><b>" + type.ToString() + "</b></span>";
 			}
 			RequestRedraw();
 		}
@@ -248,9 +248,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		public override void RequestResize()
 		{
-			//parent.QueueResize();
-			parent.QueueResizeNoRedraw();
-			parent.QueueDraw();
+			parent.QueueResize();
 		}
 
 		public override void RequestRedraw()

@@ -69,9 +69,10 @@ namespace BangSharp.Client.GameBoard.Widgets
 						// TODO: show error
 					}
 				};
-				box3.Children.Insert(1, button);
+				padding9.Children.Add(button);
 			}
 			lifePointsCard = new CharacterCardWidget(CharacterType.Unknown);
+			onlinePic.Pixbuf = ResourceManager.GetPixbuf("Resources", "Offline.png");
 		}
 
 		public void Clear()
@@ -79,6 +80,9 @@ namespace BangSharp.Client.GameBoard.Widgets
 			id = 0;
 			if(lifePointsCard.Parent != null)
 				characterOverlay.Children.Remove(lifePointsCard);
+			playerPic.Pixbuf = ResourceManager.GetPixbuf("Resources", "DefaultPlayerImage.png");
+			playerLabel.Markup = "";
+			onlinePic.Pixbuf = ResourceManager.GetPixbuf("Resources", "Offline.png");
 		}
 
 		public void Update(IPlayer sessionPlayer)
@@ -92,6 +96,10 @@ namespace BangSharp.Client.GameBoard.Widgets
 			if(pixbuf == null)
 				pixbuf = ResourceManager.GetPixbuf("Resources", "DefaultPlayerImage.png");
 			playerPic.Pixbuf = pixbuf;
+			playerLabel.Markup = "<span color='orange'>" + sessionPlayer.Name + "</span>";
+			onlinePic.Pixbuf = sessionPlayer.HasListener ?
+				ResourceManager.GetPixbuf("Resources", "Online.png") :
+					ResourceManager.GetPixbuf("Resources", "Offline.png");
 		}
 
 		protected override bool OnLeftClick(double x, double y)

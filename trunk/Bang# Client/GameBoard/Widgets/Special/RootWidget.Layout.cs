@@ -91,6 +91,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			this.box4.Children.Add(this.playerSlot7);
 
 			this.requestLabel = new Label();
+			this.requestLabel.Font = Pango.FontDescription.FromString("Sans Serif");
 			this.requestLabel.HorizAlignment = Alignment.Center;
 			this.box1.Children.Add(this.requestLabel);
 

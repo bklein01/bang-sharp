@@ -195,10 +195,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 			else if(variable < 0.0)
 			{
-				if(abs < 0.0)
-					throw new Exception();
-
-				if(autoV == 0)
+				if(abs >= 0.0 && autoV == 0)
 					variable = abs;
 			}
 			else if(nonVariable < 0.0)

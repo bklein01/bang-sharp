@@ -15,7 +15,7 @@ namespace BangSharp.Client
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			this.AllowShrink = true;
 			this.DefaultWidth = 600;
-			this.DefaultHeight = 800;
+			this.DefaultHeight = 600;
 			// Container child BangSharp.Client.MainWindow.Gtk.Container+ContainerChild
 			this.gameboard1 = new global::BangSharp.Client.GameBoard.GameBoardWidget ();
 			this.gameboard1.Name = "gameboard1";

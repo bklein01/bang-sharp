@@ -504,8 +504,10 @@ namespace BangSharp.Client.GameBoard.Widgets
 				{
 					while(current == null || current.Ended)
 						Monitor.Wait(animLock);
-					RequestResize();
-					RequestRedraw();
+					Gtk.Application.Invoke((sender, e) => {
+						root.RootReallocate(root.Allocation);
+						root.RequestRedraw();
+					});
 				}
 				Thread.Sleep(Animation.AnimDelay);
 			}
