@@ -29,8 +29,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Saloon : AllPlayersCard
 	{
-		public Saloon(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Saloon, suit, rank, true)
+		public Saloon(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Saloon, suit, rank, true)
 		{
 		}
 		

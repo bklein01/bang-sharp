@@ -32,14 +32,14 @@ namespace BangSharp.Server.Daemon
 			private GoldenCard parent;
 			private Card card;
 			
-			public GoldenCardResponseHandler(GoldenCard parent, Card card)
-				: base(RequestType.GoldenCard, card.Owner)
+			public GoldenCardResponseHandler(GoldenCard parent, Card card) :
+				base(RequestType.GoldenCard, card.Owner)
 			{
 				this.parent = parent;
 				this.card = card;
 			}
-			public GoldenCardResponseHandler(GoldenCard parent)
-				: this(parent, parent)
+			public GoldenCardResponseHandler(GoldenCard parent) :
+				this(parent, parent)
 			{
 			}
 
@@ -64,8 +64,8 @@ namespace BangSharp.Server.Daemon
 				End();
 			}
 		}
-		protected GoldenCard(Game game, int id, CardType type, CardSuit suit, CardRank rank)
-			: base(game, id, type, suit, rank)
+		protected GoldenCard(Game game, int id, CardType type, CardSuit suit, CardRank rank) :
+			base(game, id, type, suit, rank)
 		{
 		}
 		

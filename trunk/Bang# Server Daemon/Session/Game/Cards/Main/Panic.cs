@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return 1; }
 		}
 		
-		public Panic(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Panic, suit, rank, RequestType.StealCard)
+		public Panic(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Panic, suit, rank, RequestType.StealCard)
 		{
 		}
 		

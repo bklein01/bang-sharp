@@ -105,8 +105,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			get { return mainTable.SelectionPlaceholder; }
 		}
 
-		public RootWidget(GameBoardWidget parent)
-			: base()
+		public RootWidget(GameBoardWidget parent) : base()
 		{
 			this.parent = parent;
 			listener = new EventListener(this);
@@ -194,18 +193,24 @@ namespace BangSharp.Client.GameBoard.Widgets
 			RequestRedraw();
 		}
 
+#if DEBUG
 		private System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+#endif
 		public void RootExpose(Context cr, Rectangle area)
 		{
 			lock(ConnectionManager.SessionEventLock)
 			{
+#if DEBUG
 				sw.Reset();
 				sw.Start();
+#endif
 				Expose(cr, area);
+#if DEBUG
 				sw.Stop();
+				Console.Error.WriteLine("DEBUG: Rendering took: {0}", sw.Elapsed);
+#endif
 				if(cr.Status != Status.Success)
 					Console.Error.WriteLine("WARNING: Cairo status is {0}", cr.Status);
-				Console.Error.WriteLine("DEBUG: Rendering took: {0}", sw.Elapsed);
 			}
 		}
 
@@ -220,11 +225,11 @@ namespace BangSharp.Client.GameBoard.Widgets
 		{
 			lock(ConnectionManager.SessionEventLock)
 			{
-				sw.Reset();
-				sw.Start();
+				//sw.Reset();
+				//sw.Start();
 				Reallocate(newAlloc);
-				sw.Stop();
-				Console.Error.WriteLine("DEBUG: Reallocating took: {0}", sw.Elapsed);
+				//sw.Stop();
+				//Console.Error.WriteLine("DEBUG: Reallocating took: {0}", sw.Elapsed);
 				//PrintAlloc(this);
 			}
 		}

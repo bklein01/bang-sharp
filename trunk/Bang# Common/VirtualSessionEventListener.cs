@@ -31,7 +31,7 @@ namespace BangSharp
 	/// Virtual session event listener.
 	/// </summary>
 	/// <remarks>
-	/// A base class for session event listeners with all memebers (except for the <see cref='BangSharp.IEventListener.Ping()'/> method) implemented as virtual.
+	/// A base class for session event listeners with all memebers (except for the <see cref="BangSharp.IEventListener.Ping()"/> method) implemented as virtual.
 	/// </remarks>
 	public class VirtualSessionEventListener : ISpectatorSessionEventListener, IPlayerSessionEventListener
 	{

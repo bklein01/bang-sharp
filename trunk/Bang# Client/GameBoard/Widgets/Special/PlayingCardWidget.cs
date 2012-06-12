@@ -136,18 +136,18 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 		}
 
-		public PlayingCardWidget()
-			: this(0, CardType.Unknown, CardRank.Unknown, CardSuit.Unknown)
+		public PlayingCardWidget() :
+			this(0, CardType.Unknown, CardRank.Unknown, CardSuit.Unknown)
 		{
 		}
 
-		public PlayingCardWidget(int id)
-			: this(id, CardType.Unknown, CardRank.Unknown, CardSuit.Unknown)
+		public PlayingCardWidget(int id) :
+			this(id, CardType.Unknown, CardRank.Unknown, CardSuit.Unknown)
 		{
 		}
 
-		public PlayingCardWidget(ICard card)
-			: this(card.ID, card.Type, card.Rank, card.Suit)
+		public PlayingCardWidget(ICard card) :
+			this(card.ID, card.Type, card.Rank, card.Suit)
 		{
 		}
 

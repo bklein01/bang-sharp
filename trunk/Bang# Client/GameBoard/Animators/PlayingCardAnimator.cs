@@ -38,8 +38,8 @@ namespace BangSharp.Client.GameBoard.Animators
 			get { return id; }
 		}
 
-		public PlayingCardAnimator(Animation anim, PlayingCardWidget widget)
-			: base(anim, widget)
+		public PlayingCardAnimator(Animation anim, PlayingCardWidget widget) :
+			base(anim, widget)
 		{
 			this.id = widget.ID;
 		}

@@ -30,8 +30,8 @@ namespace BangSharp.Server.Daemon
 {
 	public sealed class Draw : ResponseHandler
 	{
-		public Draw(Turn parent)
-			: base(RequestType.Draw, parent.RequestedPlayer)
+		public Draw(Turn parent) :
+			base(RequestType.Draw, parent.RequestedPlayer)
 		{
 		}
 
@@ -65,8 +65,8 @@ namespace BangSharp.Server.Daemon
 	}
 	public sealed class Play : ResponseHandler
 	{
-		public Play(Turn parent)
-			: base(RequestType.Play, parent.RequestedPlayer)
+		public Play(Turn parent) :
+			base(RequestType.Play, parent.RequestedPlayer)
 		{
 		}
 
@@ -111,8 +111,8 @@ namespace BangSharp.Server.Daemon
 	}
 	public sealed class Discard : ResponseHandler
 	{
-		public Discard(Turn parent)
-			: base(RequestType.DiscardCard, parent.RequestedPlayer)
+		public Discard(Turn parent) :
+			base(RequestType.DiscardCard, parent.RequestedPlayer)
 		{
 		}
 
@@ -137,8 +137,8 @@ namespace BangSharp.Server.Daemon
 	}
 	public sealed class Turn : QueueResponseHandler
 	{
-		public Turn(Round parent, Player player)
-			: base(player, 3)
+		public Turn(Round parent, Player player) :
+			base(player, 3)
 		{
 			AddHandler(new Draw(this));
 			AddHandler(new Play(this));

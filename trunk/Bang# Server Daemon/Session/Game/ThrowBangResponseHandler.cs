@@ -29,14 +29,10 @@ namespace BangSharp.Server.Daemon
 	{
 		ResultCallback callback;
 
-		public ThrowBangResponseHandler(Player requested, Player causedBy, ResultCallback callback)
-			: base(RequestType.ThrowBang, requested, causedBy)
+		public ThrowBangResponseHandler(Player requested, Player causedBy, ResultCallback callback = null) :
+			base(RequestType.ThrowBang, requested, causedBy)
 		{
 			this.callback = callback;
-		}
-		public ThrowBangResponseHandler(Player requested, Player causedBy)
-			: this(requested, causedBy, null)
-		{
 		}
 
 		protected override void OnRespondCard(Card card)

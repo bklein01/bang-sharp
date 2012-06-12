@@ -1,3 +1,14 @@
+2012-06-12  WOnder93  <omosnacek@gmail.com>
+
+	* Command.cs:
+	* FinalCommand.cs:
+	* ConsoleHelper.cs:
+	* NestedCommand.cs:
+	  Use double quotes in documentation.
+
+	* AssemblyInfo.cs:
+	  Updated copyright years.
+
 2012-06-11  WOnder93  <omosnacek@gmail.com>
 
 	* Bang# Console Utils.csproj:

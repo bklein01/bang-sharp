@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return Owner.WeaponRange; }
 		}
 
-		public Pepperbox(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Pepperbox, suit, rank, RequestType.ShotTarget)
+		public Pepperbox(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Pepperbox, suit, rank, RequestType.ShotTarget)
 		{
 		}
 

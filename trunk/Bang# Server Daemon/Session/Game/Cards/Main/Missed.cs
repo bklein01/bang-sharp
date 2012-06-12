@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Missed : Card
 	{
-		public Missed(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Missed, suit, rank)
+		public Missed(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Missed, suit, rank)
 		{
 		}
 		

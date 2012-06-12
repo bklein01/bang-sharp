@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Characters
 {
 	public sealed class PedroRamirez : Character
 	{
-		public PedroRamirez(Player player)
-			: base(player, CharacterType.PedroRamirez)
+		public PedroRamirez(Player player) :
+			base(player, CharacterType.PedroRamirez)
 		{
 		}
 		

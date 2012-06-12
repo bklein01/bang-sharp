@@ -31,20 +31,20 @@ namespace BangSharp.ConsoleUtils
 	/// <summary>
 	/// The delegate for the nested command template.
 	/// </summary>
-	/// <typeparam name='In'>
+	/// <typeparam name="In">
 	/// The type of the input parameter of the command template.
 	/// </typeparam>
-	/// <typeparam name='Out'>
+	/// <typeparam name="Out">
 	/// The type of the output parameter of the command template.
 	/// </typeparam>
 	public delegate Out NestedCommandDelegate<In, Out>(In param, Queue<string> cmd);
 	/// <summary>
 	/// Represents a nested command template.
 	/// </summary>
-	/// <typeparam name='In'>
+	/// <typeparam name="In">
 	/// The type of the input parameter of the command template.
 	/// </typeparam>
-	/// <typeparam name='Out'>
+	/// <typeparam name="Out">
 	/// The type of the output parameter of the command template.
 	/// </typeparam>
 	public class NestedCommand<In, Out> : Command<In>
@@ -60,7 +60,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Gets or sets the subcommand with the specified name.
 		/// </summary>
-		/// <param name='text'>
+		/// <param name="text">
 		/// The name of the subcommand.
 		/// </param>
 		public Command<Out> this[string text]
@@ -93,7 +93,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Creates a new nested command template with the specified delegate.
 		/// </summary>
-		/// <param name='del'>
+		/// <param name="del">
 		/// The delegate to be invoked when this command executes.
 		/// </param>
 		public NestedCommand(NestedCommandDelegate<In, Out> del)
@@ -141,7 +141,7 @@ namespace BangSharp.ConsoleUtils
 	/// <summary>
 	/// The delegate for the root nested command template.
 	/// </summary>
-	/// <typeparam name='Out'>
+	/// <typeparam name="Out">
 	/// The type of the output parameter of the command template.
 	/// </typeparam>
 	public delegate Out NestedCommandDelegate<Out>(Queue<string> cmd);
@@ -153,7 +153,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Creates a new root nested command template with the specified delegate.
 		/// </summary>
-		/// <param name='del'>
+		/// <param name="del">
 		/// The delegate to be invoked when this command executes.
 		/// </param>
 		public NestedCommand(NestedCommandDelegate<Out> del) : base((param, cmd) => del(cmd))

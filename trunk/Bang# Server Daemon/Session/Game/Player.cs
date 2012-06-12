@@ -359,8 +359,8 @@ namespace BangSharp.Server.Daemon
 		
 		private sealed class BeerRescue : ResponseHandler
 		{
-			public BeerRescue(Player player, Player causedBy)
-				: base(RequestType.BeerRescue, player, causedBy)
+			public BeerRescue(Player player, Player causedBy) :
+				base(RequestType.BeerRescue, player, causedBy)
 			{
 			}
 

@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class BuffaloRifle : TargetPlayerTableCard
 	{
-		public BuffaloRifle(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.BuffaloRifle, suit, rank, RequestType.ShotTarget)
+		public BuffaloRifle(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.BuffaloRifle, suit, rank, RequestType.ShotTarget)
 		{
 		}
 

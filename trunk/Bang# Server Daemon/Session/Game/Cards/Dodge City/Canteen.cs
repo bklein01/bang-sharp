@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Canteen : GeneralTableCard
 	{
-		public Canteen(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Canteen, suit, rank)
+		public Canteen(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Canteen, suit, rank)
 		{
 		}
 

@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Diligenza : GeneralCard
 	{
-		public Diligenza(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Diligenza, suit, rank)
+		public Diligenza(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Diligenza, suit, rank)
 		{
 		}
 

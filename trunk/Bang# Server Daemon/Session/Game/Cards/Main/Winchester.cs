@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return 5; }
 		}
 
-		public Winchester(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Winchester, suit, rank)
+		public Winchester(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Winchester, suit, rank)
 		{
 		}
 	}

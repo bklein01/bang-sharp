@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Indians : AllPlayersCard
 	{
-		public Indians(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Indians, suit, rank)
+		public Indians(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Indians, suit, rank)
 		{
 		}
 		

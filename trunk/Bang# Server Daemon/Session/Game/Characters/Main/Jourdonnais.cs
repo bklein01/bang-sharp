@@ -29,8 +29,8 @@ namespace BangSharp.Server.Daemon.Characters
 	{
 		private Card barrel;
 		
-		public Jourdonnais(Player player)
-			: base(player, CharacterType.Jourdonnais)
+		public Jourdonnais(Player player) :
+			base(player, CharacterType.Jourdonnais)
 		{
 			barrel = Card.GetCard(Game, 0, CardType.Barrel, CardSuit.Unknown, CardRank.Unknown);
 			//barrel.Owner = Player;

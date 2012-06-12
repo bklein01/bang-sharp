@@ -36,8 +36,8 @@ namespace BangSharp.Server.Daemon
 			private ProxyCharacter parent;
 			private Action<Character> handler;
 
-			public ChooseCharacterResponseHandler(ProxyCharacter parent, RequestType type, Action<Character> handler)
-				: base(type, parent.Player)
+			public ChooseCharacterResponseHandler(ProxyCharacter parent, RequestType type, Action<Character> handler) :
+				base(type, parent.Player)
 			{
 				this.parent = parent;
 				this.handler = handler;

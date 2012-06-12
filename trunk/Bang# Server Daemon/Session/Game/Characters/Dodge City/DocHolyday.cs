@@ -36,8 +36,8 @@ namespace BangSharp.Server.Daemon.Characters
 			{
 				private DocHolydayResponseHandler parent;
 
-				public TargetPlayerResponseHandler(DocHolydayResponseHandler parent)
-					: base(RequestType.ShotTarget, parent.RequestedPlayer)
+				public TargetPlayerResponseHandler(DocHolydayResponseHandler parent) :
+					base(RequestType.ShotTarget, parent.RequestedPlayer)
 				{
 					this.parent = parent;
 				}
@@ -71,8 +71,8 @@ namespace BangSharp.Server.Daemon.Characters
 			private DocHolyday parent;
 			private List<Card> selected;
 
-			public DocHolydayResponseHandler(DocHolyday parent)
-				: base(RequestType.DocHolyday, parent.Player)
+			public DocHolydayResponseHandler(DocHolyday parent) :
+				base(RequestType.DocHolyday, parent.Player)
 			{
 				this.parent = parent;
 				selected = new List<Card>(2);
@@ -100,8 +100,8 @@ namespace BangSharp.Server.Daemon.Characters
 				End();
 			}
 		}
-		public DocHolyday(Player player)
-			: base(player, CharacterType.DocHolyday)
+		public DocHolyday(Player player) :
+			base(player, CharacterType.DocHolyday)
 		{
 		}
 		

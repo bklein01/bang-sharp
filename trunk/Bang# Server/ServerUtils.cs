@@ -50,7 +50,7 @@ namespace BangSharp.Server
 		/// <returns>
 		/// <c>true</c> if the server is compatible, otherwise <c>false</c>.
 		/// </returns>
-		/// <param name='server'>
+		/// <param name="server">
 		/// The <see cref="BangSharp.Server.IServerBase"/> to check.
 		/// </param>
 		public static bool IsServerCompatible(IServerBase server)
@@ -87,7 +87,7 @@ namespace BangSharp.Server
 		/// Opens the client channel for administration with a custom request timeout.
 		/// </summary>
 		/// <param name="requestTimeout">
-		/// The request timeout to use.
+		/// The request timeout to use (in milliseconds).
 		/// </param>
 		/// <remarks>
 		/// Note that you should call this method instead of <c>BangSharp.Utils.OpenClientChannel(int requestTimeout)<c/>
@@ -98,7 +98,7 @@ namespace BangSharp.Server
 			RemotingUtils.OpenClientChannel(Utils.ClientSharedTypes.Concat(ClientSharedTypes), requestTimeout);
 		}
 		/// <summary>
-		/// Starts serving the Bang# server administration service at the specified port.
+		/// Opens the server administration channel.
 		/// </summary>
 		/// <param name="port">
 		/// The port on which to listen.
@@ -107,26 +107,26 @@ namespace BangSharp.Server
 		/// The adress to bind to (usually <c>System.Net.IPAddress.Any</c> or <c>System.Net.IPAddress.Loopback</c>).
 		/// </param>
 		/// <remarks>
-		/// Note that you must also call <c>BangSharp.Utils.Serve&lt;T&gt;()</c> to start serving both services.
+		/// Note that you must also call <c>BangSharp.Utils.Serve&lt;T&gt;()</c> to start serving the Bang# service.
 		/// </remarks>
 		public static void OpenServerAdminChannel(int port, IPAddress bindTo)
 		{
 			RemotingUtils.OpenServerChannel(port, Utils.ServerSharedTypes.Concat(ServerSharedTypes), Config.Instance.GetInteger("Server.RequestTimeout", 30000), bindTo);
 		}
 		/// <summary>
-		/// Starts serving the Bang# server administration service at the specified port with a custom request timeout.
+		/// Opens the server administration channel.
 		/// </summary>
 		/// <param name="port">
 		/// The port on which to listen.
 		/// </param>
 		/// <param name="requestTimeout">
-		/// The request timeout to use.
+		/// The request timeout to use (in milliseconds).
 		/// </param>
 		/// <param name="bindTo">
 		/// The adress to bind to (usually <c>System.Net.IPAddress.Any</c> or <c>System.Net.IPAddress.Loopback</c>).
 		/// </param>
 		/// <remarks>
-		/// Note that you must also call <c>BangSharp.Utils.Serve&lt;T&gt;()</c> to start serving both services.
+		/// Note that you must also call <c>BangSharp.Utils.Serve&lt;T&gt;()</c> to start serving the Bang# service.
 		/// </remarks>
 		public static void OpenServerAdminChannel(int port, int requestTimeout, IPAddress bindTo)
 		{

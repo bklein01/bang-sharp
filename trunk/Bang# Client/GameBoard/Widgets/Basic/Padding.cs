@@ -93,12 +93,12 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 		}
 
-		public Padding()
-			: this(0.0, 0.0, 0.0, 0.0)
+		public Padding() :
+			this(0.0, 0.0, 0.0, 0.0)
 		{
 		}
-		public Padding(double h, double v)
-			: this(h, h, v, v)
+		public Padding(double h, double v) :
+			this(h, h, v, v)
 		{
 		}
 		public Padding(double left, double right, double top, double bottom)

@@ -32,14 +32,14 @@ namespace BangSharp.Server.Daemon
 			private TargetPlayerTableCard parent;
 			private Card card;
 
-			public TargetPlayerTableCardResponseHandler(TargetPlayerTableCard parent, Card card)
-				: base(parent.reqType, card.Owner)
+			public TargetPlayerTableCardResponseHandler(TargetPlayerTableCard parent, Card card) :
+				base(parent.reqType, card.Owner)
 			{
 				this.parent = parent;
 				this.card = card;
 			}
-			public TargetPlayerTableCardResponseHandler(TargetPlayerTableCard parent)
-				: this(parent, parent)
+			public TargetPlayerTableCardResponseHandler(TargetPlayerTableCard parent) :
+				this(parent, parent)
 			{
 			}
 
@@ -78,15 +78,11 @@ namespace BangSharp.Server.Daemon
 			get { return 0; }
 		}
 
-		protected TargetPlayerTableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType, bool includeSelf)
-			: base(game, id, type, suit, rank)
+		protected TargetPlayerTableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType, bool includeSelf = false) :
+			base(game, id, type, suit, rank)
 		{
 			this.reqType = reqType;
 			this.includeSelf = includeSelf;
-		}
-		protected TargetPlayerTableCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType)
-			: this(game, id, type, suit, rank, reqType, false)
-		{
 		}
 
 		protected override void OnPlayFromTable()

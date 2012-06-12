@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return 1; }
 		}
 		
-		public Hideout(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Hideout, suit, rank)
+		public Hideout(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Hideout, suit, rank)
 		{
 		}
 	}

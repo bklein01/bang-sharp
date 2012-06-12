@@ -37,8 +37,8 @@ namespace BangSharp.Server.Daemon.Characters
 				return true;
 			}
 		}
-		public VultureSam(Player player)
-			: base(player, CharacterType.VultureSam)
+		public VultureSam(Player player) :
+			base(player, CharacterType.VultureSam)
 		{
 		}
 	}

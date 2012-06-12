@@ -32,34 +32,34 @@ namespace BangSharp.Server.Daemon
 	{
 		private Queue<ResponseHandler> queue;
 
-		protected QueueResponseHandler(Player requested, Player causedBy)
-			: base(requested, causedBy)
+		protected QueueResponseHandler(Player requested, Player causedBy) :
+			base(requested, causedBy)
 		{
 			queue = new Queue<ResponseHandler>();
 		}
-		protected QueueResponseHandler(Player requested)
-			: this(requested, null)
+		protected QueueResponseHandler(Player requested) :
+			this(requested, null)
 		{
 		}
 		protected QueueResponseHandler() :
 			this(null, null)
 		{
 		}
-		protected QueueResponseHandler(Player requested, Player causedBy, int capacity)
-			: base(requested, causedBy)
+		protected QueueResponseHandler(Player requested, Player causedBy, int capacity) :
+			base(requested, causedBy)
 		{
 			queue = new Queue<ResponseHandler>(capacity);
 		}
-		protected QueueResponseHandler(Player requested, int capacity)
-			: this(requested, null, capacity)
+		protected QueueResponseHandler(Player requested, int capacity) :
+			this(requested, null, capacity)
 		{
 		}
-		protected QueueResponseHandler(int capacity)
-			: this(null, null, capacity)
+		protected QueueResponseHandler(int capacity) :
+			this(null, null, capacity)
 		{
 		}
-		public QueueResponseHandler(List<ResponseHandler> handlers)
-			: base()
+		public QueueResponseHandler(List<ResponseHandler> handlers) :
+			base()
 		{
 			queue = new Queue<ResponseHandler>(handlers.Count);
 			foreach(ResponseHandler h in handlers)

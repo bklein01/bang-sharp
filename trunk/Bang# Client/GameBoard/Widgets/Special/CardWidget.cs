@@ -44,8 +44,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		public event Action OnClick;
 
-		protected CardWidget()
-			: base(0)
+		protected CardWidget() : base(0)
 		{
 			Constriction = 1.0;
 		}
@@ -76,12 +75,14 @@ namespace BangSharp.Client.GameBoard.Widgets
 		{
 			if(Card == null)
 				return false;
-			Gdk.Pixbuf pixbuf = Card.GetPixbuf(Card.DefaultHeight);
+			//int pixbufH = (int)Math.Round(Allocation.Height * 1.2);
+			int pixbufH = (int)(Math.Pow(1.5, Math.Ceiling(Math.Log(Allocation.Height / Card.DefaultHeight, 1.5))) * Card.DefaultHeight);
+			Gdk.Pixbuf pixbuf = Card.GetPixbuf(pixbufH);
 			if(pixbuf == null)
 				return false;
 
 			ApplyConstriction(cr);
-			double ratio = Allocation.Height / Card.DefaultHeight;
+			double ratio = Allocation.Height / pixbufH;
 			cr.Scale(ratio, ratio);
 			Gdk.CairoHelper.SetSourcePixbuf(cr, pixbuf, 0, 0);
 			cr.Paint();

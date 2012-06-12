@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Gatling : AllPlayersCard
 	{
-		public Gatling(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Gatling, suit, rank)
+		public Gatling(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Gatling, suit, rank)
 		{
 		}
 		

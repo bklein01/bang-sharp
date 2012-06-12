@@ -29,8 +29,8 @@ namespace BangSharp.Server.Daemon.Characters
 	{
 		private bool drawCard;
 
-		public SuzyLafayette(Player player)
-			: base(player, CharacterType.SuzyLafayette)
+		public SuzyLafayette(Player player) :
+			base(player, CharacterType.SuzyLafayette)
 		{
 			drawCard = false;
 		}

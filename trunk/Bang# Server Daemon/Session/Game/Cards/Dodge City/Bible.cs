@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Bible : TableCard
 	{
-		public Bible(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Bible, suit, rank)
+		public Bible(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Bible, suit, rank)
 		{
 		}
 

@@ -41,8 +41,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 		}
 
-		public RoleCardWidget()
-			: this(Role.Unknown)
+		public RoleCardWidget() : this(Role.Unknown)
 		{
 		}
 		public RoleCardWidget(Role role)

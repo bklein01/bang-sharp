@@ -99,7 +99,7 @@ namespace BangSharp.Server.Daemon
 			while(repeat);
 		}
 		
-		public ReadOnlyCollection<Card> PlayerDrawFromDeck(Player player, int count, bool revealCards)
+		public ReadOnlyCollection<Card> PlayerDrawFromDeck(Player player, int count, bool revealCards = false)
 		{
 			List<Card> drawn = new List<Card>(count);
 			for(int i = 0; i < count; i++)
@@ -110,10 +110,6 @@ namespace BangSharp.Server.Daemon
 			}
 			game.Session.EventManager.OnPlayerDrewFromDeck(player, drawn, revealCards);
 			return new ReadOnlyCollection<Card>(drawn);
-		}
-		public ReadOnlyCollection<Card> PlayerDrawFromDeck(Player player, int count)
-		{
-			return PlayerDrawFromDeck(player, count, false);
 		}
 		public ReadOnlyCollection<Card> PlayerDrawFromGraveyard(Player player, int count)
 		{
@@ -385,10 +381,14 @@ namespace BangSharp.Server.Daemon
 		private void RegenerateDeck()
 		{
 			Card top = graveyard.Pop();
-			while(graveyard.Count != 0)
-				deck.Push(graveyard.Pop());
+
+			List<Card> cards = new List<Card>(graveyard);
+			cards.Shuffle();
+			deck = new Stack<Card>(cards);
+
+			graveyard.Clear();
 			graveyard.Push(top);
-			
+
 			game.Session.EventManager.OnDeckRegenerated();
 		}
 		private Card PopCardFromDeck()

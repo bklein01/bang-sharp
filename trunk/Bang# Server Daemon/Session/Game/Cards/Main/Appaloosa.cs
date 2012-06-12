@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Cards
 			get { return 1; }
 		}
 
-		public Appaloosa(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Appaloosa, suit, rank)
+		public Appaloosa(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Appaloosa, suit, rank)
 		{
 		}
 	}

@@ -1,3 +1,122 @@
+2012-06-12  WOnder93  <omosnacek@gmail.com>
+
+	* Game.cs:
+	* Player.cs:
+	* GameCycle.cs:
+	* SessionEventManager.cs:
+	* Jail.cs:
+	* Duel.cs:
+	* Bang.cs:
+	* Beer.cs:
+	* TableCard.cs:
+	* Panic.cs:
+	* GoldenCard.cs:
+	* GeneralCard.cs:
+	* Missed.cs:
+	* Saloon.cs:
+	* Barrel.cs:
+	* Mustang.cs:
+	* Gatling.cs:
+	* PlayableCard.cs:
+	* Indians.cs:
+	* CatBalou.cs:
+	* Volcanic.cs:
+	* Carabine.cs:
+	* QueueResponseHandler.cs:
+	* Diligenza.cs:
+	* Appaloosa.cs:
+	* Remington.cs:
+	* Schofield.cs:
+	* Winchester.cs:
+	* WellsFargo.cs:
+	* Punch.cs:
+	* Bible.cs:
+	* Knife.cs:
+	* GeneralTableCard.cs:
+	* Dodge.cs:
+	* Brawl.cs:
+	* Silver.cs:
+	* Whisky.cs:
+	* CanCan.cs:
+	* GeneralStore.cs:
+	* GeneralGoldenCard.cs:
+	* PlayableTableCard.cs:
+	* Tequila.cs:
+	* Canteen.cs:
+	* Hideout.cs:
+	* RagTime.cs:
+	* ElGringo.cs:
+	* BlackJack.cs:
+	* Sombrero.cs:
+	* ProxyCharacter.cs:
+	* LuckyDuke.cs:
+	* Howitzer.cs:
+	* PaulRegret.cs:
+	* VultureSam.cs:
+	* SidKetchum.cs:
+	* JesseJones.cs:
+	* RoseDoolan.cs:
+	* KitCarlson.cs:
+	* Pepperbox.cs:
+	* IronPlate.cs:
+	* Conestoga.cs:
+	* Derringer.cs:
+	* BartCassidy.cs:
+	* WillyTheKid.cs:
+	* Jourdonnais.cs:
+	* PonyExpress.cs:
+	* Springfield.cs:
+	* PedroRamirez.cs:
+	* TenGallonHat.cs:
+	* BuffaloRifle.cs:
+	* SlabTheKiller.cs:
+	* SuzyLafayette.cs:
+	* CalamityJanet.cs:
+	* ApacheKid.cs:
+	* PixiePete.cs:
+	* BelleStar.cs:
+	* DocHolyday.cs:
+	* BillNoface.cs:
+	* VeraCuster.cs:
+	* PatBrennan.cs:
+	* GregDigger.cs:
+	* HerbHunter.cs:
+	* MollyStark.cs:
+	* TequilaJoe.cs:
+	* SeanMallory.cs:
+	* JoseDelgado.cs:
+	* ChuckWengam.cs:
+	* ElenaFuente.cs:
+	  Reformatted ' : base()'/' : this()'.
+
+	* GameTable.cs:
+	  Use default values instead of overloaded methods where
+	  possible.
+	Shuffle cards when regenerating deck.
+
+	* ShotResponseHandler.cs:
+	* TargetCardCard.cs:
+	* AllPlayersCard.cs:
+	* TargetPlayerCard.cs:
+	* ThrowBangResponseHandler.cs:
+	* TargetCardTableCard.cs:
+	* AllPlayersTableCard.cs:
+	* TargetCardGoldenCard.cs:
+	* AllPlayersGoldenCard.cs:
+	* TargetPlayerTableCard.cs:
+	* TargetPlayerGoldenCard.cs:
+	* AllPlayersCardGoldenCard.cs:
+	  Reformatted ' : base()'/' : this()'.
+	Use default values instead of overloaded methods where
+	  possible.
+
+	* Dynamite.cs:
+	  Reformatted ' : base()'/' : this()'.
+	Fix wrong Dynamite success card filter.
+
+	* AssemblyInfo.cs:
+	  Updated copyright years.
+
 2012-06-11  WOnder93  <omosnacek@gmail.com>
 
 	* Bang# Server Daemon.csproj:

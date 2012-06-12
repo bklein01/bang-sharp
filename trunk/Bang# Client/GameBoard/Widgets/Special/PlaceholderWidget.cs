@@ -32,8 +32,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 	{
 		public Action OnSizeChanged;
 
-		protected PlaceholderWidget()
-			: base(0)
+		protected PlaceholderWidget() : base(0)
 		{
 		}
 

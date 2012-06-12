@@ -34,8 +34,8 @@ namespace BangSharp.Server.Daemon.Characters
 			private CheckDeckCallback checkCallback;
 			private CardResultCallback resultCallback;
 			
-			public LuckyDukeResponseHandler(LuckyDuke parent, Card causedBy, CheckDeckCallback checkCallback, CardResultCallback resultCallback)
-				: base(RequestType.LuckyDuke, parent.Player)
+			public LuckyDukeResponseHandler(LuckyDuke parent, Card causedBy, CheckDeckCallback checkCallback, CardResultCallback resultCallback) :
+				base(RequestType.LuckyDuke, parent.Player)
 			{
 				this.parent = parent;
 				this.causedBy = causedBy;
@@ -65,8 +65,8 @@ namespace BangSharp.Server.Daemon.Characters
 		{
 			private LuckyDuke parent;
 
-			public LuckyDukeQueueResponseHandler(LuckyDuke parent)
-				: base(parent.Player)
+			public LuckyDukeQueueResponseHandler(LuckyDuke parent) :
+				base(parent.Player)
 			{
 				this.parent = parent;
 			}
@@ -78,8 +78,8 @@ namespace BangSharp.Server.Daemon.Characters
 		}
 		private LuckyDukeQueueResponseHandler queue;
 		
-		public LuckyDuke(Player player)
-			: base(player, CharacterType.LuckyDuke)
+		public LuckyDuke(Player player) :
+			base(player, CharacterType.LuckyDuke)
 		{
 			queue = new LuckyDukeQueueResponseHandler(this);
 		}

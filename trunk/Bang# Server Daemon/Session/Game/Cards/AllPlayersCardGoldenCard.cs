@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon
 			private AllPlayersCardGoldenCard parent;
 			private Player targetPlayer;
 
-			public AllPlayersCardGoldenCardResponseHandler(AllPlayersCardGoldenCard parent, Player targetPlayer, Player owner)
-				: base(parent.reqType, owner)
+			public AllPlayersCardGoldenCardResponseHandler(AllPlayersCardGoldenCard parent, Player targetPlayer, Player owner) :
+				base(parent.reqType, owner)
 			{
 				this.parent = parent;
 				this.targetPlayer = targetPlayer;
@@ -50,13 +50,8 @@ namespace BangSharp.Server.Daemon
 		}
 		private RequestType reqType;
 
-		protected AllPlayersCardGoldenCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType, bool includeSelf)
-			: base(game, id, type, suit, rank, includeSelf)
-		{
-			this.reqType = reqType;
-		}
-		protected AllPlayersCardGoldenCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType)
-			: base(game, id, type, suit, rank)
+		protected AllPlayersCardGoldenCard(Game game, int id, CardType type, CardSuit suit, CardRank rank, RequestType reqType, bool includeSelf = false) :
+			base(game, id, type, suit, rank, includeSelf)
 		{
 			this.reqType = reqType;
 		}

@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Characters
 {
 	public sealed class GregDigger : Character
 	{
-		public GregDigger(Player player)
-			: base(player, CharacterType.GregDigger)
+		public GregDigger(Player player) :
+			base(player, CharacterType.GregDigger)
 		{
 		}
 		

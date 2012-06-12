@@ -29,8 +29,8 @@ namespace BangSharp.Server.Daemon.Characters
 	{
 		private int cardsToDraw;
 
-		public MollyStark(Player player)
-			: base(player, CharacterType.MollyStark)
+		public MollyStark(Player player) :
+			base(player, CharacterType.MollyStark)
 		{
 			cardsToDraw = 0;
 		}

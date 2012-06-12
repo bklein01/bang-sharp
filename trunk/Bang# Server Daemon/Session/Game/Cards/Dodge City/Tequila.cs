@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Cards
 {
 	public sealed class Tequila : TargetPlayerGoldenCard
 	{
-		public Tequila(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Tequila, suit, rank, RequestType.HealTarget, true)
+		public Tequila(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Tequila, suit, rank, RequestType.HealTarget, true)
 		{
 		}
 

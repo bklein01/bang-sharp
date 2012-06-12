@@ -34,8 +34,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		public event Action OnClick;
 
-		public Button()
-			: base(0)
+		public Button() : base(0)
 		{
 		}
 

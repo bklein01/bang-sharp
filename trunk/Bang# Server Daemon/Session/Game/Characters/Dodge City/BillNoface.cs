@@ -27,8 +27,8 @@ namespace BangSharp.Server.Daemon.Characters
 {
 	public sealed class BillNoface : Character
 	{
-		public BillNoface(Player player)
-			: base(player, CharacterType.BillNoface)
+		public BillNoface(Player player) :
+			base(player, CharacterType.BillNoface)
 		{
 		}
 

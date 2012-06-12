@@ -31,8 +31,8 @@ namespace BangSharp.Server.Daemon.Characters
 		{
 			get { return 3; }
 		}
-		public ElenaFuente(Player player)
-			: base(player, CharacterType.ElenaFuente)
+		public ElenaFuente(Player player) :
+			base(player, CharacterType.ElenaFuente)
 		{
 		}
 		

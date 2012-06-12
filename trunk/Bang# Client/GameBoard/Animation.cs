@@ -37,17 +37,17 @@ namespace BangSharp.Client.GameBoard
 	/// </summary>
 	/// <remarks>
 	/// The Animation class is used to play an animation from one game state to another.
-	/// It uses instances of <see cref='BangSharp.Client.GameBoard.AllocationManager'/>
+	/// It uses instances of <see cref="BangSharp.Client.GameBoard.AllocationManager"/>
 	/// ('allocation managers') to manage the 'start' and 'end' states of the animation.
 	/// They store the states in 'animators' that are created for each card and are provided
 	/// by the Animation object. The animators are also used to set the corresponding widget's
 	/// state according to their start state, end state and supplied progress vlaue (a time-based
-	/// value from 0.0 - 1.0) through the <see cref='BangSharp.Client.GameBoard.Animators.IAnimator'/>
+	/// value from 0.0 - 1.0) through the <see cref="BangSharp.Client.GameBoard.Animators.IAnimator"/>
 	/// interface.
 	/// </remarks>
 	public class Animation
 	{
-		public static readonly TimeSpan AnimDelay = new TimeSpan(0, 0, 0, 0, 200);
+		public static readonly TimeSpan AnimDelay = new TimeSpan(0, 0, 0, 0, 150);
 
 		private TimeSpan animLength = new TimeSpan(0, 0, 1);
 

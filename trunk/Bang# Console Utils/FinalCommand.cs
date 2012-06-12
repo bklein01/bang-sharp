@@ -32,14 +32,14 @@ namespace BangSharp.ConsoleUtils
 	/// <summary>
 	/// The delegate for the final command template.
 	/// </summary>
-	/// <typeparam name='In'>
+	/// <typeparam name="In">
 	/// The type of the input parameter of the command template.
 	/// </typeparam>
 	public delegate void FinalCommandDelegate<In>(In param, Queue<string> cmd);
 	/// <summary>
 	/// Represents a final command template.
 	/// </summary>
-	/// <typeparam name='In'>
+	/// <typeparam name="In">
 	/// The type of the input parameter of the command template.
 	/// </typeparam>
 	public class FinalCommand<In> : Command<In>
@@ -54,7 +54,7 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Creates a new final command template with the specified delegate.
 		/// </summary>
-		/// <param name='del'>
+		/// <param name="del">
 		/// The delegate to be invoked when this command executes.
 		/// </param>
 		public FinalCommand(FinalCommandDelegate<In> del)
@@ -84,11 +84,11 @@ namespace BangSharp.ConsoleUtils
 		/// <summary>
 		/// Creates a new root final command template with the specified delegate.
 		/// </summary>
-		/// <param name='del'>
+		/// <param name="del">
 		/// The delegate to be invoked when this command executes.
 		/// </param>
-		public FinalCommand(FinalCommandDelegate del)
-			: base((param, cmd) => del(cmd))
+		public FinalCommand(FinalCommandDelegate del) :
+			base((param, cmd) => del(cmd))
 		{
 		}
 	}

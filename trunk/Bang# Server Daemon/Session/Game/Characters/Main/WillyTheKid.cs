@@ -32,8 +32,8 @@ namespace BangSharp.Server.Daemon.Characters
 			get { return true; }
 		}
 		
-		public WillyTheKid(Player player)
-			: base(player, CharacterType.WillyTheKid)
+		public WillyTheKid(Player player) :
+			base(player, CharacterType.WillyTheKid)
 		{
 		}
 	}

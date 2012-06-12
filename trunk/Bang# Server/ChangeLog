@@ -1,3 +1,11 @@
+2012-06-12  WOnder93  <omosnacek@gmail.com>
+
+	* ServerUtils.cs:
+	  Use double quotes in documentation.
+
+	* AssemblyInfo.cs:
+	  Updated copyright years.
+
 2012-06-11  WOnder93  <omosnacek@gmail.com>
 
 	* Bang# Server.csproj:

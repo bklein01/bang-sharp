@@ -34,8 +34,8 @@ namespace BangSharp.Server.Daemon.Cards
 			private Player owner;
 			private Player current;
 
-			public DuelResponseHandler(Duel card, Player targetPlayer, Player owner)
-				: base(targetPlayer, owner)
+			public DuelResponseHandler(Duel card, Player targetPlayer, Player owner) :
+				base(targetPlayer, owner)
 			{
 				this.card = card;
 				this.targetPlayer = targetPlayer;
@@ -68,8 +68,8 @@ namespace BangSharp.Server.Daemon.Cards
 			}
 		}
 		
-		public Duel(Game game, int id, CardSuit suit, CardRank rank)
-			: base(game, id, CardType.Duel, suit, rank, RequestType.DuelTarget)
+		public Duel(Game game, int id, CardSuit suit, CardRank rank) :
+			base(game, id, CardType.Duel, suit, rank, RequestType.DuelTarget)
 		{
 		}
 		

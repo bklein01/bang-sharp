@@ -31,8 +31,8 @@ namespace BangSharp.Server.Daemon.Characters
 		{
 			private VeraCuster parent;
 
-			public VeraCusterResponseHandler(VeraCuster parent)
-				: base(RequestType.VeraCuster, parent.Player)
+			public VeraCusterResponseHandler(VeraCuster parent) :
+				base(RequestType.VeraCuster, parent.Player)
 			{
 				this.parent = parent;
 			}
@@ -64,8 +64,8 @@ namespace BangSharp.Server.Daemon.Characters
 			get { return 3; }
 		}
 
-		public VeraCuster(Player player)
-			: base(player, CharacterType.VeraCuster)
+		public VeraCuster(Player player) :
+			base(player, CharacterType.VeraCuster)
 		{
 		}
 

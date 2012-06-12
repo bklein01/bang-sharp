@@ -41,8 +41,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 		}
 
-		protected Bin()
-			: base(1)
+		protected Bin() : base(1)
 		{
 		}
 

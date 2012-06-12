@@ -271,10 +271,10 @@ namespace BangSharp.Client
 		/// <summary>
 		/// Connects to the specified server.
 		/// </summary>
-		/// <param name='address'>
+		/// <param name="address">
 		/// The server address.
 		/// </param>
-		/// <param name='port'>
+		/// <param name="port">
 		/// The server port.
 		/// </param>
 		public static void ConnectToServer(string address, int port)
