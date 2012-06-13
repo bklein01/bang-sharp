@@ -43,7 +43,9 @@ namespace BangSharp.Client.GameBoard.Widgets
 		private PlayerSlotWidget playerSlot1;
 		private PlayerSlotWidget playerSlot0;
 		private PlayerSlotWidget playerSlot7;
+		private Box box5;
 		private Label requestLabel;
+		private Label responseLabel;
 		private AnimationLayer animLayer;
 
 		private void InitLayout()
@@ -57,43 +59,55 @@ namespace BangSharp.Client.GameBoard.Widgets
 			this.box2 = new Box(Direction.Horizontal);
 			this.box1.Children.Add(this.box2);
 
-			this.playerSlot3 = new PlayerSlotWidget();
+			this.playerSlot3 = new PlayerSlotWidget(this);
 			this.box2.Children.Add(this.playerSlot3);
 
-			this.playerSlot4 = new PlayerSlotWidget();
+			this.playerSlot4 = new PlayerSlotWidget(this);
 			this.box2.Children.Add(this.playerSlot4);
 
-			this.playerSlot5 = new PlayerSlotWidget();
+			this.playerSlot5 = new PlayerSlotWidget(this);
 			this.box2.Children.Add(this.playerSlot5);
 
 			this.box3 = new Box(Direction.Horizontal);
 			this.box1.Children.Add(this.box3);
 
-			this.playerSlot2 = new PlayerSlotWidget();
+			this.playerSlot2 = new PlayerSlotWidget(this);
 			this.box3.Children.Add(this.playerSlot2);
 
-			this.mainTable = new MainTableWidget();
+			this.mainTable = new MainTableWidget(this);
 			this.box3.Children.Add(this.mainTable);
 
-			this.playerSlot6 = new PlayerSlotWidget();
+			this.playerSlot6 = new PlayerSlotWidget(this);
 			this.box3.Children.Add(this.playerSlot6);
 
 			this.box4 = new Box(Direction.Horizontal);
 			this.box1.Children.Add(this.box4);
 
-			this.playerSlot1 = new PlayerSlotWidget();
+			this.playerSlot1 = new PlayerSlotWidget(this);
 			this.box4.Children.Add(this.playerSlot1);
 
-			this.playerSlot0 = new PlayerSlotWidget(true);
+			this.playerSlot0 = new PlayerSlotWidget(this, true);
 			this.box4.Children.Add(this.playerSlot0);
 
-			this.playerSlot7 = new PlayerSlotWidget();
+			this.playerSlot7 = new PlayerSlotWidget(this);
 			this.box4.Children.Add(this.playerSlot7);
+
+			this.box5 = new Box(Direction.Horizontal);
+			this.box1.Children.Add(this.box5);
 
 			this.requestLabel = new Label();
 			this.requestLabel.Font = Pango.FontDescription.FromString("Sans Serif");
 			this.requestLabel.HorizAlignment = Alignment.Center;
-			this.box1.Children.Add(this.requestLabel);
+			//this.requestLabel.OutlineWidth = 0.5;
+			//this.requestLabel.OutlineColor = new Cairo.Color(1.0, 1.0, 1.0);
+			this.box5.Children.Add(this.requestLabel);
+
+			this.responseLabel = new Label();
+			this.responseLabel.Font = Pango.FontDescription.FromString("Sans Serif");
+			this.responseLabel.HorizAlignment = Alignment.Center;
+			//this.responseLabel.OutlineWidth = 0.5;
+			//this.responseLabel.OutlineColor = new Cairo.Color(1.0, 1.0, 1.0);
+			this.box5.Children.Add(this.responseLabel);
 
 			this.animLayer = new AnimationLayer(this);
 			this.basicOverlay.Children.Add(this.animLayer);

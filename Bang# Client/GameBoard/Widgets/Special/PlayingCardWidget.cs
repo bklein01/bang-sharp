@@ -161,32 +161,6 @@ namespace BangSharp.Client.GameBoard.Widgets
 			this.suit = suit;
 			Card = CardManager.GetCard(type);
 			UpdateMarkup();
-			OnClick += HandleOnClick;
-		}
-
-		private void HandleOnClick()
-		{
-			IPlayerControl control = ConnectionManager.PlayerGameControl;
-			if(control == null)
-				return;
-			if(id == 0)
-				try
-				{
-					control.RespondDraw();
-				}
-				catch(GameException)
-				{
-					// TODO: show error.
-				}
-			else
-				try
-				{
-					control.RespondCard(id);
-				}
-				catch(GameException)
-				{
-					// TODO: show error.
-				}
 		}
 
 		public void Update(ICard card)

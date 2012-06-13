@@ -1,3 +1,24 @@
+2012-06-13  WOnder93  <omosnacek@gmail.com>
+
+	* RootWidget.cs:
+	  Added handling for response errors.
+	Tweaked request label formatting.
+
+	* AnimationLayer.cs:
+	* MainTableWidget.cs:
+	* PlayerSlotWidget.cs:
+	* RootWidget.Layout.cs:
+	* PlayingCardWidget.cs:
+	* CharacterCardWidget.cs:
+	  Added handling for response errors.
+
+	* Label.cs:
+	  Added outline options to the Label widget.
+	Label now request automatic size if aligned to center.
+
+	* AssemblyInfo.cs:
+	  
+
 2012-06-12  WOnder93  <omosnacek@gmail.com>
 
 	* Animation.cs:

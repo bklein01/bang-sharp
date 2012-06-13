@@ -28,6 +28,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 {
 	public partial class MainTableWidget : Bin
 	{
+		private RootWidget root;
 		private PlayingCardWidget deckCard;
 
 		public CardPlaceholderWidget GraveyardPlaceholder
@@ -43,11 +44,26 @@ namespace BangSharp.Client.GameBoard.Widgets
 			get { return selectionPlaceholder; }
 		}
 
-		public MainTableWidget()
+		public MainTableWidget(RootWidget root)
 		{
+			this.root = root;
 			InitLayout();
 
 			deckCard = new PlayingCardWidget();
+			deckCard.OnClick += delegate() {
+				IPlayerControl control = ConnectionManager.PlayerGameControl;
+				if(control == null)
+					return;
+				try
+				{
+					control.RespondDraw();
+					root.SetResponseType("Draw");
+				}
+				catch(GameException e)
+				{
+					root.SetResponseType("Draw", e);
+				}
+			};
 		}
 
 		public void Update()

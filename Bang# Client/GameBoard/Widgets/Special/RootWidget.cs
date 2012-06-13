@@ -185,10 +185,24 @@ namespace BangSharp.Client.GameBoard.Widgets
 		{
 			lock(ConnectionManager.SessionEventLock)
 			{
+				requestLabel.Markup = "<span color='lightblue'>Request type: </span>";
 				if(type == RequestType.None)
-					requestLabel.Markup = "<span color='orange'><b>No Request</b></span>";
+					requestLabel.Markup += "<span color='orange'><b>No Request</b></span>";
 				else
-					requestLabel.Markup = "<span color='orange'><b>" + type.ToString() + "</b></span>";
+					requestLabel.Markup += "<span color='orange'><b>" + type.ToString() + "</b></span>";
+			}
+			RequestRedraw();
+		}
+		public void SetResponseType(string responseType, GameException exception = null)
+		{
+			lock(ConnectionManager.SessionEventLock)
+			{
+				responseLabel.Markup = "<span color='lightblue'>Last response: </span>";
+				responseLabel.Markup += "<span color='orange'><b>" + responseType + " - </b></span>";
+				if(exception == null)
+					responseLabel.Markup += "<span color='lightgreen'>Accepted!</span>";
+				else
+					responseLabel.Markup += "<span color='lightsalmon'>" + exception.GetType().ToString() + "</span>";
 			}
 			RequestRedraw();
 		}
