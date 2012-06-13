@@ -42,26 +42,9 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 		}
 
-		public CharacterCardWidget(CharacterType type = CharacterType.Unknown, bool thisPlayer = false)
+		public CharacterCardWidget(CharacterType type = CharacterType.Unknown)
 		{
 			Type = type;
-			if(thisPlayer)
-				OnClick += HandleOnClick;
-		}
-
-		private void HandleOnClick()
-		{
-			IPlayerControl control = ConnectionManager.PlayerGameControl;
-			if(control == null)
-				return;
-			try
-			{
-				control.RespondUseAbility();
-			}
-			catch(GameException)
-			{
-				// TODO: show error
-			}
 		}
 
 		protected override bool OnExposed(Context cr, Rectangle area)

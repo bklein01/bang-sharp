@@ -541,7 +541,22 @@ namespace BangSharp.Client.GameBoard.Widgets
 				{
 					int id = player.ID;
 					playerRoleWidgets[id] = new RoleCardWidget(player.Role);
-					playerCharacterWidgets[id] = new CharacterCardWidget(player.CharacterType, id == thisPlayerId);
+					playerCharacterWidgets[id] = new CharacterCardWidget(player.CharacterType);
+					if(id == thisPlayerId)
+						playerCharacterWidgets[id].OnClick += delegate() {
+							IPlayerControl control = ConnectionManager.PlayerGameControl;
+							if(control == null)
+								return;
+							try
+							{
+								control.RespondUseAbility();
+								root.SetResponseType("Use Ability");
+							}
+							catch(GameException e)
+							{
+								root.SetResponseType("Use Ability", e);
+							}
+						};
 				}
 			}
 		}
@@ -563,7 +578,22 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 			catch(KeyNotFoundException)
 			{
-				return playingCardWidgets[cardId] = new PlayingCardWidget(cardId);
+				playingCardWidgets[cardId] = new PlayingCardWidget(cardId);
+				playingCardWidgets[cardId].OnClick += delegate() {
+					IPlayerControl control = ConnectionManager.PlayerGameControl;
+					if(control == null)
+						return;
+					try
+					{
+						control.RespondCard(cardId);
+						root.SetResponseType("Card #" + cardId);
+					}
+					catch(GameException e)
+					{
+						root.SetResponseType("Card #" + cardId, e);
+					}
+				};
+				return playingCardWidgets[cardId];
 			}
 		}
 		/// <summary>

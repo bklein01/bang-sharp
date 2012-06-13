@@ -28,6 +28,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 {
 	public partial class PlayerSlotWidget : Bin
 	{
+		private RootWidget root;
 		private int id;
 		private CharacterCardWidget lifePointsCard;
 
@@ -48,25 +49,26 @@ namespace BangSharp.Client.GameBoard.Widgets
 			get { return characterPlaceholder; }
 		}
 
-		public PlayerSlotWidget(bool thisPlayer = false)
+		public PlayerSlotWidget(RootWidget root, bool thisPlayer = false)
 		{
+			this.root = root;
 			InitLayout();
 			playerPic.Pixbuf = ResourceManager.GetPixbuf("Resources", "DefaultPlayerImage.png");
 			if(thisPlayer)
 			{
 				NoActionButtonWidget button = new NoActionButtonWidget();
-				button.OnClick += delegate()
-				{
+				button.OnClick += delegate() {
 					IPlayerControl control = ConnectionManager.PlayerGameControl;
 					if(control == null)
 						return;
 					try
 					{
 						control.RespondNoAction();
+						root.SetResponseType("No action");
 					}
-					catch(GameException)
+					catch(GameException e)
 					{
-						// TODO: show error
+						root.SetResponseType("No action", e);
 					}
 				};
 				padding9.Children.Add(button);
@@ -110,10 +112,11 @@ namespace BangSharp.Client.GameBoard.Widgets
 			try
 			{
 				control.RespondPlayer(id);
+				root.SetResponseType("Player #" + id);
 			}
-			catch(GameException)
+			catch(GameException e)
 			{
-				// TODO: show error
+				root.SetResponseType("Player #" + id, e);
 			}
 			return true;
 		}

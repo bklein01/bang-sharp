@@ -33,6 +33,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 		private Pango.Layout layout;
 		private string markup;
 		private Alignment horizAlignment;
+		private Alignment vertAlignment;
 
 		public string Markup
 		{
@@ -57,8 +58,8 @@ namespace BangSharp.Client.GameBoard.Widgets
 		}
 		public Alignment VertAlignment
 		{
-			get;
-			set;
+			get { return vertAlignment; }
+			set { vertAlignment = value; }
 		}
 		public bool Justify
 		{
@@ -83,9 +84,22 @@ namespace BangSharp.Client.GameBoard.Widgets
 			set { layout.Spacing = value; }
 		}
 
+		public double OutlineWidth
+		{
+			get;
+			set;
+		}
+		public Color OutlineColor
+		{
+			get;
+			set;
+		}
+
 		public Label() : base(0)
 		{
 			layout = new Pango.Layout(Gdk.PangoHelper.ContextGet());
+			horizAlignment = Alignment.Left;
+			vertAlignment = Alignment.Top;
 		}
 
 		private void GetLayoutRectangle(out Pango.Rectangle pangoRect, out Rectangle cairoRect)
@@ -121,6 +135,14 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 			cr.Translate(0.0, y);
 			Pango.CairoHelper.ShowLayout(cr, layout);
+			if(OutlineWidth > 0.0)
+			{
+				cr.Color = OutlineColor;
+				cr.LineWidth = OutlineWidth;
+				cr.LineJoin = LineJoin.Round;
+				Pango.CairoHelper.LayoutPath(cr, layout);
+				cr.Stroke();
+			}
 			return true;
 		}
 		public override void SizeRequest(ref double width, ref double height, out double ratio)
@@ -130,17 +152,23 @@ namespace BangSharp.Client.GameBoard.Widgets
 			Rectangle rect;
 			if(width < 0.0)
 			{
-				layout.Width = -1;
-				GetLayoutRectangle(out log, out rect);
-				width = rect.Width;
-				layout.Width = log.Width;
+				if(HorizAlignment != Alignment.Center)
+				{
+					layout.Width = -1;
+					GetLayoutRectangle(out log, out rect);
+					width = rect.Width;
+					layout.Width = log.Width;
+				}
 			}
 			else
 				layout.Width = (int)Math.Round(width * Pango.Scale.PangoScale);
 
 			GetLayoutRectangle(out log, out rect);
 			if(height < 0.0/* || height < rect.Height*/)
-				height = rect.Height;
+			{
+				if(VertAlignment != Alignment.Center)
+					height = rect.Height;
+			}
 			layout.Width = backup;
 			ratio = -1;
 		}
