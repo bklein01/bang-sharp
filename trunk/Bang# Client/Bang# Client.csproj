@@ -117,6 +117,8 @@
     <Compile Include="MainWindow.cs" />
     <Compile Include="gtk-gui\BangSharp.Client.MainWindow.cs" />
     <Compile Include="GameBoard\Widgets\Basic\Adapter.cs" />
+    <Compile Include="GameBoard\Animators\CardZoomAnimator.cs" />
+    <Compile Include="GameBoard\States\CardZoomState.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bang# Common\Bang# Common.csproj">

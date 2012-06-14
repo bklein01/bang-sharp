@@ -198,6 +198,8 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		protected void Expose(Context cr, Rectangle area)
 		{
+			if(area.Width == 0.0 || area.Height == 0.0)
+				return;
 			cr.Save();
 			OnExposed(cr, area);
 			if(cr.Status != Status.Success)

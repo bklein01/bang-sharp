@@ -49,6 +49,12 @@ namespace BangSharp.Client.GameBoard.Widgets
 			Role = role;
 		}
 
+		public void Update(RoleCardWidget other)
+		{
+			role = other.role;
+			Card = other.Card;
+		}
+
 		protected override bool OnExposed(Context cr, Rectangle area)
 		{
 			cr.Save();
