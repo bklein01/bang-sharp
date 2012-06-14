@@ -1,8 +1,8 @@
-// CharacterCardWidget.cs
+// CardZoomAnimator.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
-// Copyright (c) 2011 Ondrej Mosnáček
+// Copyright (c) 2012 Ondrej Mosnáček
 // 
 // Created with the help of the source code of KBang (http://code.google.com/p/kbang)
 // 
@@ -23,55 +23,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using System;
-using Cairo;
+using BangSharp.Client.GameBoard.States;
+using BangSharp.Client.GameBoard.Widgets;
 
-namespace BangSharp.Client.GameBoard.Widgets
+namespace BangSharp.Client.GameBoard.Animators
 {
-	public class CharacterCardWidget : CardWidget
+	public class CardZoomAnimator : CardAnimator<CardWidget, CardZoomState>
 	{
-		private CharacterType type;
-
-		public CharacterType Type
+		public CardZoomAnimator(Animation anim, CardWidget widget)
+			: base(anim, widget)
 		{
-			get { return type; }
-			set
-			{
-				type = value;
-				Card = CardManager.GetCard(type);
-			}
-		}
-
-		public CharacterCardWidget(CharacterType type = CharacterType.Unknown)
-		{
-			Type = type;
-		}
-
-		public void Update(CharacterCardWidget other)
-		{
-			type = other.type;
-			Card = other.Card;
-		}
-
-		protected override bool OnExposed(Context cr, Rectangle area)
-		{
-			cr.Save();
-			if(!base.OnExposed(cr, area))
-			{
-				cr.Color = new Color(1.0, 0.0, 1.0);
-				cr.Rectangle(new Rectangle(2.0, 2.0, Allocation.Width - 4.0, Allocation.Height - 4.0));
-				cr.LineWidth = 4.0;
-				cr.LineJoin = LineJoin.Round;
-				cr.Stroke();
-				cr.SetFontSize(20.0);
-				cr.SelectFontFace("Librarian", FontSlant.Normal, FontWeight.Bold);
-				cr.Translate(0.0, Allocation.Height / 2);
-				cr.ShowText(type.ToString());
-				cr.Restore();
-				return true;
-			}
-			cr.Restore();
-			return true;
 		}
 	}
 }

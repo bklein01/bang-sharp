@@ -23,6 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -455,6 +456,10 @@ namespace BangSharp.Client.GameBoard.Widgets
 		private Dictionary<int, PlayingCardWidget> playingCardWidgets;
 		private Dictionary<int, RoleCardWidget> playerRoleWidgets;
 		private Dictionary<int, CharacterCardWidget> playerCharacterWidgets;
+		private PlayingCardWidget playingCardZoomWidget;
+		private RoleCardWidget roleCardZoomWidget;
+		private CharacterCardWidget characterCardZoomWidget;
+		private bool cardZoomWidgetSet;
 
 		private object animLock = new object();
 		private Queue<Animation> animQueue;
@@ -486,6 +491,17 @@ namespace BangSharp.Client.GameBoard.Widgets
 			playingCardWidgets = new Dictionary<int, PlayingCardWidget>();
 			playerRoleWidgets = new Dictionary<int, RoleCardWidget>(8);
 			playerCharacterWidgets = new Dictionary<int, CharacterCardWidget>(8);
+
+			playingCardZoomWidget = new PlayingCardWidget();
+			roleCardZoomWidget = new RoleCardWidget();
+			characterCardZoomWidget = new CharacterCardWidget();
+
+			playingCardZoomWidget.OnLClick += (w) => UnsetCardZoomWidget();
+			playingCardZoomWidget.OnRClick += (w) => UnsetCardZoomWidget();
+			roleCardZoomWidget.OnLClick += (w) => UnsetCardZoomWidget();
+			roleCardZoomWidget.OnRClick += (w) => UnsetCardZoomWidget();
+			characterCardZoomWidget.OnLClick += (w) => UnsetCardZoomWidget();
+			characterCardZoomWidget.OnRClick += (w) => UnsetCardZoomWidget();
 
 			timerThread = new Thread(RunTimer);
 			timerThread.IsBackground = true;
@@ -531,6 +547,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 				playingCardWidgets.Clear();
 				playerRoleWidgets.Clear();
 				playerCharacterWidgets.Clear();
+				cardZoomWidgetSet = false;
 				Children.Clear();
 
 				int thisPlayerId = 0;
@@ -541,9 +558,10 @@ namespace BangSharp.Client.GameBoard.Widgets
 				{
 					int id = player.ID;
 					playerRoleWidgets[id] = new RoleCardWidget(player.Role);
+					playerRoleWidgets[id].OnRClick += (w) => SetCardZoomWidget((RoleCardWidget)w);
 					playerCharacterWidgets[id] = new CharacterCardWidget(player.CharacterType);
 					if(id == thisPlayerId)
-						playerCharacterWidgets[id].OnClick += delegate() {
+						playerCharacterWidgets[id].OnLClick += (w) => {
 							IPlayerControl control = ConnectionManager.PlayerGameControl;
 							if(control == null)
 								return;
@@ -557,6 +575,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 								root.SetResponseType("Use Ability", e);
 							}
 						};
+					playerCharacterWidgets[id].OnRClick += (w) => SetCardZoomWidget((CharacterCardWidget)w);
 				}
 			}
 		}
@@ -579,20 +598,22 @@ namespace BangSharp.Client.GameBoard.Widgets
 			catch(KeyNotFoundException)
 			{
 				playingCardWidgets[cardId] = new PlayingCardWidget(cardId);
-				playingCardWidgets[cardId].OnClick += delegate() {
+				playingCardWidgets[cardId].OnLClick += (w) => {
+					PlayingCardWidget playingCardWidget = (PlayingCardWidget)w;
 					IPlayerControl control = ConnectionManager.PlayerGameControl;
 					if(control == null)
 						return;
 					try
 					{
 						control.RespondCard(cardId);
-						root.SetResponseType("Card #" + cardId);
+						root.SetResponseType("Card #" + playingCardWidget.ID);
 					}
 					catch(GameException e)
 					{
-						root.SetResponseType("Card #" + cardId, e);
+						root.SetResponseType("Card #" + playingCardWidget.ID, e);
 					}
 				};
+				playingCardWidgets[cardId].OnRClick += (w) => SetCardZoomWidget((PlayingCardWidget)w);
 				return playingCardWidgets[cardId];
 			}
 		}
@@ -633,6 +654,146 @@ namespace BangSharp.Client.GameBoard.Widgets
 		public CharacterCardWidget GetPlayerCharacterWidget(int playerId)
 		{
 			return playerCharacterWidgets[playerId];
+		}
+
+		public CardWidget GetPlayingCardZoomWidget()
+		{
+			return playingCardZoomWidget;
+		}
+		public CardWidget GetRoleCardZoomWidget()
+		{
+			return roleCardZoomWidget;
+		}
+		public CardWidget GetCharacterCardZoomWidget()
+		{
+			return characterCardZoomWidget;
+		}
+
+		public void SetCardZoomWidget(PlayingCardWidget cardWidget)
+		{
+			lock(animLock)
+			{
+				if(cardZoomWidgetSet)
+					return;
+
+				playingCardZoomWidget.Update(cardWidget);
+				cardZoomWidgetSet = true;
+
+				if(animQueue.Count == 0)
+				{
+					Animation anim = new Animation(this, current, new TimeSpan(0, 0, 0, 0, 500));
+					anim.EndAllocManager.SetPlayingCardZoomVisible(true);
+					EnqueueAnimation(anim);
+				}
+				else
+				{
+					bool first = true;
+					foreach(Animation anim in animQueue)
+					{
+						if(first)
+							first = false;
+						else
+							anim.StartAllocManager.SetPlayingCardZoomVisible(true);
+						anim.EndAllocManager.SetPlayingCardZoomVisible(true);
+					}
+				}
+			}
+		}
+		public void SetCardZoomWidget(RoleCardWidget cardWidget)
+		{
+			lock(animLock)
+			{
+				if(cardZoomWidgetSet)
+					return;
+
+				roleCardZoomWidget.Update(cardWidget);
+				cardZoomWidgetSet = true;
+
+				if(animQueue.Count == 0)
+				{
+					Animation anim = new Animation(this, current, new TimeSpan(0, 0, 0, 0, 500));
+					anim.EndAllocManager.SetRoleCardZoomVisible(true);
+					EnqueueAnimation(anim);
+				}
+				else
+				{
+					bool first = true;
+					foreach(Animation anim in animQueue)
+					{
+						if(first)
+							first = false;
+						else
+							anim.StartAllocManager.SetRoleCardZoomVisible(true);
+						anim.EndAllocManager.SetRoleCardZoomVisible(true);
+					}
+				}
+			}
+		}
+		public void SetCardZoomWidget(CharacterCardWidget cardWidget)
+		{
+			lock(animLock)
+			{
+				if(cardZoomWidgetSet)
+					return;
+
+				characterCardZoomWidget.Update(cardWidget);
+				cardZoomWidgetSet = true;
+
+				if(animQueue.Count == 0)
+				{
+					Animation anim = new Animation(this, current, new TimeSpan(0, 0, 0, 0, 500));
+					anim.EndAllocManager.SetCharacterCardZoomVisible(true);
+					EnqueueAnimation(anim);
+				}
+				else
+				{
+					bool first = true;
+					foreach(Animation anim in animQueue)
+					{
+						if(first)
+							first = false;
+						else
+							anim.StartAllocManager.SetCharacterCardZoomVisible(true);
+						anim.EndAllocManager.SetCharacterCardZoomVisible(true);
+					}
+				}
+			}
+		}
+
+		public void UnsetCardZoomWidget()
+		{
+			lock(animLock)
+			{
+				if(!cardZoomWidgetSet)
+					return;
+
+				cardZoomWidgetSet = false;
+
+				if(animQueue.Count == 0)
+				{
+					Animation anim = new Animation(this, current, new TimeSpan(0, 0, 0, 0, 500));
+					anim.EndAllocManager.SetPlayingCardZoomVisible(false);
+					anim.EndAllocManager.SetRoleCardZoomVisible(false);
+					anim.EndAllocManager.SetCharacterCardZoomVisible(false);
+					EnqueueAnimation(anim);
+				}
+				else
+				{
+					bool first = true;
+					foreach(Animation anim in animQueue)
+					{
+						if(first)
+							first = false;
+						else
+							anim.StartAllocManager.SetPlayingCardZoomVisible(false);
+							anim.StartAllocManager.SetRoleCardZoomVisible(false);
+							anim.StartAllocManager.SetCharacterCardZoomVisible(false);
+						anim.EndAllocManager.SetPlayingCardZoomVisible(false);
+						anim.EndAllocManager.SetRoleCardZoomVisible(false);
+						anim.EndAllocManager.SetCharacterCardZoomVisible(false);
+					}
+				}
+			}
 		}
 
 		protected override void OnResized()

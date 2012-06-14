@@ -1,3 +1,49 @@
+2012-06-14  WOnder93  <omosnacek@gmail.com>
+
+	* Bang# Client.csproj:
+	* AllocationManager.cs:
+	* CardZoomState.cs:
+	* CardZoomAnimator.cs:
+	  Added option to zoom-in cards by right-clicking them.
+
+	* AssemblyInfo.cs:
+	  
+
+	* Animation.cs:
+	  Added option to zoom-in cards by right-clicking them.
+	Animation length can now be specified in the Animation's
+	  constructor.
+
+	* Widget.cs:
+	  Don't call expose event on widgets if the area is not a
+	  rectangle.
+
+	* AnimationLayer.cs:
+	  Added option to zoom-in cards by right-clicking them.
+	Renamed the CardWidget's OnClick event to OnLClick; added
+	  OnRClick event.
+
+	* CardWidget.cs:
+	  Added option to zoom-in cards by right-clicking them.
+	Renamed the CardWidget's OnClick event to OnLClick; added
+	  OnRClick event.
+	Don't draw the card's picture if its size is calculated as
+	  zero.
+
+	* RoleCardWidget.cs:
+	* CharacterCardWidget.cs:
+	  Added Update method to all card widgets (to update their
+	  properties from another card widget of the same type).
+
+	* MainTableWidget.cs:
+	  Renamed the CardWidget's OnClick event to OnLClick; added
+	  OnRClick event.
+
+	* PlayingCardWidget.cs:
+	  Removed PlayingCardWidget's Update mehtod.
+	Added Update method to all card widgets (to update their
+	  properties from another card widget of the same type).
+
 2012-06-13  WOnder93  <omosnacek@gmail.com>
 
 	* RootWidget.cs:

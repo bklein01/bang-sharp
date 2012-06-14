@@ -163,13 +163,13 @@ namespace BangSharp.Client.GameBoard.Widgets
 			UpdateMarkup();
 		}
 
-		public void Update(ICard card)
+		public void Update(PlayingCardWidget other)
 		{
-			id = card.ID;
-			type = card.Type;
-			rank = card.Rank;
-			suit = card.Suit;
-			Card = CardManager.GetCard(type);
+			id = 0;
+			type = other.type;
+			rank = other.rank;
+			suit = other.suit;
+			Card = other.Card;
 			UpdateMarkup();
 		}
 

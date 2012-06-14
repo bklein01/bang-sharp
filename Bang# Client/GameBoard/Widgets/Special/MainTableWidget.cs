@@ -50,7 +50,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			InitLayout();
 
 			deckCard = new PlayingCardWidget();
-			deckCard.OnClick += delegate() {
+			deckCard.OnLClick += (w) => {
 				IPlayerControl control = ConnectionManager.PlayerGameControl;
 				if(control == null)
 					return;

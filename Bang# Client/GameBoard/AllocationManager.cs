@@ -23,6 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System;
 using System.Collections.Generic;
 using BangSharp.Client.GameBoard.Animators;
 using BangSharp.Client.GameBoard.Widgets;
@@ -34,18 +35,18 @@ namespace BangSharp.Client.GameBoard
 		private abstract class Allocator
 		{
 			private AllocationManager parent;
-			private PlaceholderWidget placeholder;
+			private Widget placeholder;
 
 			public AllocationManager Parent
 			{
 				get { return parent; }
 			}
-			public PlaceholderWidget Placeholder
+			public Widget Placeholder
 			{
 				get { return placeholder; }
 			}
 
-			protected Allocator(AllocationManager parent, PlaceholderWidget placeholder)
+			protected Allocator(AllocationManager parent, Widget placeholder)
 			{
 				this.parent = parent;
 				this.placeholder = placeholder;
@@ -143,6 +144,62 @@ namespace BangSharp.Client.GameBoard
 				layer.Children.Add(animator.Widget);
 			}
 		}
+		private class CardZoomAllocator : Allocator
+		{
+			private CardZoomAnimator animator;
+
+			public CardZoomAnimator Animator
+			{
+				get { return animator; }
+			}
+
+			public bool Visible
+			{
+				get;
+				set;
+			}
+
+			public CardZoomAllocator(AllocationManager parent, AnimationLayer placeholder, CardZoomAnimator animator)
+				: base(parent, placeholder)
+			{
+				this.animator = animator;
+			}
+
+			public override void Reallocate()
+			{
+				Cairo.Rectangle main = Placeholder.Allocation;
+				double centerX = main.Width / 2;
+				double centerY = main.Height / 2;
+				double width, height;
+				if(Visible)
+				{
+					double w = main.Width * 0.8;
+					double h = main.Height * 0.8;
+					double rat = w / h;
+
+					if(rat < Card.Ratio)
+					{
+						width = Math.Min(w, Card.DefaultWidth);
+						height = width / Card.Ratio;
+					}
+					else
+					{
+						height = Math.Min(h, Card.DefaultHeight);
+						width = height * Card.Ratio;
+					}
+				}
+				else
+				{
+					width = 0.0;
+					height = 0.0;
+				}
+				animator.GetState(Parent.type).Allocation = new Cairo.Rectangle(centerX - width / 2, centerY - height / 2, width, height);
+			}
+			public override void OrderWidgets(AnimationLayer layer)
+			{
+				layer.Children.Add(animator.Widget);
+			}
+		}
 		private Animation anim;
 		private StateType type;
 
@@ -153,6 +210,9 @@ namespace BangSharp.Client.GameBoard
 		private Dictionary<int, PlayingCardListAllocator> playerTables;
 		private Dictionary<int, LifePointsCardAllocator> playerLifePoints;
 		private Dictionary<int, RoleCardAllocator> playerRoles;
+		private CardZoomAllocator playingCardZoom;
+		private CardZoomAllocator roleCardZoom;
+		private CardZoomAllocator characterCardZoom;
 
 		public AllocationManager(Animation anim, StateType type, AllocationManager previous = null)
 		{
@@ -178,6 +238,9 @@ namespace BangSharp.Client.GameBoard
 				playerLifePoints.Add(playerId, new LifePointsCardAllocator(this, root.GetPlayerCharacterPlaceholder(playerId), anim.GetPlayerCharacterAnimator(playerId)));
 				playerRoles.Add(playerId, new RoleCardAllocator(this, root.GetPlayerRolePlaceholder(playerId), anim.GetPlayerRoleAnimator(playerId)));
 			}
+			playingCardZoom = new CardZoomAllocator(this, anim.AnimLayer, anim.GetPlayingCardZoomAnimator());
+			roleCardZoom = new CardZoomAllocator(this, anim.AnimLayer, anim.GetRoleCardZoomAnimator());
+			characterCardZoom = new CardZoomAllocator(this, anim.AnimLayer, anim.GetCharacterCardZoomAnimator());
 
 			if(previous != null)
 			{
@@ -203,6 +266,10 @@ namespace BangSharp.Client.GameBoard
 
 				foreach(int id in previous.playerLifePoints.Keys)
 					this.playerLifePoints[id].LifePoints = previous.playerLifePoints[id].LifePoints;
+
+				this.playingCardZoom.Visible = previous.playingCardZoom.Visible;
+				this.roleCardZoom.Visible = previous.roleCardZoom.Visible;
+				this.characterCardZoom.Visible = previous.characterCardZoom.Visible;
 			}
 		}
 
@@ -300,6 +367,19 @@ namespace BangSharp.Client.GameBoard
 			playerLifePoints[playerId].LifePoints = lifePoints;
 		}
 
+		public void SetPlayingCardZoomVisible(bool visible)
+		{
+			playingCardZoom.Visible = visible;
+		}
+		public void SetRoleCardZoomVisible(bool visible)
+		{
+			roleCardZoom.Visible = visible;
+		}
+		public void SetCharacterCardZoomVisible(bool visible)
+		{
+			characterCardZoom.Visible = visible;
+		}
+
 		/// <summary>
 		/// Recalculates the allocations for this state.
 		/// </summary>
@@ -321,6 +401,10 @@ namespace BangSharp.Client.GameBoard
 
 			foreach(Allocator allocator in playerRoles.Values)
 				allocator.Reallocate();
+
+			playingCardZoom.Reallocate();
+			roleCardZoom.Reallocate();
+			characterCardZoom.Reallocate();
 		}
 		/// <summary>
 		/// Reordes widgets according to this state.
@@ -347,6 +431,10 @@ namespace BangSharp.Client.GameBoard
 			selectionCards.OrderWidgets(layer);
 
 			deckCards.OrderWidgets(layer);
+
+			playingCardZoom.OrderWidgets(layer);
+			roleCardZoom.OrderWidgets(layer);
+			characterCardZoom.OrderWidgets(layer);
 		}
 	}
 }

@@ -28,6 +28,8 @@ using Cairo;
 
 namespace BangSharp.Client.GameBoard.Widgets
 {
+	public delegate void CardClick(CardWidget cardWidget);
+
 	public class CardWidget : Widget
 	{
 		protected Card Card
@@ -42,7 +44,8 @@ namespace BangSharp.Client.GameBoard.Widgets
 			set;
 		}
 
-		public event Action OnClick;
+		public event CardClick OnLClick;
+		public event CardClick OnRClick;
 
 		protected CardWidget() : base(0)
 		{
@@ -66,8 +69,14 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		protected override bool OnLeftClick(double x, double y)
 		{
-			if(OnClick != null)
-				OnClick();
+			if(OnLClick != null)
+				OnLClick(this);
+			return true;
+		}
+		protected override bool OnRightClick(double x, double y)
+		{
+			if(OnRClick != null)
+				OnRClick(this);
 			return true;
 		}
 
@@ -77,6 +86,8 @@ namespace BangSharp.Client.GameBoard.Widgets
 				return false;
 			//int pixbufH = (int)Math.Round(Allocation.Height * 1.2);
 			int pixbufH = (int)(Math.Pow(1.5, Math.Ceiling(Math.Log(Allocation.Height / Card.DefaultHeight, 1.5))) * Card.DefaultHeight);
+			if(pixbufH == 0)
+				return true;
 			Gdk.Pixbuf pixbuf = Card.GetPixbuf(pixbufH);
 			if(pixbuf == null)
 				return false;

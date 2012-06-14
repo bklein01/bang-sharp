@@ -59,6 +59,9 @@ namespace BangSharp.Client.GameBoard
 		private Dictionary<int, PlayingCardAnimator> playingCardAnimators;
 		private Dictionary<int, RoleCardAnimator> playerRoleAnimators;
 		private Dictionary<int, CharacterCardAnimator> playerCharacterAnimators;
+		private CardZoomAnimator playingCardZoomAnimator;
+		private CardZoomAnimator roleCardZoomAnimator;
+		private CardZoomAnimator characterCardZoomAnimator;
 
 		private AllocationManager startAllocManager;
 		private AllocationManager endAllocManager;
@@ -82,9 +85,11 @@ namespace BangSharp.Client.GameBoard
 			get { return endAllocManager; }
 		}
 
-		public Animation(AnimationLayer layer, Animation lastAnim = null)
+		public Animation(AnimationLayer layer, Animation lastAnim = null, TimeSpan animLength = default(TimeSpan))
 		{
 			this.layer = layer;
+			if(animLength.Ticks > 0L)
+				this.animLength = animLength;
 			onlyEnd = false;
 			ended = false;
 			sw = new Stopwatch();
@@ -108,6 +113,9 @@ namespace BangSharp.Client.GameBoard
 					playerCharacterAnimators[id].EndState.Update(lastCharacterState);
 				}
 			}
+			playingCardZoomAnimator = new CardZoomAnimator(this, layer.GetPlayingCardZoomWidget());
+			roleCardZoomAnimator = new CardZoomAnimator(this, layer.GetRoleCardZoomWidget());
+			characterCardZoomAnimator = new CardZoomAnimator(this, layer.GetCharacterCardZoomWidget());
 
 			if(lastAnim != null)
 			{
@@ -148,6 +156,19 @@ namespace BangSharp.Client.GameBoard
 			return playerRoleAnimators[playerId];
 		}
 
+		public CardZoomAnimator GetPlayingCardZoomAnimator()
+		{
+			return playingCardZoomAnimator;
+		}
+		public CardZoomAnimator GetRoleCardZoomAnimator()
+		{
+			return roleCardZoomAnimator;
+		}
+		public CardZoomAnimator GetCharacterCardZoomAnimator()
+		{
+			return characterCardZoomAnimator;
+		}
+
 		/// <summary>
 		/// Starts the animation.
 		/// </summary>
@@ -181,6 +202,10 @@ namespace BangSharp.Client.GameBoard
 				a.Animate(progress);
 			foreach(IAnimator a in playerCharacterAnimators.Values)
 				a.Animate(progress);
+
+			playingCardZoomAnimator.Animate(progress);
+			roleCardZoomAnimator.Animate(progress);
+			characterCardZoomAnimator.Animate(progress);
 
 			if(progress == 1.0 || onlyEnd)
 			{
