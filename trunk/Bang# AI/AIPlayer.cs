@@ -894,7 +894,7 @@ namespace BangSharp.AI
 			if(card.Type == CardType.Jail)
 				playerHelper.RegisterAttack(targetPlayer, player);
 		}
-		void ISessionEventListener.OnPlayerPassed(IPublicPlayerView player) { }
+		void ISessionEventListener.OnPlayerEndedTurn(IPublicPlayerView player) { }
 		void ISessionEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card) { }
 		void ISessionEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card, CardType asCard) { }
 		void ISessionEventListener.OnDrawnIntoSelection(ReadOnlyCollection<ICard> drawnCards) { }
@@ -955,6 +955,7 @@ namespace BangSharp.AI
 		void ISessionEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player) { }
 		void ISessionEventListener.OnPlayerLostAdditionalCharacters(IPublicPlayerView player) { }
 		void ISessionEventListener.OnDeckRegenerated() { }
+		void ISessionEventListener.OnNewRequest(IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy) { }
 		#endregion
 	}
 }

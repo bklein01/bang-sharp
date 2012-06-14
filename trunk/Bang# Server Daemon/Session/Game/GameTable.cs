@@ -253,7 +253,7 @@ namespace BangSharp.Server.Daemon
 		}
 		public void PlayerPass(Player player)
 		{
-			game.Session.EventManager.OnPlayerPassed(player);
+			game.Session.EventManager.OnPlayerEndedTurn(player);
 		}
 		public void PlayerRespondWithCard(Card card)
 		{

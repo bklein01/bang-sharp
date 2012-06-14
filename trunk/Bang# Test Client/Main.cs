@@ -796,9 +796,9 @@ namespace BangSharp.TestClient
 		{
 			ConsoleHelper.GameEvent("Player #{0} passed card {1} #{2} to player #{3}.", player.ID, card.Type, card.ID, targetPlayer.ID);
 		}
-		void ISessionEventListener.OnPlayerPassed(IPublicPlayerView player)
+		void ISessionEventListener.OnPlayerEndedTurn(IPublicPlayerView player)
 		{
-			ConsoleHelper.GameEvent("Player #{0} passed.", player.ID);
+			ConsoleHelper.GameEvent("Player #{0} ended his turn.", player.ID);
 		}
 		void ISessionEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card)
 		{
@@ -867,6 +867,9 @@ namespace BangSharp.TestClient
 		void ISessionEventListener.OnDeckRegenerated()
 		{
 			ConsoleHelper.GameEvent("The deck was regenerated.");
+		}
+		void ISessionEventListener.OnNewRequest(IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
+		{
 		}
 		#endregion
 	}

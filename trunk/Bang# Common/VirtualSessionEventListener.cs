@@ -157,7 +157,7 @@ namespace BangSharp
 		{
 		}
 
-		public virtual void OnPlayerPassed(IPublicPlayerView player)
+		public virtual void OnPlayerEndedTurn(IPublicPlayerView player)
 		{
 		}
 
@@ -226,6 +226,10 @@ namespace BangSharp
 		}
 
 		public virtual void OnDeckRegenerated()
+		{
+		}
+
+		public virtual void OnNewRequest(IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
 		{
 		}
 		#endregion

@@ -1,5 +1,14 @@
 2012-06-14  WOnder93  <omosnacek@gmail.com>
 
+	* AnimationLayer.cs:
+	  Renamed the OnPlayerPassed session event to
+	  OnPlayerEndedTurn.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+2012-06-14  WOnder93  <omosnacek@gmail.com>
+
 	* Bang# Client.csproj:
 	* AllocationManager.cs:
 	* CardZoomState.cs:

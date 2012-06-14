@@ -258,7 +258,7 @@ namespace BangSharp
 		/// <param name="player">
 		/// The <see cref="BangSharp.IPublicPlayerView"/> of the player.
 		/// </param>
-		void OnPlayerPassed(IPublicPlayerView player);
+		void OnPlayerEndedTurn(IPublicPlayerView player);
 		/// <summary>
 		/// Fired when a player has responded with a card.
 		/// </summary>
@@ -427,5 +427,16 @@ namespace BangSharp
 		/// Fired when the deck has been regenerated (the graveyard peek remains unchanged, the rest of the graveyard is reversed and put to the deck).
 		/// </summary>
 		void OnDeckRegenerated();
+
+		/// <summary>
+		/// Fired when the request state changes.
+		/// </summary>
+		/// <param name="requestedPlayer">
+		/// The <see cref="BangSharp.IPublicPlayerView"/> of the requested player.
+		/// </param>
+		/// <param name="causedBy">
+		/// The <see cref="BangSharp.IPublicPlayerView"/> of the player that caused the request.
+		/// </param>
+		void OnNewRequest(IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy);
 	}
 }

@@ -54,7 +54,7 @@ namespace BangSharp.Server.Daemon.Characters
 				{
 					parent.OnUsedAbility();
 					foreach(Card c in selected)
-						Game.GameTable.CancelCard(c);
+						Game.GameTable.PlayerDiscardCard(c);
 					RequestedPlayer.ModifyLifePoints(1);
 					End();
 				}

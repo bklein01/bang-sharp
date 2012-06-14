@@ -58,7 +58,7 @@ namespace BangSharp.Server.Daemon.Characters
 
 					parent.parent.OnUsedAbility(targetPlayer);
 					foreach(Card c in parent.selected)
-						Game.GameTable.CancelCard(c);
+						Game.GameTable.PlayerDiscardCard(c);
 					if(parent.selected.Any(c => targetPlayer.HasCardEffect(c)))
 						Game.GameCycle.PushTempHandler(new ShotResponseHandler(targetPlayer, RequestedPlayer));
 					End();

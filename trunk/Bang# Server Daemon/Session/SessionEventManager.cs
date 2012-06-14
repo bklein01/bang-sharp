@@ -371,9 +371,20 @@ namespace BangSharp.Server.Daemon
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				playerSender.SendEvent(pl => {
-					if(pl.HasListener && pl.ID == requestedPlayer.ID)
-						pl.Listener.OnNewRequest(requestType, causedBy);
+					if(pl.HasListener)
+					{
+						pl.Listener.OnNewRequest(requestedPlayer, causedBy);
+						if(pl.ID == requestedPlayer.ID)
+							pl.Listener.OnNewRequest(requestType, causedBy);
+					}
 				}, p);
+
+			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
+			foreach(SessionSpectator s in spectators)
+				spectatorSender.SendEvent(sp => {
+					if(sp.HasListener)
+						sp.Listener.OnNewRequest(requestedPlayer, causedBy);
+				}, s);
 		}
 
 		public void OnPlayerDrewFromDeck(Player player, List<Card> drawnCards, bool revealCards)
@@ -573,20 +584,20 @@ namespace BangSharp.Server.Daemon
 						sp.Listener.OnPassedTableCard(player, card, targetPlayer);
 				}, s);
 		}
-		public void OnPlayerPassed(Player player)
+		public void OnPlayerEndedTurn(Player player)
 		{
 			List<SessionPlayer> players = new List<SessionPlayer>(session.Players);
 			foreach(SessionPlayer p in players)
 				playerSender.SendEvent(pl => {
 					if(pl.HasListener)
-						pl.Listener.OnPlayerPassed(player);
+						pl.Listener.OnPlayerEndedTurn(player);
 				}, p);
 
 			List<SessionSpectator> spectators = new List<SessionSpectator>(session.Spectators);
 			foreach(SessionSpectator s in spectators)
 				spectatorSender.SendEvent(sp => {
 					if(sp.HasListener)
-						sp.Listener.OnPlayerPassed(player);
+						sp.Listener.OnPlayerEndedTurn(player);
 				}, s);
 		}
 		public void OnPlayerRespondedWithCard(Player player, Card card)
