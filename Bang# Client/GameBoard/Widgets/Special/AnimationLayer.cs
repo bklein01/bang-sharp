@@ -307,7 +307,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 				parent.EnqueueAnimation(anim);
 			}
-			public override void OnPlayerPassed(IPublicPlayerView player)
+			public override void OnPlayerEndedTurn(IPublicPlayerView player)
 			{
 			}
 			public override void OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card)

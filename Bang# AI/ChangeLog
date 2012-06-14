@@ -1,3 +1,12 @@
+2012-06-14  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* AIPlayer.cs:
+	  Renamed the OnPlayerPassed session event to
+	  OnPlayerEndedTurn.
+
 2012-06-11  WOnder93  <omosnacek@gmail.com>
 
 	* Bang# AI.csproj:

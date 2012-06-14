@@ -41,7 +41,7 @@ namespace BangSharp
 		/// <summary>
 		/// The major interface version.
 		/// </summary>
-		public const int InterfaceVersionMajor = 8;
+		public const int InterfaceVersionMajor = 9;
 		/// <summary>
 		/// The minor interface version.
 		/// </summary>

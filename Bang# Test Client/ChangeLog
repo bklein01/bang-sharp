@@ -1,3 +1,13 @@
+2012-06-14  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	  Renamed the OnPlayerPassed session event to
+	  OnPlayerEndedTurn.
+	Added a public OnNewRequest event to ISessionEventListener.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
 2012-06-12  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

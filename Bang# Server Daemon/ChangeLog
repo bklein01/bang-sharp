@@ -1,3 +1,26 @@
+2012-06-14  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* GameTable.cs:
+	* SessionEventManager.cs:
+	  Renamed the OnPlayerPassed session event to
+	  OnPlayerEndedTurn.
+
+	* GameCycle.cs:
+	  Renamed the OnPlayerPassed session event to
+	  OnPlayerEndedTurn.
+	When responding with a card from the hand of a different
+	  player, replace the card with a random card from this hand
+	  (to prevent visual card tracking; note that it is still
+	  technically possible to track cards by IDs).
+
+	* SidKetchum.cs:
+	* DocHolyday.cs:
+	  Discard cards instead of cancelling when using Sid Ketchum's
+	  or Doc Holyday's ability.
+
 2012-06-12  WOnder93  <omosnacek@gmail.com>
 
 	* Game.cs:

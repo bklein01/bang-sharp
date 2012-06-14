@@ -387,12 +387,12 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerPassed(IPublicPlayerView player)
+		void ISessionEventListener.OnPlayerEndedTurn(IPublicPlayerView player)
 		{
 			lock(syncLock)
 			{
 				foreach(ISessionEventListener listener  in mainListeners.ToArray())
-					listener.OnPlayerPassed(player);
+					listener.OnPlayerEndedTurn(player);
 			}
 		}
 
@@ -546,6 +546,15 @@ namespace BangSharp
 			{
 				foreach(ISessionEventListener listener  in mainListeners.ToArray())
 					listener.OnDeckRegenerated();
+			}
+		}
+
+		void ISessionEventListener.OnNewRequest(IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
+		{
+			lock(syncLock)
+			{
+				foreach(ISessionEventListener listener  in mainListeners.ToArray())
+					listener.OnNewRequest(requestedPlayer, causedBy);
 			}
 		}
 		#endregion

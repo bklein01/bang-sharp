@@ -183,7 +183,7 @@ namespace BangSharp.Server.Daemon
 			Player last = parent.CurrentPlayer;
 			last.OnTurnEnded();
 			parent.NextPlayer();
-			Game.Session.EventManager.OnPlayerPassed(last);
+			Game.Session.EventManager.OnPlayerEndedTurn(last);
 			if(parent.CurrentPlayer.BeginsRound)
 			{
 				End();
@@ -273,7 +273,10 @@ namespace BangSharp.Server.Daemon
 		{
 			if(player != RequestedPlayer || game.Ended)
 				throw new BadUsageException();
-			
+
+			if(targetCard.IsInHand && targetCard.Owner != player)
+				targetCard = targetCard.Owner.Hand.GetRandom();
+
 			RespondCard(targetCard);
 		}
 		public void PlayerRespondPlayer(Player player, Player targetPlayer)
