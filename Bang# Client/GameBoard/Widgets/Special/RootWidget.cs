@@ -157,6 +157,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			mainTable.Clear();
 			playerMap.Clear();
 			requestLabel.Markup = "";
+			responseLabel.Markup = "";
 			RequestRedraw();
 		}
 		public void Update()
