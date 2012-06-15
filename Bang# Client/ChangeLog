@@ -1,5 +1,15 @@
 2012-06-15  WOnder93  <omosnacek@gmail.com>
 
+	* RootWidget.cs:
+	  Properly update RootWidget according to session, not game.
+	Set displayed request type to None when another player is
+	  requested.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+2012-06-15  WOnder93  <omosnacek@gmail.com>
+
 	* ConnectionManager.cs:
 	  Added OnServerDiconnected and OnSessionDiconnected events to
 	  ConnectionManager.
