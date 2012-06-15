@@ -34,6 +34,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 		private double right;
 		private double top;
 		private double bottom;
+
 		public double LeftPadding
 		{
 			get { return left; }

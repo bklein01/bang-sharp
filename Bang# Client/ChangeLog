@@ -1,3 +1,28 @@
+2012-06-15  WOnder93  <omosnacek@gmail.com>
+
+	* ConnectionManager.cs:
+	  Added OnServerDiconnected and OnSessionDiconnected events to
+	  ConnectionManager.
+
+	* AnimationLayer.cs:
+	  Divided the AnimationLayer.Reset() method into Clear() and
+	  Update() according to the RootWidget model.
+	Request game board redraw after updating the last response.
+	Properly clear/init after session end/disconnection.
+
+	* RootWidget.cs:
+	  Properly clear/init after session end/disconnection.
+
+	* MainTableWidget.cs:
+	* PlayerSlotWidget.cs:
+	  Request game board redraw after updating the last response.
+
+	* Padding.cs:
+	  Tiny formatting fix.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
 2012-06-14  WOnder93  <omosnacek@gmail.com>
 
 	* AnimationLayer.cs:

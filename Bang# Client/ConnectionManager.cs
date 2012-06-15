@@ -1,3 +1,4 @@
+using System;
 // ConnectionManager.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
@@ -214,6 +215,9 @@ namespace BangSharp.Client
 			get { return sessionListener; }
 		}
 
+		public static event Action OnServerDisconnected;
+		public static event Action OnSessionDisconnected;
+
 		/// <summary>
 		/// Gets the player session control.
 		/// </summary>
@@ -297,6 +301,8 @@ namespace BangSharp.Client
 					return;
 				server.UnregisterListener(serverListener);
 				server = null;
+				if(OnServerDisconnected != null)
+					OnServerDisconnected();
 			}
 		}
 
@@ -314,6 +320,8 @@ namespace BangSharp.Client
 				if(ConnectionManager.spectatorSessionControl != null)
 					ConnectionManager.spectatorSessionControl.Disconnect();
 				session = null;
+				if(OnSessionDisconnected != null)
+					OnSessionDisconnected();
 			}
 		}
 	}

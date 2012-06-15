@@ -58,7 +58,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 			public override void OnJoinedGame(IPlayerControl control)
 			{
-				parent.Reset();
+				parent.Update();
 				Animation anim = new Animation(parent);
 
 				IPrivatePlayerView privateView = control.PrivatePlayerView;
@@ -138,15 +138,12 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 				parent.EnqueueAnimation(anim);
 			}
-			public override void OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
-			{
-			}
 			public override void OnJoinedSession(ISpectatorSessionControl control)
 			{
 			}
 			public override void OnJoinedGame(ISpectatorControl control)
 			{
-				parent.Reset();
+				parent.Update();
 				Animation anim = new Animation(parent);
 
 				IGame game = control.Game;
@@ -510,6 +507,9 @@ namespace BangSharp.Client.GameBoard.Widgets
 			listener = new EventListener(this);
 			ConnectionManager.SessionEventListener.AddListener((IPlayerSessionEventListener)listener);
 			ConnectionManager.SessionEventListener.AddListener((ISpectatorSessionEventListener)listener);
+			ConnectionManager.OnSessionDisconnected += () => {
+				Clear();
+			};
 		}
 
 		private void RunTimer()
@@ -530,12 +530,12 @@ namespace BangSharp.Client.GameBoard.Widgets
 		}
 
 		/// <summary>
-		/// Reset the animation layer.
+		/// Clears the animation layer.
 		/// </summary>
 		/// <remarks>
-		/// This method is used to prepare the animation layer for a new game.
+		/// This method is used to clear the animation layer for a new session.
 		/// </remarks>
-		private void Reset()
+		private void Clear()
 		{
 			lock(animLock)
 			{
@@ -549,6 +549,20 @@ namespace BangSharp.Client.GameBoard.Widgets
 				playerCharacterWidgets.Clear();
 				cardZoomWidgetSet = false;
 				Children.Clear();
+			}
+		}
+
+		/// <summary>
+		/// Updates the animation layer.
+		/// </summary>
+		/// <remarks>
+		/// This method is used to update the animation layer for a new game.
+		/// </remarks>
+		private void Update()
+		{
+			lock(animLock)
+			{
+				Clear();
 
 				int thisPlayerId = 0;
 				if(ConnectionManager.PlayerGameControl != null)
@@ -574,6 +588,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 							{
 								root.SetResponseType("Use Ability", e);
 							}
+							RequestRedraw();
 						};
 					playerCharacterWidgets[id].OnRClick += (w) => SetCardZoomWidget((CharacterCardWidget)w);
 				}
@@ -612,6 +627,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 					{
 						root.SetResponseType("Card #" + playingCardWidget.ID, e);
 					}
+					RequestRedraw();
 				};
 				playingCardWidgets[cardId].OnRClick += (w) => SetCardZoomWidget((PlayingCardWidget)w);
 				return playingCardWidgets[cardId];
