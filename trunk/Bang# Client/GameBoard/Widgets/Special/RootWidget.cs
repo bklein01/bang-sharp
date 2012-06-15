@@ -47,32 +47,31 @@ namespace BangSharp.Client.GameBoard.Widgets
 			public override void OnJoinedSession(IPlayerSessionControl control)
 			{
 				CardManager.Init(control.Session);
+				parent.Update();
 			}
-
 			public override void OnJoinedSession(ISpectatorSessionControl control)
 			{
 				CardManager.Init(control.Session);
-			}
-
-			public override void OnJoinedGame(IPlayerControl control)
-			{
 				parent.Update();
 			}
 
-			public override void OnJoinedGame(ISpectatorControl control)
+			public override void OnPlayerJoinedSession(IPlayer player)
+			{
+				parent.Update();
+			}
+			public override void OnPlayerLeftSession(IPlayer player)
 			{
 				parent.Update();
 			}
 
 			public override void OnPlayerUpdated(IPlayer player)
 			{
-				if(ConnectionManager.Game != null)
+				if(ConnectionManager.Session != null)
 					parent.playerMap[player.ID].Update(player);
 			}
-
 			public override void OnPlayerDisconnected(IPlayer player)
 			{
-				if(ConnectionManager.Game != null)
+				if(ConnectionManager.Session != null)
 					parent.playerMap[player.ID].Update(player);
 			}
 
@@ -85,6 +84,10 @@ namespace BangSharp.Client.GameBoard.Widgets
 			public override void OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
 			{
 				parent.SetRequestType(requestType);
+			}
+			public override void OnNewRequest(IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
+			{
+				parent.SetRequestType(RequestType.None);
 			}
 		}
 		private GameBoardWidget parent;
@@ -160,14 +163,14 @@ namespace BangSharp.Client.GameBoard.Widgets
 		{
 			Clear();
 			int thisPlayerIndex = 0;
-			IGame game = ConnectionManager.Game;
-			ReadOnlyCollection<IPublicPlayerView> players = game.Players;
-			if(ConnectionManager.PlayerGameControl != null)
+			ISession session = ConnectionManager.Session;
+			ReadOnlyCollection<IPlayer> players = session.Players;
+			if(ConnectionManager.PlayerSessionControl != null)
 			{
-				IPrivatePlayerView thisPlayer = ConnectionManager.PlayerGameControl.PrivatePlayerView;
+				IPlayer thisPlayer = ConnectionManager.PlayerSessionControl.Player;
 				for(int i = 0; i < players.Count; i++)
 				{
-					IPublicPlayerView player = players[i];
+					IPlayer player = players[i];
 					if(player.ID == thisPlayer.ID)
 					{
 						thisPlayerIndex = i;
@@ -175,13 +178,11 @@ namespace BangSharp.Client.GameBoard.Widgets
 					}
 				}
 			}
-			ISession session = ConnectionManager.Session;
 			for(int i = 0; i < players.Count; i++)
 			{
 				int index = (thisPlayerIndex + i) % players.Count;
-				int playerId = players[index].ID;
-				playerSlots[i].Update(session.GetPlayer(playerId));
-				playerMap.Add(playerId, playerSlots[i]);
+				playerSlots[i].Update(players[index]);
+				playerMap.Add(players[index].ID, playerSlots[i]);
 			}
 			mainTable.Update();
 			SetRequestType(RequestType.None);
