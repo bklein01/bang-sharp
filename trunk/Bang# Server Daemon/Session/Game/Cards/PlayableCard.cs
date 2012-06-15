@@ -34,15 +34,12 @@ namespace BangSharp.Server.Daemon
 
 		public override void Play()
 		{
-			if(Owner == null)
-				throw new BadCardException();
-
 			CheckPlay();
 			OnPlay();
 		}
 		public override void PlayVirtually(Card card)
 		{
-			if(Owner == null)
+			if(card.Owner == null)
 				throw new BadCardException();
 
 			CheckPlay();

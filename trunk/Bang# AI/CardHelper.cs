@@ -53,7 +53,7 @@ namespace BangSharp.AI
 		}
 		public int DiscardableCards
 		{
-			get { return Player.Hand.Count(c => EvaluateCard(c.Type) < 15); }
+			get { return Player.Hand.Count(c => EvaluateCard(c) < 15); }
 		}
 		public bool UnlimitedBangs
 		{
@@ -78,9 +78,9 @@ namespace BangSharp.AI
 			}
 		}
 
-		public int EvaluateCard(CardType type)
+		public int EvaluateCard(ICard card)
 		{
-			switch(type)
+			switch(card.Type)
 			{
 			case CardType.WellsFargo:
 				return 35;
@@ -158,6 +158,8 @@ namespace BangSharp.AI
 			case CardType.Volcanic:
 				if(UnlimitedBangs)
 					return 0;
+				if(Player.Hand.Count(c => c.Type == CardType.Bang) >= 3)
+					return 4;
 				return 2;
 			case CardType.Schofield:
 				return 1;
@@ -204,10 +206,10 @@ namespace BangSharp.AI
 			}
 		}
 
-		public bool IsTableCardWorth(CardType type)
+		public bool IsTableCardWorth(ICard card)
 		{
 			IPrivatePlayerView player = Player;
-			switch(type)
+			switch(card.Type)
 			{
 			case CardType.Mustang:
 			case CardType.Hideout:
@@ -220,16 +222,16 @@ namespace BangSharp.AI
 			case CardType.Conestoga:
 				return true;
 			case CardType.Barrel:
-				return !player.Hand.Any(c => c.Type == CardType.Barrel) && !player.Table.Any(c => c.Type == CardType.Barrel);
+				return !player.Hand.Any(c => c.ID != card.ID && c.Type == CardType.Barrel) && !player.Table.Any(c => c.Type == CardType.Barrel);
 			case CardType.Volcanic:
 				return !UnlimitedBangs;
 			}
 			return false;
 		}
-		public bool IsCardWorthSkippingDraw(CardType type)
+		public bool IsCardWorthSkippingDraw(ICard card)
 		{
 			IPrivatePlayerView player = Player;
-			switch(type)
+			switch(card.Type)
 			{
 			case CardType.Diligenza:
 			case CardType.WellsFargo:
@@ -258,7 +260,7 @@ namespace BangSharp.AI
 				ICard worst = cards.First();
 				foreach(ICard card in cards)
 				{
-					int value = EvaluateCard(card.Type);
+					int value = EvaluateCard(card);
 					if(value >= 0 && (lastValue < 0 || value < lastValue))
 					{
 						worst = card;
@@ -280,7 +282,7 @@ namespace BangSharp.AI
 				ICard best = cards.First();
 				foreach(ICard card in cards)
 				{
-					int value = EvaluateCard(card.Type);
+					int value = EvaluateCard(card);
 					if(value > lastValue)
 					{
 						best = card;

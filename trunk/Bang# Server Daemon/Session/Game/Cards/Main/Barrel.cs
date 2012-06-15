@@ -31,13 +31,14 @@ namespace BangSharp.Server.Daemon.Cards
 			base(game, id, CardType.Barrel, suit, rank)
 		{
 		}
-		
-		public override void CheckMissed(CardResultCallback resultCallback)
+
+		protected override void OnCheckMissed(CardResultCallback resultCallback)
 		{
-			if(Owner == null)
-				throw new BadCardException();
-			AssertOnTable();
-			
+			PerformCheck(resultCallback);
+		}
+
+		public void PerformCheck(CardResultCallback resultCallback)
+		{
 			Owner.CheckDeck(this, c => c.Suit == CardSuit.Hearts, resultCallback);
 		}
 	}

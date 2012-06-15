@@ -167,6 +167,7 @@ namespace BangSharp.Server.Daemon
 		}
 		public virtual void UseAbility()
 		{
+			throw new BadUsageException();
 		}
 		public virtual void CheckDeck(Card causedBy, CheckDeckCallback checkCallback, CardResultCallback resultCallback)
 		{
