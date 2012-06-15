@@ -70,6 +70,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 					{
 						root.SetResponseType("No action", e);
 					}
+					RequestRedraw();
 				};
 				padding9.Children.Add(button);
 			}
@@ -118,6 +119,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			{
 				root.SetResponseType("Player #" + id, e);
 			}
+			RequestRedraw();
 			return true;
 		}
 	}

@@ -63,6 +63,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 				{
 					root.SetResponseType("Draw", e);
 				}
+				RequestRedraw();
 			};
 		}
 

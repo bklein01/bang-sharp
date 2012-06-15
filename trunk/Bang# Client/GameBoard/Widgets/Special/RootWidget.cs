@@ -111,6 +111,10 @@ namespace BangSharp.Client.GameBoard.Widgets
 			listener = new EventListener(this);
 			ConnectionManager.SessionEventListener.AddListener((IPlayerSessionEventListener)listener);
 			ConnectionManager.SessionEventListener.AddListener((ISpectatorSessionEventListener)listener);
+			ConnectionManager.OnSessionDisconnected += () => {
+				Clear();
+				CardManager.Flush();
+			};
 			InitLayout();
 			playerMap = new Dictionary<int, PlayerSlotWidget>(8);
 			playerSlots = new PlayerSlotWidget[]
@@ -150,9 +154,11 @@ namespace BangSharp.Client.GameBoard.Widgets
 			mainTable.Clear();
 			playerMap.Clear();
 			requestLabel.Markup = "";
+			RequestRedraw();
 		}
 		public void Update()
 		{
+			Clear();
 			int thisPlayerIndex = 0;
 			IGame game = ConnectionManager.Game;
 			ReadOnlyCollection<IPublicPlayerView> players = game.Players;
@@ -179,6 +185,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 			mainTable.Update();
 			SetRequestType(RequestType.None);
+			RequestRedraw();
 		}
 
 		public void SetRequestType(RequestType type)
@@ -191,7 +198,6 @@ namespace BangSharp.Client.GameBoard.Widgets
 				else
 					requestLabel.Markup += "<span color='orange'><b>" + type.ToString() + "</b></span>";
 			}
-			RequestRedraw();
 		}
 		public void SetResponseType(string responseType, GameException exception = null)
 		{
@@ -204,7 +210,6 @@ namespace BangSharp.Client.GameBoard.Widgets
 				else
 					responseLabel.Markup += "<span color='lightsalmon'>" + exception.GetType().ToString() + "</span>";
 			}
-			RequestRedraw();
 		}
 
 #if DEBUG
@@ -238,14 +243,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 		public void RootReallocate(Rectangle newAlloc)
 		{
 			lock(ConnectionManager.SessionEventLock)
-			{
-				//sw.Reset();
-				//sw.Start();
 				Reallocate(newAlloc);
-				//sw.Stop();
-				//Console.Error.WriteLine("DEBUG: Reallocating took: {0}", sw.Elapsed);
-				//PrintAlloc(this);
-			}
 		}
 
 		public void RootLeftClick(double x, double y)
