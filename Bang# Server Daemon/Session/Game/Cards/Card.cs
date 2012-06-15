@@ -171,9 +171,9 @@ namespace BangSharp.Server.Daemon
 		}
 		public void AssertOnTable()
 		{
-			if(Owner == null)
+			if(owner == null)
 				throw new BadCardException();
-			if(!Owner.Table.Contains(this as TableCard))
+			if(!owner.Table.Contains(this as TableCard))
 				throw new BadCardException();
 		}
 

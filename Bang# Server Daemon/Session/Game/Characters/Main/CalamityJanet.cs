@@ -33,6 +33,7 @@ namespace BangSharp.Server.Daemon.Characters
 			base(player, CharacterType.CalamityJanet)
 		{
 			bang = Card.GetCard(Game, 0, CardType.Bang, CardSuit.Unknown, CardRank.Unknown);
+			bang.Owner = Player;
 		}
 		
 		public override bool IsMissed(Card card)

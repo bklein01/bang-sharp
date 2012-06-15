@@ -1,3 +1,18 @@
+2012-06-15  WOnder93  <omosnacek@gmail.com>
+
+	* AIPlayer.cs:
+	  Take cards, not just card types, as parameters in
+	  CardHelper's methods.
+	Improved weapon handling.
+
+	* CardHelper.cs:
+	  Take cards, not just card types, as parameters in
+	  CardHelper's methods.
+	Improved evaluation of Volcanic.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
 2012-06-14  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

@@ -1,3 +1,32 @@
+2012-06-15  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* Barrel.cs:
+	  Override OnCheckMissed() instead of CheckMissed() in Barrel.
+	Provide public method for deck check in Barrel (for
+	  Jourdonnais).
+
+	* PlayableCard.cs:
+	  Removed duplicity check.
+	When playing a card virtually, check the real card's owner,
+	  not the virtual one's.
+
+	* Card.cs:
+	  Tiny fix.
+
+	* Character.cs:
+	  Throw BadUsageException by default in
+	  Character.UseAbility().
+
+	* CalamityJanet.cs:
+	  Set the virtual Bang's owner in Calamity Janet.
+
+	* Jourdonnais.cs:
+	  Provide public method for deck check in Barrel (for
+	  Jourdonnais).
+
 2012-06-14  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

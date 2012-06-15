@@ -216,13 +216,13 @@ namespace BangSharp.AI
 					return;
 				}
 				if(cardHelper.HasAbility(CharacterType.PatBrennan) &&
-					game.Players.Except(playerHelper.Allies).Any(p => p.Table.Any(c => cardHelper.IsCardWorthSkippingDraw(c.Type))))
+					game.Players.Except(playerHelper.Allies).Any(p => p.Table.Any(c => cardHelper.IsCardWorthSkippingDraw(c))))
 				{
 					control.RespondUseAbility();
 					return;
 				}
 				if(cardHelper.HasAbility(CharacterType.PedroRamirez) &&
-					game.GraveyardTop != null && cardHelper.IsCardWorthSkippingDraw(game.GraveyardTop.Type))
+					game.GraveyardTop != null && cardHelper.IsCardWorthSkippingDraw(game.GraveyardTop))
 				{
 					control.RespondUseAbility();
 					return;
@@ -238,7 +238,7 @@ namespace BangSharp.AI
 					if(TryRespondUseAbilityRemember(CharacterType.ChuckWengam))
 						return;
 				if(cardHelper.HasAbility(CharacterType.JoseDelgado) &&
-					player.Hand.Any(c => c.Color == CardColor.Blue && !cardHelper.IsTableCardWorth(c.Type)))
+					player.Hand.Any(c => c.Color == CardColor.Blue && !cardHelper.IsTableCardWorth(c)))
 					if(TryRespondUseAbilityRemember(CharacterType.JoseDelgado))
 						return;
 				foreach(ICard c in player.Hand)
@@ -253,6 +253,25 @@ namespace BangSharp.AI
 				foreach(ICard c in player.Table)
 					if(c.Type == CardType.PonyExpress)
 						if(TryRespondCard(c.ID))
+							return;
+				// Now put a weapon on table if it makes sense:
+				ICard bestWeapon = cardHelper.BestCard(
+					player.Hand.Where(c =>
+				                  (!cardHelper.UnlimitedBangs && c.Type == CardType.Volcanic) ||
+				                  c.Type == CardType.Schofield ||
+				                  c.Type == CardType.Remington ||
+				                  c.Type == CardType.Carabine ||
+				                  c.Type == CardType.Winchester));
+				ICard currentWeapon = cardHelper.BestCard(
+					player.Table.Where(c =>
+				                  (!cardHelper.UnlimitedBangs && c.Type == CardType.Volcanic) ||
+				                  c.Type == CardType.Schofield ||
+				                  c.Type == CardType.Remington ||
+				                  c.Type == CardType.Carabine ||
+				                  c.Type == CardType.Winchester));
+				if(bestWeapon != null)
+					if(currentWeapon == null || cardHelper.EvaluateCard(bestWeapon) > cardHelper.EvaluateCard(currentWeapon))
+						if(TryRespondCard(bestWeapon.ID))
 							return;
 				// Now get all the blue & green cards on table:
 				foreach(ICard card in player.Hand)
@@ -296,68 +315,6 @@ namespace BangSharp.AI
 							break;
 						case CardType.Barrel:
 							if(!player.Table.Any(c => c.Type == CardType.Barrel))
-								if(TryRespondCard(card.ID))
-									return;
-							break;
-						case CardType.Volcanic:
-							if(!cardHelper.HasAbility(CharacterType.WillyTheKid) &&
-								!player.Table.Any(c => c.Type == CardType.Volcanic ||
-									c.Type == CardType.Carabine ||
-									c.Type == CardType.Winchester))
-								if(TryRespondCard(card.ID))
-									return;
-							break;
-						case CardType.Schofield:
-							if(player.Table.Any(c => c.Type == CardType.Volcanic))
-							{
-								if(cardHelper.HasAbility(CharacterType.WillyTheKid))
-									if(TryRespondCard(card.ID))
-										return;
-							}
-							else
-							if(!player.Table.Any(c => c.Type == CardType.Schofield ||
-									c.Type == CardType.Remington ||
-									c.Type == CardType.Carabine ||
-									c.Type == CardType.Winchester))
-								if(TryRespondCard(card.ID))
-									return;
-							break;
-						case CardType.Remington:
-							if(player.Table.Any(c => c.Type == CardType.Volcanic))
-							{
-								if(cardHelper.HasAbility(CharacterType.WillyTheKid))
-									if(TryRespondCard(card.ID))
-										return;
-							}
-							else
-							if(!player.Table.Any(c => c.Type == CardType.Remington ||
-								c.Type == CardType.Carabine ||
-								c.Type == CardType.Winchester))
-								if(TryRespondCard(card.ID))
-									return;
-							break;
-						case CardType.Carabine:
-							if(player.Table.Any(c => c.Type == CardType.Volcanic))
-							{
-								if(cardHelper.HasAbility(CharacterType.WillyTheKid))
-									if(TryRespondCard(card.ID))
-										return;
-							}
-							else
-							if(!player.Table.Any(c => c.Type == CardType.Carabine ||
-									c.Type == CardType.Winchester))
-								if(TryRespondCard(card.ID))
-									return;
-							break;
-						case CardType.Winchester:
-							if(player.Table.Any(c => c.Type == CardType.Volcanic))
-							{
-								if(cardHelper.HasAbility(CharacterType.WillyTheKid))
-									if(TryRespondCard(card.ID))
-										return;
-							}
-							else
-							if(!player.Table.Any(c => c.Type == CardType.Winchester))
 								if(TryRespondCard(card.ID))
 									return;
 							break;
