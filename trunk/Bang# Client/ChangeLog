@@ -1,5 +1,16 @@
 2012-06-15  WOnder93  <omosnacek@gmail.com>
 
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* AnimationLayer.cs:
+	  Clear AnimationLayer when the session has ended.
+
+	* RootWidget.cs:
+	  Clear also responseLabel's text when clearing RootWidget.
+
+2012-06-15  WOnder93  <omosnacek@gmail.com>
+
 	* RootWidget.cs:
 	  Properly update RootWidget according to session, not game.
 	Set displayed request type to None when another player is

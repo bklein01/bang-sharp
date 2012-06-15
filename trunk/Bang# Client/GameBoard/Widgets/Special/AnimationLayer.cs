@@ -185,6 +185,10 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 				parent.EnqueueAnimation(anim);
 			}
+			public override void OnSessionEnded()
+			{
+				parent.Clear();
+			}
 			public override void OnPlayerDrewFromDeck(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
 			{
 				Animation anim = new Animation(parent, parent.lastAnim);
