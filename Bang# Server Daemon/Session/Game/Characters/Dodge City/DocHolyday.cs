@@ -44,9 +44,6 @@ namespace BangSharp.Server.Daemon.Characters
 
 				protected override void OnRespondPlayer(Player targetPlayer)
 				{
-					if(targetPlayer != null)
-						throw new BadUsageException();
-
 					if(targetPlayer == RequestedPlayer)
 						throw new BadTargetPlayerException();
 
