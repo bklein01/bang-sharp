@@ -86,11 +86,11 @@ namespace BangSharp
 		}
 
 		#region IServerEventListener implementation
-		void IServerEventListener.Ping()
+		public void Ping()
 		{
 		}
 
-		void IServerEventListener.OnSessionCreated(ISession session)
+		public void OnSessionCreated(ISession session)
 		{
 			lock(syncLock)
 			{
@@ -99,7 +99,7 @@ namespace BangSharp
 			}
 		}
 
-		void IServerEventListener.OnSessionEnded(ISession session)
+		public void OnSessionEnded(ISession session)
 		{
 			lock(syncLock)
 			{
@@ -108,7 +108,7 @@ namespace BangSharp
 			}
 		}
 
-		void IServerEventListener.OnGameStarted(ISession session)
+		public void OnGameStarted(ISession session)
 		{
 			lock(syncLock)
 			{
@@ -117,7 +117,7 @@ namespace BangSharp
 			}
 		}
 
-		void IServerEventListener.OnGameEnded(ISession session)
+		public void OnGameEnded(ISession session)
 		{
 			lock(syncLock)
 			{
@@ -126,7 +126,7 @@ namespace BangSharp
 			}
 		}
 
-		void IServerEventListener.OnPlayerJoinedSession(ISession session, IPlayer player)
+		public void OnPlayerJoinedSession(ISession session, IPlayer player)
 		{
 			lock(syncLock)
 			{
@@ -135,7 +135,7 @@ namespace BangSharp
 			}
 		}
 
-		void IServerEventListener.OnSpectatorJoinedSession(ISession session, ISpectator spectator)
+		public void OnSpectatorJoinedSession(ISession session, ISpectator spectator)
 		{
 			lock(syncLock)
 			{
@@ -144,7 +144,7 @@ namespace BangSharp
 			}
 		}
 
-		void IServerEventListener.OnPlayerLeftSession(ISession session, IPlayer player)
+		public void OnPlayerLeftSession(ISession session, IPlayer player)
 		{
 			lock(syncLock)
 			{
@@ -153,7 +153,7 @@ namespace BangSharp
 			}
 		}
 
-		void IServerEventListener.OnSpectatorLeftSession(ISession session, ISpectator spectator)
+		public void OnSpectatorLeftSession(ISession session, ISpectator spectator)
 		{
 			lock(syncLock)
 			{
@@ -162,7 +162,7 @@ namespace BangSharp
 			}
 		}
 
-		void IServerEventListener.OnPlayerUpdated(ISession session, IPlayer player)
+		public void OnPlayerUpdated(ISession session, IPlayer player)
 		{
 			lock(syncLock)
 			{
@@ -171,7 +171,7 @@ namespace BangSharp
 			}
 		}
 
-		void IServerEventListener.OnPlayerDisconnected(ISession session, IPlayer player)
+		public void OnPlayerDisconnected(ISession session, IPlayer player)
 		{
 			lock(syncLock)
 			{

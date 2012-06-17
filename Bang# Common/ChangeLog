@@ -1,3 +1,14 @@
+2012-06-17  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* ProxyServerEventListener.cs:
+	* ProxySessionEventListener.cs:
+	  Changed proxy listeners' implementation to implicit as a
+	  workaround for problems when the server runs under Mono and
+	  the client under .NET Framework.
+
 2012-06-14  WOnder93  <omosnacek@gmail.com>
 
 	* ProxySessionEventListener.cs:
