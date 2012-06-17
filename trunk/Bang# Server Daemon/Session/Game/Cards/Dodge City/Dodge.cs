@@ -35,8 +35,8 @@ namespace BangSharp.Server.Daemon.Cards
 		public override void CheckMissed(CardResultCallback resultCallback)
 		{
 			Player owner = Owner;
-			resultCallback(this, true);
 			Game.GameTable.PlayerDrawFromDeck(owner, 1);
+			resultCallback(this, true);
 		}
 	}
 }
