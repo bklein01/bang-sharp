@@ -140,7 +140,7 @@ namespace BangSharp
 		}
 
 		#region IPlayerSessionEventListener implementation
-		void IPlayerSessionEventListener.OnJoinedSession(IPlayerSessionControl control)
+		public void OnJoinedSession(IPlayerSessionControl control)
 		{
 			lock(syncLock)
 			{
@@ -149,7 +149,7 @@ namespace BangSharp
 			}
 		}
 
-		void IPlayerSessionEventListener.OnJoinedGame(IPlayerControl control)
+		public void OnJoinedGame(IPlayerControl control)
 		{
 			lock(syncLock)
 			{
@@ -158,7 +158,7 @@ namespace BangSharp
 			}
 		}
 
-		void IPlayerSessionEventListener.OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
+		public void OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
 		{
 			lock(syncLock)
 			{
@@ -166,15 +166,10 @@ namespace BangSharp
 					listener.OnNewRequest(requestType, causedBy);
 			}
 		}
-
-		bool IPlayerSessionEventListener.IsAI
-		{
-			get { return IsAI; }
-		}
 		#endregion
 
 		#region ISpectatorSessionEventListener implementation
-		void ISpectatorSessionEventListener.OnJoinedSession(ISpectatorSessionControl control)
+		public void OnJoinedSession(ISpectatorSessionControl control)
 		{
 			lock(syncLock)
 			{
@@ -183,7 +178,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISpectatorSessionEventListener.OnJoinedGame(ISpectatorControl control)
+		public void OnJoinedGame(ISpectatorControl control)
 		{
 			lock(syncLock)
 			{
@@ -194,11 +189,11 @@ namespace BangSharp
 		#endregion
 
 		#region ISessionEventListener implementation
-		void ISessionEventListener.Ping()
+		public void Ping()
 		{
 		}
 
-		void ISessionEventListener.OnSessionEnded()
+		public void OnSessionEnded()
 		{
 			lock(syncLock)
 			{
@@ -207,7 +202,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnGameEnded()
+		public void OnGameEnded()
 		{
 			lock(syncLock)
 			{
@@ -216,7 +211,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerJoinedSession(IPlayer player)
+		public void OnPlayerJoinedSession(IPlayer player)
 		{
 			lock(syncLock)
 			{
@@ -225,7 +220,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnSpectatorJoinedSession(ISpectator spectator)
+		public void OnSpectatorJoinedSession(ISpectator spectator)
 		{
 			lock(syncLock)
 			{
@@ -234,7 +229,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerLeftSession(IPlayer player)
+		public void OnPlayerLeftSession(IPlayer player)
 		{
 			lock(syncLock)
 			{
@@ -243,7 +238,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnSpectatorLeftSession(ISpectator spectator)
+		public void OnSpectatorLeftSession(ISpectator spectator)
 		{
 			lock(syncLock)
 			{
@@ -252,7 +247,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerUpdated(IPlayer player)
+		public void OnPlayerUpdated(IPlayer player)
 		{
 			lock(syncLock)
 			{
@@ -261,7 +256,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerDisconnected(IPlayer player)
+		public void OnPlayerDisconnected(IPlayer player)
 		{
 			lock(syncLock)
 			{
@@ -270,7 +265,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnChatMessage(IPlayer player, string message)
+		public void OnChatMessage(IPlayer player, string message)
 		{
 			lock(syncLock)
 			{
@@ -279,7 +274,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnChatMessage(ISpectator spectator, string message)
+		public void OnChatMessage(ISpectator spectator, string message)
 		{
 			lock(syncLock)
 			{
@@ -288,7 +283,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerDrewFromDeck(IPublicPlayerView player, System.Collections.ObjectModel.ReadOnlyCollection<ICard> drawnCards)
+		public void OnPlayerDrewFromDeck(IPublicPlayerView player, System.Collections.ObjectModel.ReadOnlyCollection<ICard> drawnCards)
 		{
 			lock(syncLock)
 			{
@@ -297,7 +292,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerDrewFromGraveyard(IPublicPlayerView player, System.Collections.ObjectModel.ReadOnlyCollection<ICard> drawnCards)
+		public void OnPlayerDrewFromGraveyard(IPublicPlayerView player, System.Collections.ObjectModel.ReadOnlyCollection<ICard> drawnCards)
 		{
 			lock(syncLock)
 			{
@@ -306,7 +301,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerDiscardedCard(IPublicPlayerView player, ICard card)
+		public void OnPlayerDiscardedCard(IPublicPlayerView player, ICard card)
 		{
 			lock(syncLock)
 			{
@@ -315,7 +310,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card)
+		public void OnPlayerPlayedCard(IPublicPlayerView player, ICard card)
 		{
 			lock(syncLock)
 			{
@@ -324,7 +319,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
+		public void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
 		{
 			lock(syncLock)
 			{
@@ -333,7 +328,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer, ICard targetCard)
+		public void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			lock(syncLock)
 			{
@@ -342,7 +337,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard)
+		public void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard)
 		{
 			lock(syncLock)
 			{
@@ -351,7 +346,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer)
+		public void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer)
 		{
 			lock(syncLock)
 			{
@@ -360,7 +355,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer, ICard targetCard)
+		public void OnPlayerPlayedCard(IPublicPlayerView player, ICard card, CardType asCard, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			lock(syncLock)
 			{
@@ -369,7 +364,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerPlayedCardOnTable(IPublicPlayerView player, ICard card)
+		public void OnPlayerPlayedCardOnTable(IPublicPlayerView player, ICard card)
 		{
 			lock(syncLock)
 			{
@@ -378,7 +373,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPassedTableCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
+		public void OnPassedTableCard(IPublicPlayerView player, ICard card, IPublicPlayerView targetPlayer)
 		{
 			lock(syncLock)
 			{
@@ -387,7 +382,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerEndedTurn(IPublicPlayerView player)
+		public void OnPlayerEndedTurn(IPublicPlayerView player)
 		{
 			lock(syncLock)
 			{
@@ -396,7 +391,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card)
+		public void OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card)
 		{
 			lock(syncLock)
 			{
@@ -405,7 +400,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card, CardType asCard)
+		public void OnPlayerRespondedWithCard(IPublicPlayerView player, ICard card, CardType asCard)
 		{
 			lock(syncLock)
 			{
@@ -414,7 +409,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnDrawnIntoSelection(System.Collections.ObjectModel.ReadOnlyCollection<ICard> drawnCards)
+		public void OnDrawnIntoSelection(System.Collections.ObjectModel.ReadOnlyCollection<ICard> drawnCards)
 		{
 			lock(syncLock)
 			{
@@ -423,7 +418,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerPickedFromSelection(IPublicPlayerView player, ICard card)
+		public void OnPlayerPickedFromSelection(IPublicPlayerView player, ICard card)
 		{
 			lock(syncLock)
 			{
@@ -432,7 +427,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnUndrawnFromSelection(ICard card)
+		public void OnUndrawnFromSelection(ICard card)
 		{
 			lock(syncLock)
 			{
@@ -441,7 +436,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerStoleCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
+		public void OnPlayerStoleCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			lock(syncLock)
 			{
@@ -450,7 +445,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerCancelledCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
+		public void OnPlayerCancelledCard(IPublicPlayerView player, IPublicPlayerView targetPlayer, ICard targetCard)
 		{
 			lock(syncLock)
 			{
@@ -459,7 +454,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnDeckChecked(ICard card)
+		public void OnDeckChecked(ICard card)
 		{
 			lock(syncLock)
 			{
@@ -468,7 +463,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnCardCancelled(ICard card)
+		public void OnCardCancelled(ICard card)
 		{
 			lock(syncLock)
 			{
@@ -477,7 +472,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerCheckedDeck(IPublicPlayerView player, ICard checkedCard, CardType causedBy, bool result)
+		public void OnPlayerCheckedDeck(IPublicPlayerView player, ICard checkedCard, CardType causedBy, bool result)
 		{
 			lock(syncLock)
 			{
@@ -486,7 +481,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnLifePointsChanged(IPublicPlayerView player, int delta, IPublicPlayerView causedBy)
+		public void OnLifePointsChanged(IPublicPlayerView player, int delta, IPublicPlayerView causedBy)
 		{
 			lock(syncLock)
 			{
@@ -495,7 +490,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerDied(IPublicPlayerView player, IPublicPlayerView causedBy)
+		public void OnPlayerDied(IPublicPlayerView player, IPublicPlayerView causedBy)
 		{
 			lock(syncLock)
 			{
@@ -504,7 +499,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character)
+		public void OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character)
 		{
 			lock(syncLock)
 			{
@@ -513,7 +508,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character, IPublicPlayerView targetPlayer)
+		public void OnPlayerUsedAbility(IPublicPlayerView player, CharacterType character, IPublicPlayerView targetPlayer)
 		{
 			lock(syncLock)
 			{
@@ -522,7 +517,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerGainedAdditionalCharacters(IPublicPlayerView player)
+		public void OnPlayerGainedAdditionalCharacters(IPublicPlayerView player)
 		{
 			lock(syncLock)
 			{
@@ -531,7 +526,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnPlayerLostAdditionalCharacters(IPublicPlayerView player)
+		public void OnPlayerLostAdditionalCharacters(IPublicPlayerView player)
 		{
 			lock(syncLock)
 			{
@@ -540,7 +535,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnDeckRegenerated()
+		public void OnDeckRegenerated()
 		{
 			lock(syncLock)
 			{
@@ -549,7 +544,7 @@ namespace BangSharp
 			}
 		}
 
-		void ISessionEventListener.OnNewRequest(IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
+		public void OnNewRequest(IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
 		{
 			lock(syncLock)
 			{
