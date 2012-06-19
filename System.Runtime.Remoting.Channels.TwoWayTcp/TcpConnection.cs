@@ -142,15 +142,15 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				{
 					int segment = Math.Min(chunkLength, count);
 					int read = conn.reader.Read(buffer, offset, segment);
-					if(read != segment)
+					if(read <= 0)
 					{
 						conn.Kill();
 						throw new RemotingException("TCP error!");
 					}
-					totalRead += segment;
-					offset += segment;
-					count -= segment;
-					chunkIndex += segment;
+					totalRead += read;
+					offset += read;
+					count -= read;
+					chunkIndex += read;
 					if(chunkIndex >= chunkLength)
 						NextChunk();
 				}
@@ -389,17 +389,23 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 		private void FireMessage(object state)
 		{
-			Message message = (Message)state;
-			switch(message.Type)
+			try
 			{
-			case MessageType.Request:
-				if(OnRequestRecieved != null)
-					OnRequestRecieved(message);
-				break;
-			case MessageType.Response:
-				if(OnResponseRecieved != null)
-					OnResponseRecieved(message);
-				break;
+				Message message = (Message)state;
+				switch(message.Type)
+				{
+				case MessageType.Request:
+					if(OnRequestRecieved != null)
+						OnRequestRecieved(message);
+					break;
+				case MessageType.Response:
+					if(OnResponseRecieved != null)
+						OnResponseRecieved(message);
+					break;
+				}
+			}
+			catch
+			{
 			}
 		}
 		private void ProcessMessages()

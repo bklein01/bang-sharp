@@ -1,3 +1,16 @@
+2012-06-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* TcpConnectionPool.cs:
+	  Handle exceptions in TcpConnection.FireMessage.
+
+	* TcpConnection.cs:
+	  Do not expect NetworkStream to read all bytes - fixes
+	  connection crashes on slower connections.
+	Handle exceptions in TcpConnection.FireMessage.
+
 2012-06-12  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

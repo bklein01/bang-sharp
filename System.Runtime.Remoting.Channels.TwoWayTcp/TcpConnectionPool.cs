@@ -95,14 +95,8 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		{
 			conn.OnRequestRecieved += delegate(Message message)
 			{
-				try
-				{
-					if(OnRequestRecieved != null)
-						OnRequestRecieved(message);
-				}
-				catch
-				{
-				}
+				if(OnRequestRecieved != null)
+					OnRequestRecieved(message);
 			};
 			connections.Add(conn);
 			conn.StartListening();
