@@ -204,7 +204,7 @@ namespace BangSharp.AI
 					return;
 				}
 				if(cardHelper.HasAbility(CharacterType.BillNoface) &&
-					player.MaxLifePoints - player.LifePoints > 2)
+					player.MaxLifePoints - player.LifePoints > 1)
 				{
 					control.RespondUseAbility();
 					return;

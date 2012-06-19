@@ -1,3 +1,11 @@
+2012-06-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* AIPlayer.cs:
+	  Fixed condition to use ability of Bill Noface.
+
 2012-06-17  WOnder93  <omosnacek@gmail.com>
 
 	* MyClass.cs:

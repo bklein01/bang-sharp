@@ -32,6 +32,7 @@ namespace BangSharp.Server.Daemon
 		private int power;
 		private List<Card> barrelsChecked;
 		private bool abilityUsed;
+		private bool canEndImmediately;
 
 		public ShotResponseHandler(Player targetPlayer, Player causedBy, int power = 1) :
 			base(RequestType.Shot, targetPlayer, causedBy)
@@ -57,7 +58,10 @@ namespace BangSharp.Server.Daemon
 				if(card != null && CausedBy != null && !CausedBy.HasCardEffect(card))
 					return;
 				if(--power == 0)
-					End();
+				{
+					if(canEndImmediately)
+						End();
+				}
 				else
 				{
 					barrelsChecked.Clear();
@@ -73,14 +77,22 @@ namespace BangSharp.Server.Daemon
 			if(barrelsChecked.Contains(card))
 				throw new BadCardException();
 
+			canEndImmediately = false;
 			RequestedPlayer.CheckMissed(card, OnResult);
+			canEndImmediately = true;
+			if(power == 0)
+				End();
 		}
 		protected override void OnRespondUseAbility()
 		{
 			if(abilityUsed)
 				throw new BadUsageException();
 			
+			canEndImmediately = false;
 			RequestedPlayer.Character.CheckMissed(OnResult);
+			canEndImmediately = true;
+			if(power == 0)
+				End();
 			abilityUsed = true;
 		}
 		protected override void OnRespondNoAction()

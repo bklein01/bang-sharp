@@ -1,3 +1,15 @@
+2012-06-19  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* Dodge.cs:
+	  (Revert revision 106)
+
+	* ShotResponseHandler.cs:
+	  Do not end ShotResponseHandler until the CheckMissed method
+	  has returned.
+
 2012-06-17  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
