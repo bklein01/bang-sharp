@@ -208,7 +208,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				ms = new MemoryStream(conn.sendBuffer);
 			}
 
-			public override void Flush()
+			private void SendChunk()
 			{
 				int length = (int)ms.Position;
 				if(length == 0)
@@ -226,6 +226,10 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				ms.Position = 0L;
 			}
 
+			public override void Flush()
+			{
+			}
+
 			private void Unlock()
 			{
 				lock(conn.sendLock)
@@ -239,10 +243,11 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			{
 				if(!disposing || disposed)
 					return;
-				Flush();
+				SendChunk();
 				try
 				{
 					conn.writer.Write(0);
+					conn.writer.Flush();
 				}
 				catch(IOException e)
 				{
@@ -272,7 +277,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			{
 				ms.WriteByte(value);
 				if(ms.Position >= ms.Length)
-					Flush();
+					SendChunk();
 			}
 			public override void Write(byte[] buffer, int offset, int count)
 			{
@@ -283,7 +288,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 					offset += segment;
 					count -= segment;
 					if(ms.Position >= ms.Length)
-						Flush();
+						SendChunk();
 				}
 				while(count != 0);
 			}
@@ -314,14 +319,15 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		public static readonly Guid ThisMachineID = Guid.NewGuid();
 		private static readonly byte[] magic = new byte[] { (byte)'T', (byte)'T', (byte)'C', (byte)'P' };
 		private const byte Version = 2;
-		private const int DefaultBufferSize = 0x10000;
+		private const int DefaultChunkSize = 0x10000;
+		private const int DefaultBufferSize = 0x2000;
 		private static int nextId = 0;
 
 		private object recieveLock = new object();
 		private object sendLock = new object();
 		private bool recieveLocked = false;
 		private bool sendLocked = false;
-		private byte[] sendBuffer = new byte[DefaultBufferSize];
+		private byte[] sendBuffer = new byte[DefaultChunkSize];
 
 		private TcpConnectionPool pool;
 		private Socket socket;
@@ -369,7 +375,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			connId = nextId++;
 			networkStream = new NetworkStream(socket);
 			reader = new BinaryReader(networkStream);
-			writer = new BinaryWriter(networkStream);
+			writer = new BinaryWriter(new BufferedOutputStream(networkStream, DefaultBufferSize));
 		}
 
 		public void Kill()

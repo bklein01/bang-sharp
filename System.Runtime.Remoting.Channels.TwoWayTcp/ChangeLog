@@ -1,3 +1,13 @@
+2012-06-22  WOnder93  <omosnacek@gmail.com>
+
+	* TcpConnection.cs:
+	* BufferedOutputStream.cs:
+	* System.Runtime.Remoting.Channels.TwoWayTcp.csproj:
+	  Fixed very ineffective networking in TCP channels.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
 2012-06-19  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
