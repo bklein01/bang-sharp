@@ -24,25 +24,95 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 using Cairo;
+using System;
 
 namespace BangSharp.Client.GameBoard.Widgets
 {
 	public class SolidColor : Bin
 	{
+		private double rL;
+		private double rR;
+		private double rT;
+		private double rB;
+
 		public Color Color
 		{
 			get;
 			set;
 		}
 
-		public SolidColor() : base()
+		public double RoundingLeft
 		{
+			get { return rL; }
+			set { rL = Math.Max(0.0, value); }
+		}
+		public double RoundingRight
+		{
+			get { return rR; }
+			set { rR = Math.Max(0.0, value); }
+		}
+		public double RoundingTop
+		{
+			get { return rT; }
+			set { rT = Math.Max(0.0, value); }
+		}
+		public double RoundingBottom
+		{
+			get { return rB; }
+			set { rB = Math.Max(0.0, value); }
+		}
+
+		public SolidColor()
+		{
+		}
+		public SolidColor(double roundingHoriz, double roundingVert)
+			: this(roundingHoriz, roundingHoriz, roundingVert, roundingVert)
+		{
+		}
+		public SolidColor(double roudingLeft, double roundingRight, double roundingTop, double roundingBottom)
+		{
+			RoundingLeft = roudingLeft;
+			RoundingRight = roundingRight;
+			RoundingTop = roundingTop;
+			RoundingBottom = roundingBottom;
 		}
 
 		protected override bool OnExposed(Context cr, Rectangle area)
 		{
 			cr.Color = Color;
-			cr.Rectangle(area);
+			if(rL > 0.0 && rR > 0.0 && rT > 0.0 && rB > 0.0)
+			{
+				double width = Allocation.Width;
+				double height = Allocation.Height;
+				double radL = rL * width;
+				double radR = rR * width;
+				double radT = rT * height;
+				double radB = rB * height;
+
+				Matrix m = cr.Matrix;
+				cr.Translate(radL, radT);
+				cr.Scale(radL, radT);
+				cr.Arc(0.0, 0.0, 1.0, 1.0 * Math.PI, 1.5 * Math.PI);
+
+				cr.Matrix = m;
+				cr.Translate(width - radR, radT);
+				cr.Scale(radR, radT);
+				cr.Arc(0.0, 0.0, 1.0, 1.5 * Math.PI, 2.0 * Math.PI);
+
+				cr.Matrix = m;
+				cr.Translate(width - radR, height - radB);
+				cr.Scale(radR, radB);
+				cr.Arc(0.0, 0.0, 1.0, 0.0 * Math.PI, 0.5 * Math.PI);
+
+				cr.Matrix = m;
+				cr.Translate(radL, height - radB);
+				cr.Scale(radL, radB);
+				cr.Arc(0.0, 0.0, 1.0, 0.5 * Math.PI, 1.0 * Math.PI);
+
+				cr.ClosePath();
+			}
+			else
+				cr.Rectangle(area);
 			cr.Fill();
 			return true;
 		}
