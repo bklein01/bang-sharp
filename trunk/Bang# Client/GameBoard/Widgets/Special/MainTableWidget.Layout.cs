@@ -29,6 +29,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 	public partial class MainTableWidget
 	{
 		private Padding padding1;
+		private Padding padding5;
 		private Box box1;
 		private Adapter adapter1;
 		private Box box2;
@@ -46,8 +47,11 @@ namespace BangSharp.Client.GameBoard.Widgets
 			this.padding1 = new Padding(0.0, 1.0 / 6.0);
 			this.Children.Add(this.padding1);
 
+			this.padding5 = new Padding(0.0, 1.0 - (1.0 - 0.01) * (1.0 - 0.02));
+			this.padding1.Children.Add(this.padding5);
+
 			this.box1 = new Box(Direction.Vertical);
-			this.padding1.Children.Add(this.box1);
+			this.padding5.Children.Add(this.box1);
 
 			this.adapter1 = new Adapter(Direction.Horizontal);
 			this.box1.Children.Add(this.adapter1);

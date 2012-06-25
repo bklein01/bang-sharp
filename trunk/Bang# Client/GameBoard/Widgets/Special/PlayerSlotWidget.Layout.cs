@@ -30,6 +30,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 	{
 		private Padding padding1;
 		private SolidColor color1;
+		private Padding padding10;
 		private Box box1;
 		private Box box2;
 		private Adapter adapter1;
@@ -60,15 +61,18 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		private void InitLayout()
 		{
-			this.padding1 = new Padding(0.02, 0.02);
+			this.padding1 = new Padding(0.01, 0.01);
 			this.Children.Add(this.padding1);
 
-			this.color1 = new SolidColor();
+			this.color1 = new SolidColor(0.02, 0.02);
 			this.color1.Color = new Cairo.Color(0.25, 0.25, 0.25, 0.3);
 			this.padding1.Children.Add(this.color1);
 
+			this.padding10 = new Padding(0.02, 0.02);
+			this.color1.Children.Add(this.padding10);
+
 			this.box1 = new Box(Direction.Horizontal);
-			this.color1.Children.Add(this.box1);
+			this.padding10.Children.Add(this.box1);
 
 			this.box2 = new Box(Direction.Vertical);
 			this.box1.Children.Add(this.box2);
@@ -110,7 +114,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			this.padding9 = new Padding(0.04, 0.04);
 			this.box6.Children.Add(this.padding9);
 
-			this.padding2 = new Padding(0.02, 0.04);
+			this.padding2 = new Padding(0.0, 0.02, 0.04, 0.04);
 			this.box2.Children.Add(this.padding2);
 
 			this.color2 = new SolidColor();
@@ -120,7 +124,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			this.playerHandPlaceholder = new GeneralPlaceholderWidget();
 			this.color2.Children.Add(this.playerHandPlaceholder);
 
-			this.padding3 = new Padding(0.02, 0.04);
+			this.padding3 = new Padding(0.0, 0.02, 0.04, 0.04);
 			this.box2.Children.Add(this.padding3);
 
 			this.color3 = new SolidColor();
@@ -133,13 +137,13 @@ namespace BangSharp.Client.GameBoard.Widgets
 			this.box4 = new Box(Direction.Vertical);
 			this.box1.Children.Add(this.box4);
 
-			this.padding5 = new Padding(0.06, 0.04);
+			this.padding5 = new Padding(0.06, 0.0, 0.04, 0.04);
 			this.box4.Children.Add(this.padding5);
 
 			this.playerRolePlaceholder = new CardPlaceholderWidget();
 			this.padding5.Children.Add(this.playerRolePlaceholder);
 
-			this.padding6 = new Padding(0.06, 0.04);
+			this.padding6 = new Padding(0.06, 0.0, 0.04, 0.04);
 			this.box4.Children.Add(this.padding6);
 
 			this.characterOverlay = new Overlay();
@@ -148,7 +152,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			this.characterPlaceholder = new CardPlaceholderWidget();
 			this.characterOverlay.Children.Add(this.characterPlaceholder);
 
-			this.padding7 = new Padding(0.06, 0.04);
+			this.padding7 = new Padding(0.06, 0.0, 0.04, 0.04);
 			this.box4.Children.Add(this.padding7);
 
 			this.cardPlaceholder1 = new CardPlaceholderWidget();

@@ -1,3 +1,17 @@
+2012-06-25  WOnder93  <omosnacek@gmail.com>
+
+	* MainTableWidget.Layout.cs:
+	  Fixed improper padding in MainTableWidget.
+
+	* PlayerSlotWidget.Layout.cs:
+	  Added rounding to PlayerSlotWidget.
+
+	* SolidColor.cs:
+	  Added rounding option to SolidColor.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
 2012-06-15  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
