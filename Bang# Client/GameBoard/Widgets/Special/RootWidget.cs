@@ -91,9 +91,15 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 		}
 		private GameBoardWidget parent;
+		private object layoutLock = new object();
 		private EventListener listener;
 		private PlayerSlotWidget[] playerSlots;
 		private Dictionary<int, PlayerSlotWidget> playerMap;
+
+		public override object LayoutLock
+		{
+			get { return layoutLock; }
+		}
 
 		public CardPlaceholderWidget DeckPlaceholder
 		{
@@ -192,7 +198,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		public void SetRequestType(RequestType type)
 		{
-			lock(ConnectionManager.SessionEventLock)
+			lock(layoutLock)
 			{
 				requestLabel.Markup = "<span color='lightblue'>Request type: </span>";
 				if(type == RequestType.None)
@@ -203,7 +209,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 		}
 		public void SetResponseType(string responseType, GameException exception = null)
 		{
-			lock(ConnectionManager.SessionEventLock)
+			lock(layoutLock)
 			{
 				responseLabel.Markup = "<span color='lightblue'>Last response: </span>";
 				responseLabel.Markup += "<span color='orange'><b>" + responseType + " - </b></span>";
@@ -219,7 +225,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 #endif
 		public void RootExpose(Context cr, Rectangle area)
 		{
-			lock(ConnectionManager.SessionEventLock)
+			lock(layoutLock)
 			{
 #if DEBUG
 				sw.Reset();
@@ -244,19 +250,19 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		public void RootReallocate(Rectangle newAlloc)
 		{
-			lock(ConnectionManager.SessionEventLock)
+			lock(layoutLock)
 				Reallocate(newAlloc);
 		}
 
 		public void RootLeftClick(double x, double y)
 		{
-			//lock(ConnectionManager.SessionEventLock)
+			//lock(layoutLock)
 			LeftClick(x, y);
 		}
 
 		public void RootRightClick(double x, double y)
 		{
-			//lock(ConnectionManager.SessionEventLock)
+			//lock(layoutLock)
 			RightClick(x, y);
 		}
 

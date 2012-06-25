@@ -1,3 +1,12 @@
+2012-06-25  WOnder93  <omosnacek@gmail.com>
+
+	* ProxyServerEventListener.cs:
+	* ProxySessionEventListener.cs:
+	  Removed event locks - replaced by layout lock in client.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
 2012-06-17  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

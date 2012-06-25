@@ -1,5 +1,16 @@
 2012-06-25  WOnder93  <omosnacek@gmail.com>
 
+	* ConnectionManager.cs:
+	* Widget.cs:
+	* RootWidget.cs:
+	* AnimationLayer.cs:
+	  Removed event locks - replaced by layout lock in client.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+2012-06-25  WOnder93  <omosnacek@gmail.com>
+
 	* MainTableWidget.Layout.cs:
 	  Fixed improper padding in MainTableWidget.
 

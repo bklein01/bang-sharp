@@ -168,27 +168,6 @@ namespace BangSharp.Client
 		}
 
 		/// <summary>
-		/// Gets the server event lock.
-		/// </summary>
-		/// <value>
-		/// The object which is used to lock the incoming server events.
-		/// </value>
-		public static object ServerEventLock
-		{
-			get { return serverListener.SyncLock; }
-		}
-		/// <summary>
-		/// Gets the session event lock.
-		/// </summary>
-		/// <value>
-		/// The object which is used to lock the incoming session events.
-		/// </value>
-		public static object SessionEventLock
-		{
-			get { return sessionListener.SyncLock; }
-		}
-
-		/// <summary>
 		/// Gets the main server event listener.
 		/// </summary>
 		/// <value>
