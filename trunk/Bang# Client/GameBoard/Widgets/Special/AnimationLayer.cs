@@ -541,19 +541,20 @@ namespace BangSharp.Client.GameBoard.Widgets
 		/// </remarks>
 		private void Clear()
 		{
-			lock(animLock)
-			{
-				if(current != null)
-					current.Abort();
-				current = null;
-				lastAnim = null;
-				animQueue.Clear();
-				playingCardWidgets.Clear();
-				playerRoleWidgets.Clear();
-				playerCharacterWidgets.Clear();
-				cardZoomWidgetSet = false;
-				Children.Clear();
-			}
+			lock(LayoutLock)
+				lock(animLock)
+				{
+					if(current != null)
+						current.Abort();
+					current = null;
+					lastAnim = null;
+					animQueue.Clear();
+					playingCardWidgets.Clear();
+					playerRoleWidgets.Clear();
+					playerCharacterWidgets.Clear();
+					cardZoomWidgetSet = false;
+					Children.Clear();
+				}
 		}
 
 		/// <summary>
@@ -564,39 +565,40 @@ namespace BangSharp.Client.GameBoard.Widgets
 		/// </remarks>
 		private void Update()
 		{
-			lock(animLock)
-			{
-				Clear();
-
-				int thisPlayerId = 0;
-				if(ConnectionManager.PlayerGameControl != null)
-					thisPlayerId = ConnectionManager.PlayerGameControl.PrivatePlayerView.ID;
-
-				foreach(IPublicPlayerView player in ConnectionManager.Game.Players)
+			lock(LayoutLock)
+				lock(animLock)
 				{
-					int id = player.ID;
-					playerRoleWidgets[id] = new RoleCardWidget(player.Role);
-					playerRoleWidgets[id].OnRClick += (w) => SetCardZoomWidget((RoleCardWidget)w);
-					playerCharacterWidgets[id] = new CharacterCardWidget(player.CharacterType);
-					if(id == thisPlayerId)
-						playerCharacterWidgets[id].OnLClick += (w) => {
-							IPlayerControl control = ConnectionManager.PlayerGameControl;
-							if(control == null)
-								return;
-							try
-							{
-								control.RespondUseAbility();
-								root.SetResponseType("Use Ability");
-							}
-							catch(GameException e)
-							{
-								root.SetResponseType("Use Ability", e);
-							}
-							RequestRedraw();
-						};
-					playerCharacterWidgets[id].OnRClick += (w) => SetCardZoomWidget((CharacterCardWidget)w);
+					Clear();
+
+					int thisPlayerId = 0;
+					if(ConnectionManager.PlayerGameControl != null)
+						thisPlayerId = ConnectionManager.PlayerGameControl.PrivatePlayerView.ID;
+
+					foreach(IPublicPlayerView player in ConnectionManager.Game.Players)
+					{
+						int id = player.ID;
+						playerRoleWidgets[id] = new RoleCardWidget(player.Role);
+						playerRoleWidgets[id].OnRClick += (w) => SetCardZoomWidget((RoleCardWidget)w);
+						playerCharacterWidgets[id] = new CharacterCardWidget(player.CharacterType);
+						if(id == thisPlayerId)
+							playerCharacterWidgets[id].OnLClick += (w) => {
+								IPlayerControl control = ConnectionManager.PlayerGameControl;
+								if(control == null)
+									return;
+								try
+								{
+									control.RespondUseAbility();
+									root.SetResponseType("Use Ability");
+								}
+								catch(GameException e)
+								{
+									root.SetResponseType("Use Ability", e);
+								}
+								RequestRedraw();
+							};
+						playerCharacterWidgets[id].OnRClick += (w) => SetCardZoomWidget((CharacterCardWidget)w);
+					}
 				}
-			}
 		}
 
 		/// <summary>

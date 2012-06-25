@@ -36,19 +36,7 @@ namespace BangSharp
 	/// </remarks>
 	public class ProxyServerEventListener : ImmortalMarshalByRefObject, IServerEventListener
 	{
-		private object syncLock = new object();
 		private List<IServerEventListener> listeners;
-
-		/// <summary>
-		/// Gets the synchronization lock.
-		/// </summary>
-		/// <value>
-		/// The object that is locked while calling the member listeners' methods.
-		/// </value>
-		public object SyncLock
-		{
-			get { return syncLock; }
-		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BangSharp.ProxyServerEventListener"/> class.
@@ -66,11 +54,8 @@ namespace BangSharp
 		/// </param>
 		public void AddListener(IServerEventListener listener)
 		{
-			lock(syncLock)
-			{
-				if(!listeners.Contains(listener))
-					listeners.Add(listener);
-			}
+			if(!listeners.Contains(listener))
+				listeners.Add(listener);
 		}
 
 		/// <summary>
@@ -81,8 +66,7 @@ namespace BangSharp
 		/// </param>
 		public void RemoveListener(IServerEventListener listener)
 		{
-			lock(syncLock)
-				listeners.Remove(listener);
+			listeners.Remove(listener);
 		}
 
 		#region IServerEventListener implementation
@@ -92,92 +76,62 @@ namespace BangSharp
 
 		public void OnSessionCreated(ISession session)
 		{
-			lock(syncLock)
-			{
-				foreach(IServerEventListener listener in listeners.ToArray())
-					listener.OnSessionCreated(session);
-			}
+			foreach(IServerEventListener listener in listeners.ToArray())
+				listener.OnSessionCreated(session);
 		}
 
 		public void OnSessionEnded(ISession session)
 		{
-			lock(syncLock)
-			{
-				foreach(IServerEventListener listener in listeners.ToArray())
-					listener.OnSessionEnded(session);
-			}
+			foreach(IServerEventListener listener in listeners.ToArray())
+				listener.OnSessionEnded(session);
 		}
 
 		public void OnGameStarted(ISession session)
 		{
-			lock(syncLock)
-			{
-				foreach(IServerEventListener listener in listeners.ToArray())
-					listener.OnGameStarted(session);
-			}
+			foreach(IServerEventListener listener in listeners.ToArray())
+				listener.OnGameStarted(session);
 		}
 
 		public void OnGameEnded(ISession session)
 		{
-			lock(syncLock)
-			{
-				foreach(IServerEventListener listener in listeners.ToArray())
-					listener.OnGameEnded(session);
-			}
+			foreach(IServerEventListener listener in listeners.ToArray())
+				listener.OnGameEnded(session);
 		}
 
 		public void OnPlayerJoinedSession(ISession session, IPlayer player)
 		{
-			lock(syncLock)
-			{
-				foreach(IServerEventListener listener in listeners.ToArray())
-					listener.OnPlayerJoinedSession(session, player);
-			}
+			foreach(IServerEventListener listener in listeners.ToArray())
+				listener.OnPlayerJoinedSession(session, player);
 		}
 
 		public void OnSpectatorJoinedSession(ISession session, ISpectator spectator)
 		{
-			lock(syncLock)
-			{
-				foreach(IServerEventListener listener in listeners.ToArray())
-					listener.OnSpectatorJoinedSession(session, spectator);
-			}
+			foreach(IServerEventListener listener in listeners.ToArray())
+				listener.OnSpectatorJoinedSession(session, spectator);
 		}
 
 		public void OnPlayerLeftSession(ISession session, IPlayer player)
 		{
-			lock(syncLock)
-			{
-				foreach(IServerEventListener listener in listeners.ToArray())
-					listener.OnPlayerLeftSession(session, player);
-			}
+			foreach(IServerEventListener listener in listeners.ToArray())
+				listener.OnPlayerLeftSession(session, player);
 		}
 
 		public void OnSpectatorLeftSession(ISession session, ISpectator spectator)
 		{
-			lock(syncLock)
-			{
-				foreach(IServerEventListener listener in listeners.ToArray())
-					listener.OnSpectatorLeftSession(session, spectator);
-			}
+			foreach(IServerEventListener listener in listeners.ToArray())
+				listener.OnSpectatorLeftSession(session, spectator);
 		}
 
 		public void OnPlayerUpdated(ISession session, IPlayer player)
 		{
-			lock(syncLock)
-			{
-				foreach(IServerEventListener listener in listeners.ToArray())
-					listener.OnPlayerUpdated(session, player);
-			}
+			foreach(IServerEventListener listener in listeners.ToArray())
+				listener.OnPlayerUpdated(session, player);
 		}
 
 		public void OnPlayerDisconnected(ISession session, IPlayer player)
 		{
-			lock(syncLock)
-			{
-				foreach(IServerEventListener listener in listeners.ToArray())
-					listener.OnPlayerDisconnected(session, player);
-			}
+			foreach(IServerEventListener listener in listeners.ToArray())
+				listener.OnPlayerDisconnected(session, player);
 		}
 		#endregion
 	}
