@@ -194,7 +194,7 @@ namespace BangSharp.Client.GameBoard
 			if(progress < 0.5)
 				startAllocManager.ReorderWidgets();
 			else
-				endAllocManager.ReorderWidgets();
+				endAllocManager.ReorderWidgets(progress == 1.0);
 			
 			foreach(IAnimator a in playingCardAnimators.Values)
 				a.Animate(progress);
