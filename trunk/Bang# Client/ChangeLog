@@ -1,3 +1,22 @@
+2012-06-30  WOnder93  <omosnacek@gmail.com>
+
+	* Animation.cs:
+	* AllocationManager.cs:
+	  Remove animated deck cards if at the end of the animation.
+
+	* AnimationLayer.cs:
+	  Improved the RootWidget's RequestRedraw() and
+	  RequestResize() methods and their usage.
+
+	* RootWidget.cs:
+	  Improved the RootWidget's RequestRedraw() and
+	  RequestResize() methods and their usage.
+	Add the RootWidget's event listener after the AnimationLayer's
+	  to the main listener.
+
+	* AssemblyInfo.cs:
+	  Upated the assembly version.
+
 2012-06-25  WOnder93  <omosnacek@gmail.com>
 
 	* ConnectionManager.cs:

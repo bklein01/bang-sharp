@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using Cairo;
 
 namespace BangSharp.Client.GameBoard.Widgets
@@ -48,46 +49,64 @@ namespace BangSharp.Client.GameBoard.Widgets
 			{
 				CardManager.Init(control.Session);
 				parent.Update();
+				parent.RequestRedraw();
 			}
 			public override void OnJoinedSession(ISpectatorSessionControl control)
 			{
 				CardManager.Init(control.Session);
 				parent.Update();
+				parent.RequestRedraw();
 			}
 
 			public override void OnPlayerJoinedSession(IPlayer player)
 			{
 				parent.Update();
+				parent.RequestRedraw();
 			}
 			public override void OnPlayerLeftSession(IPlayer player)
 			{
 				parent.Update();
+				parent.RequestRedraw();
 			}
 
 			public override void OnPlayerUpdated(IPlayer player)
 			{
 				if(ConnectionManager.Session != null)
+				{
 					parent.playerMap[player.ID].Update(player);
+					parent.RequestRedraw();
+				}
 			}
 			public override void OnPlayerDisconnected(IPlayer player)
 			{
-				if(ConnectionManager.Session != null)
-					parent.playerMap[player.ID].Update(player);
+				OnPlayerUpdated(player);
 			}
 
 			public override void OnSessionEnded()
 			{
 				parent.Clear();
 				CardManager.Flush();
+				parent.RequestRedraw();
+			}
+
+			public override void OnJoinedGame(IPlayerControl control)
+			{
+				parent.RequestRedraw();
+			}
+			public override void OnJoinedGame(ISpectatorControl control)
+			{
+				parent.RequestRedraw();
 			}
 
 			public override void OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
 			{
 				parent.SetRequestType(requestType);
+				parent.RequestRedraw();
 			}
 			public override void OnNewRequest(IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
 			{
 				parent.SetRequestType(RequestType.None);
+				parent.RequestRedraw();
 			}
 		}
 		private GameBoardWidget parent;
@@ -118,12 +137,6 @@ namespace BangSharp.Client.GameBoard.Widgets
 		{
 			this.parent = parent;
 			listener = new EventListener(this);
-			ConnectionManager.SessionEventListener.AddListener((IPlayerSessionEventListener)listener);
-			ConnectionManager.SessionEventListener.AddListener((ISpectatorSessionEventListener)listener);
-			ConnectionManager.OnSessionDisconnected += () => {
-				Clear();
-				CardManager.Flush();
-			};
 			InitLayout();
 			playerMap = new Dictionary<int, PlayerSlotWidget>(8);
 			playerSlots = new PlayerSlotWidget[]
@@ -136,6 +149,13 @@ namespace BangSharp.Client.GameBoard.Widgets
 				playerSlot5,
 				playerSlot6,
 				playerSlot7
+			};
+			ConnectionManager.SessionEventListener.AddListener((IPlayerSessionEventListener)listener);
+			ConnectionManager.SessionEventListener.AddListener((ISpectatorSessionEventListener)listener);
+			ConnectionManager.OnSessionDisconnected += () => {
+				Clear();
+				CardManager.Flush();
+				RequestRedraw();
 			};
 		}
 
@@ -164,7 +184,6 @@ namespace BangSharp.Client.GameBoard.Widgets
 			playerMap.Clear();
 			requestLabel.Markup = "";
 			responseLabel.Markup = "";
-			RequestRedraw();
 		}
 		public void Update()
 		{
@@ -193,7 +212,6 @@ namespace BangSharp.Client.GameBoard.Widgets
 			}
 			mainTable.Update();
 			SetRequestType(RequestType.None);
-			RequestRedraw();
 		}
 
 		public void SetRequestType(RequestType type)
@@ -268,12 +286,22 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		public override void RequestResize()
 		{
-			parent.QueueResize();
+			if(Thread.CurrentThread.ManagedThreadId == MainClass.GtkThread.ManagedThreadId)
+				parent.QueueResize();
+			else
+				Gtk.Application.Invoke((sender, e) => {
+					RootReallocate(Allocation);
+				});
 		}
-
 		public override void RequestRedraw()
 		{
-			parent.QueueDraw();
+			if(Thread.CurrentThread.ManagedThreadId == MainClass.GtkThread.ManagedThreadId)
+				parent.QueueDraw();
+			else
+				Gtk.Application.Invoke((sender, e) => {
+					RootReallocate(Allocation);
+					parent.QueueDraw();
+				});
 		}
 	}
 }

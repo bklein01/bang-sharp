@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BangSharp.Client.GameBoard.Animators;
 using BangSharp.Client.GameBoard.Widgets;
 
@@ -409,7 +410,7 @@ namespace BangSharp.Client.GameBoard
 		/// <summary>
 		/// Reordes widgets according to this state.
 		/// </summary>
-		public void ReorderWidgets()
+		public void ReorderWidgets(bool end = false)
 		{
 			AnimationLayer layer = anim.AnimLayer;
 			layer.Children.Clear();
@@ -435,6 +436,13 @@ namespace BangSharp.Client.GameBoard
 			playingCardZoom.OrderWidgets(layer);
 			roleCardZoom.OrderWidgets(layer);
 			characterCardZoom.OrderWidgets(layer);
+
+			if(end)
+			{
+				List<PlayingCardAnimator> graveyardAnimators = graveyardCards.Animators;
+				foreach(PlayingCardAnimator a in deckCards.Animators.Concat(graveyardAnimators.Take(graveyardAnimators.Count - 1)))
+					layer.Children.Remove(a.Widget);
+			}
 		}
 	}
 }
