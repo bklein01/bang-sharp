@@ -1,3 +1,14 @@
+2012-07-01  WOnder93  <omosnacek@gmail.com>
+
+	* BufferedOutputStream.cs:
+	  Close the underlying stream when disposing.
+
+	* TcpConnection.cs:
+	  Close the socket properly when the connection is killed.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
 2012-06-22  WOnder93  <omosnacek@gmail.com>
 
 	* TcpConnection.cs:

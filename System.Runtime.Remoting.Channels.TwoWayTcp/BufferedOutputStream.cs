@@ -49,6 +49,11 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 				bufferPos = 0;
 			}
 		}
+		protected override void Dispose(bool disposing)
+		{
+			base.Dispose(disposing);
+			stream.Dispose();
+		}
 
 		public override int Read(byte[] buffer, int offset, int count)
 		{

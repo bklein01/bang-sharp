@@ -373,7 +373,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 			this.socket = socket;
 			socket.NoDelay = true;
 			connId = nextId++;
-			networkStream = new NetworkStream(socket);
+			networkStream = new NetworkStream(socket, true);
 			reader = new BinaryReader(networkStream);
 			writer = new BinaryWriter(new BufferedOutputStream(networkStream, DefaultBufferSize));
 		}
@@ -382,10 +382,27 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		{
 			if(networkStream == null)
 				return;
-			writer.Close();
-			reader.Close();
-
-			networkStream.Close();
+			try
+			{
+				writer.Close();
+			}
+			catch
+			{
+			}
+			try
+			{
+				reader.Close();
+			}
+			catch
+			{
+			}
+			try
+			{
+				networkStream.Close();
+			}
+			catch
+			{
+			}
 			networkStream = null;
 
 			pool.RemoveConnection(this);
