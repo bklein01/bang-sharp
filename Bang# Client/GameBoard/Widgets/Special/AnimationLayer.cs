@@ -185,6 +185,20 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 				parent.EnqueueAnimation(anim);
 			}
+			public override void OnGameEnded()
+			{
+				Animation anim = new Animation(parent, parent.lastAnim);
+
+				IGame game = ConnectionManager.Game;
+				foreach(IPublicPlayerView player in game.Players)
+				{
+					int playerId = player.ID;
+					RoleCardAnimator a = anim.GetPlayerRoleAnimator(playerId);
+					a.EndState.Role = player.Role;
+				}
+
+				parent.EnqueueAnimation(anim);
+			}
 			public override void OnSessionEnded()
 			{
 				parent.Clear();

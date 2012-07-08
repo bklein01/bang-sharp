@@ -1,3 +1,12 @@
+2012-07-08  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* CardHelper.cs:
+	  Fixed the UnlimitedBangs property (it checked hand for
+	  Volcanic instead of table).
+
 2012-06-19  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

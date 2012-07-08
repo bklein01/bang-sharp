@@ -57,7 +57,7 @@ namespace BangSharp.AI
 		}
 		public bool UnlimitedBangs
 		{
-			get { return Player.Hand.Any(c => c.Type == CardType.Volcanic) || HasAbility(CharacterType.WillyTheKid); }
+			get { return Player.Table.Any(c => c.Type == CardType.Volcanic) || HasAbility(CharacterType.WillyTheKid); }
 		}
 		public bool NeedLifeHelp
 		{
