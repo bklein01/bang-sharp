@@ -1,3 +1,15 @@
+2012-07-08  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* AnimationLayer.cs:
+	  Animate end of game (reveal roles).
+
+	* CardWidget.cs:
+	  Don't scale down too much in ApplyConstriction(Context) to
+	  avoid Cairo errors on Windows.
+
 2012-06-30  WOnder93  <omosnacek@gmail.com>
 
 	* Animation.cs:

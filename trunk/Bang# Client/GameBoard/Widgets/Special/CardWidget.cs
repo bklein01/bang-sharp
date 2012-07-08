@@ -54,7 +54,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		protected void ApplyConstriction(Context cr)
 		{
-			if(Constriction == 0.0)
+			if(Constriction * Allocation.Width < 1.0)
 			{
 				cr.Rectangle(new Rectangle(0.0, 0.0, 0.0, 0.0));
 				cr.Clip();
