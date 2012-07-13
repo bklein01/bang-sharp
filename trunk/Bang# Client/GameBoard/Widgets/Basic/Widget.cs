@@ -193,7 +193,9 @@ namespace BangSharp.Client.GameBoard.Widgets
 		{
 			double x = Math.Max(a.X, b.X);
 			double y = Math.Max(a.Y, b.Y);
-			return new Rectangle(x, y, Math.Min(a.X + a.Width, b.X + b.Width) - x, Math.Min(a.Y + a.Height, b.Y + b.Height) - y);
+			double w = Math.Min(a.X + a.Width, b.X + b.Width) - x;
+			double h = Math.Min(a.Y + a.Height, b.Y + b.Height) - y;
+			return new Rectangle(x, y, Math.Max(0.0, w), Math.Max(0.0, h));
 		}
 		public static bool Contains(Rectangle r, double x, double y)
 		{
