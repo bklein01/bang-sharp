@@ -23,15 +23,24 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System.Threading;
 using Gtk;
 
 namespace BangSharp.Client
 {
 	class MainClass
 	{
+		private static Thread gtkThread;
+
+		public static Thread GtkThread
+		{
+			get { return gtkThread; }
+		}
+
 		public static void Main(string[] args)
 		{
 			Application.Init();
+			gtkThread = Thread.CurrentThread;
 			MainWindow win = new MainWindow();
 			win.Show();
 			Application.Run();
