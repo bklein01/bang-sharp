@@ -46,7 +46,7 @@ namespace BangSharp
 			2147
 			[Server.AdminPort]
 			2148
-			[ServerList.Adresses]
+			[ServerList.Addresses]
 			localhost
 			wonder93.gotdns.com
 			[ServerList.Ports]
