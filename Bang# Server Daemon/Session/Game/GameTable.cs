@@ -250,6 +250,7 @@ namespace BangSharp.Server.Daemon
 			
 			targetPlayer.AddCardToTable(card);
 			game.Session.EventManager.OnPassedTableCard(owner, card, targetPlayer);
+			owner.CheckEmptyHand();
 		}
 		public void PlayerPass(Player player)
 		{

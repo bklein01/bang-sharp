@@ -1,3 +1,11 @@
+2012-07-28  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* Config.cs:
+	  Fixed a typo in the default config file.
+
 2012-06-25  WOnder93  <omosnacek@gmail.com>
 
 	* ProxyServerEventListener.cs:

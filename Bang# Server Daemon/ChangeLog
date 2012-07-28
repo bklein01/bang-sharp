@@ -1,3 +1,12 @@
+2012-07-28  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* GameTable.cs:
+	  Check for empty hand after passing a table card (since it
+	  can be passed from hand - Jail).
+
 2012-06-19  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
