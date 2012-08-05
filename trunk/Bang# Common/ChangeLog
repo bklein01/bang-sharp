@@ -1,3 +1,12 @@
+2012-08-05  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* Config.cs:
+	  Added null checks for arguments.
+	Added a method for clearing specific entries.
+
 2012-07-28  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:
