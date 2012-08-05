@@ -133,6 +133,8 @@ namespace BangSharp
 		/// </returns>
 		public string GetString(string key, string def)
 		{
+			if(key == null)
+				throw new ArgumentNullException("key");
 			try
 			{
 				List<string> list = values[key];
@@ -159,6 +161,8 @@ namespace BangSharp
 		/// </returns>
 		public int GetInteger(string key, int def)
 		{
+			if(key == null)
+				throw new ArgumentNullException("key");
 			try
 			{
 				List<string> list = values[key];
@@ -189,6 +193,8 @@ namespace BangSharp
 		/// </returns>
 		public bool GetBoolean(string key, bool def)
 		{
+			if(key == null)
+				throw new ArgumentNullException("key");
 			try
 			{
 				List<string> list = values[key];
@@ -220,6 +226,8 @@ namespace BangSharp
 		/// </returns>
 		public List<string> GetStringList(string key)
 		{
+			if(key == null)
+				throw new ArgumentNullException("key");
 			try
 			{
 				List<string> list = new List<string>(values[key]);
@@ -244,6 +252,8 @@ namespace BangSharp
 		/// </returns>
 		public List<int> GetIntegerList(string key)
 		{
+			if(key == null)
+				throw new ArgumentNullException("key");
 			try
 			{
 				List<string> list = values[key];
@@ -269,6 +279,10 @@ namespace BangSharp
 		/// </param>
 		public void SetString(string key, string val)
 		{
+			if(key == null)
+				throw new ArgumentNullException("key");
+			if(val == null)
+				throw new ArgumentNullException("val");
 			List<string> newList = new List<string>();
 			newList.Add(val);
 			lock(Lock)
@@ -295,6 +309,8 @@ namespace BangSharp
 		/// </param>
 		public void SetInteger(string key, int val)
 		{
+			if(key == null)
+				throw new ArgumentNullException("key");
 			List<string> newList = new List<string>();
 			newList.Add(val.ToString());
 			lock(Lock)
@@ -321,6 +337,8 @@ namespace BangSharp
 		/// </param>
 		public void SetBoolean(string key, bool val)
 		{
+			if(key == null)
+				throw new ArgumentNullException("key");
 			List<string> newList = new List<string>();
 			newList.Add(val ? "true" : "false");
 			lock(Lock)
@@ -347,6 +365,12 @@ namespace BangSharp
 		/// </param>
 		public void SetStringList(string key, List<string> list)
 		{
+			if(key == null)
+				throw new ArgumentNullException("key");
+			if(list == null)
+				throw new ArgumentNullException("list");
+			if(list.Contains(null))
+				throw new ArgumentNullException();
 			List<string> newList = new List<string>(list);
 			lock(Lock)
 			{
@@ -372,6 +396,10 @@ namespace BangSharp
 		/// </param>
 		public void SetIntegerList(string key, List<int> list)
 		{
+			if(key == null)
+				throw new ArgumentNullException("key");
+			if(list == null)
+				throw new ArgumentNullException("list");
 			List<string> newList = list.ConvertAll<string>(i => i.ToString());
 			lock(Lock)
 			{
@@ -384,6 +412,22 @@ namespace BangSharp
 					values.Add(key, newList);
 				}
 				Save();
+			}
+		}
+		/// <summary>
+		/// Clears the specified configuration entry.
+		/// </summary>
+		/// <param name='key'>
+		/// The key of the configuration entry.
+		/// </param>
+		public void Clear(string key)
+		{
+			if(key == null)
+				throw new ArgumentNullException("key");
+			lock(Lock)
+			{
+				if(values.Remove(key))
+					Save();
 			}
 		}
 	}
