@@ -31,6 +31,7 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 {
 	internal class TcpConnectionPool
 	{
+		private object sync = new object();
 		private Dictionary<string, TcpConnection> hostConnections;
 		private List<TcpConnection> connections;
 
@@ -46,41 +47,47 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 		{
 			string key = host + ":" + port;
 			TcpConnection conn = null;
-			try
+			lock(sync)
 			{
-				conn = hostConnections[key];
-			}
-			catch(KeyNotFoundException)
-			{
-			}
-			if(conn != null && !conn.IsAlive)
-			{
-				conn.Kill();
-				conn = null;
-			}
-
-			if(conn == null)
-			{
-				TcpClient client;
 				try
 				{
-					client = new TcpClient(host, port);
+					conn = hostConnections[key];
 				}
-				catch(SocketException e)
+				catch(KeyNotFoundException)
 				{
-					throw new RemotingException("TCP error: Unable to connect to the specified host!", e);
 				}
-				conn = new TcpConnection(this, client.Client);
-				hostConnections[key] = conn;
-				AddConnection(conn);
+				if(conn != null && !conn.IsAlive)
+				{
+					conn.Kill();
+					conn = null;
+				}
+
+				if(conn == null)
+				{
+					TcpClient client;
+					try
+					{
+						client = new TcpClient(host, port);
+					}
+					catch(SocketException e)
+					{
+						throw new RemotingException("TCP error: Unable to connect to the specified host!", e);
+					}
+					conn = new TcpConnection(this, client.Client);
+					hostConnections[key] = conn;
+					AddConnection(conn);
+				}
 			}
 			return conn;
 		}
 		public TcpConnection GetConnection(Guid id)
 		{
-			foreach(TcpConnection conn in connections)
-				if(conn.MachineID == id)
-					return conn;
+			lock(sync)
+			{
+				foreach(TcpConnection conn in connections)
+					if(conn.MachineID == id)
+						return conn;
+			}
 			return null;
 		}
 
@@ -93,17 +100,21 @@ namespace System.Runtime.Remoting.Channels.TwoWayTcp
 
 		private void AddConnection(TcpConnection conn)
 		{
-			conn.OnRequestRecieved += delegate(Message message)
+			lock(sync)
 			{
-				if(OnRequestRecieved != null)
-					OnRequestRecieved(message);
-			};
-			connections.Add(conn);
+				conn.OnRequestRecieved += delegate(Message message)
+				{
+					if(OnRequestRecieved != null)
+						OnRequestRecieved(message);
+				};
+				connections.Add(conn);
+			}
 			conn.StartListening();
 		}
 		public void RemoveConnection(TcpConnection conn)
 		{
-			connections.Remove(conn);
+			lock(sync)
+				connections.Remove(conn);
 		}
 	}
 }

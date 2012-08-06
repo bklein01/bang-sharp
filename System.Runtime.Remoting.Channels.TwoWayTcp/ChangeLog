@@ -1,3 +1,11 @@
+2012-08-06  WOnder93  <omosnacek@gmail.com>
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* TcpConnectionPool.cs:
+	  TcpConnectionPool synchronized with synchronization locks.
+
 2012-07-01  WOnder93  <omosnacek@gmail.com>
 
 	* BufferedOutputStream.cs:
