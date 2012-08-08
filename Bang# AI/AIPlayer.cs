@@ -262,13 +262,12 @@ namespace BangSharp.AI
 				                  c.Type == CardType.Remington ||
 				                  c.Type == CardType.Carabine ||
 				                  c.Type == CardType.Winchester));
-				ICard currentWeapon = cardHelper.BestCard(
-					player.Table.Where(c =>
-				                  (!cardHelper.UnlimitedBangs && c.Type == CardType.Volcanic) ||
+				ICard currentWeapon = player.Table.FirstOrDefault(c =>
+				                  c.Type == CardType.Volcanic ||
 				                  c.Type == CardType.Schofield ||
 				                  c.Type == CardType.Remington ||
 				                  c.Type == CardType.Carabine ||
-				                  c.Type == CardType.Winchester));
+				                  c.Type == CardType.Winchester);
 				if(bestWeapon != null)
 					if(currentWeapon == null || cardHelper.EvaluateCard(bestWeapon) > cardHelper.EvaluateCard(currentWeapon))
 						if(TryRespondCard(bestWeapon.ID))
@@ -284,39 +283,18 @@ namespace BangSharp.AI
 					case CardColor.Blue:
 						switch(card.Type)
 						{
-						case CardType.Jail:
-							if(TryRespondCardRemember(card.ID))
-								return;
-							break;
 						case CardType.Dynamite:
 							if(cardHelper.HasAbility(CharacterType.LuckyDuke))
 								if(TryRespondCard(card.ID))
 									return;
 							break;
 						case CardType.Appaloosa:
-							if(!player.Table.Any(c => c.Type == CardType.Appaloosa))
-								if(TryRespondCard(card.ID))
-									return;
-							break;
 						case CardType.Silver:
-							if(!player.Table.Any(c => c.Type == CardType.Silver))
-								if(TryRespondCard(card.ID))
-									return;
-							break;
 						case CardType.Mustang:
-							if(!player.Table.Any(c => c.Type == CardType.Mustang))
-								if(TryRespondCard(card.ID))
-									return;
-							break;
 						case CardType.Hideout:
-							if(!player.Table.Any(c => c.Type == CardType.Hideout))
-								if(TryRespondCard(card.ID))
-									return;
-							break;
 						case CardType.Barrel:
-							if(!player.Table.Any(c => c.Type == CardType.Barrel))
-								if(TryRespondCard(card.ID))
-									return;
+							if(TryRespondCard(card.ID))
+								return;
 							break;
 						}
 						break;
@@ -324,7 +302,14 @@ namespace BangSharp.AI
 				// Then heal our and allies' lives:
 				if(player.LifePoints < player.MaxLifePoints)
 				{
-					// First, try playing canteen and beers:
+					// If the life deficit is at least 2, try to play whisky:
+					if(player.MaxLifePoints - player.LifePoints >= 2)
+						if(cardHelper.DiscardableCards >= 1)
+							foreach(ICard c in player.Hand)
+								if(c.Type == CardType.Whisky)
+									if(TryRespondCardRemember(c.ID))
+										return;
+					// Then try playing canteen and beers:
 					foreach(ICard c in player.Table)
 						if(c.Type == CardType.Canteen)
 							if(TryRespondCardRemember(c.ID))
@@ -336,16 +321,10 @@ namespace BangSharp.AI
 					// If we have the Sid Ketchum character, try to use his ability:
 					if(TryRespondUseAbilityRemember(CharacterType.SidKetchum))
 						return;
-					// Then search for whisky and tequila:
+					// Then search for tequila and whisky:
 					if(cardHelper.DiscardableCards >= 1)
 					{
-						// First, play whisky only if the life deficit is at least 2:
-						if(player.MaxLifePoints - player.LifePoints >= 2)
-							foreach(ICard c in player.Hand)
-								if(c.Type == CardType.Whisky)
-									if(TryRespondCardRemember(c.ID))
-										return;
-						// Then try to play tequila on self:
+						// Try to play tequila on self:
 						foreach(ICard c in player.Hand)
 							if(c.Type == CardType.Tequila)
 								if(TryRespondCardRemember(c.ID))
@@ -378,16 +357,14 @@ namespace BangSharp.AI
 						if(c.Type == CardType.Tequila)
 							if(TryRespondCardRemember(c.ID))
 								return;
-				// Then steal and cancel cards:
+				// Then try to steal cards:
 				foreach(ICard c in player.Hand)
 					switch(c.Type)
 					{
 					case CardType.Panic:
-					case CardType.CatBalou:
 						if(TryRespondCardRemember(c.ID))
 							return;
 						break;
-					case CardType.Brawl:
 					case CardType.RagTime:
 						if(cardHelper.DiscardableCards >= 1)
 							if(TryRespondCardRemember(c.ID))
@@ -398,19 +375,38 @@ namespace BangSharp.AI
 					switch(c.Type)
 					{
 					case CardType.Conestoga:
+						if(TryRespondCardRemember(c.ID))
+							return;
+						break;
+					}
+				// Then try to cancel cards:
+				foreach(ICard c in player.Hand)
+					switch(c.Type)
+					{
+					case CardType.CatBalou:
+						if(TryRespondCardRemember(c.ID))
+							return;
+						break;
+					case CardType.Brawl:
+						if(cardHelper.DiscardableCards >= 1)
+							if(TryRespondCardRemember(c.ID))
+								return;
+						break;
+					}
+				foreach(ICard c in player.Table)
+					switch(c.Type)
+					{
 					case CardType.CanCan:
 						if(TryRespondCardRemember(c.ID))
 							return;
 						break;
 					}
-				// Finally, attack:
+				// Now attack individual players:
 				foreach(ICard card in player.Hand)
 					switch(card.Type)
 					{
 					case CardType.Bang:
-					case CardType.Indians:
 					case CardType.Duel:
-					case CardType.Gatling:
 					case CardType.Punch:
 					case CardType.Springfield:
 						if(TryRespondCardRemember(card.ID))
@@ -428,7 +424,6 @@ namespace BangSharp.AI
 					{
 					case CardType.Knife:
 					case CardType.Derringer:
-					case CardType.Howitzer:
 					case CardType.Pepperbox:
 					case CardType.BuffaloRifle:
 						if(TryRespondCardRemember(c.ID))
@@ -437,11 +432,41 @@ namespace BangSharp.AI
 					}
 				if(TryRespondUseAbilityRemember(CharacterType.DocHolyday))
 					return;
+				// Now use weapons of mass destruction:
+				foreach(ICard card in player.Hand)
+					switch(card.Type)
+					{
+					case CardType.Indians:
+					case CardType.Gatling:
+						if(TryRespondCardRemember(card.ID))
+							return;
+						break;
+					case CardType.Missed:
+						if(cardHelper.HasAbility(CharacterType.CalamityJanet) &&
+							player.Hand.Count(c => c.Type == CardType.Missed) >= 2)
+							if(TryRespondCardRemember(card.ID))
+								return;
+						break;
+					}
+				foreach(ICard c in player.Table)
+					switch(c.Type)
+					{
+					case CardType.Howitzer:
+						if(TryRespondCardRemember(c.ID))
+							return;
+						break;
+					}
 
-				// Oh, and play General Store, if you have one:
+				// Play General Store, if you have one:
 				foreach(ICard card in player.Hand)
 					if(card.Type == CardType.GeneralStore)
 						if(TryRespondCard(card.ID))
+							return;
+
+				// Finally, use Jail:
+				foreach(ICard card in player.Hand)
+					if(card.Type == CardType.Jail)
+						if(TryRespondCardRemember(card.ID))
 							return;
 
 				// End the play stage:
@@ -557,8 +582,10 @@ namespace BangSharp.AI
 			case RequestType.ShotTarget:
 			case RequestType.DuelTarget:
 			case RequestType.JailTarget:
-				// Try only enemies then respond with no action:
-				foreach(IPublicPlayerView enemy in playerHelper.Enemies)
+				// Try only enemies then respond with no action (start with the weaker ones):
+				List<IPublicPlayerView> enemyList = new List<IPublicPlayerView>(playerHelper.Enemies);
+				enemyList.Sort((x, y) => x.LifePoints - y.LifePoints);
+				foreach(IPublicPlayerView enemy in enemyList)
 					if(TryRespondPlayer(enemy.ID))
 						return;
 				control.RespondNoAction();
@@ -607,10 +634,6 @@ namespace BangSharp.AI
 						return;
 					availableCards.Remove(best);
 				}
-				foreach(IPublicPlayerView p in allies)
-					foreach(ICard c in p.Table)
-						if(TryRespondCard(c.ID))
-							return;
 
 				// Then try random cards from the hands of enemies:
 				foreach(IPublicPlayerView p in enemies)
@@ -625,7 +648,7 @@ namespace BangSharp.AI
 				// If we can't take card from any enemy, let's change our mind:
 				if(TryRespondNoAction())
 					return;
-				// If we have no choice (e. g. in Brawl), try the remaining players' cards:
+				// If we have no choice (e. g. in Brawl), let's try the remaining players' cards:
 				foreach(IPublicPlayerView p in allies)
 					availableCards.AddRange(p.Table);
 				while(availableCards.Count != 0)

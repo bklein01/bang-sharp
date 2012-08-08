@@ -69,6 +69,7 @@ namespace BangSharp.TestClient
 
 		public static void Main(string[] cmdArgs)
 		{
+			Console.Title = "Bang# Command-Line Client";
 			ConsoleHelper.PrintLine("Bang# Command-Line Client");
 			ConsoleHelper.PrintLine("-------------------------");
 			ConsoleHelper.PrintLine("Interface version: {0}.{1}", Utils.InterfaceVersionMajor, Utils.InterfaceVersionMinor);

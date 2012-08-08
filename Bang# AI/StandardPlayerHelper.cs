@@ -379,7 +379,7 @@ namespace BangSharp.AI
 							if(entry.EstimatedRole == Role.Renegade && player.IsAlive && entry.ID != thisPlayerId)
 								allies.Add(player);
 						}
-						if(Game.Players.Any(p => p.Role != Role.Sheriff && p.Role != Role.Renegade && p.IsAlive))
+						if(Game.Players.Any(p => p.IsAlive && p.ID != thisPlayerId && !p.IsSheriff && entries[p.ID].EstimatedRole != Role.Renegade))
 							allies.Add(sheriff);
 					}
 					break;

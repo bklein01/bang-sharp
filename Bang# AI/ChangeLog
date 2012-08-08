@@ -1,3 +1,29 @@
+2012-08-08  WOnder93  <omosnacek@gmail.com>
+
+	* AIPlayer.cs:
+	  Fixed wrong current weapon detection.
+	Play Jail up at the end of the Play stage.
+	Don't check for the blue cards if they are already on table,
+	  since attempting to play a card that is not a weapon throws
+	  exception anyway.
+	Improved healing strategy (so that Whisky is not wasted).
+	Try to steal cards before trying to cancel them.
+	Attack individual players (Bang, Knife, ...) before attacking
+	  all players at once (Indians, Gatling, ...).
+	Prefer attacking weaker enemies.
+	Fixed stealing/canceling strategy.
+
+	* CardHelper.cs:
+	  Properly evaluate Volcanic when the player has it on his
+	  table.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+	* StandardPlayerHelper.cs:
+	  Don't add Sheriff to allies for Renegede when there are no
+	  Outlaws or Deputies left.
+
 2012-07-08  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

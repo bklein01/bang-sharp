@@ -156,7 +156,7 @@ namespace BangSharp.AI
 			case CardType.Dynamite:
 				return 0;
 			case CardType.Volcanic:
-				if(UnlimitedBangs)
+				if(UnlimitedBangs && !Player.Table.Contains(card))
 					return 0;
 				if(Player.Hand.Count(c => c.Type == CardType.Bang) >= 3)
 					return 4;
