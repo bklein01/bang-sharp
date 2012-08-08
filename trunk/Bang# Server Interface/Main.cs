@@ -36,6 +36,7 @@ namespace BangSharp.Server.Interface
 
 		public static void Main(string[] cmdArgs)
 		{
+			Console.Title = "Bang# Server Interface";
 			ConsoleHelper.PrintLine("Bang# Server Interface");
 			ConsoleHelper.PrintLine("----------------------");
 			ConsoleHelper.PrintLine("Interface version: {0}.{1}", Utils.InterfaceVersionMajor, Utils.InterfaceVersionMinor);

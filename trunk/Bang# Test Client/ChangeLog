@@ -1,3 +1,11 @@
+2012-08-08  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	  Set the console title to program name.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
 2012-06-14  WOnder93  <omosnacek@gmail.com>
 
 	* Main.cs:
