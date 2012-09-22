@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2012-09-22 10:42:27+0200\n"
-"PO-Revision-Date: 2012-09-22 10:42:28+0200\n"
+"POT-Creation-Date: 2012-09-22 11:00:27+0200\n"
+"PO-Revision-Date: 2012-09-22 11:00:27+0200\n"
 "Last-Translator: WOnder93 <omosnacek@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -646,6 +646,10 @@ msgstr ""
 msgid "The default duration of animation (card movement, etc)."
 msgstr ""
 
+#: ../Bang# Client/PreferencesDialog.cs:3
+msgid "The amount of time to wait for the server to return a response."
+msgstr ""
+
 #: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
 msgid "Preferences"
 msgstr ""
@@ -672,5 +676,13 @@ msgstr ""
 
 #: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
 msgid "<b>Animation</b>"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "Request timeout:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "<b>Networking</b>"
 msgstr ""
 

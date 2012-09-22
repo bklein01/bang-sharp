@@ -20,6 +20,13 @@ namespace BangSharp.Client
 		private global::Gtk.Label label4;
 		private global::Gtk.Label label5;
 		private global::Gtk.Label GtkLabel5;
+		private global::Gtk.Frame frame3;
+		private global::Gtk.Alignment GtkAlignment5;
+		private global::Gtk.Table table3;
+		private global::Gtk.Label label6;
+		private global::Gtk.Label label7;
+		private global::Gtk.SpinButton requestTimeoutEntry;
+		private global::Gtk.Label GtkLabel6;
 		private global::Gtk.Button buttonCancel;
 		private global::Gtk.Button buttonApply;
 		private global::Gtk.Button buttonOk;
@@ -120,7 +127,6 @@ namespace BangSharp.Client
 			w7.BottomAttach = ((uint)(2));
 			w7.LeftAttach = ((uint)(1));
 			w7.RightAttach = ((uint)(2));
-			w7.XOptions = ((global::Gtk.AttachOptions)(4));
 			w7.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table2.Gtk.Table+TableChild
 			this.label2 = new global::Gtk.Label ();
@@ -178,17 +184,75 @@ namespace BangSharp.Client
 			w14.Position = 1;
 			w14.Expand = false;
 			w14.Fill = false;
+			// Container child vbox2.Gtk.Box+BoxChild
+			this.frame3 = new global::Gtk.Frame ();
+			this.frame3.Name = "frame3";
+			this.frame3.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame3.Gtk.Container+ContainerChild
+			this.GtkAlignment5 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment5.Name = "GtkAlignment5";
+			this.GtkAlignment5.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment5.Gtk.Container+ContainerChild
+			this.table3 = new global::Gtk.Table (((uint)(1)), ((uint)(3)), false);
+			this.table3.Name = "table3";
+			this.table3.RowSpacing = ((uint)(6));
+			this.table3.ColumnSpacing = ((uint)(6));
+			// Container child table3.Gtk.Table+TableChild
+			this.label6 = new global::Gtk.Label ();
+			this.label6.Name = "label6";
+			this.label6.Xalign = 0F;
+			this.label6.LabelProp = global::Mono.Unix.Catalog.GetString ("Request timeout:");
+			this.table3.Add (this.label6);
+			global::Gtk.Table.TableChild w15 = ((global::Gtk.Table.TableChild)(this.table3 [this.label6]));
+			w15.XOptions = ((global::Gtk.AttachOptions)(4));
+			w15.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child table3.Gtk.Table+TableChild
+			this.label7 = new global::Gtk.Label ();
+			this.label7.Name = "label7";
+			this.label7.Xalign = 0F;
+			this.label7.LabelProp = global::Mono.Unix.Catalog.GetString ("ms");
+			this.table3.Add (this.label7);
+			global::Gtk.Table.TableChild w16 = ((global::Gtk.Table.TableChild)(this.table3 [this.label7]));
+			w16.LeftAttach = ((uint)(2));
+			w16.RightAttach = ((uint)(3));
+			w16.XOptions = ((global::Gtk.AttachOptions)(4));
+			w16.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child table3.Gtk.Table+TableChild
+			this.requestTimeoutEntry = new global::Gtk.SpinButton (0, 3600000, 1000);
+			this.requestTimeoutEntry.CanFocus = true;
+			this.requestTimeoutEntry.Name = "requestTimeoutEntry";
+			this.requestTimeoutEntry.Adjustment.PageIncrement = 5000;
+			this.requestTimeoutEntry.ClimbRate = 1;
+			this.requestTimeoutEntry.Numeric = true;
+			this.requestTimeoutEntry.Value = 30000;
+			this.table3.Add (this.requestTimeoutEntry);
+			global::Gtk.Table.TableChild w17 = ((global::Gtk.Table.TableChild)(this.table3 [this.requestTimeoutEntry]));
+			w17.LeftAttach = ((uint)(1));
+			w17.RightAttach = ((uint)(2));
+			w17.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.GtkAlignment5.Add (this.table3);
+			this.frame3.Add (this.GtkAlignment5);
+			this.GtkLabel6 = new global::Gtk.Label ();
+			this.GtkLabel6.Name = "GtkLabel6";
+			this.GtkLabel6.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Networking</b>");
+			this.GtkLabel6.UseMarkup = true;
+			this.frame3.LabelWidget = this.GtkLabel6;
+			this.vbox2.Add (this.frame3);
+			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.frame3]));
+			w20.Position = 2;
+			w20.Expand = false;
+			w20.Fill = false;
 			w1.Add (this.vbox2);
-			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(w1 [this.vbox2]));
-			w15.Position = 0;
-			w15.Expand = false;
-			w15.Fill = false;
+			global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(w1 [this.vbox2]));
+			w21.Position = 0;
+			w21.Expand = false;
+			w21.Fill = false;
 			// Internal child BangSharp.Client.PreferencesDialog.ActionArea
-			global::Gtk.HButtonBox w16 = this.ActionArea;
-			w16.Name = "dialog1_ActionArea";
-			w16.Spacing = 10;
-			w16.BorderWidth = ((uint)(5));
-			w16.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
+			global::Gtk.HButtonBox w22 = this.ActionArea;
+			w22.Name = "dialog1_ActionArea";
+			w22.Spacing = 10;
+			w22.BorderWidth = ((uint)(5));
+			w22.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.buttonCancel = new global::Gtk.Button ();
 			this.buttonCancel.CanDefault = true;
@@ -198,9 +262,9 @@ namespace BangSharp.Client
 			this.buttonCancel.UseUnderline = true;
 			this.buttonCancel.Label = "gtk-cancel";
 			this.AddActionWidget (this.buttonCancel, -6);
-			global::Gtk.ButtonBox.ButtonBoxChild w17 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w16 [this.buttonCancel]));
-			w17.Expand = false;
-			w17.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w23 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w22 [this.buttonCancel]));
+			w23.Expand = false;
+			w23.Fill = false;
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.buttonApply = new global::Gtk.Button ();
 			this.buttonApply.CanDefault = true;
@@ -210,10 +274,10 @@ namespace BangSharp.Client
 			this.buttonApply.UseUnderline = true;
 			this.buttonApply.Label = "gtk-apply";
 			this.AddActionWidget (this.buttonApply, -10);
-			global::Gtk.ButtonBox.ButtonBoxChild w18 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w16 [this.buttonApply]));
-			w18.Position = 1;
-			w18.Expand = false;
-			w18.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w24 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w22 [this.buttonApply]));
+			w24.Position = 1;
+			w24.Expand = false;
+			w24.Fill = false;
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
 			this.buttonOk = new global::Gtk.Button ();
 			this.buttonOk.CanDefault = true;
@@ -223,16 +287,17 @@ namespace BangSharp.Client
 			this.buttonOk.UseUnderline = true;
 			this.buttonOk.Label = "gtk-ok";
 			this.AddActionWidget (this.buttonOk, -5);
-			global::Gtk.ButtonBox.ButtonBoxChild w19 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w16 [this.buttonOk]));
-			w19.Position = 2;
-			w19.Expand = false;
-			w19.Fill = false;
+			global::Gtk.ButtonBox.ButtonBoxChild w25 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w22 [this.buttonOk]));
+			w25.Position = 2;
+			w25.Expand = false;
+			w25.Fill = false;
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.DefaultWidth = 375;
-			this.DefaultHeight = 202;
+			this.DefaultHeight = 254;
 			this.label3.MnemonicWidget = this.animDurationEntry;
+			this.label6.MnemonicWidget = this.animDurationEntry;
 			this.buttonOk.HasDefault = true;
 			this.Show ();
 			this.Response += new global::Gtk.ResponseHandler (this.OnResponse);

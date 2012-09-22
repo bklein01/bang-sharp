@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2012-09-01 17:31:38+0200\n"
-"PO-Revision-Date: 2012-09-01 17:40:23+0200\n"
+"POT-Creation-Date: 2012-09-22 11:00:27+0200\n"
+"PO-Revision-Date: 2012-09-22 11:02:14+0200\n"
 "Last-Translator: WOnder93 <omosnacek@gmail.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -657,6 +657,10 @@ msgstr ""
 msgid "The default duration of animation (card movement, etc)."
 msgstr "Výchozí trvání animace (přesun karty, atd.)."
 
+#: ../Bang# Client/PreferencesDialog.cs:3
+msgid "The amount of time to wait for the server to return a response."
+msgstr "Jak dlouho čekat dokud server nevrátí odpověď."
+
 #: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
 msgid "Preferences"
 msgstr "Nastavení"
@@ -684,4 +688,12 @@ msgstr "ms"
 #: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
 msgid "<b>Animation</b>"
 msgstr "<b>Animace</b>"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "Request timeout:"
+msgstr "Časový limit požadavku:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "<b>Networking</b>"
+msgstr "<b>Síť</b>"
 
