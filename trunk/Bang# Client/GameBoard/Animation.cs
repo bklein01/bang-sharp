@@ -47,9 +47,28 @@ namespace BangSharp.Client.GameBoard
 	/// </remarks>
 	public class Animation
 	{
-		public static readonly TimeSpan AnimDelay = new TimeSpan(0, 0, 0, 0, 100);
+		public static TimeSpan AnimDelay
+		{
+			get
+			{
+				int ms = Config.Instance.GetInteger("Client.AnimDelay", 100);
+				if(ms < 0)
+					ms = 100;
+				return new TimeSpan(0, 0, 0, 0, ms);
+			}
+		}
+		private static TimeSpan DefaultAnimDuration
+		{
+			get
+			{
+				int ms = Config.Instance.GetInteger("Client.DefaultAnimDuration", 1000);
+				if(ms < 0)
+					ms = 1000;
+				return new TimeSpan(0, 0, 0, 0, ms);
+			}
+		}
 
-		private TimeSpan animLength = new TimeSpan(0, 0, 1);
+		private TimeSpan animLength;
 
 		private AnimationLayer layer;
 		private bool onlyEnd;
@@ -90,6 +109,8 @@ namespace BangSharp.Client.GameBoard
 			this.layer = layer;
 			if(animLength.Ticks > 0L)
 				this.animLength = animLength;
+			else
+				this.animLength = DefaultAnimDuration;
 			onlyEnd = false;
 			ended = false;
 			sw = new Stopwatch();

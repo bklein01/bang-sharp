@@ -86,7 +86,7 @@ namespace BangSharp.Client.GameBoard
 		protected override void OnSizeAllocated(Gdk.Rectangle allocation)
 		{
 			base.OnSizeAllocated(allocation);
-			root.RootReallocate(new Rectangle(allocation.X, allocation.Y, allocation.Width, allocation.Height));
+			root.RootReallocate(new Rectangle(0.0, 0.0, allocation.Width, allocation.Height));
 		}
 	}
 }

@@ -4,29 +4,133 @@ namespace BangSharp.Client
 {
 	public partial class MainWindow
 	{
-		private global::BangSharp.Client.GameBoard.GameBoardWidget gameboard1;
+		private global::Gtk.UIManager UIManager;
+		private global::Gtk.Action ServerAction;
+		private global::Gtk.Action connectAction;
+		private global::Gtk.Action disconnectAction;
+		private global::Gtk.Action quitAction;
+		private global::Gtk.Action OptionsAction;
+		private global::Gtk.Action preferencesAction;
+		private global::Gtk.Action HelpAction;
+		private global::Gtk.Action helpAction;
+		private global::Gtk.Action aboutAction;
+		private global::Gtk.Action WindowAction;
+		private global::Gtk.ToggleAction serverWindowAction;
+		private global::Gtk.ToggleAction sessionWindowAction;
+		private global::Gtk.Action SessionAction;
+		private global::Gtk.Action sessionDisconnectAction;
+		private global::Gtk.Action StartGameAction;
+		private global::Gtk.Action endSessionAction;
+		private global::Gtk.Action startGameAction;
+		private global::Gtk.VBox vbox12;
+		private global::Gtk.MenuBar menubar2;
+		private global::BangSharp.Client.GameBoard.GameBoardWidget gameBoardWidget;
 		
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget BangSharp.Client.MainWindow
+			this.UIManager = new global::Gtk.UIManager ();
+			global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
+			this.ServerAction = new global::Gtk.Action ("ServerAction", global::Mono.Unix.Catalog.GetString ("Se_rver"), null, null);
+			this.ServerAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Se_rver");
+			w1.Add (this.ServerAction, null);
+			this.connectAction = new global::Gtk.Action ("connectAction", global::Mono.Unix.Catalog.GetString ("_Connect to Server..."), null, "gtk-connect");
+			this.connectAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_Connect to Server...");
+			w1.Add (this.connectAction, null);
+			this.disconnectAction = new global::Gtk.Action ("disconnectAction", global::Mono.Unix.Catalog.GetString ("_Disconnect from Server"), null, "gtk-disconnect");
+			this.disconnectAction.Sensitive = false;
+			this.disconnectAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_Disconnect from Server");
+			w1.Add (this.disconnectAction, null);
+			this.quitAction = new global::Gtk.Action ("quitAction", global::Mono.Unix.Catalog.GetString ("_Quit Application"), null, "gtk-quit");
+			this.quitAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_Quit");
+			w1.Add (this.quitAction, null);
+			this.OptionsAction = new global::Gtk.Action ("OptionsAction", global::Mono.Unix.Catalog.GetString ("_Options"), null, null);
+			this.OptionsAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_Options");
+			w1.Add (this.OptionsAction, null);
+			this.preferencesAction = new global::Gtk.Action ("preferencesAction", global::Mono.Unix.Catalog.GetString ("_Preferences"), null, "gtk-preferences");
+			this.preferencesAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_Preferences");
+			w1.Add (this.preferencesAction, null);
+			this.HelpAction = new global::Gtk.Action ("HelpAction", global::Mono.Unix.Catalog.GetString ("_Help"), null, null);
+			this.HelpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_Help");
+			w1.Add (this.HelpAction, null);
+			this.helpAction = new global::Gtk.Action ("helpAction", global::Mono.Unix.Catalog.GetString ("_Help"), null, "gtk-help");
+			this.helpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_Help");
+			w1.Add (this.helpAction, null);
+			this.aboutAction = new global::Gtk.Action ("aboutAction", global::Mono.Unix.Catalog.GetString ("_About"), null, "gtk-about");
+			this.aboutAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_About");
+			w1.Add (this.aboutAction, null);
+			this.WindowAction = new global::Gtk.Action ("WindowAction", global::Mono.Unix.Catalog.GetString ("_Window"), null, null);
+			this.WindowAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_Window");
+			w1.Add (this.WindowAction, null);
+			this.serverWindowAction = new global::Gtk.ToggleAction ("serverWindowAction", global::Mono.Unix.Catalog.GetString ("Server Window"), null, null);
+			this.serverWindowAction.Sensitive = false;
+			this.serverWindowAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Server Window");
+			w1.Add (this.serverWindowAction, null);
+			this.sessionWindowAction = new global::Gtk.ToggleAction ("sessionWindowAction", global::Mono.Unix.Catalog.GetString ("Session Window"), null, null);
+			this.sessionWindowAction.Sensitive = false;
+			this.sessionWindowAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Session Window");
+			w1.Add (this.sessionWindowAction, null);
+			this.SessionAction = new global::Gtk.Action ("SessionAction", global::Mono.Unix.Catalog.GetString ("Se_ssion"), null, null);
+			this.SessionAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Se_ssion");
+			w1.Add (this.SessionAction, null);
+			this.sessionDisconnectAction = new global::Gtk.Action ("sessionDisconnectAction", global::Mono.Unix.Catalog.GetString ("_Disconnect"), null, "gtk-disconnect");
+			this.sessionDisconnectAction.Sensitive = false;
+			this.sessionDisconnectAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_Disconnect");
+			w1.Add (this.sessionDisconnectAction, null);
+			this.StartGameAction = new global::Gtk.Action ("StartGameAction", global::Mono.Unix.Catalog.GetString ("Start _Game"), null, null);
+			this.StartGameAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Start _Game");
+			w1.Add (this.StartGameAction, null);
+			this.endSessionAction = new global::Gtk.Action ("endSessionAction", global::Mono.Unix.Catalog.GetString ("_End Session"), null, null);
+			this.endSessionAction.Sensitive = false;
+			this.endSessionAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("_End Session");
+			w1.Add (this.endSessionAction, null);
+			this.startGameAction = new global::Gtk.Action ("startGameAction", global::Mono.Unix.Catalog.GetString ("Start _Game"), null, null);
+			this.startGameAction.Sensitive = false;
+			this.startGameAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Start _Game");
+			w1.Add (this.startGameAction, null);
+			this.UIManager.InsertActionGroup (w1, 0);
+			this.AddAccelGroup (this.UIManager.AccelGroup);
 			this.Name = "BangSharp.Client.MainWindow";
 			this.Title = global::Mono.Unix.Catalog.GetString ("Bang# Client");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			this.AllowShrink = true;
-			this.DefaultWidth = 600;
+			this.DefaultWidth = 800;
 			this.DefaultHeight = 600;
 			// Container child BangSharp.Client.MainWindow.Gtk.Container+ContainerChild
-			this.gameboard1 = new global::BangSharp.Client.GameBoard.GameBoardWidget ();
-			this.gameboard1.Name = "gameboard1";
-			this.Add (this.gameboard1);
+			this.vbox12 = new global::Gtk.VBox ();
+			this.vbox12.Name = "vbox12";
+			// Container child vbox12.Gtk.Box+BoxChild
+			this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='ServerAction' action='ServerAction'><menuitem name='connectAction' action='connectAction'/><menuitem name='disconnectAction' action='disconnectAction'/><menuitem name='quitAction' action='quitAction'/></menu><menu name='SessionAction' action='SessionAction'><menuitem name='startGameAction' action='startGameAction'/><menuitem name='sessionDisconnectAction' action='sessionDisconnectAction'/><menuitem name='endSessionAction' action='endSessionAction'/></menu><menu name='OptionsAction' action='OptionsAction'><menuitem name='preferencesAction' action='preferencesAction'/></menu><menu name='WindowAction' action='WindowAction'><menuitem name='serverWindowAction' action='serverWindowAction'/><menuitem name='sessionWindowAction' action='sessionWindowAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='helpAction' action='helpAction'/><menuitem name='aboutAction' action='aboutAction'/></menu></menubar></ui>");
+			this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
+			this.menubar2.Name = "menubar2";
+			this.vbox12.Add (this.menubar2);
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox12 [this.menubar2]));
+			w2.Position = 0;
+			w2.Expand = false;
+			w2.Fill = false;
+			// Container child vbox12.Gtk.Box+BoxChild
+			this.gameBoardWidget = new global::BangSharp.Client.GameBoard.GameBoardWidget ();
+			this.gameBoardWidget.Name = "gameBoardWidget";
+			this.vbox12.Add (this.gameBoardWidget);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox12 [this.gameBoardWidget]));
+			w3.Position = 1;
+			this.Add (this.vbox12);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.Show ();
 			this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
-			this.KeyPressEvent += new global::Gtk.KeyPressEventHandler (this.OnKeyPressEvent);
-			this.gameboard1.KeyPressEvent += new global::Gtk.KeyPressEventHandler (this.OnGameboard1KeyPressEvent);
+			this.FocusInEvent += new global::Gtk.FocusInEventHandler (this.OnFocusInEvent);
+			this.connectAction.Activated += new global::System.EventHandler (this.OnConnectActionActivated);
+			this.disconnectAction.Activated += new global::System.EventHandler (this.OnDisconnectActionActivated);
+			this.quitAction.Activated += new global::System.EventHandler (this.OnQuitActionActivated);
+			this.preferencesAction.Activated += new global::System.EventHandler (this.OnPreferencesActionActivated);
+			this.serverWindowAction.Toggled += new global::System.EventHandler (this.OnServerWindowActionToggled);
+			this.sessionWindowAction.Toggled += new global::System.EventHandler (this.OnSessionWindowActionToggled);
+			this.sessionDisconnectAction.Activated += new global::System.EventHandler (this.OnSessionDisconnectActionActivated);
+			this.endSessionAction.Activated += new global::System.EventHandler (this.OnEndSessionActionActivated);
+			this.startGameAction.Activated += new global::System.EventHandler (this.OnStartGameActionActivated);
 		}
 	}
 }

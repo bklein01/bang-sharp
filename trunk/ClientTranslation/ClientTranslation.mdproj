@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ItemType>TranslationProject</ItemType>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F57A3F14-4352-48C6-8020-31A1D3E14225}</ProjectGuid>
+    <relPath>Locale</relPath>
+    <outputType>RelativeToOutput</outputType>
+    <packageName>bang-sharp-client</packageName>
+    <translations>
+      <translations>
+        <Translation isoCode="sk" />
+        <Translation isoCode="en" />
+        <Translation isoCode="cs" />
+      </translations>
+    </translations>
+    <projectInformations>
+      <projectInformations>
+        <TranslationProjectInformation projectName="Bang# Common" isIncluded="false" />
+        <TranslationProjectInformation projectName="Bang# Test Client" isIncluded="false" />
+        <TranslationProjectInformation projectName="Bang# AI" isIncluded="false" />
+        <TranslationProjectInformation projectName="System.Runtime.Remoting.Channels.TwoWayTcp" isIncluded="false" />
+        <TranslationProjectInformation projectName="Bang# Console Utils" isIncluded="false" />
+        <TranslationProjectInformation projectName="Bang# Server" isIncluded="false" />
+        <TranslationProjectInformation projectName="Bang# Server Daemon" isIncluded="false" />
+        <TranslationProjectInformation projectName="Bang# Server Interface" isIncluded="false" />
+      </projectInformations>
+    </projectInformations>
+  </PropertyGroup>
+</Project>

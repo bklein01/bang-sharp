@@ -29,6 +29,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using BangSharp.Client.GameBoard.Animators;
+using Mono.Unix;
 
 namespace BangSharp.Client.GameBoard.Widgets
 {
@@ -53,12 +54,13 @@ namespace BangSharp.Client.GameBoard.Widgets
 			{
 				this.parent = parent;
 			}
-			public override void OnJoinedSession(IPlayerSessionControl control)
-			{
-			}
+
 			public override void OnJoinedGame(IPlayerControl control)
 			{
+				Gdk.Threads.Enter();
 				parent.Update();
+				Gdk.Threads.Leave();
+
 				Animation anim = new Animation(parent);
 
 				IPrivatePlayerView privateView = control.PrivatePlayerView;
@@ -138,12 +140,12 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 				parent.EnqueueAnimation(anim);
 			}
-			public override void OnJoinedSession(ISpectatorSessionControl control)
-			{
-			}
 			public override void OnJoinedGame(ISpectatorControl control)
 			{
+				Gdk.Threads.Enter();
 				parent.Update();
+				Gdk.Threads.Leave();
+
 				Animation anim = new Animation(parent);
 
 				IGame game = control.Game;
@@ -198,10 +200,6 @@ namespace BangSharp.Client.GameBoard.Widgets
 				}
 
 				parent.EnqueueAnimation(anim);
-			}
-			public override void OnSessionEnded()
-			{
-				parent.Clear();
 			}
 			public override void OnPlayerDrewFromDeck(IPublicPlayerView player, ReadOnlyCollection<ICard> drawnCards)
 			{
@@ -526,7 +524,9 @@ namespace BangSharp.Client.GameBoard.Widgets
 			ConnectionManager.SessionEventListener.AddListener((IPlayerSessionEventListener)listener);
 			ConnectionManager.SessionEventListener.AddListener((ISpectatorSessionEventListener)listener);
 			ConnectionManager.OnSessionDisconnected += () => {
+				Gdk.Threads.Enter();
 				Clear();
+				Gdk.Threads.Leave();
 			};
 		}
 
@@ -535,11 +535,11 @@ namespace BangSharp.Client.GameBoard.Widgets
 			while(true)
 			{
 				lock(animLock)
-				{
 					while(current == null || current.Ended)
 						Monitor.Wait(animLock);
-					root.RequestRedraw();
-				}
+				Gdk.Threads.Enter();
+				root.RequestRedraw();
+				Gdk.Threads.Leave();
 				Thread.Sleep(Animation.AnimDelay);
 			}
 		}
@@ -552,20 +552,19 @@ namespace BangSharp.Client.GameBoard.Widgets
 		/// </remarks>
 		private void Clear()
 		{
-			lock(LayoutLock)
-				lock(animLock)
-				{
-					if(current != null)
-						current.Abort();
-					current = null;
-					lastAnim = null;
-					animQueue.Clear();
-					playingCardWidgets.Clear();
-					playerRoleWidgets.Clear();
-					playerCharacterWidgets.Clear();
-					cardZoomWidgetSet = false;
-					Children.Clear();
-				}
+			lock(animLock)
+			{
+				if(current != null)
+					current.Abort();
+				current = null;
+				lastAnim = null;
+				animQueue.Clear();
+				playingCardWidgets.Clear();
+				playerRoleWidgets.Clear();
+				playerCharacterWidgets.Clear();
+				cardZoomWidgetSet = false;
+				Children.Clear();
+			}
 		}
 
 		/// <summary>
@@ -576,40 +575,44 @@ namespace BangSharp.Client.GameBoard.Widgets
 		/// </remarks>
 		private void Update()
 		{
-			lock(LayoutLock)
-				lock(animLock)
+			lock(animLock)
+			{
+				Clear();
+
+				int thisPlayerId = 0;
+				if(ConnectionManager.PlayerGameControl != null)
+					thisPlayerId = ConnectionManager.PlayerGameControl.PrivatePlayerView.ID;
+
+				foreach(IPublicPlayerView player in ConnectionManager.Game.Players)
 				{
-					Clear();
-
-					int thisPlayerId = 0;
-					if(ConnectionManager.PlayerGameControl != null)
-						thisPlayerId = ConnectionManager.PlayerGameControl.PrivatePlayerView.ID;
-
-					foreach(IPublicPlayerView player in ConnectionManager.Game.Players)
-					{
-						int id = player.ID;
-						playerRoleWidgets[id] = new RoleCardWidget(player.Role);
-						playerRoleWidgets[id].OnRClick += (w) => SetCardZoomWidget((RoleCardWidget)w);
-						playerCharacterWidgets[id] = new CharacterCardWidget(player.CharacterType);
-						if(id == thisPlayerId)
-							playerCharacterWidgets[id].OnLClick += (w) => {
+					int id = player.ID;
+					playerRoleWidgets[id] = new RoleCardWidget(player.Role);
+					playerRoleWidgets[id].OnRClick += (w) => SetCardZoomWidget((RoleCardWidget)w);
+					playerCharacterWidgets[id] = new CharacterCardWidget(player.CharacterType);
+					if(id == thisPlayerId)
+						playerCharacterWidgets[id].OnLClick += (w) => {
+							System.Threading.ThreadPool.QueueUserWorkItem((state) => {
 								IPlayerControl control = ConnectionManager.PlayerGameControl;
 								if(control == null)
 									return;
 								try
 								{
 									control.RespondUseAbility();
-									root.SetResponseType("Use Ability");
+									Gdk.Threads.Enter();
+									root.SetResponseType(Catalog.GetString("Use Ability"));
 								}
 								catch(GameException e)
 								{
-									root.SetResponseType("Use Ability", e);
+									Gdk.Threads.Enter();
+									root.SetResponseType(Catalog.GetString("Use Ability"), e);
 								}
 								RequestRedraw();
-							};
-						playerCharacterWidgets[id].OnRClick += (w) => SetCardZoomWidget((CharacterCardWidget)w);
-					}
+								Gdk.Threads.Leave();
+							});
+						};
+					playerCharacterWidgets[id].OnRClick += (w) => SetCardZoomWidget((CharacterCardWidget)w);
 				}
+			}
 		}
 
 		/// <summary>
@@ -632,19 +635,24 @@ namespace BangSharp.Client.GameBoard.Widgets
 				playingCardWidgets[cardId] = new PlayingCardWidget(cardId);
 				playingCardWidgets[cardId].OnLClick += (w) => {
 					PlayingCardWidget playingCardWidget = (PlayingCardWidget)w;
-					IPlayerControl control = ConnectionManager.PlayerGameControl;
-					if(control == null)
-						return;
-					try
-					{
-						control.RespondCard(cardId);
-						root.SetResponseType("Card #" + playingCardWidget.ID);
-					}
-					catch(GameException e)
-					{
-						root.SetResponseType("Card #" + playingCardWidget.ID, e);
-					}
-					RequestRedraw();
+					System.Threading.ThreadPool.QueueUserWorkItem((state) => {
+						IPlayerControl control = ConnectionManager.PlayerGameControl;
+						if(control == null)
+							return;
+						try
+						{
+							control.RespondCard(cardId);
+							Gdk.Threads.Enter();
+							root.SetResponseType(string.Format(Catalog.GetString("Card #{0}"), playingCardWidget.ID));
+						}
+						catch(GameException e)
+						{
+							Gdk.Threads.Enter();
+							root.SetResponseType(string.Format(Catalog.GetString("Card #{0}"), playingCardWidget.ID), e);
+						}
+						RequestRedraw();
+						Gdk.Threads.Leave();
+					});
 				};
 				playingCardWidgets[cardId].OnRClick += (w) => SetCardZoomWidget((PlayingCardWidget)w);
 				return playingCardWidgets[cardId];

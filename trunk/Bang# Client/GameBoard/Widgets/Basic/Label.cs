@@ -100,6 +100,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			layout = new Pango.Layout(Gdk.PangoHelper.ContextGet());
 			horizAlignment = Alignment.Left;
 			vertAlignment = Alignment.Top;
+			markup = "";
 		}
 
 		private void GetLayoutRectangle(out Pango.Rectangle pangoRect, out Rectangle cairoRect)

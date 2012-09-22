@@ -1,4 +1,3 @@
-using System;
 // ConnectionManager.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
@@ -24,6 +23,7 @@ using System;
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System;
 
 namespace BangSharp.Client
 {
@@ -45,6 +45,8 @@ namespace BangSharp.Client
 					DisconnectFromSession();
 					ConnectionManager.playerSessionControl = control;
 					ConnectionManager.session = control.Session;
+					if(OnSessionConnected != null)
+						OnSessionConnected();
 				}
 			}
 
@@ -54,16 +56,20 @@ namespace BangSharp.Client
 				{
 					ConnectionManager.playerGameControl = control;
 					ConnectionManager.game = control.Game;
+					if(OnGameConnected != null)
+						OnGameConnected();
 				}
 			}
 
 			public override void OnJoinedSession(ISpectatorSessionControl control)
 			{
-				DisconnectFromSession();
 				lock(ConnectionManager.Lock)
 				{
+					DisconnectFromSession();
 					ConnectionManager.spectatorSessionControl = control;
 					ConnectionManager.session = control.Session;
+					if(OnSessionConnected != null)
+						OnSessionConnected();
 				}
 			}
 
@@ -73,6 +79,8 @@ namespace BangSharp.Client
 				{
 					ConnectionManager.spectatorGameControl = control;
 					ConnectionManager.game = control.Game;
+					if(OnGameConnected != null)
+						OnGameConnected();
 				}
 			}
 
@@ -80,13 +88,15 @@ namespace BangSharp.Client
 			{
 				lock(ConnectionManager.Lock)
 				{
-					ConnectionManager.playerSessionControl = null;
-					ConnectionManager.spectatorSessionControl = null;
-					ConnectionManager.session = null;
-
 					ConnectionManager.playerGameControl = null;
 					ConnectionManager.spectatorGameControl = null;
 					ConnectionManager.game = null;
+
+					ConnectionManager.playerSessionControl = null;
+					ConnectionManager.spectatorSessionControl = null;
+					ConnectionManager.session = null;
+					if(OnSessionDisconnected != null)
+						OnSessionDisconnected();
 				}
 			}
 		}
@@ -194,6 +204,9 @@ namespace BangSharp.Client
 			get { return sessionListener; }
 		}
 
+		public static event Action OnServerConnected;
+		public static event Action OnSessionConnected;
+		public static event Action OnGameConnected;
 		public static event Action OnServerDisconnected;
 		public static event Action OnSessionDisconnected;
 
@@ -241,14 +254,11 @@ namespace BangSharp.Client
 
 		static ConnectionManager()
 		{
-			lock(Lock)
-			{
-				serverListener = new ProxyServerEventListener();
-				sessionListener = new ProxySessionEventListener();
-				EventListener l = new EventListener();
-				sessionListener.AddListener((IPlayerSessionEventListener)l);
-				sessionListener.AddListener((ISpectatorSessionEventListener)l);
-			}
+			serverListener = new ProxyServerEventListener();
+			sessionListener = new ProxySessionEventListener();
+			EventListener l = new EventListener();
+			sessionListener.AddListener((IPlayerSessionEventListener)l);
+			sessionListener.AddListener((ISpectatorSessionEventListener)l);
 		}
 
 		/// <summary>
@@ -267,6 +277,8 @@ namespace BangSharp.Client
 				DisconnectFromServer();
 				server = Utils.Connect(address, port);
 				server.RegisterListener(serverListener);
+				if(OnServerConnected != null)
+					OnServerConnected();
 			}
 		}
 		/// <summary>
@@ -278,7 +290,14 @@ namespace BangSharp.Client
 			{
 				if(!ServerConnected)
 					return;
-				server.UnregisterListener(serverListener);
+				DisconnectFromSession();
+				try
+				{
+					server.UnregisterListener(serverListener);
+				}
+				catch
+				{
+				}
 				server = null;
 				if(OnServerDisconnected != null)
 					OnServerDisconnected();
@@ -294,10 +313,24 @@ namespace BangSharp.Client
 			{
 				if(!SessionConnected)
 					return;
-				if(ConnectionManager.playerSessionControl != null)
-					ConnectionManager.playerSessionControl.Disconnect();
-				if(ConnectionManager.spectatorSessionControl != null)
-					ConnectionManager.spectatorSessionControl.Disconnect();
+
+				try
+				{
+					if(playerSessionControl != null)
+						playerSessionControl.Disconnect();
+					if(spectatorSessionControl != null)
+						spectatorSessionControl.Disconnect();
+				}
+				catch
+				{
+				}
+
+				playerGameControl = null;
+				spectatorGameControl = null;
+				game = null;
+
+				playerSessionControl = null;
+				spectatorSessionControl = null;
 				session = null;
 				if(OnSessionDisconnected != null)
 					OnSessionDisconnected();

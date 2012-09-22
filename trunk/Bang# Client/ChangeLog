@@ -1,3 +1,72 @@
+2012-09-22  WOnder93  <omosnacek@gmail.com>
+
+	* Main.cs:
+	* MainWindow.cs:
+	* ErrorManager.cs:
+	* ServerWindow.cs:
+	* SessionWindow.cs:
+	* MessageManager.cs:
+	* gui.stetic:
+	* ServerListWindow.cs:
+	* Bang# Client.csproj:
+	* PlayerDataWidget.cs:
+	* PreferencesDialog.cs:
+	* generated.cs:
+	* SessionInfoWidget.cs:
+	* JoinSessionDialog.cs:
+	* ReplacePlayerDialog.cs:
+	* ImageSelectorWidget.cs:
+	* Animation.cs:
+	* CreateSessionDialog.cs:
+	* SpectatorDataWidget.cs:
+	* SpectateSessionDialog.cs:
+	* Widget.cs:
+	* BangSharp.Client.MainWindow.cs:
+	* RootWidget.cs:
+	* BangSharp.Client.ServerWindow.cs:
+	* BangSharp.Client.SessionWindow.cs:
+	* AnimationLayer.cs:
+	* BangSharp.Client.ServerListWindow.cs:
+	* MainTableWidget.cs:
+	* BangSharp.Client.PlayerDataWidget.cs:
+	* BangSharp.Client.SessionInfoWidget.cs:
+	* BangSharp.Client.PreferencesDialog.cs:
+	* PlayerSlotWidget.cs:
+	* BangSharp.Client.JoinSessionDialog.cs:
+	* BangSharp.Client.SpectatorDataWidget.cs:
+	* BangSharp.Client.CreateSessionDialog.cs:
+	* BangSharp.Client.ImageSelectorWidget.cs:
+	* BangSharp.Client.ReplacePlayerDialog.cs:
+	* BangSharp.Client.SpectateSessionDialog.cs:
+	  Initial UI commit - completely reworked threading model, new
+	  widgets and dialogs.
+
+	* PictureManager.cs:
+	  Specify the Gdk namespace explicitly.
+	Added optional resizing when creating pixbuf from byte array.
+	Catch unhandled exceptions when generating byte array from
+	  pixbuf and return null if one occurs.
+
+	* GameBoardWidget.cs:
+	  Fixed wrong offset for game board rendering.
+
+	* CardAnimator.cs:
+	  Removed an obsolete comment.
+
+	* Label.cs:
+	  Properly initialize the Label game board widget.
+
+	* StateType.cs:
+	  Moved StateType to proper namespace.
+
+	* ConnectionManager.cs:
+	  Formatting fix.
+	Added On...Connected events.
+	Catch unhandled exceptions when disconnecting.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
 2012-07-23  WOnder93  <omosnacek@gmail.com>
 
 	* AssemblyInfo.cs:

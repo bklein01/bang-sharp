@@ -23,26 +23,35 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-using Gdk;
 
 namespace BangSharp.Client
 {
 	public static class PictureManager
 	{
-		public static Pixbuf GetPixbuf(byte[] data)
+		public static Gdk.Pixbuf GetPixbuf(byte[] data, int size = -1)
 		{
 			try
 			{
-				return new Pixbuf(data);
+				if(size <= 0)
+					return new Gdk.Pixbuf(data);
+				else
+					return new Gdk.Pixbuf(data, size, size);
 			}
 			catch
 			{
 				return null;
 			}
 		}
-		public static byte[] GetBytes(Pixbuf pixbuf)
+		public static byte[] GetBytes(Gdk.Pixbuf pixbuf)
 		{
-			return pixbuf.SaveToBuffer("png");
+			try
+			{
+				return pixbuf.SaveToBuffer("png");
+			}
+			catch
+			{
+				return null;
+			}
 		}
 	}
 }

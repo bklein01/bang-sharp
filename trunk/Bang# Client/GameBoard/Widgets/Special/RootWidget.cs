@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using Cairo;
+using Mono.Unix;
 
 namespace BangSharp.Client.GameBoard.Widgets
 {
@@ -45,36 +46,29 @@ namespace BangSharp.Client.GameBoard.Widgets
 				this.parent = parent;
 			}
 
-			public override void OnJoinedSession(IPlayerSessionControl control)
-			{
-				CardManager.Init(control.Session);
-				parent.Update();
-				parent.RequestRedraw();
-			}
-			public override void OnJoinedSession(ISpectatorSessionControl control)
-			{
-				CardManager.Init(control.Session);
-				parent.Update();
-				parent.RequestRedraw();
-			}
-
 			public override void OnPlayerJoinedSession(IPlayer player)
 			{
+				Gdk.Threads.Enter();
 				parent.Update();
 				parent.RequestRedraw();
+				Gdk.Threads.Leave();
 			}
 			public override void OnPlayerLeftSession(IPlayer player)
 			{
+				Gdk.Threads.Enter();
 				parent.Update();
 				parent.RequestRedraw();
+				Gdk.Threads.Leave();
 			}
 
 			public override void OnPlayerUpdated(IPlayer player)
 			{
 				if(ConnectionManager.Session != null)
 				{
+					Gdk.Threads.Enter();
 					parent.playerMap[player.ID].Update(player);
 					parent.RequestRedraw();
+					Gdk.Threads.Leave();
 				}
 			}
 			public override void OnPlayerDisconnected(IPlayer player)
@@ -84,41 +78,32 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 			public override void OnSessionEnded()
 			{
+				Gdk.Threads.Enter();
 				parent.Clear();
 				CardManager.Flush();
 				parent.RequestRedraw();
-			}
-
-			public override void OnJoinedGame(IPlayerControl control)
-			{
-				parent.RequestRedraw();
-			}
-			public override void OnJoinedGame(ISpectatorControl control)
-			{
-				parent.RequestRedraw();
+				Gdk.Threads.Leave();
 			}
 
 			public override void OnNewRequest(RequestType requestType, IPublicPlayerView causedBy)
 			{
+				Gdk.Threads.Enter();
 				parent.SetRequestType(requestType);
 				parent.RequestRedraw();
+				Gdk.Threads.Leave();
 			}
 			public override void OnNewRequest(IPublicPlayerView requestedPlayer, IPublicPlayerView causedBy)
 			{
+				Gdk.Threads.Enter();
 				parent.SetRequestType(RequestType.None);
 				parent.RequestRedraw();
+				Gdk.Threads.Leave();
 			}
 		}
 		private GameBoardWidget parent;
-		private object layoutLock = new object();
 		private EventListener listener;
 		private PlayerSlotWidget[] playerSlots;
 		private Dictionary<int, PlayerSlotWidget> playerMap;
-
-		public override object LayoutLock
-		{
-			get { return layoutLock; }
-		}
 
 		public CardPlaceholderWidget DeckPlaceholder
 		{
@@ -133,7 +118,7 @@ namespace BangSharp.Client.GameBoard.Widgets
 			get { return mainTable.SelectionPlaceholder; }
 		}
 
-		public RootWidget(GameBoardWidget parent) : base()
+		public RootWidget(GameBoardWidget parent)
 		{
 			this.parent = parent;
 			listener = new EventListener(this);
@@ -152,10 +137,25 @@ namespace BangSharp.Client.GameBoard.Widgets
 			};
 			ConnectionManager.SessionEventListener.AddListener((IPlayerSessionEventListener)listener);
 			ConnectionManager.SessionEventListener.AddListener((ISpectatorSessionEventListener)listener);
+			ConnectionManager.OnSessionConnected += () => {
+				Gdk.Threads.Enter();
+				CardManager.Init(ConnectionManager.Session);
+				Update();
+				RequestRedraw();
+				Gdk.Threads.Leave();
+			};
 			ConnectionManager.OnSessionDisconnected += () => {
+				Gdk.Threads.Enter();
 				Clear();
 				CardManager.Flush();
 				RequestRedraw();
+				Gdk.Threads.Leave();
+			};
+			ConnectionManager.OnGameConnected += () => {
+				Gdk.Threads.Enter();
+				Update();
+				RequestRedraw();
+				Gdk.Threads.Leave();
 			};
 		}
 
@@ -216,26 +216,20 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		public void SetRequestType(RequestType type)
 		{
-			lock(layoutLock)
-			{
-				requestLabel.Markup = "<span color='lightblue'>Request type: </span>";
-				if(type == RequestType.None)
-					requestLabel.Markup += "<span color='orange'><b>No Request</b></span>";
-				else
-					requestLabel.Markup += "<span color='orange'><b>" + type.ToString() + "</b></span>";
-			}
+			requestLabel.Markup = "<span color='lightblue'>" + Catalog.GetString("Request type:") + " </span>";
+			if(type == RequestType.None)
+				requestLabel.Markup += "<span color='orange'><b>" + Catalog.GetString("No Request") + "</b></span>";
+			else
+				requestLabel.Markup += "<span color='orange'><b>" + type.ToString() + "</b></span>";
 		}
 		public void SetResponseType(string responseType, GameException exception = null)
 		{
-			lock(layoutLock)
-			{
-				responseLabel.Markup = "<span color='lightblue'>Last response: </span>";
-				responseLabel.Markup += "<span color='orange'><b>" + responseType + " - </b></span>";
-				if(exception == null)
-					responseLabel.Markup += "<span color='lightgreen'>Accepted!</span>";
-				else
-					responseLabel.Markup += "<span color='lightsalmon'>" + exception.GetType().ToString() + "</span>";
-			}
+			responseLabel.Markup = "<span color='lightblue'>" + Catalog.GetString("Last response:") + " </span>";
+			responseLabel.Markup += "<span color='orange'><b>" + responseType + " - </b></span>";
+			if(exception == null)
+				responseLabel.Markup += "<span color='lightgreen'>" + Catalog.GetString("Accepted!") + "</span>";
+			else
+				responseLabel.Markup += "<span color='lightsalmon'>" + MessageManager.GetErrorMessage(exception) + "</span>";
 		}
 
 #if DEBUG
@@ -243,20 +237,17 @@ namespace BangSharp.Client.GameBoard.Widgets
 #endif
 		public void RootExpose(Context cr, Rectangle area)
 		{
-			lock(layoutLock)
-			{
 #if DEBUG
-				sw.Reset();
-				sw.Start();
+			sw.Reset();
+			sw.Start();
 #endif
-				Expose(cr, area);
+			Expose(cr, area);
 #if DEBUG
-				sw.Stop();
-				Console.Error.WriteLine("DEBUG: Rendering took: {0}", sw.Elapsed);
+			sw.Stop();
+			Console.Error.WriteLine("DEBUG: Rendering took: {0}", sw.Elapsed);
 #endif
-				if(cr.Status != Status.Success)
-					Console.Error.WriteLine("WARNING: Cairo status is {0}", cr.Status);
-			}
+			if(cr.Status != Status.Success)
+				Console.Error.WriteLine("WARNING: Cairo status is {0}", cr.Status);
 		}
 
 		private void PrintAlloc(Widget w, string padding = "")
@@ -268,40 +259,31 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		public void RootReallocate(Rectangle newAlloc)
 		{
-			lock(layoutLock)
-				Reallocate(newAlloc);
+			Reallocate(newAlloc);
 		}
 
 		public void RootLeftClick(double x, double y)
 		{
-			//lock(layoutLock)
 			LeftClick(x, y);
 		}
 
 		public void RootRightClick(double x, double y)
 		{
-			//lock(layoutLock)
 			RightClick(x, y);
 		}
 
 		public override void RequestResize()
 		{
-			if(Thread.CurrentThread.ManagedThreadId == MainClass.GtkThread.ManagedThreadId)
-				parent.QueueResize();
-			else
-				Gtk.Application.Invoke((sender, e) => {
-					RootReallocate(Allocation);
-				});
+			Gtk.Application.Invoke(delegate {
+				Gdk.Threads.Enter();
+				RootReallocate(Allocation);
+				Gdk.Threads.Leave();
+			});
 		}
 		public override void RequestRedraw()
 		{
-			if(Thread.CurrentThread.ManagedThreadId == MainClass.GtkThread.ManagedThreadId)
-				parent.QueueDraw();
-			else
-				Gtk.Application.Invoke((sender, e) => {
-					RootReallocate(Allocation);
-					parent.QueueDraw();
-				});
+			RequestResize();
+			parent.QueueDraw();
 		}
 	}
 }

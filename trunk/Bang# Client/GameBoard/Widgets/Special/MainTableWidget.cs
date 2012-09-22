@@ -1,3 +1,4 @@
+using Mono.Unix;
 // MainTableWidget.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
@@ -51,19 +52,24 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 			deckCard = new PlayingCardWidget();
 			deckCard.OnLClick += (w) => {
-				IPlayerControl control = ConnectionManager.PlayerGameControl;
-				if(control == null)
-					return;
-				try
-				{
-					control.RespondDraw();
-					root.SetResponseType("Draw");
-				}
-				catch(GameException e)
-				{
-					root.SetResponseType("Draw", e);
-				}
-				RequestRedraw();
+				System.Threading.ThreadPool.QueueUserWorkItem((state) => {
+					IPlayerControl control = ConnectionManager.PlayerGameControl;
+					if(control == null)
+						return;
+					try
+					{
+						control.RespondDraw();
+						Gdk.Threads.Enter();
+						root.SetResponseType(Catalog.GetString("Draw"));
+					}
+					catch(GameException e)
+					{
+						Gdk.Threads.Enter();
+						root.SetResponseType(Catalog.GetString("Draw"), e);
+					}
+					RequestRedraw();
+					Gdk.Threads.Leave();
+				});
 			};
 		}
 

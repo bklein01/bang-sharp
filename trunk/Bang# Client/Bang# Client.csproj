@@ -119,6 +119,32 @@
     <Compile Include="GameBoard\Widgets\Basic\Adapter.cs" />
     <Compile Include="GameBoard\Animators\CardZoomAnimator.cs" />
     <Compile Include="GameBoard\States\CardZoomState.cs" />
+    <Compile Include="ImageSelectorWidget.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.ImageSelectorWidget.cs" />
+    <Compile Include="SpectatorDataWidget.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.SpectatorDataWidget.cs" />
+    <Compile Include="PlayerDataWidget.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.PlayerDataWidget.cs" />
+    <Compile Include="SessionInfoWidget.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.SessionInfoWidget.cs" />
+    <Compile Include="SessionWindow.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.SessionWindow.cs" />
+    <Compile Include="SpectateSessionDialog.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.SpectateSessionDialog.cs" />
+    <Compile Include="JoinSessionDialog.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.JoinSessionDialog.cs" />
+    <Compile Include="CreateSessionDialog.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.CreateSessionDialog.cs" />
+    <Compile Include="ServerWindow.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.ServerWindow.cs" />
+    <Compile Include="ServerListWindow.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.ServerListWindow.cs" />
+    <Compile Include="ReplacePlayerDialog.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.ReplacePlayerDialog.cs" />
+    <Compile Include="ErrorManager.cs" />
+    <Compile Include="MessageManager.cs" />
+    <Compile Include="PreferencesDialog.cs" />
+    <Compile Include="gtk-gui\BangSharp.Client.PreferencesDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bang# Common\Bang# Common.csproj">
@@ -147,4 +173,11 @@
     <Content Include="Resources\Icon\32x32x32.png" />
     <Content Include="Resources\Icon\48x48x32.png" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Deployment.LinuxDeployData scriptName="bang-sharp-client" />
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
