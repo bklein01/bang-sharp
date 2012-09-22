@@ -1,4 +1,4 @@
-// StateType.cs
+// SpectatorDataWidget.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -24,12 +24,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace BangSharp.Client.GameBoard
+namespace BangSharp.Client
 {
-	public enum StateType
+	[System.ComponentModel.ToolboxItem(true)]
+	public partial class SpectatorDataWidget : Gtk.Bin
 	{
-		Start,
-		End
+		public CreateSpectatorData SpectatorData
+		{
+			get
+			{
+				return new CreateSpectatorData(nameEntry.Text, PictureManager.GetBytes(imageSelector.Image));
+			}
+		}
+
+		public SpectatorDataWidget()
+		{
+			this.Build();
+
+			nameEntry.Text = Config.Instance.GetString("Client.Spectator.Name", "");
+			string savedFname = Config.Instance.GetString("Client.Spectator.ImageFilename", null);
+			if(savedFname != null)
+				imageSelector.Filename = savedFname;
+
+			imageSelector.OnImageChanged += () => {
+				string fname = imageSelector.Filename;
+				if(fname != null)
+					Config.Instance.SetString("Client.Spectator.ImageFilename", fname);
+				else
+					Config.Instance.Clear("Client.Spectator.ImageFilename");
+			};
+		}
+
+		protected void OnNameEntryChanged(object sender, System.EventArgs e)
+		{
+			Config.Instance.SetString("Client.Spectator.Name", nameEntry.Text);
+		}
 	}
 }
 

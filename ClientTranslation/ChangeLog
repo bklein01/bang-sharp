@@ -1,0 +1,10 @@
+2012-09-22  WOnder93  <omosnacek@gmail.com>
+
+	* .:
+	* sk.po:
+	* en.po:
+	* cs.po:
+	* messages.po:
+	* ClientTranslation.mdproj:
+	  Added a translation project for the client.
+

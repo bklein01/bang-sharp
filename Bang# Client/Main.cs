@@ -25,30 +25,27 @@
 // THE SOFTWARE.
 using System.Threading;
 using Gtk;
+using Mono.Unix;
 
 namespace BangSharp.Client
 {
 	class MainClass
 	{
-		private static Thread gtkThread;
-
-		public static Thread GtkThread
-		{
-			get { return gtkThread; }
-		}
-
 		public static void Main(string[] args)
 		{
+			if(!GLib.Thread.Supported)
+				GLib.Thread.Init();
+
+			Gdk.Threads.Init();
+
+			Gdk.Threads.Enter();
 			Application.Init();
-			gtkThread = Thread.CurrentThread;
+			Catalog.Init("bang-sharp-client", "Locale");
+			Utils.OpenClientChannel();
 			MainWindow win = new MainWindow();
 			win.Show();
 			Application.Run();
-#if DEBUG
-			if(ConnectionManager.SessionConnected)
-				ConnectionManager.PlayerSessionControl.EndSession();
-			ConnectionManager.DisconnectFromServer();
-#endif
+			Gdk.Threads.Leave();
 		}
 	}
 }

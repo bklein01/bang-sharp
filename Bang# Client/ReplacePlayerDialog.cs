@@ -1,4 +1,4 @@
-// StateType.cs
+// ReplacePlayerDialog.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,13 +23,57 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System;
 
-namespace BangSharp.Client.GameBoard
+namespace BangSharp.Client
 {
-	public enum StateType
+	public partial class ReplacePlayerDialog : Gtk.Dialog
 	{
-		Start,
-		End
+		private ISession session;
+		private IPlayer player;
+
+		public ReplacePlayerDialog(ServerWindow parent, ISession session, IPlayer player)
+		{
+			TransientFor = parent;
+
+			this.Build();
+
+			this.session = session;
+			this.player = player;
+		}
+
+		protected void OnResponse(object o, Gtk.ResponseArgs args)
+		{
+			if(args.ResponseId != Gtk.ResponseType.Ok)
+			{
+				Destroy();
+				return;
+			}
+
+			this.Sensitive = false;
+			System.Threading.ThreadPool.QueueUserWorkItem((state) => {
+				CreatePlayerData cpd = playerDataWidget.PlayerData;
+				try
+				{
+					session.Replace(player.ID, new Password(sessionPasswordEntry.Text), cpd, ConnectionManager.SessionEventListener);
+				}
+				catch(Exception ex)
+				{
+					Gtk.Application.Invoke(delegate {
+						Gdk.Threads.Enter();
+						ErrorManager.ShowErrorMessage(this, MessageManager.GetErrorMessage(ex));
+						Destroy();
+						Gdk.Threads.Leave();
+					});
+					return;
+				}
+				Gtk.Application.Invoke(delegate {
+					Gdk.Threads.Enter();
+					Destroy();
+					Gdk.Threads.Leave();
+				});
+			});
+		}
 	}
 }
 

@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Server Daemon", "Bang
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bang# Server Interface", "Bang# Server Interface\Bang# Server Interface.csproj", "{1D906372-10A0-43F9-ADC4-F88FCA46D59F}"
 EndProject
+Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "ClientTranslation", "ClientTranslation\ClientTranslation.mdproj", "{F57A3F14-4352-48C6-8020-31A1D3E14225}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,13 +59,17 @@ Global
 		{D4CA4E0D-A687-4866-B031-116C5B5DD731}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4CA4E0D-A687-4866-B031-116C5B5DD731}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4CA4E0D-A687-4866-B031-116C5B5DD731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F57A3F14-4352-48C6-8020-31A1D3E14225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F57A3F14-4352-48C6-8020-31A1D3E14225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F57A3F14-4352-48C6-8020-31A1D3E14225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F57A3F14-4352-48C6-8020-31A1D3E14225}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA4DD36C-5CF4-4CCD-8515-93ABF50D393C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA4DD36C-5CF4-4CCD-8515-93ABF50D393C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA4DD36C-5CF4-4CCD-8515-93ABF50D393C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA4DD36C-5CF4-4CCD-8515-93ABF50D393C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Bang# Server Daemon\Bang# Server Daemon.csproj
+		StartupItem = Bang# Client\Bang# Client.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.TabWidth = 4

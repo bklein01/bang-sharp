@@ -1,0 +1,676 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2012-09-22 10:42:27+0200\n"
+"PO-Revision-Date: 2012-09-22 10:42:28+0200\n"
+"Last-Translator: WOnder93 <omosnacek@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: MonoDevelop Gettext addin\n"
+
+#: ../Bang# Client/GameBoard/Widgets/Special/AnimationLayer.cs:50
+msgid "Use Ability"
+msgstr ""
+
+#: ../Bang# Client/GameBoard/Widgets/Special/AnimationLayer.cs:51
+msgid "Card #{0}"
+msgstr ""
+
+#: ../Bang# Client/GameBoard/Widgets/Special/RootWidget.cs:11
+msgid "Request type:"
+msgstr ""
+
+#: ../Bang# Client/GameBoard/Widgets/Special/RootWidget.cs:11
+msgid "No Request"
+msgstr ""
+
+#: ../Bang# Client/GameBoard/Widgets/Special/RootWidget.cs:11
+msgid "Last response:"
+msgstr ""
+
+#: ../Bang# Client/GameBoard/Widgets/Special/RootWidget.cs:11
+msgid "Accepted!"
+msgstr ""
+
+#: ../Bang# Client/GameBoard/Widgets/Special/PlayerSlotWidget.cs:3
+msgid "No action"
+msgstr ""
+
+#: ../Bang# Client/GameBoard/Widgets/Special/PlayerSlotWidget.cs:7
+msgid "Player #{0}"
+msgstr ""
+
+#: ../Bang# Client/GameBoard/Widgets/Special/MainTableWidget.cs:4
+msgid "Draw"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "Se_rver"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Connect to Server..."
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Disconnect from Server"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Quit Application"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Quit"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Options"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Preferences"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Help"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_About"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Window"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Server Window"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionWindow.cs:1
+msgid "Session Window"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "Se_ssion"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Disconnect"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionWindow.cs:1
+msgid "Start _Game"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionWindow.cs:1
+msgid "_End Session"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "Bang# Client"
+msgstr ""
+
+#: ../Bang# Client/ImageSelectorWidget.cs:5
+msgid "Clears the image"
+msgstr ""
+
+#: ../Bang# Client/ImageSelectorWidget.cs:6
+msgid "Picture files"
+msgstr ""
+
+#: ../Bang# Client/ImageSelectorWidget.cs:6
+msgid "All files"
+msgstr ""
+
+#: ../Bang# Client/ImageSelectorWidget.cs:8
+msgid "Unable to load image!"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ImageSelectorWidget.cs:1
+msgid "Select an avatar image"
+msgstr ""
+
+#: ../Bang# Client/SpectatorDataWidget.cs:3
+msgid "Client.Spectator.Name"
+msgstr ""
+
+#: ../Bang# Client/SpectatorDataWidget.cs:3
+msgid "Client.Spectator.ImageFilename"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SpectatorDataWidget.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PlayerDataWidget.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Name:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SpectatorDataWidget.cs:1
+msgid "<b>Spectator Information</b>"
+msgstr ""
+
+#: ../Bang# Client/PlayerDataWidget.cs:3
+msgid "Client.Player.Name"
+msgstr ""
+
+#: ../Bang# Client/PlayerDataWidget.cs:3
+msgid "Client.Player.ImageFilename"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PlayerDataWidget.cs:1
+msgid "Password:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PlayerDataWidget.cs:1
+msgid "<b>Player Information</b>"
+msgstr ""
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+#: ../Bang# Client/SessionInfoWidget.cs:29
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "ID"
+msgstr ""
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+#: ../Bang# Client/SessionInfoWidget.cs:29
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Name"
+msgstr ""
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+#: ../Bang# Client/SessionInfoWidget.cs:29
+msgid "Image"
+msgstr ""
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+msgid "Has Pass."
+msgstr ""
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+msgid "Online"
+msgstr ""
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+msgid "AI"
+msgstr ""
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+msgid "Score"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Dodge City:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "High Noon:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "A Fistful of Cards:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Wild West Show:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "<b>Expansions</b>"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Has Player Password:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Has Spectator Password:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Games Played:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Description:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "State:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Min. Player Count:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Max. Player Count:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Max. Spectator Count:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "<b>Players</b>"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "<b>Spectators</b>"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Basic information"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Character statistics"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Role statistics"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "<b>Session Information</b>"
+msgstr ""
+
+#: ../Bang# Client/SessionWindow.cs:6
+msgid "Sends the message"
+msgstr ""
+
+#: ../Bang# Client/SessionWindow.cs:6
+msgid "Starts the game in this session"
+msgstr ""
+
+#: ../Bang# Client/SessionWindow.cs:6
+msgid "Disconnects from the session"
+msgstr ""
+
+#: ../Bang# Client/SessionWindow.cs:6
+msgid "Ends the session"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionWindow.cs:1
+msgid "_Send"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionWindow.cs:1
+msgid "<b>Chat</b>"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SpectateSessionDialog.cs:1
+msgid "Spectate Session"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SpectateSessionDialog.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.JoinSessionDialog.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ReplacePlayerDialog.cs:1
+msgid "Session Password:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SpectateSessionDialog.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.JoinSessionDialog.cs:1
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ReplacePlayerDialog.cs:1
+msgid "<b>Authentication</b>"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.JoinSessionDialog.cs:1
+msgid "Join Session"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Create Session"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Dodge City"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "High Noon"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "A Fistful of Cards"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Wild West Show"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Player Password:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Spectator Password:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "_Shuffle Players"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "<b>Session Options</b>"
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:7
+msgid "Creates a new session on the server"
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:7
+msgid "Joins the selected session"
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:7
+msgid "Replaces the selected player of the selected session"
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:7
+msgid "Joins the selected session as a spectator"
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:7
+msgid "Disconnects from the server"
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "State"
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Pl."
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Max. Pl."
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Min. Pl."
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Sp."
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Max. Sp."
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Has Pl. Pass."
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Has Sp. Pass."
+msgstr ""
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Games Played"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Interface Version:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "<b>Server Information</b>"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Create"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Join"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Replace"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Spectate"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "<b>Sessions</b>"
+msgstr ""
+
+#: ../Bang# Client/ServerListWindow.cs:4
+msgid "Connects to the selected server"
+msgstr ""
+
+#: ../Bang# Client/ServerListWindow.cs:4
+msgid "Adds new server entry to the list"
+msgstr ""
+
+#: ../Bang# Client/ServerListWindow.cs:4
+msgid "Removes the selected entry from the list"
+msgstr ""
+
+#: ../Bang# Client/ServerListWindow.cs:8
+msgid "Address"
+msgstr ""
+
+#: ../Bang# Client/ServerListWindow.cs:8
+msgid "Port"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerListWindow.cs:1
+msgid "Connect to server..."
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerListWindow.cs:1
+msgid "<b>Server List</b>"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ReplacePlayerDialog.cs:1
+msgid "Replace Player"
+msgstr ""
+
+#: ../Bang# Client/ErrorManager.cs:1
+msgid "Error"
+msgstr ""
+
+#: ../Bang# Client/ErrorManager.cs:1
+msgid "Warning"
+msgstr ""
+
+#: ../Bang# Client/ErrorManager.cs:2
+msgid "Info"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Serialization error!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Remoting error!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid ""
+"An exception occured:\n"
+"{0}"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad server administration password!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Maximum player count is out of range!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Minimum player count is out of range!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Maximum spectator count is out of range!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Invalid identifier!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Action is not valid for the current state of the session!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad session password!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad player password!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Too many players!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Too many spectators!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "You can't replace this player!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "You must be the creator of the session to perform this action!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Action is not valid for the current state of the game!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "This response is not valid!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad player!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad card!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad character type!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad target player!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad target card!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "You can play Bang only once in your turn!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "You can't play Beer when there are only two players left!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Unknown error!"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:2
+msgid ""
+"Choose the way you want to draw cards.\n"
+"\tRespondDraw: draw normally\n"
+"\tRespondUseAbility: draw using the character's ability (if any)"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:3
+msgid "Yes"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:3
+msgid "No"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:4
+msgid "Waiting for players"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:4
+msgid "Playing"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:4
+msgid "Game finished"
+msgstr ""
+
+#: ../Bang# Client/MessageManager.cs:4
+msgid "Ended"
+msgstr ""
+
+#: ../Bang# Client/PreferencesDialog.cs:3
+msgid ""
+"If checked, the Session Window automatically hides when the game starts and "
+"shows when the game ends."
+msgstr ""
+
+#: ../Bang# Client/PreferencesDialog.cs:3
+msgid ""
+"Minimum time between rendering of frames of the game board. Decreasing this "
+"value may get you higher FPS, but it may also increase the CPU utilisation."
+msgstr ""
+
+#: ../Bang# Client/PreferencesDialog.cs:3
+msgid "The default duration of animation (card movement, etc)."
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "Preferences"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "Automatically hide Session Window while playing"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "<b>General</b>"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "Rendering delay:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "Default animation duration:"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "ms"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "<b>Animation</b>"
+msgstr ""
+

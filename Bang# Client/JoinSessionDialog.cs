@@ -1,4 +1,4 @@
-// StateType.cs
+// JoinSessionDialog.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -23,13 +23,55 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using System;
 
-namespace BangSharp.Client.GameBoard
+namespace BangSharp.Client
 {
-	public enum StateType
+	public partial class JoinSessionDialog : Gtk.Dialog
 	{
-		Start,
-		End
+		private ISession session;
+
+		public JoinSessionDialog(ServerWindow parent, ISession session)
+		{
+			TransientFor = parent;
+
+			this.Build();
+
+			this.session = session;
+		}
+
+		protected void OnResponse(object o, Gtk.ResponseArgs args)
+		{
+			if(args.ResponseId != Gtk.ResponseType.Ok)
+			{
+				Destroy();
+				return;
+			}
+
+			this.Sensitive = false;
+			System.Threading.ThreadPool.QueueUserWorkItem((state) => {
+				CreatePlayerData cpd = playerDataWidget.PlayerData;
+				try
+				{
+					session.Join(new Password(sessionPasswordEntry.Text), cpd, ConnectionManager.SessionEventListener);
+				}
+				catch(Exception ex)
+				{
+					Gtk.Application.Invoke(delegate {
+						Gdk.Threads.Enter();
+						ErrorManager.ShowErrorMessage(this, MessageManager.GetErrorMessage(ex));
+						Destroy();
+						Gdk.Threads.Leave();
+					});
+					return;
+				}
+				Gtk.Application.Invoke(delegate {
+					Gdk.Threads.Enter();
+					Destroy();
+					Gdk.Threads.Leave();
+				});
+			});
+		}
 	}
 }
 

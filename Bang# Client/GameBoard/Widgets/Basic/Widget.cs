@@ -157,16 +157,6 @@ namespace BangSharp.Client.GameBoard.Widgets
 		private ChildrenCollection children;
 		private Rectangle alloc;
 
-		public virtual object LayoutLock
-		{
-			get
-			{
-				if(parent == null)
-					throw new InvalidOperationException();
-				return parent.LayoutLock;
-			}
-		}
-
 		public Widget Parent
 		{
 			get { return parent; }

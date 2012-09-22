@@ -23,6 +23,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+using Mono.Unix;
 
 namespace BangSharp.Client.GameBoard.Widgets
 {
@@ -58,19 +59,24 @@ namespace BangSharp.Client.GameBoard.Widgets
 			{
 				NoActionButtonWidget button = new NoActionButtonWidget();
 				button.OnClick += delegate() {
-					IPlayerControl control = ConnectionManager.PlayerGameControl;
-					if(control == null)
-						return;
-					try
-					{
-						control.RespondNoAction();
-						root.SetResponseType("No action");
-					}
-					catch(GameException e)
-					{
-						root.SetResponseType("No action", e);
-					}
-					RequestRedraw();
+					System.Threading.ThreadPool.QueueUserWorkItem((state) => {
+						IPlayerControl control = ConnectionManager.PlayerGameControl;
+						if(control == null)
+							return;
+						try
+						{
+							control.RespondNoAction();
+							Gdk.Threads.Enter();
+							root.SetResponseType(Catalog.GetString("No action"));
+						}
+						catch(GameException e)
+						{
+							Gdk.Threads.Enter();
+							root.SetResponseType(Catalog.GetString("No action"), e);
+						}
+						RequestRedraw();
+						Gdk.Threads.Leave();
+					});
 				};
 				padding9.Children.Add(button);
 			}
@@ -107,19 +113,24 @@ namespace BangSharp.Client.GameBoard.Widgets
 
 		protected override bool OnLeftClick(double x, double y)
 		{
-			IPlayerControl control = ConnectionManager.PlayerGameControl;
-			if(control == null)
-				return true;
-			try
-			{
-				control.RespondPlayer(id);
-				root.SetResponseType("Player #" + id);
-			}
-			catch(GameException e)
-			{
-				root.SetResponseType("Player #" + id, e);
-			}
-			RequestRedraw();
+			System.Threading.ThreadPool.QueueUserWorkItem((state) => {
+				IPlayerControl control = ConnectionManager.PlayerGameControl;
+				if(control == null)
+					return;
+				try
+				{
+					control.RespondPlayer(id);
+					Gdk.Threads.Enter();
+					root.SetResponseType(string.Format(Catalog.GetString("Player #{0}"), id));
+				}
+				catch(GameException e)
+				{
+					Gdk.Threads.Enter();
+					root.SetResponseType(string.Format(Catalog.GetString("Player #{0}"), id), e);
+				}
+				RequestRedraw();
+				Gdk.Threads.Leave();
+			});
 			return true;
 		}
 	}

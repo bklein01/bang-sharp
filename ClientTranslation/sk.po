@@ -1,0 +1,686 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2012-09-01 17:31:38+0200\n"
+"PO-Revision-Date: 2012-09-01 17:44:06+0200\n"
+"Last-Translator: WOnder93 <omosnacek@gmail.com>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: MonoDevelop Gettext addin\n"
+
+#: ../Bang# Client/GameBoard/Widgets/Special/AnimationLayer.cs:50
+msgid "Use Ability"
+msgstr "Použiť schopnosť"
+
+#: ../Bang# Client/GameBoard/Widgets/Special/AnimationLayer.cs:51
+msgid "Card #{0}"
+msgstr "Karta #{0}"
+
+#: ../Bang# Client/GameBoard/Widgets/Special/RootWidget.cs:11
+msgid "Request type:"
+msgstr "Typ požiadavky:"
+
+#: ../Bang# Client/GameBoard/Widgets/Special/RootWidget.cs:11
+msgid "No Request"
+msgstr "Žiadna požiadavka"
+
+#: ../Bang# Client/GameBoard/Widgets/Special/RootWidget.cs:11
+msgid "Last response:"
+msgstr "Posledná odpoveď:"
+
+#: ../Bang# Client/GameBoard/Widgets/Special/RootWidget.cs:11
+msgid "Accepted!"
+msgstr "Prijatá!"
+
+#: ../Bang# Client/GameBoard/Widgets/Special/PlayerSlotWidget.cs:3
+msgid "No action"
+msgstr "Nečinnosť"
+
+#: ../Bang# Client/GameBoard/Widgets/Special/PlayerSlotWidget.cs:7
+msgid "Player #{0}"
+msgstr "Hráč #{0}"
+
+#: ../Bang# Client/GameBoard/Widgets/Special/MainTableWidget.cs:4
+msgid "Draw"
+msgstr "Potiahnuť si"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "Se_rver"
+msgstr "Se_rver"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Connect to Server..."
+msgstr "_Pripojiť sa na server..."
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Disconnect from Server"
+msgstr "O_dpojiť sa od servera"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Quit Application"
+msgstr "_Ukončiť aplikáciu"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Quit"
+msgstr "U_končiť"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Options"
+msgstr "_Možnosti"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Preferences"
+msgstr "_Nastavenia"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Help"
+msgstr "_Pomocník"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_About"
+msgstr "_O programe"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Window"
+msgstr "_Okno"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+#: Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Server Window"
+msgstr "Okno servera"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+#: Client/gtk-gui/BangSharp.Client.SessionWindow.cs:1
+msgid "Session Window"
+msgstr "Okno sedenia"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "Se_ssion"
+msgstr "Se_denie"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "_Disconnect"
+msgstr "O_dpojiť"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+#: Client/gtk-gui/BangSharp.Client.SessionWindow.cs:1
+msgid "Start _Game"
+msgstr "Spustiť _hru"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+#: Client/gtk-gui/BangSharp.Client.SessionWindow.cs:1
+msgid "_End Session"
+msgstr "U_končiť sedenie"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.MainWindow.cs:1
+msgid "Bang# Client"
+msgstr "Bang# klient"
+
+#: ../Bang# Client/ImageSelectorWidget.cs:5
+msgid "Clears the image"
+msgstr "Vyčistí obrázok"
+
+#: ../Bang# Client/ImageSelectorWidget.cs:6
+msgid "Picture files"
+msgstr "Súbory obrázkov"
+
+#: ../Bang# Client/ImageSelectorWidget.cs:6
+msgid "All files"
+msgstr "Všetky súbory"
+
+#: ../Bang# Client/ImageSelectorWidget.cs:8
+msgid "Unable to load image!"
+msgstr "Nepodarilo sa načítať obrázok!"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ImageSelectorWidget.cs:1
+msgid "Select an avatar image"
+msgstr "Vyberte svoj obrázok avatara"
+
+#: ../Bang# Client/SpectatorDataWidget.cs:3
+msgid "Client.Spectator.Name"
+msgstr ""
+
+#: ../Bang# Client/SpectatorDataWidget.cs:3
+msgid "Client.Spectator.ImageFilename"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SpectatorDataWidget.cs:1
+#: Client/gtk-gui/BangSharp.Client.PlayerDataWidget.cs:1
+#: Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+#: Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Name:"
+msgstr "Meno:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SpectatorDataWidget.cs:1
+msgid "<b>Spectator Information</b>"
+msgstr "<b>Informácie o divákovi</b>"
+
+#: ../Bang# Client/PlayerDataWidget.cs:3
+msgid "Client.Player.Name"
+msgstr ""
+
+#: ../Bang# Client/PlayerDataWidget.cs:3
+msgid "Client.Player.ImageFilename"
+msgstr ""
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PlayerDataWidget.cs:1
+msgid "Password:"
+msgstr "Heslo:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PlayerDataWidget.cs:1
+msgid "<b>Player Information</b>"
+msgstr "<b>Informácie o hráčovi</b>"
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+#: Client/SessionInfoWidget.cs:29
+#: Client/ServerWindow.cs:10
+msgid "ID"
+msgstr "ID"
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+#: Client/SessionInfoWidget.cs:29
+#: Client/ServerWindow.cs:10
+msgid "Name"
+msgstr "Meno"
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+#: Client/SessionInfoWidget.cs:29
+msgid "Image"
+msgstr "Obrázok"
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+msgid "Has Pass."
+msgstr "Má heslo"
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+msgid "Online"
+msgstr "Online"
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+msgid "AI"
+msgstr "AI"
+
+#: ../Bang# Client/SessionInfoWidget.cs:28
+msgid "Score"
+msgstr "Skóre"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Dodge City:"
+msgstr "Mesto duchov:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "High Noon:"
+msgstr "Pravé poludnie:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "A Fistful of Cards:"
+msgstr "A Fistful of Cards:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Wild West Show:"
+msgstr "Divoký Západ:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "<b>Expansions</b>"
+msgstr "<b>Rozšírenia</b>"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Has Player Password:"
+msgstr "Má heslo pre hráčov:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Has Spectator Password:"
+msgstr "Má heslo pre divákov:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Games Played:"
+msgstr "Odohrané hry:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+#: Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Description:"
+msgstr "Popis:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "State:"
+msgstr "Stav:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Min. Player Count:"
+msgstr "Min. počet hráčov:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Max. Player Count:"
+msgstr "Max. počet hráčov:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+#: Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Max. Spectator Count:"
+msgstr "Max. počet divákov:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "<b>Players</b>"
+msgstr "<b>Hráči</b>"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "<b>Spectators</b>"
+msgstr "<b>Diváci</b>"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Basic information"
+msgstr "Základné informácie"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Character statistics"
+msgstr "Štatistiky podľa postáv"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "Role statistics"
+msgstr "Štatistiky podľa úloh"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionInfoWidget.cs:1
+msgid "<b>Session Information</b>"
+msgstr "<b>Informácie o sedení</b>"
+
+#: ../Bang# Client/SessionWindow.cs:6
+msgid "Sends the message"
+msgstr "Odošle správu"
+
+#: ../Bang# Client/SessionWindow.cs:6
+msgid "Starts the game in this session"
+msgstr "Spustí hru v tomto sedení"
+
+#: ../Bang# Client/SessionWindow.cs:6
+msgid "Disconnects from the session"
+msgstr "Odpojí od servera"
+
+#: ../Bang# Client/SessionWindow.cs:6
+msgid "Ends the session"
+msgstr "Ukončí sedenie"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionWindow.cs:1
+msgid "_Send"
+msgstr "_Odoslať"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SessionWindow.cs:1
+msgid "<b>Chat</b>"
+msgstr "<b>Chat</b>"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SpectateSessionDialog.cs:1
+msgid "Spectate Session"
+msgstr "Pozorovať sedenie"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SpectateSessionDialog.cs:1
+#: Client/gtk-gui/BangSharp.Client.JoinSessionDialog.cs:1
+#: Client/gtk-gui/BangSharp.Client.ReplacePlayerDialog.cs:1
+msgid "Session Password:"
+msgstr "Heslo sedenia:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.SpectateSessionDialog.cs:1
+#: Client/gtk-gui/BangSharp.Client.JoinSessionDialog.cs:1
+#: Client/gtk-gui/BangSharp.Client.ReplacePlayerDialog.cs:1
+msgid "<b>Authentication</b>"
+msgstr "<b>Overenie</b>"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.JoinSessionDialog.cs:1
+msgid "Join Session"
+msgstr "Pridať sa k sedeniu"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Create Session"
+msgstr "Vytvoriť sedenie"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Dodge City"
+msgstr "Mesto duchov"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "High Noon"
+msgstr "Pravé poludnie"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "A Fistful of Cards"
+msgstr "A Fistful of Cards"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Wild West Show"
+msgstr "Divoký Západ"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Player Password:"
+msgstr "Heslo pre hráčov:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "Spectator Password:"
+msgstr "Heslo pre divákov:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "_Shuffle Players"
+msgstr "_Zamiešať hráčov"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.CreateSessionDialog.cs:1
+msgid "<b>Session Options</b>"
+msgstr "<b>Možnosti sedenia</b>"
+
+#: ../Bang# Client/ServerWindow.cs:7
+msgid "Creates a new session on the server"
+msgstr "Vytvorí nové sedenie na serveri"
+
+#: ../Bang# Client/ServerWindow.cs:7
+msgid "Joins the selected session"
+msgstr "Pripojí k vybranému sedeniu"
+
+#: ../Bang# Client/ServerWindow.cs:7
+msgid "Replaces the selected player of the selected session"
+msgstr "Nahradí vybraného hráča vo vybranom sedení"
+
+#: ../Bang# Client/ServerWindow.cs:7
+msgid "Joins the selected session as a spectator"
+msgstr "Pripojí k vybranému sedeniu ako divák"
+
+#: ../Bang# Client/ServerWindow.cs:7
+msgid "Disconnects from the server"
+msgstr "Odpojí od servera"
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "State"
+msgstr "Stav"
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Pl."
+msgstr "Hr."
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Max. Pl."
+msgstr "Max. hr."
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Min. Pl."
+msgstr "Min. hr."
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Sp."
+msgstr "Div."
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Max. Sp."
+msgstr "Max. div."
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Has Pl. Pass."
+msgstr "Má heslo hr."
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Has Sp. Pass."
+msgstr "Má heslo div."
+
+#: ../Bang# Client/ServerWindow.cs:10
+msgid "Games Played"
+msgstr "Odohr. hry"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Interface Version:"
+msgstr "Verzia rozhrania:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "<b>Server Information</b>"
+msgstr "<b>Informácie o serveri</b>"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Create"
+msgstr "Vytvoriť"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Join"
+msgstr "Pridať sa"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Replace"
+msgstr "Nahradiť"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "Spectate"
+msgstr "Sledovať"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerWindow.cs:1
+msgid "<b>Sessions</b>"
+msgstr "<b>Sedenia</b>"
+
+#: ../Bang# Client/ServerListWindow.cs:4
+msgid "Connects to the selected server"
+msgstr "Pripojí na vybraný server"
+
+#: ../Bang# Client/ServerListWindow.cs:4
+msgid "Adds new server entry to the list"
+msgstr "Pridá nový server do zoznamu"
+
+#: ../Bang# Client/ServerListWindow.cs:4
+msgid "Removes the selected entry from the list"
+msgstr "Odstráni vybraný server zo zoznamu"
+
+#: ../Bang# Client/ServerListWindow.cs:8
+msgid "Address"
+msgstr "Adresa"
+
+#: ../Bang# Client/ServerListWindow.cs:8
+msgid "Port"
+msgstr "Port"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerListWindow.cs:1
+msgid "Connect to server..."
+msgstr "Pripojiť sa na server..."
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ServerListWindow.cs:1
+msgid "<b>Server List</b>"
+msgstr "<b>Zoznam serverov</b>"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.ReplacePlayerDialog.cs:1
+msgid "Replace Player"
+msgstr "Nahradiť hráča"
+
+#: ../Bang# Client/ErrorManager.cs:1
+msgid "Error"
+msgstr "Chyba"
+
+#: ../Bang# Client/ErrorManager.cs:1
+msgid "Warning"
+msgstr "Varovanie"
+
+#: ../Bang# Client/ErrorManager.cs:2
+msgid "Info"
+msgstr "Informácia"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Serialization error!"
+msgstr "Chyba serializácie!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Remoting error!"
+msgstr "Chyba siete!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid ""
+"An exception occured:\n"
+"{0}"
+msgstr ""
+"Vyskytla sa neočakávaná výnimka:\n"
+"{0}"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad server administration password!"
+msgstr "Nesprávne heslo na spravovanie servera!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Maximum player count is out of range!"
+msgstr "Maximálny počet hráčov je mimo rozsahu!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Minimum player count is out of range!"
+msgstr "Minimálny počet hráčov je mimo rozsahu!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Maximum spectator count is out of range!"
+msgstr "Maximálny počet divákov je mimo rozsahu!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Invalid identifier!"
+msgstr "Neplatný identifikátor!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Action is not valid for the current state of the session!"
+msgstr "Operácia nie je povolená pre aktuálny stav sedenia!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad session password!"
+msgstr "Nesprávne heslo sedenia!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad player password!"
+msgstr "Nesprávne heslo hráča!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Too many players!"
+msgstr "Príliš veľa hráčov!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Too many spectators!"
+msgstr "Príliš veľa divákov!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "You can't replace this player!"
+msgstr "Tohto hráča nie je možné nahradiť!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "You must be the creator of the session to perform this action!"
+msgstr "Na vykonanie tejto operácie musíš byť tvorcom sedenia!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Action is not valid for the current state of the game!"
+msgstr "Operácia nie je povolená pre aktuálny stav hry!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "This response is not valid!"
+msgstr "Táto odpoveď nie je povolená!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad player!"
+msgstr "Nesprávny hráč!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad card!"
+msgstr "Nesprávna karta!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad character type!"
+msgstr "Nesprávna postava!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad target player!"
+msgstr "Nesprávny cieľový hráč!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Bad target card!"
+msgstr "Nesprávna cieľová karta!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "You can play Bang only once in your turn!"
+msgstr "Môžeš hrať Bang iba jedenkrát počas ťahu!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "You can't play Beer when there are only two players left!"
+msgstr "Nemôžeš hrať Pivo, keď sú v hre iba dvaja hráči!"
+
+#: ../Bang# Client/MessageManager.cs:1
+msgid "Unknown error!"
+msgstr "Neznáma chyba!"
+
+#: ../Bang# Client/MessageManager.cs:2
+msgid ""
+"Choose the way you want to draw cards.\n"
+"\tRespondDraw: draw normally\n"
+"\tRespondUseAbility: draw using the character's ability (if any)"
+msgstr ""
+"Vyber si spôsob, akým si chceš potiahnuť karty.\n"
+"\tRespondDraw: potiahnuť si normálne\n"
+"\tRespondUseAbility: potiahnuť si pomocou schopnosti postavy (ak takú máš)"
+
+#: ../Bang# Client/MessageManager.cs:3
+msgid "Yes"
+msgstr "Áno"
+
+#: ../Bang# Client/MessageManager.cs:3
+msgid "No"
+msgstr "Nie"
+
+#: ../Bang# Client/MessageManager.cs:4
+msgid "Waiting for players"
+msgstr "Čaká sa na hráčov"
+
+#: ../Bang# Client/MessageManager.cs:4
+msgid "Playing"
+msgstr "Hrá sa"
+
+#: ../Bang# Client/MessageManager.cs:4
+msgid "Game finished"
+msgstr "Hra skončená"
+
+#: ../Bang# Client/MessageManager.cs:4
+msgid "Ended"
+msgstr "Skončené"
+
+#: ../Bang# Client/PreferencesDialog.cs:3
+msgid ""
+"If checked, the Session Window automatically hides when the game starts and "
+"shows when the game ends."
+msgstr ""
+"Keď je zaškrtnuté, Okno sedenia sa automaticky skryje, keď začne hra, a "
+"zobrazí, keď hra skončí."
+
+#: ../Bang# Client/PreferencesDialog.cs:3
+msgid ""
+"Minimum time between rendering of frames of the game board. Decreasing this "
+"value may get you higher FPS, but it may also increase the CPU utilisation."
+msgstr ""
+"Minimálny čas medzi vykresľovaním obrázkov hracej plochy. Zníženie tejto "
+"hodnoty vám môže priniesť vyššie FPS, ale taktiež môže zvýšiť využitie CPU."
+
+#: ../Bang# Client/PreferencesDialog.cs:3
+msgid "The default duration of animation (card movement, etc)."
+msgstr "Východzie trvanie animácie (presun karty, atď)."
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "Preferences"
+msgstr "Nastavenia"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "Automatically hide Session Window while playing"
+msgstr "Automaticky skryť Okno sedenia počas hrania"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "<b>General</b>"
+msgstr "<b>Všeobecné</b>"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "Rendering delay:"
+msgstr "Medzera vykresľovania:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "Default animation duration:"
+msgstr "Východzie trvanie animácie:"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "ms"
+msgstr "ms"
+
+#: ../Bang# Client/gtk-gui/BangSharp.Client.PreferencesDialog.cs:1
+msgid "<b>Animation</b>"
+msgstr "<b>Animácia</b>"
+

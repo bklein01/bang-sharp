@@ -1,4 +1,4 @@
-// StateType.cs
+// PlayerDataWidget.cs
 //  
 // Author:  WOnder93 <omosnacek@gmail.com>
 // 
@@ -24,12 +24,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-namespace BangSharp.Client.GameBoard
+namespace BangSharp.Client
 {
-	public enum StateType
+	[System.ComponentModel.ToolboxItem(true)]
+	public partial class PlayerDataWidget : Gtk.Bin
 	{
-		Start,
-		End
+		public CreatePlayerData PlayerData
+		{
+			get
+			{
+				return new CreatePlayerData(nameEntry.Text, PictureManager.GetBytes(imageSelector.Image), passwordEntry.Text);
+			}
+		}
+
+		public PlayerDataWidget()
+		{
+			this.Build();
+
+			// TRANSLATORS: Don't translate this string - it is added to the catalog by accident.
+			nameEntry.Text = Config.Instance.GetString("Client.Player.Name", "");
+			// TRANSLATORS: Don't translate this string - it is added to the catalog by accident.
+			string savedFname = Config.Instance.GetString("Client.Player.ImageFilename", null);
+			if(savedFname != null)
+				imageSelector.Filename = savedFname;
+
+			imageSelector.OnImageChanged += () => {
+				string fname = imageSelector.Filename;
+				if(fname != null)
+					Config.Instance.SetString("Client.Player.ImageFilename", fname);
+				else
+					Config.Instance.Clear("Client.Player.ImageFilename");
+			};
+		}
+
+		protected void OnNameEntryChanged(object sender, System.EventArgs e)
+		{
+			Config.Instance.SetString("Client.Player.Name", nameEntry.Text);
+		}
 	}
 }
 

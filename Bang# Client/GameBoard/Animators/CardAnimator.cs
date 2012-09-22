@@ -81,7 +81,7 @@ namespace BangSharp.Client.GameBoard.Animators
 
 		public virtual void Animate(double progress)
 		{
-			progress = (Math.Sin((progress - 0.5) * Math.PI) + 1) / 2; // experimental - smooth movement
+			progress = (Math.Sin((progress - 0.5) * Math.PI) + 1) / 2;
 			Rectangle startAlloc = startState.Allocation;
 			Rectangle endAlloc = endState.Allocation;
 			Rectangle newAlloc = new Rectangle(startAlloc.X + progress * (endAlloc.X - startAlloc.X),
