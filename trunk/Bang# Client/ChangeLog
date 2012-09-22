@@ -1,5 +1,15 @@
 2012-09-22  WOnder93  <omosnacek@gmail.com>
 
+	* gui.stetic:
+	* PreferencesDialog.cs:
+	* BangSharp.Client.PreferencesDialog.cs:
+	  Added request timeout to the preferences dialog.
+
+	* AssemblyInfo.cs:
+	  Updated the assembly version.
+
+2012-09-22  WOnder93  <omosnacek@gmail.com>
+
 	* Main.cs:
 	* MainWindow.cs:
 	* ErrorManager.cs:
